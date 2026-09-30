@@ -1,0 +1,2481 @@
+{"head": "465dac627c15acf5399a6ac596f0c6703791d040", "argv": ["./gradlew", "--no-daemon", "--max-workers=2", "ktlintCheck", "lint", "check", ":app:assembleFossDebug", ":app:compileDevDebugAndroidTestKotlin", ":app:compileFossDebugAndroidTestKotlin", ":core:vault:compileDevDebugAndroidTestKotlin", ":core:vault:compileFossDebugAndroidTestKotlin", ":feature:shell:compileDebugAndroidTestKotlin", "--stacktrace"]}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Reusing configuration cache.
+> Task :app:loadKtlintReporters UP-TO-DATE
+> Task :app:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :app:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :app:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :app:ktlintDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :app:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :app:ktlintDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :app:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :app:ktlintFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :app:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :app:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :app:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :app:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :app:ktlintReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :app:ktlintTestDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :build-logic:guards:compileTestKotlin UP-TO-DATE
+> Task :app:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :build-logic:guards:compileTestJava NO-SOURCE
+> Task :build-logic:guards:pluginUnderTestMetadata UP-TO-DATE
+> Task :build-logic:guards:processTestResources NO-SOURCE
+> Task :build-logic:guards:testClasses UP-TO-DATE
+> Task :app:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :app:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :app:ktlintCheck UP-TO-DATE
+> Task :core:loadKtlintReporters UP-TO-DATE
+> Task :core:runKtlintCheckOverKotlinScripts NO-SOURCE
+> Task :core:ktlintKotlinScriptCheck SKIPPED
+> Task :core:ktlintCheck UP-TO-DATE
+> Task :embedder-service:loadKtlintReporters UP-TO-DATE
+> Task :embedder-service:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :embedder-service:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :embedder-service:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :embedder-service:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :embedder-service:ktlintDebugSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :embedder-service:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :embedder-service:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :embedder-service:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :embedder-service:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :embedder-service:ktlintReleaseSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :embedder-service:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :embedder-service:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :embedder-service:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :embedder-service:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :embedder-service:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :embedder-service:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :embedder-service:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :embedder-service:ktlintCheck UP-TO-DATE
+> Task :feature:loadKtlintReporters UP-TO-DATE
+> Task :feature:runKtlintCheckOverKotlinScripts NO-SOURCE
+> Task :feature:ktlintKotlinScriptCheck SKIPPED
+> Task :feature:ktlintCheck UP-TO-DATE
+> Task :inference-service:loadKtlintReporters UP-TO-DATE
+> Task :inference-service:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :inference-service:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :inference-service:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :inference-service:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :inference-service:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :inference-service:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :inference-service:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :inference-service:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :inference-service:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :inference-service:ktlintDebugSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :inference-service:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :build-logic:guards:test UP-TO-DATE
+> Task :inference-service:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :inference-service:ktlintDevSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :inference-service:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :inference-service:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :inference-service:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :inference-service:ktlintFossSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :inference-service:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :inference-service:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :inference-service:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :inference-service:ktlintReleaseSourceSetCheck SKIPPED
+> Task :inference-service:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :inference-service:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :inference-service:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :inference-service:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :inference-service:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :inference-service:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :inference-service:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :inference-service:ktlintTestDevSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :inference-service:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :inference-service:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :inference-service:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :inference-service:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :inference-service:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :inference-service:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :inference-service:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :inference-service:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :inference-service:ktlintTestFossSourceSetCheck SKIPPED
+> Task :inference-service:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :testing:loadKtlintReporters UP-TO-DATE
+> Task :inference-service:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :testing:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :inference-service:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :inference-service:ktlintCheck UP-TO-DATE
+> Task :testing:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :testing:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :testing:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :testing:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :testing:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :testing:ktlintCheck UP-TO-DATE
+> Task :testing-fakes:loadKtlintReporters UP-TO-DATE
+> Task :testing-ui:loadKtlintReporters UP-TO-DATE
+> Task :testing-fakes:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :testing-fakes:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :testing-fakes:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :testing-fakes:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :testing-fakes:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :testing-fakes:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :testing-fakes:ktlintCheck UP-TO-DATE
+> Task :testing-ui:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :testing-ui:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :testing-ui:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :testing-ui:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :testing-ui:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :testing-ui:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :testing-ui:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :testing-ui:ktlintDebugSourceSetCheck SKIPPED
+> Task :testing-ui:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :testing-ui:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :testing-ui:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :testing-ui:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :testing-ui:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :testing-ui:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :testing-ui:ktlintReleaseSourceSetCheck SKIPPED
+> Task :testing-ui:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :testing-ui:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :testing-ui:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :testing-ui:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :testing-ui:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :testing-ui:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :testing-ui:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :testing-ui:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :testing-ui:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:agent:loadKtlintReporters UP-TO-DATE
+> Task :testing-ui:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:agent:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :testing-ui:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :testing-ui:ktlintCheck UP-TO-DATE
+> Task :core:agent:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:agent:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:agent:runKtlintCheckOverTestSourceSet NO-SOURCE
+> Task :core:agent:ktlintTestSourceSetCheck SKIPPED
+> Task :core:agent:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:agent:ktlintCheck UP-TO-DATE
+> Task :core:designsystem:loadKtlintReporters UP-TO-DATE
+> Task :core:designsystem:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:export:loadKtlintReporters UP-TO-DATE
+> Task :core:designsystem:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:designsystem:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :core:designsystem:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:designsystem:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverDebugSourceSet UP-TO-DATE
+> Task :core:designsystem:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:designsystem:ktlintDebugSourceSetCheck UP-TO-DATE
+> Task :core:designsystem:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:designsystem:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:designsystem:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:designsystem:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:designsystem:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:designsystem:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:designsystem:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:designsystem:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:designsystem:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:designsystem:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:export:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:export:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:export:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:export:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:designsystem:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:export:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :core:designsystem:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:designsystem:ktlintCheck UP-TO-DATE
+> Task :core:export:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:export:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :core:export:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:export:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:export:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:export:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:export:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:export:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:export:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:export:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:export:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:export:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:export:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:export:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:export:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:export:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:export:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:export:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:export:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:inference:loadKtlintReporters UP-TO-DATE
+> Task :core:export:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:export:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:inference:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:export:ktlintCheck UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:inference:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :core:inference:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:inference:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:inference:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:ipc:loadKtlintReporters UP-TO-DATE
+> Task :core:ipc:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:ipc:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:ipc:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:ipc:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :core:ipc:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :core:inference:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:inference:ktlintCheck UP-TO-DATE
+> Task :core:ipc:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:ipc:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:ipc:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:ipc:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:ipc:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:ipc:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:ipc:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:ipc:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:ipc:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:ipc:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:ipc:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:ipc:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:ipc:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:markdown:loadKtlintReporters UP-TO-DATE
+> Task :core:ipc:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:ipc:ktlintCheck UP-TO-DATE
+> Task :core:markdown:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:markdown:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:markdown:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:markdown:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:markdown:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:markdown:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:markdown:ktlintCheck UP-TO-DATE
+> Task :core:model:loadKtlintReporters UP-TO-DATE
+> Task :core:model:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:navigation:loadKtlintReporters UP-TO-DATE
+> Task :core:model:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:model:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:model:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:model:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:model:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:model:ktlintCheck UP-TO-DATE
+> Task :core:navigation:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:navigation:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:navigation:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:navigation:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:rag:loadKtlintReporters UP-TO-DATE
+> Task :core:navigation:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:rag:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:rag:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:rag:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:rag:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:navigation:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:navigation:ktlintCheck UP-TO-DATE
+> Task :core:rag:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :core:rag:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :core:rag:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:rag:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:rag:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:rag:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:rag:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:rag:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:rag:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:rag:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:rag:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:rag:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:rag:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:rag:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:rag:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:rag:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:rag:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:rag:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:rag:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:rag:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:security:loadKtlintReporters UP-TO-DATE
+> Task :core:security:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:security:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:security:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:security:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:rag:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:security:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :core:security:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :core:security:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:security:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:rag:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:rag:ktlintCheck UP-TO-DATE
+> Task :core:security:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:security:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:security:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:security:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:security:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:security:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:security:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:security:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:security:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:security:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:security:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:security:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:security:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:security:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:security:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:security:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:security:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:vault:loadKtlintReporters UP-TO-DATE
+> Task :core:security:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:security:ktlintCheck UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :core:vault:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :core:vault:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :core:vault:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :core:vault:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:vault:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverAndroidTestSourceSet
+> Task :core:vault:ktlintAndroidTestSourceSetCheck
+> Task :core:vault:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverMainSourceSet
+> Task :core:vault:ktlintMainSourceSetCheck
+> Task :core:verify:loadKtlintReporters UP-TO-DATE
+> Task :core:verify:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:verify:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:verify:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:verify:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:verify:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :core:verify:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :core:verify:ktlintCheck UP-TO-DATE
+> Task :feature:chat:loadKtlintReporters UP-TO-DATE
+> Task :feature:chat:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:chat:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:chat:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :feature:chat:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :feature:chat:ktlintDebugSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:chat:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:chat:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:chat:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:chat:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:chat:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:chat:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:chat:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:chat:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:chat:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:chat:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:chat:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :feature:chat:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :feature:chat:ktlintCheck UP-TO-DATE
+> Task :feature:editor:loadKtlintReporters UP-TO-DATE
+> Task :feature:editor:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:editor:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:editor:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :feature:editor:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :feature:editor:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :feature:editor:ktlintDebugSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:editor:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:editor:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:editor:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:editor:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:editor:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:editor:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:editor:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:editor:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:editor:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:editor:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:editor:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :feature:editor:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :feature:editor:ktlintCheck UP-TO-DATE
+> Task :feature:graph:loadKtlintReporters UP-TO-DATE
+> Task :feature:graph:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:graph:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:graph:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :feature:graph:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :feature:graph:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :feature:graph:ktlintDebugSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:graph:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:graph:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:graph:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:graph:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:graph:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:graph:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:graph:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:graph:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:graph:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:graph:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:graph:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :feature:graph:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :feature:graph:ktlintCheck UP-TO-DATE
+> Task :feature:models:loadKtlintReporters UP-TO-DATE
+> Task :feature:models:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:models:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:models:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :feature:models:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :feature:models:ktlintDebugSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:models:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:models:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:models:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:models:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:models:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:models:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:models:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:models:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:models:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:models:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:models:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :feature:models:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :feature:models:ktlintCheck UP-TO-DATE
+> Task :feature:onboarding:loadKtlintReporters UP-TO-DATE
+> Task :feature:onboarding:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintDebugSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:onboarding:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:onboarding:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:onboarding:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:onboarding:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:onboarding:runKtlintCheckOverTestSourceSet NO-SOURCE
+> Task :feature:onboarding:ktlintTestSourceSetCheck SKIPPED
+> Task :feature:onboarding:ktlintCheck UP-TO-DATE
+> Task :feature:personas:loadKtlintReporters UP-TO-DATE
+> Task :feature:personas:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:personas:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:personas:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverAndroidTestSourceSet NO-SOURCE
+> Task :feature:personas:ktlintAndroidTestSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :feature:personas:ktlintDebugSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:personas:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:personas:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:personas:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:personas:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:personas:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:personas:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:personas:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:personas:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:personas:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:personas:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:personas:runKtlintCheckOverTestSourceSet NO-SOURCE
+> Task :feature:personas:ktlintTestSourceSetCheck SKIPPED
+> Task :feature:personas:ktlintCheck UP-TO-DATE
+> Task :feature:settings:loadKtlintReporters UP-TO-DATE
+> Task :feature:settings:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:settings:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:settings:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :feature:settings:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :feature:settings:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :feature:settings:ktlintDebugSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:settings:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:settings:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:settings:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:settings:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:settings:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:settings:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:settings:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:settings:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:settings:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:settings:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:settings:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :feature:settings:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :feature:settings:ktlintCheck UP-TO-DATE
+> Task :feature:shell:loadKtlintReporters UP-TO-DATE
+> Task :feature:shell:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:shell:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:shell:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:shell:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:shell:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :feature:shell:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :feature:shell:runKtlintCheckOverDebugSourceSet UP-TO-DATE
+> Task :feature:shell:ktlintDebugSourceSetCheck UP-TO-DATE
+> Task :feature:shell:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:shell:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:shell:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:shell:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:shell:runKtlintCheckOverReleaseSourceSet UP-TO-DATE
+> Task :feature:shell:ktlintReleaseSourceSetCheck UP-TO-DATE
+> Task :feature:shell:runKtlintCheckOverTestDebugSourceSet UP-TO-DATE
+> Task :feature:shell:ktlintTestDebugSourceSetCheck UP-TO-DATE
+> Task :feature:shell:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:shell:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:shell:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:shell:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:shell:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:shell:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:shell:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:shell:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:shell:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :feature:shell:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :feature:shell:ktlintCheck UP-TO-DATE
+> Task :feature:timeline:loadKtlintReporters UP-TO-DATE
+> Task :feature:timeline:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :feature:timeline:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :feature:timeline:runKtlintCheckOverDebugSourceSet UP-TO-DATE
+> Task :feature:timeline:ktlintDebugSourceSetCheck UP-TO-DATE
+> Task :feature:timeline:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :feature:timeline:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :feature:timeline:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :feature:timeline:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :feature:timeline:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintReleaseSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :feature:timeline:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :feature:timeline:runKtlintCheckOverTestSourceSet UP-TO-DATE
+> Task :feature:timeline:ktlintTestSourceSetCheck UP-TO-DATE
+> Task :feature:timeline:ktlintCheck UP-TO-DATE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:checkDevDebugAarMetadata UP-TO-DATE
+> Task :core:vault:extractDeepLinksForAarDevDebug UP-TO-DATE
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources UP-TO-DATE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar UP-TO-DATE
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:markdown:compileKotlin UP-TO-DATE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar UP-TO-DATE
+> Task :core:vault:generateDevDebugResources UP-TO-DATE
+> Task :core:vault:packageDevDebugResources UP-TO-DATE
+> Task :core:vault:processDevDebugNavigationResources UP-TO-DATE
+> Task :core:vault:parseDevDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugRFile UP-TO-DATE
+> Task :core:vault:extractDevDebugAnnotations
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverTestSourceSet
+> Task :core:vault:ktlintTestSourceSetCheck
+> Task :core:vault:ktlintCheck
+> Task :core:vault:javaPreCompileDevDebug UP-TO-DATE
+> Task :core:vault:prepareDevDebugArtProfile UP-TO-DATE
+> Task :core:vault:prepareLintJarForPublish UP-TO-DATE
+> Task :core:vault:processDevDebugManifest UP-TO-DATE
+> Task :core:vault:writeDevDebugAarMetadata UP-TO-DATE
+> Task :core:rag:preBuild UP-TO-DATE
+> Task :core:rag:preDebugBuild UP-TO-DATE
+> Task :core:security:preBuild UP-TO-DATE
+> Task :core:security:preDebugBuild UP-TO-DATE
+> Task :core:security:writeDebugAarMetadata UP-TO-DATE
+> Task :core:rag:checkDebugAarMetadata UP-TO-DATE
+> Task :core:rag:generateDebugResources UP-TO-DATE
+> Task :core:rag:packageDebugResources UP-TO-DATE
+> Task :core:rag:processDebugNavigationResources UP-TO-DATE
+> Task :core:rag:parseDebugLocalResources UP-TO-DATE
+> Task :core:rag:generateDebugRFile UP-TO-DATE
+> Task :core:security:generateDebugResources UP-TO-DATE
+> Task :core:security:packageDebugResources UP-TO-DATE
+> Task :core:security:processDebugNavigationResources UP-TO-DATE
+> Task :core:security:parseDebugLocalResources UP-TO-DATE
+> Task :core:security:generateDebugRFile UP-TO-DATE
+> Task :core:security:compileDebugKotlin UP-TO-DATE
+> Task :core:security:javaPreCompileDebug UP-TO-DATE
+> Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:security:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:rag:extractDebugAnnotations UP-TO-DATE
+> Task :core:rag:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:rag:generateDebugAssets UP-TO-DATE
+> Task :core:rag:mergeDebugAssets UP-TO-DATE
+> Task :core:rag:compileDebugKotlin UP-TO-DATE
+> Task :core:rag:javaPreCompileDebug UP-TO-DATE
+> Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:rag:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:rag:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:rag:prepareDebugArtProfile UP-TO-DATE
+> Task :core:rag:prepareLintJarForPublish UP-TO-DATE
+> Task :core:rag:processDebugManifest UP-TO-DATE
+> Task :core:rag:processDebugJavaRes UP-TO-DATE
+> Task :core:rag:mergeDebugJavaResource UP-TO-DATE
+> Task :core:rag:syncDebugLibJars UP-TO-DATE
+> Task :core:rag:writeDebugAarMetadata UP-TO-DATE
+> Task :core:rag:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:inference:preBuild UP-TO-DATE
+> Task :core:inference:preDebugBuild UP-TO-DATE
+> Task :core:ipc:preBuild UP-TO-DATE
+> Task :core:ipc:preDebugBuild UP-TO-DATE
+> Task :core:ipc:writeDebugAarMetadata UP-TO-DATE
+> Task :core:inference:checkDebugAarMetadata UP-TO-DATE
+> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:verify:compileKotlin UP-TO-DATE
+> Task :core:verify:compileJava NO-SOURCE
+> Task :core:verify:processResources NO-SOURCE
+> Task :core:verify:classes UP-TO-DATE
+> Task :core:verify:jar UP-TO-DATE
+> Task :core:inference:generateDebugResources UP-TO-DATE
+> Task :core:inference:packageDebugResources UP-TO-DATE
+> Task :core:inference:processDebugNavigationResources UP-TO-DATE
+> Task :core:inference:parseDebugLocalResources UP-TO-DATE
+> Task :core:inference:generateDebugRFile UP-TO-DATE
+> Task :core:ipc:compileDebugAidl UP-TO-DATE
+> Task :core:ipc:generateDebugResources UP-TO-DATE
+> Task :core:ipc:packageDebugResources UP-TO-DATE
+> Task :core:ipc:processDebugNavigationResources UP-TO-DATE
+> Task :core:ipc:parseDebugLocalResources UP-TO-DATE
+> Task :core:ipc:generateDebugRFile UP-TO-DATE
+> Task :core:ipc:compileDebugKotlin UP-TO-DATE
+> Task :core:ipc:javaPreCompileDebug UP-TO-DATE
+> Task :core:ipc:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:ipc:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:inference:extractDebugAnnotations UP-TO-DATE
+> Task :core:inference:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:inference:generateDebugAssets UP-TO-DATE
+> Task :core:inference:mergeDebugAssets UP-TO-DATE
+> Task :core:inference:compileDebugKotlin UP-TO-DATE
+> Task :core:inference:javaPreCompileDebug UP-TO-DATE
+> Task :core:inference:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:inference:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:inference:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:inference:prepareDebugArtProfile UP-TO-DATE
+> Task :core:inference:prepareLintJarForPublish UP-TO-DATE
+> Task :core:inference:processDebugManifest UP-TO-DATE
+> Task :core:inference:processDebugJavaRes UP-TO-DATE
+> Task :core:inference:mergeDebugJavaResource UP-TO-DATE
+> Task :core:inference:syncDebugLibJars UP-TO-DATE
+> Task :core:inference:writeDebugAarMetadata UP-TO-DATE
+> Task :core:inference:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:ipc:checkDebugAarMetadata UP-TO-DATE
+> Task :core:ipc:extractDebugAnnotations UP-TO-DATE
+> Task :core:ipc:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:ipc:generateDebugAssets UP-TO-DATE
+> Task :core:ipc:mergeDebugAssets UP-TO-DATE
+> Task :core:ipc:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:ipc:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:ipc:prepareDebugArtProfile UP-TO-DATE
+> Task :core:ipc:prepareLintJarForPublish UP-TO-DATE
+> Task :core:ipc:processDebugManifest UP-TO-DATE
+> Task :core:ipc:processDebugJavaRes UP-TO-DATE
+> Task :core:ipc:mergeDebugJavaResource UP-TO-DATE
+> Task :core:ipc:syncDebugLibJars UP-TO-DATE
+> Task :core:ipc:bundleDebugLocalLintAar UP-TO-DATE
+> Task :inference-service:preBuild UP-TO-DATE
+> Task :inference-service:preDevDebugBuild UP-TO-DATE
+> Task :inference-service:checkDevDebugAarMetadata UP-TO-DATE
+> Task :inference-service:extractDeepLinksForAarDevDebug UP-TO-DATE
+> Task :inference-service:generateDevDebugBuildConfig UP-TO-DATE
+> Task :inference-service:generateDevDebugResources UP-TO-DATE
+> Task :inference-service:packageDevDebugResources UP-TO-DATE
+> Task :inference-service:processDevDebugNavigationResources UP-TO-DATE
+> Task :inference-service:parseDevDebugLocalResources UP-TO-DATE
+> Task :inference-service:generateDevDebugRFile UP-TO-DATE
+> Task :inference-service:extractDevDebugAnnotations UP-TO-DATE
+> Task :inference-service:generateDevDebugAssets UP-TO-DATE
+> Task :inference-service:mergeDevDebugAssets UP-TO-DATE
+> Task :inference-service:compileDevDebugKotlin UP-TO-DATE
+> Task :inference-service:javaPreCompileDevDebug UP-TO-DATE
+> Task :inference-service:compileDevDebugJavaWithJavac UP-TO-DATE
+> Task :inference-service:mergeDevDebugGeneratedProguardFiles UP-TO-DATE
+> Task :inference-service:mergeDevDebugConsumerProguardFiles UP-TO-DATE
+> Task :inference-service:prepareDevDebugArtProfile UP-TO-DATE
+> Task :inference-service:prepareLintJarForPublish UP-TO-DATE
+> Task :inference-service:processDevDebugManifest UP-TO-DATE
+> Task :inference-service:processDevDebugJavaRes UP-TO-DATE
+> Task :inference-service:mergeDevDebugJavaResource UP-TO-DATE
+> Task :inference-service:syncDevDebugLibJars UP-TO-DATE
+> Task :inference-service:writeDevDebugAarMetadata UP-TO-DATE
+> Task :inference-service:bundleDevDebugLocalLintAar UP-TO-DATE
+> Task :embedder-service:preBuild UP-TO-DATE
+> Task :embedder-service:preDebugBuild UP-TO-DATE
+> Task :embedder-service:checkDebugAarMetadata UP-TO-DATE
+> Task :embedder-service:generateDebugResources UP-TO-DATE
+> Task :embedder-service:packageDebugResources UP-TO-DATE
+> Task :embedder-service:processDebugNavigationResources UP-TO-DATE
+> Task :embedder-service:parseDebugLocalResources UP-TO-DATE
+> Task :embedder-service:generateDebugRFile UP-TO-DATE
+> Task :embedder-service:extractDebugAnnotations UP-TO-DATE
+> Task :embedder-service:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :embedder-service:generateDebugAssets UP-TO-DATE
+> Task :embedder-service:mergeDebugAssets UP-TO-DATE
+> Task :embedder-service:compileDebugKotlin UP-TO-DATE
+> Task :embedder-service:javaPreCompileDebug UP-TO-DATE
+> Task :embedder-service:compileDebugJavaWithJavac NO-SOURCE
+> Task :embedder-service:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :embedder-service:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :embedder-service:prepareDebugArtProfile UP-TO-DATE
+> Task :embedder-service:prepareLintJarForPublish UP-TO-DATE
+> Task :embedder-service:processDebugManifest UP-TO-DATE
+> Task :embedder-service:processDebugJavaRes UP-TO-DATE
+> Task :embedder-service:mergeDebugJavaResource UP-TO-DATE
+> Task :embedder-service:syncDebugLibJars UP-TO-DATE
+> Task :embedder-service:writeDebugAarMetadata UP-TO-DATE
+> Task :embedder-service:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:vault:preFossDebugBuild UP-TO-DATE
+> Task :core:vault:writeFossDebugAarMetadata UP-TO-DATE
+> Task :feature:shell:preBuild UP-TO-DATE
+> Task :feature:shell:preDebugBuild UP-TO-DATE
+> Task :feature:shell:checkDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:navigation:compileKotlin UP-TO-DATE
+> Task :core:navigation:compileJava NO-SOURCE
+> Task :core:navigation:processResources NO-SOURCE
+> Task :core:navigation:classes UP-TO-DATE
+> Task :core:navigation:jar UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:vault:generateFossDebugResources UP-TO-DATE
+> Task :core:vault:packageFossDebugResources UP-TO-DATE
+> Task :core:vault:processFossDebugNavigationResources UP-TO-DATE
+> Task :core:vault:parseFossDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateFossDebugRFile UP-TO-DATE
+> Task :core:vault:compileFossDebugKotlin
+> Task :core:vault:javaPreCompileFossDebug UP-TO-DATE
+> Task :core:vault:compileFossDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:compileDevDebugKotlin
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:mergeDevDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:vault:mergeDevDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:vault:processDevDebugJavaRes UP-TO-DATE
+> Task :core:vault:mergeDevDebugJavaResource UP-TO-DATE
+> Task :core:vault:bundleLibCompileToJarFossDebug
+> Task :feature:shell:generateDebugResources UP-TO-DATE
+> Task :feature:shell:packageDebugResources UP-TO-DATE
+> Task :feature:shell:processDebugNavigationResources UP-TO-DATE
+> Task :feature:shell:parseDebugLocalResources UP-TO-DATE
+> Task :feature:shell:generateDebugRFile UP-TO-DATE
+> Task :core:vault:syncDevDebugLibJars
+> Task :feature:shell:extractDebugAnnotations
+> Task :feature:shell:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:shell:generateDebugAssets UP-TO-DATE
+> Task :feature:shell:mergeDebugAssets UP-TO-DATE
+> Task :core:vault:bundleDevDebugLocalLintAar
+> Task :feature:shell:javaPreCompileDebug UP-TO-DATE
+> Task :feature:shell:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:shell:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:shell:processDebugManifest UP-TO-DATE
+> Task :feature:shell:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:preBuild UP-TO-DATE
+> Task :feature:settings:preDebugBuild UP-TO-DATE
+> Task :feature:settings:checkDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:generateDebugResources UP-TO-DATE
+> Task :feature:settings:packageDebugResources UP-TO-DATE
+> Task :feature:settings:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:parseDebugLocalResources UP-TO-DATE
+> Task :feature:settings:generateDebugRFile UP-TO-DATE
+> Task :feature:settings:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:settings:generateDebugAssets UP-TO-DATE
+> Task :feature:settings:mergeDebugAssets UP-TO-DATE
+> Task :feature:settings:javaPreCompileDebug UP-TO-DATE
+> Task :feature:settings:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:settings:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:settings:processDebugManifest UP-TO-DATE
+> Task :feature:settings:writeDebugAarMetadata UP-TO-DATE
+> Task :core:export:preBuild UP-TO-DATE
+> Task :core:export:preDebugBuild UP-TO-DATE
+> Task :core:export:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:editor:preBuild UP-TO-DATE
+> Task :feature:editor:preDebugBuild UP-TO-DATE
+> Task :feature:timeline:preBuild UP-TO-DATE
+> Task :feature:timeline:preDebugBuild UP-TO-DATE
+> Task :feature:timeline:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:editor:checkDebugAarMetadata UP-TO-DATE
+> Task :core:export:generateDebugResources UP-TO-DATE
+> Task :core:export:packageDebugResources UP-TO-DATE
+> Task :core:export:processDebugNavigationResources UP-TO-DATE
+> Task :core:export:parseDebugLocalResources UP-TO-DATE
+> Task :core:export:generateDebugRFile UP-TO-DATE
+> Task :core:export:compileDebugKotlin
+> Task :core:export:javaPreCompileDebug UP-TO-DATE
+> Task :core:export:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:export:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:editor:generateDebugResources UP-TO-DATE
+> Task :feature:editor:packageDebugResources UP-TO-DATE
+> Task :feature:editor:processDebugNavigationResources UP-TO-DATE
+> Task :feature:editor:parseDebugLocalResources UP-TO-DATE
+> Task :feature:editor:generateDebugRFile UP-TO-DATE
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:compileKotlin UP-TO-DATE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar UP-TO-DATE
+> Task :feature:timeline:generateDebugResources UP-TO-DATE
+> Task :feature:timeline:packageDebugResources UP-TO-DATE
+> Task :feature:timeline:processDebugNavigationResources UP-TO-DATE
+> Task :feature:timeline:parseDebugLocalResources UP-TO-DATE
+> Task :feature:timeline:generateDebugRFile UP-TO-DATE
+> Task :feature:timeline:compileDebugKotlin UP-TO-DATE
+> Task :feature:timeline:javaPreCompileDebug UP-TO-DATE
+> Task :feature:timeline:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:timeline:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:editor:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:editor:generateDebugAssets UP-TO-DATE
+> Task :feature:editor:mergeDebugAssets UP-TO-DATE
+> Task :feature:editor:javaPreCompileDebug UP-TO-DATE
+> Task :feature:editor:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:editor:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:editor:processDebugManifest UP-TO-DATE
+> Task :feature:editor:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:timeline:checkDebugAarMetadata UP-TO-DATE
+> Task :feature:timeline:extractDebugAnnotations UP-TO-DATE
+> Task :feature:timeline:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:timeline:generateDebugAssets UP-TO-DATE
+> Task :feature:timeline:mergeDebugAssets UP-TO-DATE
+> Task :feature:timeline:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:timeline:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:timeline:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:timeline:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:timeline:processDebugManifest UP-TO-DATE
+> Task :feature:timeline:processDebugJavaRes UP-TO-DATE
+> Task :feature:timeline:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:timeline:syncDebugLibJars UP-TO-DATE
+> Task :feature:timeline:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:graph:preBuild UP-TO-DATE
+> Task :feature:graph:preDebugBuild UP-TO-DATE
+> Task :feature:graph:checkDebugAarMetadata UP-TO-DATE
+> Task :feature:graph:generateDebugResources UP-TO-DATE
+> Task :feature:graph:packageDebugResources UP-TO-DATE
+> Task :feature:graph:processDebugNavigationResources UP-TO-DATE
+> Task :feature:graph:parseDebugLocalResources UP-TO-DATE
+> Task :feature:graph:generateDebugRFile UP-TO-DATE
+> Task :feature:graph:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:shell:compileDebugKotlin
+> Task :feature:graph:generateDebugAssets UP-TO-DATE
+> Task :feature:shell:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:shell:processDebugJavaRes UP-TO-DATE
+> Task :feature:shell:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:shell:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:shell:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:shell:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:shell:syncDebugLibJars UP-TO-DATE
+> Task :feature:shell:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:settings:extractDebugAnnotations
+> Task :feature:editor:extractDebugAnnotations
+> Task :feature:settings:compileDebugKotlin
+> Task :feature:settings:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:settings:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:settings:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:settings:processDebugJavaRes UP-TO-DATE
+> Task :feature:settings:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:settings:syncDebugLibJars UP-TO-DATE
+> Task :feature:settings:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:graph:extractDebugAnnotations UP-TO-DATE
+> Task :feature:graph:mergeDebugAssets UP-TO-DATE
+> Task :feature:graph:compileDebugKotlin UP-TO-DATE
+> Task :feature:graph:javaPreCompileDebug UP-TO-DATE
+> Task :feature:graph:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:graph:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:graph:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:graph:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:graph:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:graph:processDebugManifest UP-TO-DATE
+> Task :feature:graph:processDebugJavaRes UP-TO-DATE
+> Task :feature:graph:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:graph:syncDebugLibJars UP-TO-DATE
+> Task :feature:graph:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:graph:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:chat:preBuild UP-TO-DATE
+> Task :feature:chat:preDebugBuild UP-TO-DATE
+> Task :feature:chat:checkDebugAarMetadata UP-TO-DATE
+> Task :core:rag:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:chat:generateDebugResources UP-TO-DATE
+> Task :feature:chat:packageDebugResources UP-TO-DATE
+> Task :feature:chat:processDebugNavigationResources UP-TO-DATE
+> Task :feature:chat:parseDebugLocalResources UP-TO-DATE
+> Task :feature:chat:generateDebugRFile UP-TO-DATE
+> Task :feature:chat:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:chat:generateDebugAssets UP-TO-DATE
+> Task :feature:chat:mergeDebugAssets UP-TO-DATE
+> Task :feature:chat:javaPreCompileDebug UP-TO-DATE
+> Task :feature:chat:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:editor:compileDebugKotlin
+> Task :feature:chat:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:editor:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:editor:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:editor:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:editor:processDebugJavaRes UP-TO-DATE
+> Task :feature:editor:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:editor:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:editor:syncDebugLibJars UP-TO-DATE
+> Task :feature:editor:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:chat:extractDebugAnnotations UP-TO-DATE
+> Task :feature:chat:processDebugManifest UP-TO-DATE
+> Task :feature:chat:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:models:preBuild UP-TO-DATE
+> Task :feature:models:preDebugBuild UP-TO-DATE
+> Task :feature:models:checkDebugAarMetadata UP-TO-DATE
+> Task :feature:models:generateDebugResources UP-TO-DATE
+> Task :feature:models:packageDebugResources UP-TO-DATE
+> Task :feature:models:processDebugNavigationResources UP-TO-DATE
+> Task :feature:models:parseDebugLocalResources UP-TO-DATE
+> Task :feature:models:generateDebugRFile UP-TO-DATE
+> Task :feature:models:extractDebugAnnotations UP-TO-DATE
+> Task :feature:models:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:models:generateDebugAssets UP-TO-DATE
+> Task :feature:models:mergeDebugAssets UP-TO-DATE
+> Task :feature:chat:compileDebugKotlin UP-TO-DATE
+> Task :feature:chat:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:chat:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:chat:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:chat:processDebugJavaRes UP-TO-DATE
+> Task :feature:chat:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:chat:syncDebugLibJars UP-TO-DATE
+> Task :feature:chat:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:models:compileDebugKotlin UP-TO-DATE
+> Task :feature:models:javaPreCompileDebug UP-TO-DATE
+> Task :feature:models:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:models:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:models:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:models:processDebugManifest UP-TO-DATE
+> Task :feature:models:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:models:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:models:processDebugJavaRes UP-TO-DATE
+> Task :feature:models:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:models:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:models:syncDebugLibJars UP-TO-DATE
+> Task :feature:models:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:export:checkDebugAarMetadata UP-TO-DATE
+> Task :core:export:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:export:generateDebugAssets UP-TO-DATE
+> Task :core:export:mergeDebugAssets UP-TO-DATE
+> Task :core:export:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:export:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:export:prepareDebugArtProfile UP-TO-DATE
+> Task :core:export:prepareLintJarForPublish UP-TO-DATE
+> Task :core:export:processDebugManifest UP-TO-DATE
+> Task :core:export:processDebugJavaRes UP-TO-DATE
+> Task :core:export:extractDebugAnnotations
+> Task :core:export:mergeDebugJavaResource UP-TO-DATE
+> Task :core:export:syncDebugLibJars UP-TO-DATE
+> Task :core:export:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:designsystem:extractDebugAnnotations UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:designsystem:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:designsystem:prepareDebugArtProfile UP-TO-DATE
+> Task :core:designsystem:prepareLintJarForPublish UP-TO-DATE
+> Task :core:designsystem:checkDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :core:designsystem:mergeDebugJavaResource UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:generateDevDebugBuildConfig UP-TO-DATE
+> Task :core:designsystem:syncDebugLibJars UP-TO-DATE
+> Task :core:designsystem:bundleDebugLocalLintAar UP-TO-DATE
+> Task :app:generateDevDebugResources UP-TO-DATE
+> Task :app:packageDevDebugResources UP-TO-DATE
+> Task :embedder-service:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :inference-service:bundleLibCompileToJarDevDebug UP-TO-DATE
+> Task :core:inference:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:vault:bundleLibCompileToJarDevDebug
+> Task :feature:chat:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:graph:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:models:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:settings:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:javaPreCompileDevDebug UP-TO-DATE
+> Task :app:checkDevDebugAarMetadata UP-TO-DATE
+> Task :app:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :app:processDevDebugNavigationResources UP-TO-DATE
+> Task :app:parseDevDebugLocalResources UP-TO-DATE
+> Task :app:generateDevDebugRFile UP-TO-DATE
+> Task :app:mergeDevDebugResources UP-TO-DATE
+> Task :app:compileDevDebugNavigationResources UP-TO-DATE
+> Task :app:createDevDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDevDebug UP-TO-DATE
+> Task :embedder-service:extractDeepLinksDebug UP-TO-DATE
+> Task :inference-service:extractDeepLinksDevDebug UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:export:extractDeepLinksDebug UP-TO-DATE
+> Task :core:inference:extractDeepLinksDebug UP-TO-DATE
+> Task :core:ipc:extractDeepLinksDebug UP-TO-DATE
+> Task :core:rag:extractDeepLinksDebug UP-TO-DATE
+> Task :core:security:extractDeepLinksDebug UP-TO-DATE
+> Task :core:security:processDebugManifest UP-TO-DATE
+> Task :core:vault:extractDeepLinksDevDebug UP-TO-DATE
+> Task :feature:chat:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:editor:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:graph:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:models:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:settings:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:shell:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:timeline:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDevDebugMainManifest UP-TO-DATE
+> Task :app:processDevDebugManifest UP-TO-DATE
+> Task :app:processDevDebugManifestForPackage UP-TO-DATE
+> Task :embedder-service:mapDebugSourceSetPaths UP-TO-DATE
+> Task :embedder-service:compileDebugLibraryResources UP-TO-DATE
+> Task :inference-service:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :inference-service:compileDevDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:export:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:export:compileDebugLibraryResources UP-TO-DATE
+> Task :core:inference:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:inference:compileDebugLibraryResources UP-TO-DATE
+> Task :core:ipc:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:ipc:compileDebugLibraryResources UP-TO-DATE
+> Task :core:rag:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:rag:compileDebugLibraryResources UP-TO-DATE
+> Task :core:security:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:security:compileDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileDevDebugLibraryResources UP-TO-DATE
+> Task :feature:chat:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:chat:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:editor:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:editor:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:graph:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:graph:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:models:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:models:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:settings:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:settings:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:shell:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:shell:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:timeline:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:timeline:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processDevDebugResources UP-TO-DATE
+> Task :app:preDevDebugAndroidTestBuild SKIPPED
+> Task :embedder-service:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :embedder-service:createFullJarDebug UP-TO-DATE
+> Task :embedder-service:writeDebugLintModelMetadata UP-TO-DATE
+> Task :inference-service:bundleLibRuntimeToJarDevDebug UP-TO-DATE
+> Task :inference-service:createFullJarDevDebug UP-TO-DATE
+> Task :inference-service:writeDevDebugLintModelMetadata UP-TO-DATE
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing:compileKotlin UP-TO-DATE
+> Task :app:compileDevDebugKotlin
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:processResources UP-TO-DATE
+> Task :testing:classes UP-TO-DATE
+> Task :testing:jar UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:createFullJarDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:export:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:export:createFullJarDebug UP-TO-DATE
+> Task :core:export:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:inference:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:inference:createFullJarDebug UP-TO-DATE
+> Task :core:inference:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:ipc:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ipc:createFullJarDebug UP-TO-DATE
+> Task :core:ipc:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:rag:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:rag:createFullJarDebug UP-TO-DATE
+> Task :core:rag:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:vault:bundleLibRuntimeToJarDevDebug
+> Task :core:vault:createFullJarDevDebug
+> Task :core:vault:writeDevDebugLintModelMetadata UP-TO-DATE
+> Task :feature:chat:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:chat:createFullJarDebug UP-TO-DATE
+> Task :feature:chat:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:editor:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:editor:createFullJarDebug UP-TO-DATE
+> Task :feature:editor:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:graph:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:graph:createFullJarDebug UP-TO-DATE
+> Task :feature:graph:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:models:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:models:createFullJarDebug UP-TO-DATE
+> Task :feature:models:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:settings:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:settings:createFullJarDebug UP-TO-DATE
+> Task :feature:settings:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:shell:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:shell:createFullJarDebug UP-TO-DATE
+> Task :feature:shell:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:timeline:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:timeline:createFullJarDebug UP-TO-DATE
+> Task :feature:timeline:writeDebugLintModelMetadata UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :embedder-service:extractProguardFiles UP-TO-DATE
+> Task :core:ipc:extractProguardFiles UP-TO-DATE
+> Task :core:ipc:generateDebugLintModel UP-TO-DATE
+> Task :embedder-service:generateDebugLintModel UP-TO-DATE
+> Task :inference-service:extractProguardFiles UP-TO-DATE
+> Task :inference-service:generateDevDebugLintModel UP-TO-DATE
+> Task :core:designsystem:extractProguardFiles UP-TO-DATE
+> Task :core:designsystem:generateDebugLintModel UP-TO-DATE
+> Task :core:export:extractProguardFiles UP-TO-DATE
+> Task :core:vault:bundleLibRuntimeToJarFossDebug
+> Task :core:vault:processFossDebugJavaRes UP-TO-DATE
+> Task :core:vault:createFullJarFossDebug
+> Task :core:vault:extractProguardFiles UP-TO-DATE
+> Task :core:vault:processFossDebugManifest UP-TO-DATE
+> Task :app:compileDevDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDevDebugClassesToCompileJar UP-TO-DATE
+> Task :core:vault:generateFossDebugLintModel
+> Task :core:export:generateDebugLintModel
+> Task :core:inference:extractProguardFiles UP-TO-DATE
+> Task :core:inference:generateDebugLintModel UP-TO-DATE
+> Task :core:rag:extractProguardFiles UP-TO-DATE
+> Task :core:security:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:security:processDebugJavaRes UP-TO-DATE
+> Task :core:security:createFullJarDebug UP-TO-DATE
+> Task :core:security:extractProguardFiles UP-TO-DATE
+> Task :app:generateDevDebugAndroidTestLintModel
+> Task :core:security:prepareLintJarForPublish UP-TO-DATE
+> Task :core:security:generateDebugLintModel UP-TO-DATE
+> Task :core:rag:generateDebugLintModel UP-TO-DATE
+> Task :feature:chat:extractProguardFiles UP-TO-DATE
+> Task :feature:editor:extractProguardFiles UP-TO-DATE
+> Task :feature:shell:extractProguardFiles UP-TO-DATE
+> Task :core:vault:generateDevDebugLintModel
+> Task :feature:timeline:extractProguardFiles UP-TO-DATE
+> Task :feature:timeline:generateDebugLintModel UP-TO-DATE
+> Task :feature:graph:extractProguardFiles UP-TO-DATE
+> Task :feature:models:extractProguardFiles UP-TO-DATE
+> Task :feature:settings:extractProguardFiles UP-TO-DATE
+> Task :core:security:checkDebugAarMetadata UP-TO-DATE
+> Task :core:security:extractDebugAnnotations UP-TO-DATE
+> Task :core:security:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:security:generateDebugAssets UP-TO-DATE
+> Task :core:security:mergeDebugAssets UP-TO-DATE
+> Task :core:security:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:security:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:security:prepareDebugArtProfile UP-TO-DATE
+> Task :core:security:mergeDebugJavaResource UP-TO-DATE
+> Task :core:security:syncDebugLibJars UP-TO-DATE
+> Task :core:security:bundleDebugLocalLintAar UP-TO-DATE
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :feature:shell:generateDebugLintModel
+> Task :core:security:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:editor:generateDebugLintModel
+> Task :feature:graph:generateDebugLintModel
+> Task :feature:models:generateDebugLintModel
+> Task :feature:chat:generateDebugLintModel
+> Task :feature:settings:generateDebugLintModel
+> Task :app:generateDevDebugLintReportModel
+> Task :core:ipc:lintAnalyzeDebug UP-TO-DATE
+> Task :app:generateDevDebugUnitTestLintModel
+> Task :embedder-service:lintAnalyzeDebug UP-TO-DATE
+> Task :inference-service:lintAnalyzeDevDebug UP-TO-DATE
+> Task :core:vault:checkFossDebugAarMetadata UP-TO-DATE
+> Task :core:vault:extractDeepLinksForAarFossDebug UP-TO-DATE
+> Task :core:designsystem:lintAnalyzeDebug UP-TO-DATE
+> Task :core:vault:generateFossDebugAssets UP-TO-DATE
+> Task :core:vault:mergeFossDebugAssets UP-TO-DATE
+> Task :core:vault:mergeFossDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:vault:mergeFossDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:vault:prepareFossDebugArtProfile UP-TO-DATE
+> Task :core:vault:mergeFossDebugJavaResource UP-TO-DATE
+> Task :core:vault:extractFossDebugAnnotations FROM-CACHE
+> Task :core:vault:syncFossDebugLibJars
+> Task :core:vault:bundleFossDebugLocalLintAar
+> Task :core:vault:writeFossDebugLintModelMetadata UP-TO-DATE
+> Task :core:inference:lintAnalyzeDebug UP-TO-DATE
+> Task :core:security:lintAnalyzeDebug UP-TO-DATE
+> Task :core:rag:lintAnalyzeDebug UP-TO-DATE
+> Task :core:vault:lintAnalyzeDevDebug
+> Task :core:vault:lintAnalyzeFossDebug
+> Task :core:export:lintAnalyzeDebug
+> Task :feature:timeline:lintAnalyzeDebug UP-TO-DATE
+> Task :app:lintAnalyzeDevDebugAndroidTest
+> Task :feature:shell:lintAnalyzeDebug
+> Task :app:lintAnalyzeDevDebugUnitTest
+> Task :feature:graph:lintAnalyzeDebug
+> Task :feature:editor:lintAnalyzeDebug
+> Task :feature:models:lintAnalyzeDebug
+> Task :feature:settings:lintAnalyzeDebug
+> Task :embedder-service:preDebugAndroidTestBuild UP-TO-DATE
+> Task :embedder-service:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :embedder-service:preDebugUnitTestBuild UP-TO-DATE
+> Task :embedder-service:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :embedder-service:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :embedder-service:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :inference-service:preDevDebugAndroidTestBuild UP-TO-DATE
+> Task :inference-service:generateDevDebugAndroidTestLintModel UP-TO-DATE
+> Task :inference-service:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :inference-service:generateDevDebugUnitTestLintModel UP-TO-DATE
+> Task :inference-service:lintAnalyzeDevDebugAndroidTest UP-TO-DATE
+> Task :inference-service:lintAnalyzeDevDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:preDebugAndroidTestBuild UP-TO-DATE
+> Task :core:designsystem:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :testing-ui:preBuild UP-TO-DATE
+> Task :testing-ui:preDebugBuild UP-TO-DATE
+> Task :testing-ui:checkDebugAarMetadata UP-TO-DATE
+> Task :testing-ui:generateDebugResources UP-TO-DATE
+> Task :testing-ui:packageDebugResources UP-TO-DATE
+> Task :testing-ui:processDebugNavigationResources UP-TO-DATE
+> Task :testing-ui:parseDebugLocalResources UP-TO-DATE
+> Task :testing-ui:generateDebugRFile UP-TO-DATE
+> Task :testing-ui:extractDebugAnnotations UP-TO-DATE
+> Task :testing-ui:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :testing-ui:generateDebugAssets UP-TO-DATE
+> Task :testing-ui:mergeDebugAssets UP-TO-DATE
+> Task :testing-ui:compileDebugKotlin UP-TO-DATE
+> Task :testing-ui:javaPreCompileDebug UP-TO-DATE
+> Task :testing-ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :testing-ui:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :testing-ui:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :testing-ui:prepareDebugArtProfile UP-TO-DATE
+> Task :testing-ui:prepareLintJarForPublish UP-TO-DATE
+> Task :testing-ui:processDebugManifest UP-TO-DATE
+> Task :testing-ui:processDebugJavaRes UP-TO-DATE
+> Task :testing-ui:mergeDebugJavaResource UP-TO-DATE
+> Task :testing-ui:syncDebugLibJars UP-TO-DATE
+> Task :testing-ui:writeDebugAarMetadata UP-TO-DATE
+> Task :testing-ui:bundleDebugLocalLintAar UP-TO-DATE
+> Task :testing-ui:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :testing-ui:createFullJarDebug UP-TO-DATE
+> Task :testing-ui:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:designsystem:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :core:designsystem:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :core:designsystem:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :core:export:preDebugAndroidTestBuild UP-TO-DATE
+> Task :core:export:generateDebugAndroidTestLintModel
+> Task :core:export:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:export:generateDebugUnitTestLintModel
+> Task :core:export:lintAnalyzeDebugAndroidTest
+> Task :core:export:lintAnalyzeDebugUnitTest
+> Task :core:inference:preDebugAndroidTestBuild UP-TO-DATE
+> Task :core:inference:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :core:inference:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:inference:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :core:inference:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :core:inference:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :core:ipc:preDebugAndroidTestBuild UP-TO-DATE
+> Task :core:ipc:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :core:ipc:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:ipc:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :core:ipc:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :core:ipc:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :core:rag:preDebugAndroidTestBuild UP-TO-DATE
+> Task :core:rag:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :core:rag:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:rag:generateDebugUnitTestLintModel
+> Task :core:rag:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :feature:chat:lintAnalyzeDebug
+> Task :core:rag:lintAnalyzeDebugUnitTest
+> Task :core:security:preDebugAndroidTestBuild UP-TO-DATE
+> Task :core:security:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :core:security:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:security:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :core:security:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :core:security:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :core:vault:preDevDebugAndroidTestBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugAndroidTestLintModel
+> Task :core:vault:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestLintModel
+> Task :app:lintAnalyzeDevDebug
+> Task :core:vault:lintAnalyzeDevDebugAndroidTest
+> Task :feature:chat:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:chat:generateDebugAndroidTestLintModel
+> Task :feature:chat:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:chat:generateDebugUnitTestLintModel
+> Task :feature:chat:lintAnalyzeDebugAndroidTest
+> Task :feature:chat:lintAnalyzeDebugUnitTest
+> Task :feature:editor:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:editor:generateDebugAndroidTestLintModel
+> Task :feature:editor:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:editor:generateDebugUnitTestLintModel
+> Task :feature:editor:lintAnalyzeDebugAndroidTest
+> Task :core:vault:lintAnalyzeDevDebugUnitTest
+> Task :feature:graph:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:graph:generateDebugAndroidTestLintModel
+> Task :feature:graph:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:graph:generateDebugUnitTestLintModel
+> Task :feature:graph:lintAnalyzeDebugAndroidTest
+> Task :feature:graph:lintAnalyzeDebugUnitTest
+> Task :feature:models:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:models:generateDebugAndroidTestLintModel
+> Task :feature:models:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:models:generateDebugUnitTestLintModel
+> Task :feature:models:lintAnalyzeDebugAndroidTest
+> Task :feature:editor:lintAnalyzeDebugUnitTest
+> Task :feature:settings:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:settings:generateDebugAndroidTestLintModel
+> Task :feature:settings:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:settings:generateDebugUnitTestLintModel
+> Task :feature:models:lintAnalyzeDebugUnitTest
+> Task :feature:settings:lintAnalyzeDebugAndroidTest
+> Task :feature:shell:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:shell:generateDebugAndroidTestLintModel
+> Task :feature:shell:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:shell:generateDebugUnitTestLintModel
+> Task :feature:shell:lintAnalyzeDebugAndroidTest
+> Task :feature:settings:lintAnalyzeDebugUnitTest
+> Task :feature:timeline:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:timeline:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :feature:timeline:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:timeline:generateDebugUnitTestLintModel
+> Task :feature:timeline:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :feature:timeline:lintAnalyzeDebugUnitTest
+> Task :embedder-service:generateDebugLintReportModel UP-TO-DATE
+> Task :embedder-service:lintReportDebug UP-TO-DATE
+> Task :embedder-service:lintDebug
+> Task :embedder-service:lint
+> Task :inference-service:generateDevDebugLintReportModel UP-TO-DATE
+> Task :inference-service:lintReportDevDebug UP-TO-DATE
+> Task :inference-service:lintDevDebug
+> Task :inference-service:lint
+> Task :testing-ui:preDebugAndroidTestBuild UP-TO-DATE
+> Task :testing-ui:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :testing-ui:extractProguardFiles UP-TO-DATE
+> Task :testing-ui:generateDebugLintReportModel UP-TO-DATE
+> Task :testing-ui:preDebugUnitTestBuild UP-TO-DATE
+> Task :testing-ui:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :testing-ui:lintAnalyzeDebug UP-TO-DATE
+> Task :testing-ui:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :testing-ui:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :testing-ui:lintReportDebug UP-TO-DATE
+> Task :testing-ui:lintDebug
+> Task :testing-ui:lint
+> Task :core:designsystem:generateDebugLintReportModel UP-TO-DATE
+> Task :core:designsystem:lintReportDebug UP-TO-DATE
+> Task :core:designsystem:lintDebug
+> Task :core:designsystem:lint
+> Task :core:export:generateDebugLintReportModel
+> Task :core:vault:preFossDebugAndroidTestBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugAndroidTestLintModel
+> Task :core:vault:preFossDebugUnitTestBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugUnitTestLintModel
+> Task :feature:shell:lintAnalyzeDebugUnitTest
+
+> Task :app:lintReportDevDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/app/build/reports/lint-results-devDebug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/app/build/reports/lint-results-devDebug.sarif
+
+> Task :app:lintDevDebug
+> Task :app:lint
+> Task :core:vault:lintAnalyzeFossDebugAndroidTest
+> Task :core:inference:generateDebugLintReportModel UP-TO-DATE
+> Task :core:inference:lintReportDebug UP-TO-DATE
+> Task :core:inference:lintDebug
+> Task :core:inference:lint
+> Task :core:ipc:generateDebugLintReportModel UP-TO-DATE
+> Task :core:ipc:lintReportDebug UP-TO-DATE
+> Task :core:ipc:lintDebug
+> Task :core:ipc:lint
+> Task :core:rag:generateDebugLintReportModel UP-TO-DATE
+> Task :core:rag:lintReportDebug
+> Task :core:rag:lintDebug
+> Task :core:rag:lint
+> Task :core:security:generateDebugLintReportModel UP-TO-DATE
+> Task :core:security:lintReportDebug UP-TO-DATE
+> Task :core:security:lintDebug
+> Task :core:security:lint
+> Task :core:vault:generateDevDebugLintReportModel
+
+> Task :core:vault:lintReportDevDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/build/reports/lint-results-devDebug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/build/reports/lint-results-devDebug.sarif
+
+> Task :core:vault:lintDevDebug
+> Task :core:vault:lint
+> Task :feature:chat:generateDebugLintReportModel
+> Task :feature:editor:generateDebugLintReportModel
+> Task :feature:graph:generateDebugLintReportModel
+> Task :feature:models:generateDebugLintReportModel
+> Task :feature:onboarding:preBuild UP-TO-DATE
+> Task :feature:onboarding:preDebugBuild UP-TO-DATE
+> Task :feature:onboarding:checkDebugAarMetadata UP-TO-DATE
+> Task :feature:onboarding:generateDebugResources UP-TO-DATE
+> Task :feature:onboarding:packageDebugResources UP-TO-DATE
+> Task :feature:onboarding:processDebugNavigationResources UP-TO-DATE
+> Task :feature:onboarding:parseDebugLocalResources UP-TO-DATE
+> Task :feature:onboarding:generateDebugRFile UP-TO-DATE
+> Task :feature:onboarding:extractDebugAnnotations UP-TO-DATE
+> Task :feature:onboarding:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:onboarding:generateDebugAssets UP-TO-DATE
+> Task :feature:onboarding:mergeDebugAssets UP-TO-DATE
+> Task :feature:onboarding:compileDebugKotlin UP-TO-DATE
+> Task :feature:onboarding:javaPreCompileDebug UP-TO-DATE
+> Task :feature:onboarding:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:onboarding:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:onboarding:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:onboarding:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:onboarding:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:onboarding:processDebugManifest UP-TO-DATE
+> Task :feature:onboarding:processDebugJavaRes UP-TO-DATE
+> Task :feature:onboarding:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:onboarding:syncDebugLibJars UP-TO-DATE
+> Task :feature:onboarding:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:onboarding:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:onboarding:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:onboarding:createFullJarDebug UP-TO-DATE
+> Task :feature:onboarding:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:onboarding:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:onboarding:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :feature:onboarding:extractProguardFiles UP-TO-DATE
+> Task :feature:onboarding:generateDebugLintReportModel UP-TO-DATE
+> Task :feature:onboarding:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:onboarding:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :feature:onboarding:lintAnalyzeDebug UP-TO-DATE
+> Task :feature:onboarding:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :feature:onboarding:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :feature:onboarding:lintReportDebug UP-TO-DATE
+> Task :feature:onboarding:lintDebug
+> Task :feature:onboarding:lint
+> Task :feature:personas:preBuild UP-TO-DATE
+> Task :feature:personas:preDebugBuild UP-TO-DATE
+> Task :feature:personas:checkDebugAarMetadata UP-TO-DATE
+> Task :feature:personas:generateDebugResources UP-TO-DATE
+> Task :feature:personas:packageDebugResources UP-TO-DATE
+> Task :feature:personas:processDebugNavigationResources UP-TO-DATE
+> Task :feature:personas:parseDebugLocalResources UP-TO-DATE
+> Task :feature:personas:generateDebugRFile UP-TO-DATE
+> Task :feature:personas:extractDebugAnnotations UP-TO-DATE
+> Task :feature:personas:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:personas:generateDebugAssets UP-TO-DATE
+> Task :feature:personas:mergeDebugAssets UP-TO-DATE
+> Task :feature:personas:compileDebugKotlin UP-TO-DATE
+> Task :feature:personas:javaPreCompileDebug UP-TO-DATE
+> Task :feature:personas:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:personas:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:personas:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:personas:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:personas:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:personas:processDebugManifest UP-TO-DATE
+> Task :feature:personas:processDebugJavaRes UP-TO-DATE
+> Task :feature:personas:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:personas:syncDebugLibJars UP-TO-DATE
+> Task :feature:personas:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:personas:bundleDebugLocalLintAar UP-TO-DATE
+> Task :feature:personas:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:personas:createFullJarDebug UP-TO-DATE
+> Task :feature:personas:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:personas:writeDebugLintModelMetadata UP-TO-DATE
+> Task :feature:personas:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :feature:personas:extractProguardFiles UP-TO-DATE
+> Task :feature:personas:generateDebugLintReportModel UP-TO-DATE
+> Task :feature:personas:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:personas:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :feature:personas:lintAnalyzeDebug UP-TO-DATE
+> Task :feature:personas:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :feature:personas:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :feature:personas:lintReportDebug UP-TO-DATE
+> Task :feature:personas:lintDebug
+> Task :feature:personas:lint
+> Task :feature:settings:generateDebugLintReportModel
+> Task :feature:shell:generateDebugLintReportModel
+> Task :feature:timeline:generateDebugLintReportModel UP-TO-DATE
+> Task :feature:timeline:lintReportDebug
+> Task :feature:timeline:lintDebug
+> Task :feature:timeline:lint
+> Task :check UP-TO-DATE
+> Task :app:checkDependencyGuardsDevDebugAndroidTestRuntimeClasspath
+> Task :app:checkDependencyGuardsDevDebugRuntimeClasspath
+> Task :app:checkDependencyGuardsDevDebugUnitTestRuntimeClasspath
+> Task :app:checkDependencyGuardsDevReleaseRuntimeClasspath
+> Task :app:checkDependencyGuardsFossDebugAndroidTestRuntimeClasspath
+> Task :app:checkDependencyGuardsFossDebugRuntimeClasspath
+> Task :app:checkDependencyGuardsFossDebugUnitTestRuntimeClasspath
+> Task :app:checkDependencyGuardsFossReleaseRuntimeClasspath
+> Task :app:checkDependencyGuards
+> Task :app:checkManifestGuardsDevDebug
+> Task :app:preDevReleaseBuild UP-TO-DATE
+> Task :app:extractDeepLinksDevRelease UP-TO-DATE
+> Task :embedder-service:preReleaseBuild UP-TO-DATE
+> Task :embedder-service:extractDeepLinksRelease UP-TO-DATE
+> Task :embedder-service:processReleaseManifest UP-TO-DATE
+> Task :inference-service:preDevReleaseBuild UP-TO-DATE
+> Task :inference-service:extractDeepLinksDevRelease UP-TO-DATE
+> Task :inference-service:processDevReleaseManifest UP-TO-DATE
+> Task :core:designsystem:preReleaseBuild UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksRelease UP-TO-DATE
+> Task :core:designsystem:processReleaseManifest UP-TO-DATE
+> Task :core:export:preReleaseBuild UP-TO-DATE
+> Task :core:export:extractDeepLinksRelease UP-TO-DATE
+> Task :core:export:processReleaseManifest UP-TO-DATE
+> Task :core:inference:preReleaseBuild UP-TO-DATE
+> Task :core:inference:extractDeepLinksRelease UP-TO-DATE
+> Task :core:inference:processReleaseManifest UP-TO-DATE
+> Task :core:ipc:preReleaseBuild UP-TO-DATE
+> Task :core:ipc:extractDeepLinksRelease UP-TO-DATE
+> Task :core:ipc:processReleaseManifest UP-TO-DATE
+> Task :core:rag:preReleaseBuild UP-TO-DATE
+> Task :core:rag:extractDeepLinksRelease UP-TO-DATE
+> Task :core:rag:processReleaseManifest UP-TO-DATE
+> Task :core:security:preReleaseBuild UP-TO-DATE
+> Task :core:security:extractDeepLinksRelease UP-TO-DATE
+> Task :core:security:processReleaseManifest UP-TO-DATE
+> Task :core:vault:preDevReleaseBuild UP-TO-DATE
+> Task :core:vault:extractDeepLinksDevRelease UP-TO-DATE
+> Task :core:vault:processDevReleaseManifest UP-TO-DATE
+> Task :feature:chat:preReleaseBuild UP-TO-DATE
+> Task :feature:chat:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:chat:processReleaseManifest UP-TO-DATE
+> Task :feature:editor:preReleaseBuild UP-TO-DATE
+> Task :feature:editor:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:editor:processReleaseManifest UP-TO-DATE
+> Task :feature:graph:preReleaseBuild UP-TO-DATE
+> Task :feature:graph:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:graph:processReleaseManifest UP-TO-DATE
+> Task :feature:models:preReleaseBuild UP-TO-DATE
+> Task :feature:models:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:models:processReleaseManifest UP-TO-DATE
+> Task :feature:settings:preReleaseBuild UP-TO-DATE
+> Task :feature:settings:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:settings:processReleaseManifest UP-TO-DATE
+> Task :feature:shell:preReleaseBuild UP-TO-DATE
+> Task :feature:shell:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:shell:processReleaseManifest UP-TO-DATE
+> Task :feature:timeline:preReleaseBuild UP-TO-DATE
+> Task :feature:timeline:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:timeline:processReleaseManifest UP-TO-DATE
+> Task :app:processDevReleaseMainManifest UP-TO-DATE
+> Task :app:checkManifestGuardsDevRelease
+> Task :app:preFossDebugBuild UP-TO-DATE
+> Task :app:extractDeepLinksFossDebug UP-TO-DATE
+> Task :inference-service:preFossDebugBuild UP-TO-DATE
+> Task :inference-service:extractDeepLinksFossDebug UP-TO-DATE
+> Task :inference-service:processFossDebugManifest UP-TO-DATE
+> Task :core:vault:extractDeepLinksFossDebug UP-TO-DATE
+> Task :app:processFossDebugMainManifest UP-TO-DATE
+> Task :app:checkManifestGuardsFossDebug
+> Task :app:preFossReleaseBuild UP-TO-DATE
+> Task :app:extractDeepLinksFossRelease UP-TO-DATE
+> Task :inference-service:preFossReleaseBuild UP-TO-DATE
+> Task :inference-service:extractDeepLinksFossRelease UP-TO-DATE
+> Task :inference-service:processFossReleaseManifest UP-TO-DATE
+> Task :core:vault:preFossReleaseBuild UP-TO-DATE
+> Task :core:vault:extractDeepLinksFossRelease UP-TO-DATE
+> Task :core:vault:processFossReleaseManifest UP-TO-DATE
+> Task :app:processFossReleaseMainManifest UP-TO-DATE
+> Task :app:checkManifestGuardsFossRelease
+> Task :app:checkManifestGuards
+> Task :app:checkNoRawLogging
+> Task :app:checkNoTestDoublesInMain
+> Task :app:licenseAuditFossDebugRuntimeClasspath UP-TO-DATE
+> Task :app:licenseAuditFossReleaseRuntimeClasspath UP-TO-DATE
+> Task :app:licenseAudit UP-TO-DATE
+> Task :app:bundleDevDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:compileDevDebugUnitTestKotlin
+> Task :app:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :app:mergeDevDebugAssets UP-TO-DATE
+> Task :app:packageDevDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:mergeDevDebugUnitTestManifest UP-TO-DATE
+> Task :app:processDevDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateDevDebugUnitTestConfig UP-TO-DATE
+> Task :app:processDevDebugJavaRes UP-TO-DATE
+> Task :app:processDevDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:vault:lintAnalyzeFossDebugUnitTest
+
+> Task :core:export:lintReportDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/export/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/export/build/reports/lint-results-debug.sarif
+
+> Task :core:export:lintDebug
+> Task :core:export:lint
+
+> Task :feature:chat:lintReportDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/chat/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/chat/build/reports/lint-results-debug.sarif
+
+> Task :feature:chat:lintDebug
+> Task :feature:chat:lint
+
+> Task :feature:editor:lintReportDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/editor/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/editor/build/reports/lint-results-debug.sarif
+
+> Task :feature:editor:lintDebug
+> Task :feature:editor:lint
+
+> Task :feature:graph:lintReportDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/graph/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/graph/build/reports/lint-results-debug.sarif
+
+> Task :feature:graph:lintDebug
+> Task :feature:graph:lint
+
+> Task :feature:models:lintReportDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/models/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/models/build/reports/lint-results-debug.sarif
+
+> Task :feature:models:lintDebug
+> Task :feature:models:lint
+
+> Task :feature:settings:lintReportDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/settings/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/settings/build/reports/lint-results-debug.sarif
+
+> Task :feature:settings:lintDebug
+> Task :feature:settings:lint
+
+> Task :feature:shell:lintReportDebug
+Wrote HTML report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/shell/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/shell/build/reports/lint-results-debug.sarif
+
+> Task :feature:shell:lintDebug
+> Task :feature:shell:lint
+> Task :app:generateFossDebugBuildConfig UP-TO-DATE
+> Task :app:generateFossDebugResources UP-TO-DATE
+> Task :app:packageFossDebugResources UP-TO-DATE
+> Task :inference-service:processFossDebugNavigationResources UP-TO-DATE
+> Task :app:processFossDebugNavigationResources UP-TO-DATE
+> Task :app:parseFossDebugLocalResources UP-TO-DATE
+> Task :app:generateFossDebugRFile UP-TO-DATE
+> Task :inference-service:generateFossDebugBuildConfig UP-TO-DATE
+> Task :inference-service:generateFossDebugResources UP-TO-DATE
+> Task :inference-service:packageFossDebugResources UP-TO-DATE
+> Task :inference-service:parseFossDebugLocalResources UP-TO-DATE
+> Task :inference-service:generateFossDebugRFile UP-TO-DATE
+> Task :inference-service:compileFossDebugKotlin UP-TO-DATE
+> Task :inference-service:javaPreCompileFossDebug UP-TO-DATE
+> Task :inference-service:compileFossDebugJavaWithJavac UP-TO-DATE
+> Task :inference-service:bundleLibCompileToJarFossDebug UP-TO-DATE
+> Task :app:compileFossDebugKotlin
+> Task :app:javaPreCompileFossDebug UP-TO-DATE
+> Task :app:compileFossDebugJavaWithJavac UP-TO-DATE
+> Task :inference-service:writeFossDebugAarMetadata UP-TO-DATE
+> Task :app:checkFossDebugAarMetadata UP-TO-DATE
+> Task :app:mapFossDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileFossDebugNavigationResources UP-TO-DATE
+> Task :app:mergeFossDebugResources UP-TO-DATE
+> Task :app:createFossDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:processFossDebugManifest UP-TO-DATE
+> Task :app:processFossDebugManifestForPackage UP-TO-DATE
+> Task :inference-service:mapFossDebugSourceSetPaths UP-TO-DATE
+> Task :inference-service:compileFossDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapFossDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileFossDebugLibraryResources UP-TO-DATE
+> Task :app:processFossDebugResources UP-TO-DATE
+> Task :app:bundleFossDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleFossDebugClassesToCompileJar UP-TO-DATE
+> Task :app:preFossDebugUnitTestBuild UP-TO-DATE
+> Task :app:compileFossDebugUnitTestKotlin
+> Task :app:javaPreCompileFossDebugUnitTest UP-TO-DATE
+> Task :app:compileFossDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:generateFossDebugAssets UP-TO-DATE
+> Task :inference-service:generateFossDebugAssets UP-TO-DATE
+> Task :inference-service:mergeFossDebugAssets UP-TO-DATE
+> Task :app:mergeFossDebugAssets UP-TO-DATE
+> Task :app:packageFossDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:mergeFossDebugUnitTestManifest UP-TO-DATE
+> Task :app:processFossDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateFossDebugUnitTestConfig UP-TO-DATE
+> Task :app:processFossDebugJavaRes UP-TO-DATE
+> Task :app:processFossDebugUnitTestJavaRes UP-TO-DATE
+> Task :inference-service:bundleLibRuntimeToJarFossDebug UP-TO-DATE
+> Task :inference-service:processFossDebugJavaRes UP-TO-DATE
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_copy_survives_recreation_and_completion_makes_visible_Chat_ready_without_navigation17551954076979759725/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-AskPathComposeTest_importing_a_model_shows_progress_then_the_default_marker_in_models16287091545923930049/app.skein-dataDir/files/test-models/test-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_late_rescued_name_after_recreation_cannot_replace_or_dismiss_newer_import_refusal13616266293644721040/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+> Task :app:testDevDebugUnitTest
+> Task :embedder-service:checkIsolationGuards
+> Task :embedder-service:checkNoRawLogging
+> Task :embedder-service:checkNoTestDoublesInMain
+> Task :embedder-service:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :embedder-service:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :embedder-service:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :embedder-service:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :embedder-service:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :embedder-service:testDebugUnitTest UP-TO-DATE
+> Task :embedder-service:test UP-TO-DATE
+> Task :embedder-service:check
+> Task :inference-service:checkIsolationGuards
+> Task :inference-service:checkNoRawLogging
+> Task :inference-service:checkNoTestDoublesInMain
+> Task :inference-service:generateDevDebugUnitTestStubRFile UP-TO-DATE
+> Task :inference-service:compileDevDebugUnitTestKotlin UP-TO-DATE
+> Task :inference-service:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :inference-service:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :inference-service:processDevDebugUnitTestJavaRes UP-TO-DATE
+> Task :inference-service:testDevDebugUnitTest UP-TO-DATE
+> Task :inference-service:preFossDebugUnitTestBuild UP-TO-DATE
+> Task :inference-service:generateFossDebugUnitTestStubRFile UP-TO-DATE
+> Task :inference-service:compileFossDebugUnitTestKotlin UP-TO-DATE
+> Task :inference-service:javaPreCompileFossDebugUnitTest UP-TO-DATE
+> Task :inference-service:compileFossDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :inference-service:processFossDebugUnitTestJavaRes UP-TO-DATE
+> Task :inference-service:testFossDebugUnitTest UP-TO-DATE
+> Task :inference-service:test UP-TO-DATE
+> Task :inference-service:check
+> Task :testing:checkIsolationGuards
+> Task :testing:checkNoRawLogging
+> Task :testing:compileTestKotlin UP-TO-DATE
+> Task :testing:compileTestJava NO-SOURCE
+> Task :testing:processTestResources NO-SOURCE
+> Task :testing:testClasses UP-TO-DATE
+> Task :testing:test UP-TO-DATE
+> Task :testing:check
+> Task :testing-fakes:checkIsolationGuards
+> Task :testing-fakes:checkNoRawLogging
+> Task :testing-fakes:compileTestKotlin UP-TO-DATE
+> Task :testing-fakes:compileTestJava NO-SOURCE
+> Task :testing-fakes:processTestResources NO-SOURCE
+> Task :testing-fakes:testClasses UP-TO-DATE
+> Task :testing-fakes:test UP-TO-DATE
+> Task :testing-fakes:check
+> Task :testing-ui:checkNoRawLogging
+> Task :testing-ui:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :testing-ui:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :testing-ui:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :testing-ui:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :testing-ui:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :testing-ui:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :testing-ui:testDebugUnitTest UP-TO-DATE
+> Task :testing-ui:test UP-TO-DATE
+> Task :testing-ui:check
+> Task :core:agent:checkIsolationGuards
+> Task :core:agent:checkNoRawLogging
+> Task :core:agent:checkNoTestDoublesInMain
+> Task :core:agent:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:agent:compileKotlin UP-TO-DATE
+> Task :core:agent:compileJava NO-SOURCE
+> Task :core:agent:processResources NO-SOURCE
+> Task :core:agent:classes UP-TO-DATE
+> Task :core:agent:jar UP-TO-DATE
+> Task :core:agent:compileTestKotlin NO-SOURCE
+> Task :core:agent:compileTestJava NO-SOURCE
+> Task :core:agent:processTestResources NO-SOURCE
+> Task :core:agent:testClasses UP-TO-DATE
+> Task :core:agent:test NO-SOURCE
+> Task :core:agent:check
+> Task :core:designsystem:checkNoRawLogging
+> Task :core:designsystem:checkNoTestDoublesInMain
+> Task :testing-ui:mapDebugSourceSetPaths UP-TO-DATE
+> Task :testing-ui:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :testing-ui:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:designsystem:testDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:finalizeTestRoborazziDebug SKIPPED
+> Task :core:designsystem:test UP-TO-DATE
+> Task :core:designsystem:check
+> Task :core:export:checkNoRawLogging
+> Task :core:export:checkNoTestDoublesInMain
+> Task :core:export:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :core:export:compileDebugUnitTestKotlin
+> Task :core:export:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:export:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:export:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:export:testDebugUnitTest
+> Task :core:export:test
+> Task :core:export:check
+> Task :core:inference:checkNoRawLogging
+> Task :core:inference:checkNoTestDoublesInMain
+> Task :core:inference:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :core:inference:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:inference:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:inference:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:inference:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:inference:testDebugUnitTest UP-TO-DATE
+> Task :core:inference:test UP-TO-DATE
+> Task :core:inference:check
+> Task :core:ipc:checkNoRawLogging
+> Task :core:ipc:checkNoTestDoublesInMain
+> Task :core:ipc:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :core:ipc:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:ipc:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:ipc:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:ipc:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:ipc:testDebugUnitTest UP-TO-DATE
+> Task :core:ipc:test UP-TO-DATE
+> Task :core:ipc:check
+> Task :core:markdown:checkIsolationGuards
+> Task :core:markdown:checkNoRawLogging
+> Task :core:markdown:checkNoTestDoublesInMain
+> Task :core:markdown:compileTestKotlin UP-TO-DATE
+> Task :core:markdown:compileTestJava NO-SOURCE
+> Task :core:markdown:processTestResources UP-TO-DATE
+> Task :core:markdown:testClasses UP-TO-DATE
+> Task :core:markdown:test UP-TO-DATE
+> Task :core:markdown:check
+> Task :core:model:checkIsolationGuards
+> Task :core:model:checkNoRawLogging
+> Task :core:model:checkNoTestDoublesInMain
+> Task :core:model:compileTestKotlin UP-TO-DATE
+> Task :core:model:compileTestJava NO-SOURCE
+> Task :core:model:processTestResources UP-TO-DATE
+> Task :core:model:testClasses UP-TO-DATE
+> Task :core:model:test UP-TO-DATE
+> Task :core:model:check
+> Task :core:navigation:checkIsolationGuards
+> Task :core:navigation:checkNoRawLogging
+> Task :core:navigation:checkNoTestDoublesInMain
+> Task :core:navigation:compileTestKotlin UP-TO-DATE
+> Task :core:navigation:compileTestJava NO-SOURCE
+> Task :core:navigation:processTestResources NO-SOURCE
+> Task :core:navigation:testClasses UP-TO-DATE
+> Task :core:navigation:test UP-TO-DATE
+> Task :core:navigation:check
+> Task :core:rag:checkNoRawLogging
+> Task :core:rag:checkNoTestDoublesInMain
+> Task :core:rag:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :core:rag:compileDebugUnitTestKotlin
+> Task :core:rag:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:rag:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:rag:processDebugUnitTestJavaRes UP-TO-DATE
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-AskPathComposeTest_importing_a_model_shows_progress_then_the_default_marker_in_models14922870907455338720/app.skein-dataDir/files/test-models/test-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_late_rescued_name_after_recreation_cannot_replace_or_dismiss_newer_import_refusal5154823279838707466/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_copy_survives_recreation_and_completion_makes_visible_Chat_ready_without_navigation10091727433993153103/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+> Task :app:testFossDebugUnitTest
+> Task :app:test
+> Task :app:check
+> Task :core:security:checkNoRawLogging
+> Task :core:security:checkNoTestDoublesInMain
+> Task :core:security:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :core:security:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:security:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:security:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:security:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:security:testDebugUnitTest UP-TO-DATE
+> Task :core:security:test UP-TO-DATE
+> Task :core:security:check
+> Task :core:vault:checkNoRawLogging
+> Task :core:vault:checkNoTestDoublesInMain
+> Task :core:vault:checkDevDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:vault:mapDevDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:compileDevDebugUnitTestKotlin
+> Task :core:vault:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :core:vault:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:vault:generateDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:packageDevDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestConfig UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:rag:testDebugUnitTest
+> Task :core:rag:test
+> Task :core:rag:check
+> Task :core:vault:checkFossDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:vault:mapFossDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:vault:generateFossDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeFossDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeFossDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processFossDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processFossDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:compileFossDebugUnitTestKotlin
+> Task :core:vault:javaPreCompileFossDebugUnitTest UP-TO-DATE
+> Task :core:vault:compileFossDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:vault:generateFossDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:mergeFossDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:packageFossDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:vault:generateFossDebugUnitTestConfig UP-TO-DATE
+> Task :core:vault:processFossDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:vault:testDevDebugUnitTest
+> Task :core:verify:checkIsolationGuards
+> Task :core:verify:checkNoRawLogging
+> Task :core:verify:checkNoTestDoublesInMain
+> Task :core:verify:compileTestKotlin UP-TO-DATE
+> Task :core:verify:compileTestJava NO-SOURCE
+> Task :core:verify:processTestResources NO-SOURCE
+> Task :core:verify:testClasses UP-TO-DATE
+> Task :core:verify:test UP-TO-DATE
+> Task :core:verify:check
+> Task :feature:chat:checkNoRawLogging
+> Task :feature:chat:checkNoTestDoublesInMain
+> Task :feature:chat:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:chat:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:chat:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:chat:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:chat:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:chat:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:chat:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:chat:compileDebugUnitTestKotlin
+> Task :feature:chat:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:chat:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:chat:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:chat:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:chat:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:chat:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:chat:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:vault:testFossDebugUnitTest
+> Task :core:vault:test
+> Task :core:vault:check
+> Task :feature:editor:checkNoRawLogging
+> Task :feature:editor:checkNoTestDoublesInMain
+> Task :feature:editor:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:editor:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:editor:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:editor:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:editor:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:editor:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:editor:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:editor:compileDebugUnitTestKotlin
+> Task :feature:editor:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:editor:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:editor:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:editor:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:editor:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:editor:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:editor:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:editor:testDebugUnitTest
+> Task :feature:editor:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:editor:test
+> Task :feature:editor:check
+> Task :feature:graph:checkNoRawLogging
+> Task :feature:graph:checkNoTestDoublesInMain
+> Task :feature:graph:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:graph:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:graph:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:graph:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:graph:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:graph:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:graph:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:graph:compileDebugUnitTestKotlin
+> Task :feature:graph:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:graph:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:graph:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:graph:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:graph:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:graph:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:graph:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:chat:testDebugUnitTest
+> Task :feature:chat:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:chat:test
+> Task :feature:chat:check
+> Task :feature:models:checkNoRawLogging
+> Task :feature:models:checkNoTestDoublesInMain
+> Task :feature:models:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:models:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:models:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:models:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:models:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:models:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:models:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:models:compileDebugUnitTestKotlin
+> Task :feature:models:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:models:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:models:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:models:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:models:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:models:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:models:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:graph:testDebugUnitTest
+> Task :feature:graph:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:graph:test
+> Task :feature:graph:check
+> Task :feature:onboarding:checkNoRawLogging
+> Task :feature:onboarding:checkNoTestDoublesInMain
+> Task :feature:onboarding:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:onboarding:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :feature:onboarding:compileDebugUnitTestKotlin NO-SOURCE
+> Task :feature:onboarding:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:onboarding:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:onboarding:processDebugUnitTestJavaRes NO-SOURCE
+> Task :feature:onboarding:testDebugUnitTest NO-SOURCE
+> Task :feature:onboarding:test UP-TO-DATE
+> Task :feature:onboarding:check
+> Task :feature:personas:checkNoRawLogging
+> Task :feature:personas:checkNoTestDoublesInMain
+> Task :feature:personas:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:personas:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :feature:personas:compileDebugUnitTestKotlin NO-SOURCE
+> Task :feature:personas:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:personas:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:personas:processDebugUnitTestJavaRes NO-SOURCE
+> Task :feature:personas:testDebugUnitTest NO-SOURCE
+> Task :feature:personas:test UP-TO-DATE
+> Task :feature:personas:check
+> Task :feature:settings:checkNoRawLogging
+> Task :feature:settings:checkNoTestDoublesInMain
+> Task :feature:settings:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:settings:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:settings:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:settings:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:settings:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:settings:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:settings:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:settings:compileDebugUnitTestKotlin
+> Task :feature:settings:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:settings:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:settings:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:settings:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:settings:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:settings:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:settings:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:models:testDebugUnitTest
+> Task :feature:models:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:models:test
+> Task :feature:models:check
+> Task :feature:shell:checkNoRawLogging
+> Task :feature:shell:checkNoTestDoublesInMain
+> Task :feature:shell:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:shell:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:shell:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:shell:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:shell:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:shell:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:shell:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:shell:compileDebugUnitTestKotlin
+> Task :feature:shell:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:shell:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:shell:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:shell:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:shell:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:shell:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:shell:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:settings:testDebugUnitTest
+> Task :feature:settings:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:settings:test
+> Task :feature:settings:check
+> Task :feature:timeline:checkNoRawLogging
+> Task :feature:timeline:checkNoTestDoublesInMain
+> Task :feature:timeline:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:timeline:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:timeline:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:timeline:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:timeline:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:timeline:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:timeline:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:timeline:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:timeline:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:timeline:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:timeline:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:timeline:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:timeline:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:timeline:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:timeline:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:timeline:testDebugUnitTest
+> Task :feature:timeline:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:timeline:test
+> Task :feature:timeline:check
+> Task :app:mergeFossDebugNativeDebugMetadata NO-SOURCE
+> Task :app:compressFossDebugAssets UP-TO-DATE
+> Task :app:generateFossDebugGlobalSynthetics UP-TO-DATE
+> Task :app:checkFossDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarFossDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexFossDebug UP-TO-DATE
+> Task :app:mergeFossDebugJavaResource UP-TO-DATE
+> Task :feature:settings:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :feature:chat:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :feature:editor:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :feature:graph:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :feature:models:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :feature:shell:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:export:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:vault:bundleLibRuntimeToDirFossDebug
+> Task :inference-service:bundleLibRuntimeToDirFossDebug UP-TO-DATE
+> Task :embedder-service:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :feature:timeline:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:rag:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:inference:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:ipc:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:security:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :app:mergeLibDexFossDebug
+> Task :app:dexBuilderFossDebug UP-TO-DATE
+> Task :app:mergeProjectDexFossDebug UP-TO-DATE
+> Task :app:mergeFossDebugJniLibFolders UP-TO-DATE
+> Task :embedder-service:mergeDebugJniLibFolders UP-TO-DATE
+> Task :embedder-service:mergeDebugNativeLibs NO-SOURCE
+> Task :embedder-service:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :inference-service:configureCMakeDebug[arm64-v8a]
+> Task :inference-service:buildCMakeDebug[arm64-v8a][skein_llama]
+> Task :inference-service:mergeFossDebugJniLibFolders UP-TO-DATE
+> Task :inference-service:mergeFossDebugNativeLibs UP-TO-DATE
+> Task :inference-service:copyFossDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:designsystem:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:export:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:export:mergeDebugNativeLibs NO-SOURCE
+> Task :core:export:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:inference:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:inference:mergeDebugNativeLibs NO-SOURCE
+> Task :core:inference:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:ipc:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:ipc:mergeDebugNativeLibs NO-SOURCE
+> Task :core:ipc:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:rag:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:rag:mergeDebugNativeLibs NO-SOURCE
+> Task :core:rag:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:security:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:security:mergeDebugNativeLibs NO-SOURCE
+> Task :core:security:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:vault:configureCMakeDebug[arm64-v8a]
+> Task :core:vault:buildCMakeDebug[arm64-v8a][skein_sqlite,skein_sqlite_jni]
+> Task :core:vault:mergeFossDebugJniLibFolders UP-TO-DATE
+> Task :core:vault:mergeFossDebugNativeLibs UP-TO-DATE
+> Task :core:vault:copyFossDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:chat:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:chat:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:chat:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:editor:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:editor:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:editor:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:graph:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:graph:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:graph:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:models:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:models:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:models:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:settings:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:settings:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:settings:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:shell:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:shell:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:shell:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:timeline:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:timeline:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:timeline:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeFossDebugNativeLibs UP-TO-DATE
+> Task :app:stripFossDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningFossDebug UP-TO-DATE
+> Task :app:writeFossDebugAppMetadata UP-TO-DATE
+> Task :app:writeFossDebugSigningConfigVersions UP-TO-DATE
+> Task :app:packageFossDebug
+> Task :app:createFossDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleFossDebug
+> Task :app:mergeDevDebugAndroidTestManifest UP-TO-DATE
+> Task :app:processDevDebugAndroidTestManifest UP-TO-DATE
+> Task :app:generateDevDebugAndroidTestBuildConfig UP-TO-DATE
+> Task :app:generateDevDebugAndroidTestResources UP-TO-DATE
+> Task :app:packageDevDebugAndroidTestResources UP-TO-DATE
+> Task :app:processDevDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:parseDevDebugAndroidTestLocalResources UP-TO-DATE
+> Task :app:generateDevDebugAndroidTestRFile UP-TO-DATE
+> Task :app:compileDevDebugAndroidTestKotlin
+> Task :app:preFossDebugAndroidTestBuild SKIPPED
+> Task :app:mergeFossDebugAndroidTestManifest UP-TO-DATE
+> Task :app:processFossDebugAndroidTestManifest UP-TO-DATE
+> Task :app:generateFossDebugAndroidTestBuildConfig UP-TO-DATE
+> Task :app:generateFossDebugAndroidTestResources UP-TO-DATE
+> Task :app:packageFossDebugAndroidTestResources UP-TO-DATE
+> Task :app:processFossDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:parseFossDebugAndroidTestLocalResources UP-TO-DATE
+> Task :app:generateFossDebugAndroidTestRFile UP-TO-DATE
+> Task :app:compileFossDebugAndroidTestKotlin
+> Task :core:vault:generateDevDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:packageDevDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:processDevDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :core:vault:parseDevDebugAndroidTestLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugAndroidTestRFile UP-TO-DATE
+> Task :core:vault:compileDevDebugAndroidTestKotlin
+> Task :core:vault:generateFossDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:packageFossDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:processFossDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :core:vault:parseFossDebugAndroidTestLocalResources UP-TO-DATE
+> Task :core:vault:generateFossDebugAndroidTestRFile UP-TO-DATE
+> Task :core:vault:compileFossDebugAndroidTestKotlin
+> Task :feature:shell:generateDebugAndroidTestResources UP-TO-DATE
+> Task :feature:shell:packageDebugAndroidTestResources UP-TO-DATE
+> Task :feature:shell:processDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :feature:shell:parseDebugAndroidTestLocalResources UP-TO-DATE
+> Task :feature:shell:generateDebugAndroidTestRFile UP-TO-DATE
+> Task :feature:shell:compileDebugAndroidTestKotlin
+> Task :feature:shell:testDebugUnitTest
+> Task :feature:shell:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:shell:test
+> Task :feature:shell:check
+
+BUILD SUCCESSFUL in 2m 2s
+1497 actionable tasks: 241 executed, 1 from cache, 1255 up-to-date
+Configuration cache entry reused.

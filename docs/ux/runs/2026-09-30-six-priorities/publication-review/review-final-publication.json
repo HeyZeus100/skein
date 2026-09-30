@@ -1,0 +1,224 @@
+{
+  "review": "final additive300 and preservation publication documentation receipt",
+  "result": "PASS_BOUNDED_FINAL_DOCUMENTATION_REVIEW",
+  "supersedes_document_snapshot": {
+    "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/docs-peer-six-priorities/review-final-ordinary300.json",
+    "sha256": "b5de8ab8e637012248b86abff294f1e81c7230e4bdd2462655da9ad7b31ae035"
+  },
+  "final_documents": [
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "sha256": "b537b7d090ec6c3332eae3250e24d5c8e14ac42c71233ccadecc6c3ea6d483f2",
+      "repo_local_links": [
+        {
+          "target": "skein-orchestrator-continuation-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote8042/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/integration-wave2-actual-xml.zip",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/integration-wave2-independent-review.json",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/final-local11e308/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote05ca/ci/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote05ca/repro/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/p0-cancellation/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/fresh40-independent-auditor/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/final-local08b0/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/ordinary/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/foldable/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/recovery-private-wal/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/fresh40/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/final-local465dac/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote465dac/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote465dac/ordinary/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote465dac/scheduled-cancelled/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/owner-preservation.json",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "path": "docs/Handoffs/skein-orchestrator-resume-20260929.md",
+      "sha256": "d0a2f16fe3e6d4f9cb61aaefd9cd3516035953c7fa73925dad7ac8a81f14e24d",
+      "repo_local_links": [
+        {
+          "target": "skein-six-priorities-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "skein-orchestrator-continuation-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "skein-confirmed-deletion-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-29-confirmed-delete-e62f947/README.md",
+          "exists": true
+        },
+        {
+          "target": "skein-conference-demo-final-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "../demo/conference-2026/PRESENTER.md",
+          "exists": true
+        },
+        {
+          "target": "skein-ux-integration-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "skein-retrieval-repair-execution.md",
+          "exists": true
+        },
+        {
+          "target": "skein-inference-lifecycle-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "skein-inference-model-readiness-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "../CHAT_TURN_SESSION.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/OBJECT_LIFECYCLE_SPEC.md",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "path": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "sha256": "5b9e1008a18a2bb33a38f57cfa6a880b8d4db2c1e36bd69cf357535781b2b30e",
+      "repo_local_links": [
+        {
+          "target": "skein-six-priorities-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-delete-physical-e62/README.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-resume-verification/README.md",
+          "exists": true
+        },
+        {
+          "target": "../PRIVACY.md",
+          "exists": true
+        },
+        {
+          "target": "../research/markitdown-marker-assessment-20260930.json",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-pdf-empty/README.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-resume-verification/recovery-next-step-static-review.json",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-six-priorities/README.md",
+      "sha256": "de7984522ca597159432258a92b26b164153f3deb504f6886d29ee98aaffeae7",
+      "repo_local_links": [
+        {
+          "target": "../../../Handoffs/skein-six-priorities-20260930.md",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-six-priorities/current-verification.json",
+      "sha256": "90f10ad4f1db43f611382239ba5c230f5b72b5394cd9986b85db742ac1d03a20",
+      "repo_local_links": []
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-six-priorities/remote465dac/ordinary/README.md",
+      "sha256": "6a1c86ee802a01feeabc977d5ae28160052e77ce00ea9d63271bffb8142f389c",
+      "repo_local_links": []
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-six-priorities/owner-preservation.json",
+      "sha256": "081994d03ba711266d5873facb086e2d3484d1855f4fd35619a9e474f3a0f835"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-six-priorities/beads-status-snapshot.json",
+      "sha256": "4299c267811fee65bb062ba22122816d87f2c86b77cff0a78259238dd36bf264"
+    }
+  ],
+  "repo_local_markdown_links": 41,
+  "findings": [],
+  "runtime_evidence": "Prior additive receipt independently rehashed original10a6eec35d2dba6a9b5e438da0b4dcaeeef85fa666844512a7f2e449dbb69471 and parsed3XML300pass,0failure/error/skip,5recovery,14LC09; source/case preservation peer56cd5eab reviewed.",
+  "preservation": "Completed owner0e56\u2192465dac ff and21file/status/stash preservation match root sealed owner-preservation receipt. Premature final-publication ff sentence removed. No private owner content accessed by reviewer.",
+  "gates": "Fresh40qualityFAIL20/40,12falseabsence,6UNEXECUTED; fullhybrid/expandedINELIGIBLE; sixprioritygroups remainopen; physicalHOLD; newcode uninstalled; APKHOST_DECLARED_ONLY.",
+  "beads_snapshot_scope": "Read local coordinator-supplied status snapshot only; no bd operation or remote synchronization claim.",
+  "publication_boundary": "Final push/coordination outcome remains root-owned; this review does not claim it has occurred.",
+  "actions": "Read-only docs/JSON/link review; only this ignored receipt written. No builds/tests/device/CI/Beads."
+}

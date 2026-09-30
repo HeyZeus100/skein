@@ -1,0 +1,5 @@
+# Reproducibility at 465dac
+
+Run 36712323023 passed at source `465dac627c15acf5399a6ac596f0c6703791d040`. Both actual unsigned APKs are byte-identical: 101,039,915 bytes, SHA-256 `37fc590cec5f2520c6cfe3d6c957613948ed1a88798a7eca65bf200d2af6b421`. Both cold native outputs and both embedded llama payloads are byte-identical: 25,314,032 bytes, SHA-256 `2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff`.
+
+Root and independent review checked all 15 manifest records, API-bound original archives, actual pairs, source/epoch records, distinct roots and comparison jobs. Original large archives remain in ignored `build/agent-logs/six-priorities-20260930/remote-final/repro465dac/`; metadata-only subsets here omit APK and native binary entries and do not replace those originals. Tag-only SQLCipher regeneration was skipped. No installed-device, model runtime, or cross-source APK equality is claimed. The root pair receipt predates the independent review; the separate final independent report completes it.

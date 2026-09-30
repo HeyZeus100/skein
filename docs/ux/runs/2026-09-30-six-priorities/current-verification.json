@@ -1,0 +1,127 @@
+{
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "scope": "application verification; later publication commit is documentation/evidence only",
+  "local": {
+    "passed": 5500,
+    "skipped": 86,
+    "failed": 0,
+    "errors": 0,
+    "xml": 557,
+    "independent_review": "final-local465dac/independent-review.json"
+  },
+  "ci": {
+    "run": 36712322999,
+    "passed": 5498,
+    "skipped": 88,
+    "failed": 0,
+    "errors": 0,
+    "xml": 557,
+    "added": 10,
+    "removed": 0,
+    "skip_identity_and_reason_unchanged": true,
+    "changed_vault_tasks": "EXECUTED",
+    "inference_behavior": "FROM-CACHE,62 passing retained"
+  },
+  "ux": {
+    "run": 36712322980,
+    "passed": 1354,
+    "skipped": 80,
+    "failed": 0,
+    "errors": 0,
+    "unchanged_images": 552,
+    "fresh_tasks": 8
+  },
+  "repro": {
+    "run": 36712323023,
+    "actual_apk_pair_byte_equal": true,
+    "apk_sha256": "37fc590cec5f2520c6cfe3d6c957613948ed1a88798a7eca65bf200d2af6b421",
+    "actual_native_pair_byte_equal": true,
+    "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "tag_only_sqlcipher_regeneration": "SKIPPED"
+  },
+  "ordinary": {
+    "run": 36714651814,
+    "status": "completed",
+    "expected": 300,
+    "accepted": true,
+    "conclusion": "success",
+    "acceptance_scope": "300-case disposable encrypted emulator runtime and bounded skein-1544 fix only",
+    "passed": 300,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "modules": {
+      "app": 38,
+      "vault": 223,
+      "inference-service": 39
+    },
+    "all_prior299_preserved": true,
+    "new_cases": 1,
+    "recovery_passed": 5,
+    "LC09_passed": 14,
+    "independent_review_sha256": "56cd5eab6199c405b117b50884048c1c3c3aa7b1e196bdbfe1aa1d8bbd42a0d0",
+    "archive_sha256": "10a6eec35d2dba6a9b5e438da0b4dcaeeef85fa666844512a7f2e449dbb69471",
+    "apk_bytes": "NOT_UPLOADED; hashes HOST_DECLARED_ONLY"
+  },
+  "scheduled_overlap": {
+    "run": 36712945986,
+    "event": "schedule",
+    "conclusion": "cancelled",
+    "actual_xml": 0,
+    "actual_cases": 0,
+    "acceptance": null
+  },
+  "fresh40": {
+    "run": 36710813526,
+    "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+    "quality": "FAIL",
+    "hard_provenance": "INCOMPLETE",
+    "expanded_and_full_hybrid": "INELIGIBLE",
+    "both_modes": {
+      "executed": 34,
+      "denominator": 40,
+      "strict_success": 20,
+      "covered_spans": 18,
+      "span_denominator": 24,
+      "all_span_answer_success": 17,
+      "answer_denominator": 22,
+      "correct_absence_rejections": 3,
+      "absence_denominator": 18,
+      "false_absence_admissions": 12,
+      "context_unexecuted": 6
+    },
+    "independent_raw_and_attribution_review": "PASS",
+    "fixture_consumed": true,
+    "primary_aggregate_improvement": false
+  },
+  "remaining_gates": {
+    "skein-gg11.29": "Existing-envelope recovery unwired; no production closed-vault lease issuer, authenticated-wrap binding, reader/provider/UI activation or power-loss/device acceptance.",
+    "skein-gg11.32": "Semantic support and honest absence quality fail; six application-context cases unexecuted; default and thresholds unchanged.",
+    "skein-lbw / skein-079 / skein-hwsa / skein-5hr": "Host functional only; production factory unavailable; reference parity, Android matrix and human M0 backend decision absent.",
+    "skein-gg11.30 / skein-66be / skein-830f / skein-7s1": "Frozen80-case fixture/tooling present; no new model answers or human grades; physical runner held after absent ADB device.",
+    "skein-xtov.24.10 / skein-xtov.24.16": "Retained presentation implemented; focus/IME open. Generic AL16 fails before geometry, tracked12pt. Exact Pixel9 profile and actual Fold open.",
+    "skein-xtov.27.2": "Fourteen encrypted LC09 cases pass08b0 and465dac; broader UI/physical lifecycle and surviving-editor metadata reload open."
+  },
+  "physical": {
+    "sole_runner": "/root/fold_acceptance",
+    "status": "HOLD awaiting owner reconnect/unlock response",
+    "last_attested_installed_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "later_source_installed": false,
+    "models_imported": false
+  },
+  "preservation": {
+    "owner_files_rehashed": 21,
+    "owner_dirty_status_unchanged": true,
+    "stash_unchanged": true,
+    "prior_evidence_files_unchanged": 177,
+    "thresholds_golds_original_failures_preserved": true,
+    "recovery_worktrees_preserved": true,
+    "owner_fast_forward_source": "465dac627c15acf5399a6ac596f0c6703791d040",
+    "owner_files_status_stash_checked_before_and_after": true
+  },
+  "closed_bounded_defects": [
+    "skein-y2xm: request cancellation and descriptor cleanup",
+    "skein-1544: empty private WAL proof refusal"
+  ],
+  "beads_sync": "No configured Dolt remote; final push attempt recorded at handoff, no remote sync claim."
+}

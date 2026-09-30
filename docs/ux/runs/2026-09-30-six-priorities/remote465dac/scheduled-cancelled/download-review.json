@@ -1,0 +1,16 @@
+{
+  "run": 36712945986,
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "conclusion": "cancelled",
+  "artifacts": [
+    {
+      "id": 11095166285,
+      "name": "connected-test-reports",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/scheduled465dac-cancelled/connected-test-reports.zip",
+      "bytes": 856,
+      "sha256": "26acebacda920f2282e4339df48e9fd4f0d76be683802d7d9dd07d31cfe4cbf0",
+      "api_digest": "sha256:26acebacda920f2282e4339df48e9fd4f0d76be683802d7d9dd07d31cfe4cbf0"
+    }
+  ],
+  "logs_sha256": "e70231714d974fac07d37cb55c71c0fe91c6295a02aec91f9044cb336909ef02"
+}

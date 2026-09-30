@@ -1,0 +1,13 @@
+{
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "run": 36712323023,
+  "actual_apk_pair_equal": true,
+  "apk_bytes": 101039915,
+  "apk_sha256": "37fc590cec5f2520c6cfe3d6c957613948ed1a88798a7eca65bf200d2af6b421",
+  "cold_and_both_embedded_native_equal": true,
+  "native_bytes": 25314032,
+  "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+  "independent_manifest_context_review": "PENDING",
+  "tag_SQLCipher_regeneration": "SKIPPED: not a tag",
+  "cross_source_apk_equality_claim": false
+}

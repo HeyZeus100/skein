@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "PREPARED_UNEXECUTED",
+  "prepared_checkpoint": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "integrated_fix_commit": "82cda8af3c4c3d3f78272f647237485a8c12ce3b",
+  "worker_signed_commit": "14fba935586e2933570159bb237a09151286353f",
+  "runtime_run_id": null,
+  "runtime_source_sha": null,
+  "expected_identity_receipt": {
+    "path": "build/agent-logs/ordinary300-expectation-20260930/expected-identities.json",
+    "bytes": 84088,
+    "sha256": "c213ed9e5fd0df05e34f2fe620f38b35267164cfd1b17f38cbd4ba10655cda41"
+  },
+  "prior_actual_receipt": {
+    "path": "/Users/andrewherrera/skein-worktrees/inference-cancel-race-20260930/build/agent-logs/ordinary08b0-independent/actual-review.json",
+    "sha256": "bf3fcfba5cb85af105682fd3e8b4f226cee44fb0fcedb780c7182f3eeecefbb0",
+    "run_id": 36706479756,
+    "source_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+    "observed_counts": {
+      "tests": 299,
+      "passed": 296,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "future_source_requirement": "Bind actual future run/API/manifest to exact coordinator-provided source; integrated fix must be ancestor and all4 approved source bytes must match sealed worker hashes.",
+  "sealed_source_files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 6229,
+      "sha256": "632ae4d6d130eff093ccc9576fc527ec51ad96c8ec787606f70fe76046622e7f"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 7339,
+      "sha256": "4cf3840b34b0b35806e9786955eeef24e406b275b8cc2db9740e9f5fc4ad6df6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 8406,
+      "sha256": "d8327293aa8960afa158852249d9ee9ed3522e6f34db96c2e697c2eb702227e4"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  ],
+  "strict_identity_gate": [
+    "Exactly same299 prior identities plus one direct native diagnostic; no duplicates, missing, renamed or unexpected cases.",
+    "All300 must pass with no failure/error/skipped elements, including empty UTP tags; declared suite counters and independent per-case counts agree.",
+    "Modules exactly app38/core-vault223/inference-service39; all14LC09 and all5recovery methods present and passing."
+  ],
+  "recovery_evidence_gate": [
+    "Original4 instrumented method bodies retained; correct raw key VERIFIED, wrong key refusal and consumed Kotlin key zeroing.",
+    "No migration of supported older schema; source DB/WAL/SHM/envelope bytes unchanged.",
+    "Committed WAL-only schema read succeeds; removing source WAL produces exact UNSUPPORTED_SCHEMA.",
+    "New direct JNI diagnostic: separate encrypted disposable copied DB, private WAL initially absent; native returns0; resulting WAL regular and byte-empty; private DB bytes and original source bytes unchanged.",
+    "If any failure occurs, retain it, inspect exact raw native/status/sidecar assertion position; do not retry, skip, broaden identity equivalence or lower assertions."
+  ],
+  "lc09_gate": "Corrected canonical CHAT body and exact message list must survive delete and close/reopen; committed-unlink failure cleanup recovers exactly once without deleting survivors.",
+  "apk_attribution_gate": "Host-declared built_apks hashes remain separate from actual independently measured APKbytes; no installed-byte claim unless separately attested.",
+  "future_combined_review": "Wait explicit ARTIFACTREADY; independently parse archived unit XML/hash inventory and actualAPK/native/sourcefreezes at the new checkpoint. No combined-run result is available from preparation.",
+  "limitations": [
+    "300 is an expected denominator, not a current passing result. Prior08b0 still has296pass/3fail.",
+    "Existing-envelope recovery remains unwired; passing five native tests would not establish production exclusive lease issuance, wrapped-key authority, UI/provider activation or power-loss/unknown-commit behavior.",
+    "No physical Fold or owner content/models/drafts operation; no fresh40 quality claim.",
+    "Preparation used read-only source/evidence parsing only; no builds/tests/CI/device actions."
+  ]
+}

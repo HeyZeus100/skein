@@ -1,0 +1,111 @@
+{
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "run": 36712322999,
+  "counts": {
+    "passed": 5498,
+    "skipped": 88
+  },
+  "xml_files": 557,
+  "added": [
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "absent source WAL stages an empty private WAL without changing source absence"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "captured WAL keeps exact private identity including empty and nonempty evidence"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "staged empty private WAL cannot disappear become nonempty or redirect to another file"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "empty WAL or SHM appearing at source during proof still refuses and zeros candidate"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "read only native work leaving empty private WAL proves without changing source absence"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "absent source WAL stages an empty private WAL without changing source absence"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "captured WAL keeps exact private identity including empty and nonempty evidence"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "staged empty private WAL cannot disappear become nonempty or redirect to another file"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "empty WAL or SHM appearing at source during proof still refuses and zeros candidate"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "read only native work leaving empty private WAL proves without changing source absence"
+    ]
+  ],
+  "removed": [],
+  "skip_identities_and_reason_xml_unchanged": true,
+  "actual_apk": {
+    "path": "app-foss-debug.apk",
+    "bytes": 125942105,
+    "sha256": "293bd1bc1f5925d70c9244e89ce62c22bc5f09b3fc5a42036585683b006a0ba3",
+    "native": [
+      {
+        "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+        "bytes": 10096,
+        "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+      },
+      {
+        "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+        "bytes": 7784,
+        "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime.so",
+        "bytes": 27985944,
+        "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+        "bytes": 83208,
+        "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_llama.so",
+        "bytes": 33413072,
+        "sha256": "b3fe7bf00e66a9d476479ea5c1e65497586552d8d9c03efb470c856439101a88"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite.so",
+        "bytes": 6268816,
+        "sha256": "ef84dfbbbf1806ef24ddf2e94c270a450b643f4b64e798bacb156a437d7643d6"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+        "bytes": 22320,
+        "sha256": "51e462fd886ae0cd2167e19e1b7be2b38265beebd553e19bbd2295ab49ab4160"
+      }
+    ]
+  },
+  "all_manifest_records_rehashed": true,
+  "passed": true,
+  "limitations": [
+    "ActualAPKbytes measured; APKmanifest/exports and requiredjobs/hosttests reviewed separately.",
+    "HostCI doesnotaccept encrypted300/Fold/model/retrievalquality gates."
+  ]
+}

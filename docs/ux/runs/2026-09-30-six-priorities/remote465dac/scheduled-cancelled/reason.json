@@ -1,0 +1,8 @@
+{
+  "at": "2026-09-30T12:11:02.845965+00:00",
+  "run": 36712945986,
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "event": "schedule",
+  "action": "cancelonlyunexpectednightlyrun",
+  "reason": "Nightly schedule bypassed activecoordinatorserializedqueue while465automaticbatchstillrunning. Preserveoriginalmetadata/logs; dispatchsame300-case ordinaryafteractivebatchterminalreview. No acceptance or testfailureinferred fromcancellation."
+}

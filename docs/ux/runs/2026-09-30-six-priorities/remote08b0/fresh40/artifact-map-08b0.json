@@ -1,0 +1,122 @@
+{
+  "status": "EXPECTED_ARTIFACT_MAP_ONLY_NO_RUN_OBSERVED",
+  "created_at_utc": "2026-09-30T11:20:32.992362+00:00",
+  "build_revision": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "candidate_freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+  "evaluator_freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+  "workflow_source": ".github/workflows/retrieval-diagnostic.yml",
+  "expected_artifact_name": "real-retrieval-{DIAGNOSTIC|QUALITY-ENFORCED}-hybrid-INELIGIBLE-08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "archive_path_note": "Paths are expected from source upload configuration. Review actual ZIP inventory and GitHub artifact metadata; do not infer successful presence from these expectations.",
+  "expected_records": [
+    {
+      "expected_path": "build/retrieval-diagnostic/fresh40-source-freeze.json",
+      "role": "Prebuild source inventory/hash receipt for candidate70 and evaluator13; compare every record to pinned Git objects, not only receipt summary.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/build.log",
+      "role": "Vault test APK build and initial diagnostic/source guard logs; require actual successful APK build at reviewed commit.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/retrieval.json",
+      "role": "Actual raw device report bytes; fresh_contextual_validation contains immutable snapshots/index/requests/history plus two modes40 rows and component diagnostics. Outer report also retains earlier legacy diagnostics.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/runner-summary.json",
+      "role": "Host declaration and collection manifest: declared_build_revision, fresh40_freeze, policy_freeze, built/post-build/installed APK digests, all collection attempts, raw report SHA, Gradle exit, timeout/complete and independent quality status. No standalone APK manifest is emitted by this lane.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/instrumentation-gradle.log",
+      "role": "Exactly one opted-in RealRetrievalEvaluationTest invocation, full freeze/build IDs, repetitions3, explicit emulator serial and actual exit; no fresh attempt may be silently substituted.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "core/vault/build/outputs/androidTest-results/connected/**/*.xml",
+      "role": "Parse actual XML. Expect exactly one testcase, class app.skein.core.vault.eval.RealRetrievalEvaluationTest, zero failure/error/skip for a successful instrumentation claim. A failed testcase can still retain useful raw diagnostics but run remains failed.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "core/vault/build/reports/androidTests/connected/**",
+      "role": "Supplementary AGP report/diagnostics; never substitutes for actual XML.",
+      "required_for_complete_attribution": false
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/collection-attempts/{01..03}/report.{stdout,stderr,command.json}",
+      "role": "Original collected bytes and transport result for each attempted collection. SHA(selected report.stdout) must equal raw retrieval.json and host/device receipt hashes. Partial earlier attempts preserved.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/collection-attempts/{01..03}/report-sha256.{stdout,stderr,command.json}",
+      "role": "Recorded selected-emulator SHA of files/artifacts/eval/retrieval.json; command package app.skein.core.vault.test, exact serial and successful exit.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/collection-attempts/{01..03}/installed-path.{stdout,stderr,command.json}",
+      "role": "Observed selected-emulator package path for retained test APK. Only one APK path accepted by runner.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/collection-attempts/{01..03}/installed-sha256.{stdout,stderr,command.json}",
+      "role": "Observed installed test APK digest; compare prebuilt, post-instrumentation and installed values. Raw APK bytes are not uploaded by the declared workflow paths.",
+      "required_for_complete_attribution": true
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/collection-attempts/{02..03}/{reconnect,emulator}.{stdout,stderr,command.json}",
+      "role": "If collection recovered, ensure read-only reconnect and ro.kernel.qemu=1 for the same explicit emulator. Collection retry is not instrumentation retry.",
+      "required_for_complete_attribution": "only when selected attempt >1"
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/retrieval.json.unavailable.log",
+      "role": "Possible report-unavailable evidence. Its presence never supplies missing rows or permits successful runtime claim.",
+      "required_for_complete_attribution": false
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/{timeout-force-stop.log,timeout-force-stop.log.partial,timeout-force-stop.log.unavailable.log}",
+      "role": "Possible bounded-host-timeout evidence; original failure remains failed.",
+      "required_for_complete_attribution": false
+    },
+    {
+      "expected_path": "build/retrieval-diagnostic/run/{logcat.txt,logcat.txt.partial,logcat.txt.unavailable.log}",
+      "role": "Supplementary synthetic-emulator diagnostic capture by coordinator-approved remote workflow, not a Fold log or source/span truth oracle. Reviewer will inspect only relevant failures if needed.",
+      "required_for_complete_attribution": false
+    }
+  ],
+  "coordinator_supplies_before_audit": [
+    "Actual workflow run ID and full head SHA; event/inputs/job/required-step results.",
+    "Original artifact archive and GitHub API artifact ID/digest/size plus download SHA equality.",
+    "Preserved raw report path and its sealed SHA256. No substitute or edited report."
+  ],
+  "offline_review_sequence": [
+    "Rehash original ZIP against the coordinator/API digest, inspect actual entry inventory safely without path traversal, and preserve failed/missing records.",
+    "Verify exact workflow source/build commit and opt-in inputs/freeze source receipts against the pinned Git objects. Current readiness receipt independently confirms70candidate and13evaluator files unchanged at08b0.",
+    "Parse actual instrumentation XML and invocation/build logs. Exactly one allowed instrumentation class is required; an earlier or partial report cannot hide a failed launch.",
+    "Review every collection attempt. Selected raw report.stdout, retrieval.json, device report-sha256 stdout and runner-summary digest must agree; earlier APK mismatch remains terminal even if later collection succeeds.",
+    "Compare host prebuilt/post-instrumentation and observed installed APK hashes; retain the absence of APK payload bytes as a limitation.",
+    "After explicit coordinator actual-artifact authorization, invoke the unchanged independent auditor with fullbuildSHA and sealed reportSHA. It recomputes source/member/span/scope/rank/absence and summaries. No evaluator score or summary alone is trusted.",
+    "Review diagnostic miss/admission/provenance/timeout details and separate six context components. Report consistency PASS must never be relabelled a quality or app-context pass."
+  ],
+  "preflight_failure_handling": [
+    "Source/argument/clean-worktree checks can fail before runner output directory/summary creation. Missing runner-summary then requires original step logs; no runtime acceptance.",
+    "Harness setup failure can emit only status HARNESS_FAILED, phase and failure_type. It has no complete fresh40 denominator and must not be transformed into40 rejections or inferred pass.",
+    "The fresh helper accumulates its JSON before final write. A crash mid-helper may leave no partial per-query snapshot; completed earlier calls cannot be reconstructed or counted from absence.",
+    "Instrumentation may assert after writing a full diagnostic report. The raw report can be audited while original JUnit/job failure remains failed.",
+    "With require_quality=false, successful diagnostic job exit does not imply quality PASS. Fresh primary sixUNEXECUTED forces incomplete fresh coverage; full hybrid and expanded ranking stayINELIGIBLE."
+  ],
+  "missing_source_and_attribution_limits": [
+    "Workflow upload paths exclude core/vault/build/outputs/apk/androidTest/dev/debug/*.apk. Built/installed SHA comparison is recorded host/emulator evidence; independent artifact-byte APK rehash and embedded source attestation are unavailable unless coordinator separately retains bytes.",
+    "There is no standalone APK manifest artifact in this lane. runner-summary and fresh40-source-freeze provide declared attribution and source inventory, not APK contents or package/signature inspection.",
+    "Git source inventory covers frozen candidate70/evaluator13 files, not an independent attestation of all compiler/dependency/system-image payloads or executing process memory. Exact repository commit/gitlinks and separate CI/repro gates remain distinct evidence.",
+    "Dedicated retrieval workflow declares API35/google_apis/x86_64, but unlike the newAL16 lane it does not retain raw SDK/system-image payload receipts. Outer report API/ABI and workflow configuration are declarations, not independently rehashed image bytes.",
+    "Synthetic encrypted vaults are deleted in finally. Raw JSON contains bodies/frontmatter/chunks/revision traces but not the encrypted SQLite database/WAL for independent persistence reinspection. Host source plus runtime trace cannot alone attest physical disk durability or app lifecycle.",
+    "Recorded request snapshots and runtime commit strings do not independently attest Binder calls or actual process memory. Source review and installed APK hash attribution bound the claim, but no APK-embedded commit identity exists here.",
+    "The unchanged independent auditor verifies fresh40 raw accounting. Full outer legacy metric/policy checks, actual JUnit, archive/API hashes and required workflow step checks remain separate coordinator/reviewer work.",
+    "Bounded BLAKE3/short-note/tokenizer parity is valid only for the frozen fixture shape confirmed by peer review. No general Markdown, model answer quality, embedder/hybrid, app-context or physical Fold acceptance is established."
+  ],
+  "auditor_frozen": true,
+  "auditor_runtime_executed": false,
+  "build_test_retriever_device_ci_commands_in_this_task": false,
+  "physical_runner_status": "HOLD; no polling or device authority"
+}

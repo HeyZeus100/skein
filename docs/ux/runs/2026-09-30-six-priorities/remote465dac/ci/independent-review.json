@@ -1,0 +1,1121 @@
+{
+  "verdict": "PASS_CI_BUILD_UNIT_GUARDS_ACTUAL_APK",
+  "run": 36712322999,
+  "url": "https://github.com/HeyZeus100/skein/actions/runs/36712322999",
+  "source_sha": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "source_attribution": "Exact API/workflow checkout and host-declared raw manifest; actual artifact APK measured, no installed attestation",
+  "unit": {
+    "counts": {
+      "tests": 5586,
+      "passed": 5498,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 88
+    },
+    "xml_files": 557,
+    "all_manifest_records_rehashed": 557,
+    "exact_same_case_multiset_as_local465dac": true,
+    "no_duplicate_identities": true,
+    "prior08b0_counts": {
+      "tests": 5576,
+      "passed": 5488,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 88
+    },
+    "added": [
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+        "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "absent source WAL stages an empty private WAL without changing source absence"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+        "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "staged empty private WAL cannot disappear become nonempty or redirect to another file"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+        "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "captured WAL keeps exact private identity including empty and nonempty evidence"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "empty WAL or SHM appearing at source during proof still refuses and zeros candidate"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "read only native work leaving empty private WAL proves without changing source absence"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+        "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "absent source WAL stages an empty private WAL without changing source absence"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+        "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "staged empty private WAL cannot disappear become nonempty or redirect to another file"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+        "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "captured WAL keeps exact private identity including empty and nonempty evidence"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "empty WAL or SHM appearing at source during proof still refuses and zeros candidate"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "read only native work leaving empty private WAL proves without changing source absence"
+      ]
+    ],
+    "removed": [],
+    "additions_match_sealed_worker5_in_both_flavors": true,
+    "all88_skip_identities_and_serialized_reason_xml_exact": true,
+    "skips": [
+      [
+        "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+        "app.skein.MainActivityComposeTest",
+        "retrying after a failed open brings the shell up once the vault opens"
+      ],
+      [
+        "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+        "app.skein.MainActivityComposeTest",
+        "retrying after a failed open brings the shell up once the vault opens"
+      ],
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "embed_documents_same_text_returns_same_vector"
+      ],
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "embed_documents_returns_256_bytes_each"
+      ],
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "rerank_throws_when_unsupported"
+      ],
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "embed_query_differs_from_embed_documents_for_same_text"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+        "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+        "importImage_without_a_vision_model_creates_only_the_attachment"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+        "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+        "importImage_without_a_vision_model_creates_only_the_attachment"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-443__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-443__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-443__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-443__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-524__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-524__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-524__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-524__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007__light__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007__dark__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[phone__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[phone__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[phone__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[phone__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[phone__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[phone__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[phone__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[phone__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[phone__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[phone__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[phone__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[phone__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[phone__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[phone__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[phone__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[phone__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-524__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-524__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__dark__fs100]"
+      ]
+    ],
+    "local_to_ci_outcome_changes": [
+      {
+        "identity": [
+          "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+          "app.skein.MainActivityComposeTest",
+          "retrying after a failed open brings the shell up once the vault opens"
+        ],
+        "local": "passed",
+        "remote": "skipped"
+      },
+      {
+        "identity": [
+          "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+          "app.skein.MainActivityComposeTest",
+          "retrying after a failed open brings the shell up once the vault opens"
+        ],
+        "local": "passed",
+        "remote": "skipped"
+      }
+    ],
+    "recovery28_each_flavor_all_pass": true,
+    "original58_plus4_inference_all_pass": true,
+    "tasks": {
+      ":app:lintAnalyzeDevDebugUnitTest": "EXECUTED",
+      ":embedder-service:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":inference-service:lintAnalyzeDevDebugUnitTest": "FROM-CACHE",
+      ":core:designsystem:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":core:export:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":core:inference:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":core:ipc:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":core:rag:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":core:security:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":core:vault:lintAnalyzeDevDebugUnitTest": "EXECUTED",
+      ":feature:chat:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":feature:graph:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":feature:models:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":feature:editor:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":feature:settings:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":feature:timeline:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":testing-ui:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":feature:shell:lintAnalyzeDebugUnitTest": "EXECUTED",
+      ":feature:onboarding:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":feature:personas:lintAnalyzeDebugUnitTest": "FROM-CACHE",
+      ":app:javaPreCompileDevDebugUnitTest": "FROM-CACHE",
+      ":app:packageDevDebugUnitTestForUnitTest": "EXECUTED",
+      ":core:vault:lintAnalyzeFossDebugUnitTest": "EXECUTED",
+      ":app:javaPreCompileFossDebugUnitTest": "FROM-CACHE",
+      ":app:packageFossDebugUnitTestForUnitTest": "EXECUTED",
+      ":app:testDevDebugUnitTest": "EXECUTED",
+      ":app:testFossDebugUnitTest": "EXECUTED",
+      ":embedder-service:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":embedder-service:testDebugUnitTest": "FROM-CACHE",
+      ":inference-service:javaPreCompileDevDebugUnitTest": "FROM-CACHE",
+      ":inference-service:testDevDebugUnitTest": "FROM-CACHE",
+      ":inference-service:javaPreCompileFossDebugUnitTest": "FROM-CACHE",
+      ":inference-service:testFossDebugUnitTest": "FROM-CACHE",
+      ":testing:test": "FROM-CACHE",
+      ":testing-ui:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":testing-ui:testDebugUnitTest": "FROM-CACHE",
+      ":core:designsystem:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":core:designsystem:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":core:designsystem:testDebugUnitTest": "FROM-CACHE",
+      ":core:export:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":core:export:testDebugUnitTest": "EXECUTED",
+      ":core:inference:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":core:inference:testDebugUnitTest": "FROM-CACHE",
+      ":core:ipc:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":core:ipc:testDebugUnitTest": "FROM-CACHE",
+      ":core:rag:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":core:security:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":core:security:testDebugUnitTest": "FROM-CACHE",
+      ":core:vault:javaPreCompileDevDebugUnitTest": "FROM-CACHE",
+      ":core:vault:packageDevDebugUnitTestForUnitTest": "EXECUTED",
+      ":core:rag:testDebugUnitTest": "EXECUTED",
+      ":core:vault:javaPreCompileFossDebugUnitTest": "FROM-CACHE",
+      ":core:vault:packageFossDebugUnitTestForUnitTest": "EXECUTED",
+      ":core:vault:testDevDebugUnitTest": "EXECUTED",
+      ":feature:chat:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:chat:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":core:vault:testFossDebugUnitTest": "EXECUTED",
+      ":feature:editor:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:editor:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":feature:chat:testDebugUnitTest": "EXECUTED",
+      ":feature:editor:testDebugUnitTest": "EXECUTED",
+      ":feature:graph:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:graph:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":feature:models:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:models:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":feature:graph:testDebugUnitTest": "EXECUTED",
+      ":feature:onboarding:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:onboarding:testDebugUnitTest": "NO-SOURCE",
+      ":feature:personas:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:personas:testDebugUnitTest": "NO-SOURCE",
+      ":feature:settings:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:settings:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":feature:models:testDebugUnitTest": "EXECUTED",
+      ":feature:shell:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:shell:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":feature:settings:testDebugUnitTest": "EXECUTED",
+      ":feature:timeline:javaPreCompileDebugUnitTest": "FROM-CACHE",
+      ":feature:timeline:packageDebugUnitTestForUnitTest": "EXECUTED",
+      ":feature:timeline:testDebugUnitTest": "EXECUTED",
+      ":feature:shell:testDebugUnitTest": "EXECUTED"
+    }
+  },
+  "inputs": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/unit-test-results.zip",
+      "bytes": 2764867,
+      "sha256": "cf29b50915af45d0438aaf4c13c150d494e943f528b99f68c9c4168955712a3b"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/artifact-list.json",
+      "bytes": 1393,
+      "sha256": "e960b0f5b5648e22a6da5296d6d62dac1f695657589434e36d1d7ba5842b8f7f"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/skein-foss-debug-apk.zip",
+      "bytes": 49757660,
+      "sha256": "681fb436ae3e6ef4c23b6916dc449bf40f3613e0991373794e55c8fbecb7f150"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/logs.zip",
+      "bytes": 147731,
+      "sha256": "08dae5bb7b77c2652a5481cc9aa655cb3dea5eac8c2d07016dc152e70be98638"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/download-review.json",
+      "bytes": 975,
+      "sha256": "d62f7d9263e7d37b4d9f53c1a174749c246685e956f96deb6114d1429f2b8700"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/run.json",
+      "bytes": 12007,
+      "sha256": "a25ba4bfe60750d334bcc63c4f518c4c783d9d9b681f8922503465d4c6060a2e"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/jobs.json",
+      "bytes": 5817,
+      "sha256": "72212bd9ba95647d85459141d92264b693d13b3e23633795df2db9f2691cda25"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/root-review.json",
+      "bytes": 5065,
+      "sha256": "07ead1d6581c9e8460a6601f715dc8218fbc578982c83e778b134eaad13aacf0"
+    }
+  ],
+  "prior_independent_receipt": {
+    "path": "/Users/andrewherrera/skein-worktrees/inference-cancel-race-20260930/build/agent-logs/ci-cancel-fixed-independent-20260930/review.json",
+    "bytes": 105320,
+    "sha256": "c0fa087a765e09cb339a6dcc86df949c981e8ed45f50ee9bf6e554dd1785c44a"
+  },
+  "local_independent_receipt": {
+    "path": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/agent-logs/final-recovery465dac-independent-20260930/review.json",
+    "bytes": 44157,
+    "sha256": "87b41c4a9d00f287c2784034457f87d47286fd9fcf4d63c758b13d639d105eb7"
+  },
+  "steps": [
+    {
+      "number": 1,
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 2,
+      "name": "Checkout",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 3,
+      "name": "Verify third_party submodule pins",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 4,
+      "name": "Validate synthetic answer evaluation fixtures and reporting",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 5,
+      "name": "Verify raw evidence reviewers",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 6,
+      "name": "Set up JDK 17 (Temurin)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 7,
+      "name": "Install required Android SDK platform",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 8,
+      "name": "Choose the OpenSSL tarball cache directory",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 9,
+      "name": "Derive pinned OpenSSL sha256 (cache key)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 10,
+      "name": "Cache the pinned OpenSSL tarball",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 11,
+      "name": "Set up Gradle",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 12,
+      "name": "ktlint, Android lint, unit tests, guards",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 13,
+      "name": "Record unit evidence source and hashes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 14,
+      "name": "Upload unit-test reports",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 15,
+      "name": "Assemble foss debug APK",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 16,
+      "name": "Native optimisation level (libskein_llama.so translation units)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 17,
+      "name": "16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 18,
+      "name": "JNI symbol surface (libskein_llama.so)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 19,
+      "name": "JNI symbol surface (libskein_sqlite_jni.so)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 20,
+      "name": "No prompt/token content in service logs",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 21,
+      "name": "Manifest audit (exported components, permissions, backup posture)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 22,
+      "name": "Validate model manifests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 23,
+      "name": "Upload foss debug APK",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 43,
+      "name": "Post Set up Gradle",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 44,
+      "name": "Post Cache the pinned OpenSSL tarball",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 45,
+      "name": "Post Set up JDK 17 (Temurin)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 46,
+      "name": "Post Checkout",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "number": 47,
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "logs": {
+    "3": {
+      "sha256": "d3222fa0cbd93951ea4a318bdccdf889053664256d0bb9438774390b582e71e1",
+      "summary": [
+        "2026-09-30T12:03:41.5751893Z check-submodules: OK (3 submodule pin(s) match native/llama/PINNED_COMMIT)"
+      ]
+    },
+    "4": {
+      "sha256": "4cf9ccb78ee021e35ddbc3d4c9eab27414c4732c53b37e41d7b6465ff1250d21",
+      "summary": [
+        "2026-09-30T12:03:43.9276263Z Ran 106 tests in 2.213s"
+      ]
+    },
+    "5": {
+      "sha256": "c81265ab86675b30b5b3ab53f54b8891f37d10610d2f51509fedfc09dea5bc3a",
+      "summary": [
+        "2026-09-30T12:03:45.8594412Z Ran 51 tests in 1.800s"
+      ]
+    },
+    "12": {
+      "sha256": "ed0195f5a7afd396fa29dc878eb4a8b3f8a9c65cfd050ef9cae30a74eff05134",
+      "summary": [
+        "2026-09-30T12:12:43.3686375Z BUILD SUCCESSFUL in 8m 41s",
+        "2026-09-30T12:12:43.3686982Z 1394 actionable tasks: 721 executed, 673 from cache"
+      ]
+    },
+    "15": {
+      "sha256": "c72e34cb5ad2e966d3d62a214c353d24f35e10416d9f8d43193c310b891656bc",
+      "summary": [
+        "2026-09-30T12:15:44.0577618Z BUILD SUCCESSFUL in 2m 54s",
+        "2026-09-30T12:15:44.0578134Z 376 actionable tasks: 76 executed, 9 from cache, 291 up-to-date"
+      ]
+    },
+    "16": {
+      "sha256": "4a60fa82805451315f5a1c3fee1175f4e52fe44c7a01c36180e565ca3073bbce",
+      "summary": [
+        "2026-09-30T12:15:44.1698226Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/Debug/w4c23683/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3",
+        "2026-09-30T12:15:44.1900033Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/tools/devDebug/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3"
+      ]
+    },
+    "17": {
+      "sha256": "4f9c4283bd1bd0eabcf394c11c17d57dc4effd12041dc99fb9214b09bd7cb510",
+      "summary": [
+        "2026-09-30T12:15:44.2929837Z elf-alignment: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.3061001Z elf-alignment: core/vault/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.3192582Z elf-alignment: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.3331586Z elf-alignment: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.3463925Z elf-alignment: core/vault/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.3620619Z elf-alignment: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.3777619Z elf-alignment: inference-service/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.3936055Z elf-alignment: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.4092484Z elf-alignment: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-30T12:15:44.4247089Z elf-alignment: inference-service/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS"
+      ]
+    },
+    "18": {
+      "sha256": "09caed0972f7fab1b28480ae0a62296b7fa17520a0f75443fcb47354c3624386",
+      "summary": [
+        "2026-09-30T12:15:44.4467394Z jni-symbols: no std::cout/printf/__android_log_* in native/llama/jni",
+        "2026-09-30T12:15:44.4518258Z jni-symbols: LlamaNative.kt declares 27 external fun(s)",
+        "2026-09-30T12:15:44.8928623Z jni-symbols: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:44.9085318Z jni-symbols: inference-service/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:44.9239754Z jni-symbols: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:44.9396934Z jni-symbols: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:44.9553455Z jni-symbols: inference-service/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals"
+      ]
+    },
+    "19": {
+      "sha256": "b73c841ad99b515a0cf6002682e1f1b32d61e4d63d9aa709563daf3d3fb8b488",
+      "summary": [
+        "2026-09-30T12:15:45.0157320Z sqlite-jni-symbols: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so: 26 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:45.0257192Z sqlite-jni-symbols: core/vault/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite_jni.so: 26 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:45.0356862Z sqlite-jni-symbols: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so: 26 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:45.0456051Z sqlite-jni-symbols: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so: 26 Java_ symbol(s), exactly the declared externals",
+        "2026-09-30T12:15:45.0554114Z sqlite-jni-symbols: core/vault/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite_jni.so: 26 Java_ symbol(s), exactly the declared externals"
+      ]
+    },
+    "20": {
+      "sha256": "2611b40e9529bc01d18460e6586612cd6e01f63ad084a9a053b84661f903203d",
+      "summary": [
+        "2026-09-30T12:15:45.1612815Z no-content-logging: clean: 24 file(s), no SkeinLog call references model content"
+      ]
+    },
+    "21": {
+      "sha256": "eba8a02300e68a16deee347f511794eeb121c6e96c9ccb3bf5cd5e5e93fe555b",
+      "summary": [
+        "2026-09-30T12:15:45.8697990Z manifest-audit: PASS"
+      ]
+    },
+    "22": {
+      "sha256": "2ce2b14539fc2cd4c77b74cc9b5b65c720eec9d36b4a1fd91dda269dabb32b87",
+      "summary": [
+        "2026-09-30T12:15:45.9077723Z validate-manifests: checked 24 manifest(s) (0 shipped)",
+        "2026-09-30T12:15:45.9078264Z validate-manifests: OK"
+      ]
+    }
+  },
+  "all_task_outcome_counts": {
+    "SKIPPED": 255,
+    "FROM-CACHE": 673,
+    "NO-SOURCE": 314,
+    "EXECUTED": 787,
+    "UP-TO-DATE": 189
+  },
+  "apk": {
+    "receipt": {
+      "path": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/agent-logs/ci465dac-independent-20260930/app-foss-debug.apk",
+      "bytes": 125942105,
+      "sha256": "293bd1bc1f5925d70c9244e89ce62c22bc5f09b3fc5a42036585683b006a0ba3"
+    },
+    "archive_receipt": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/skein-foss-debug-apk.zip",
+      "bytes": 49757660,
+      "sha256": "681fb436ae3e6ef4c23b6916dc449bf40f3613e0991373794e55c8fbecb7f150"
+    },
+    "native_payloads": [
+      {
+        "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+        "bytes": 10096,
+        "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+        "matches08b0_ci": true,
+        "matches465dac_local": true
+      },
+      {
+        "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+        "bytes": 7784,
+        "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+        "matches08b0_ci": true,
+        "matches465dac_local": true
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime.so",
+        "bytes": 27985944,
+        "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+        "matches08b0_ci": true,
+        "matches465dac_local": true
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+        "bytes": 83208,
+        "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+        "matches08b0_ci": true,
+        "matches465dac_local": true
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_llama.so",
+        "bytes": 33413072,
+        "sha256": "b3fe7bf00e66a9d476479ea5c1e65497586552d8d9c03efb470c856439101a88",
+        "matches08b0_ci": true,
+        "matches465dac_local": false
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite.so",
+        "bytes": 6268816,
+        "sha256": "ef84dfbbbf1806ef24ddf2e94c270a450b643f4b64e798bacb156a437d7643d6",
+        "matches08b0_ci": true,
+        "matches465dac_local": false
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+        "bytes": 22320,
+        "sha256": "51e462fd886ae0cd2167e19e1b7be2b38265beebd553e19bbd2295ab49ab4160",
+        "matches08b0_ci": true,
+        "matches465dac_local": false
+      }
+    ],
+    "all7_native_bytes_equal08b0_ci": true,
+    "android_manifest_sha256": "5cbe490d4a4ba6d007096486094511ab2baef4c573c0b1d093242562ac41aacb",
+    "manifest_bytes_equal08b0_ci": true,
+    "internet_permission_present": false,
+    "decoded_manifest": {
+      "path": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/agent-logs/ci465dac-independent-20260930/apk-manifest.txt",
+      "bytes": 13788,
+      "sha256": "9967d1f0bddc1f613bf479bc861f102a0bdaee5fd0d88a730161b0f216212c16"
+    },
+    "decoded_permissions": {
+      "path": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/agent-logs/ci465dac-independent-20260930/apk-permissions.txt",
+      "bytes": 535,
+      "sha256": "e19ce23a1114494c8ab07b9cba2690f502e65846bf55ab171ef3118789045154"
+    },
+    "packaged_elf_and_jni_checks": {
+      "libskein_llama.so": {
+        "pt_load_alignments": [
+          16384,
+          16384,
+          16384
+        ],
+        "defined_jni_exports": [
+          "Java_app_skein_inference_service_LlamaNative_applyChatTemplate",
+          "Java_app_skein_inference_service_LlamaNative_backendInit",
+          "Java_app_skein_inference_service_LlamaNative_backendReport",
+          "Java_app_skein_inference_service_LlamaNative_contextLength",
+          "Java_app_skein_inference_service_LlamaNative_decodePrompt",
+          "Java_app_skein_inference_service_LlamaNative_embed",
+          "Java_app_skein_inference_service_LlamaNative_freeContext",
+          "Java_app_skein_inference_service_LlamaNative_freeContextSecure",
+          "Java_app_skein_inference_service_LlamaNative_freeModel",
+          "Java_app_skein_inference_service_LlamaNative_freeSampler",
+          "Java_app_skein_inference_service_LlamaNative_handleCount",
+          "Java_app_skein_inference_service_LlamaNative_isEog",
+          "Java_app_skein_inference_service_LlamaNative_kvClear",
+          "Java_app_skein_inference_service_LlamaNative_loadModel",
+          "Java_app_skein_inference_service_LlamaNative_loadModelFromFd",
+          "Java_app_skein_inference_service_LlamaNative_modelHasVision",
+          "Java_app_skein_inference_service_LlamaNative_modelMeta",
+          "Java_app_skein_inference_service_LlamaNative_modelNEmbd",
+          "Java_app_skein_inference_service_LlamaNative_newContext",
+          "Java_app_skein_inference_service_LlamaNative_newSampler",
+          "Java_app_skein_inference_service_LlamaNative_sampleNext",
+          "Java_app_skein_inference_service_LlamaNative_secureFreeCount",
+          "Java_app_skein_inference_service_LlamaNative_setCancelFlag",
+          "Java_app_skein_inference_service_LlamaNative_setLogCallback",
+          "Java_app_skein_inference_service_LlamaNative_tokenToPieceBytes",
+          "Java_app_skein_inference_service_LlamaNative_tokenize",
+          "Java_app_skein_inference_service_LlamaNative_tokenizeScaffold"
+        ]
+      },
+      "libskein_sqlite_jni.so": {
+        "pt_load_alignments": [
+          16384,
+          16384
+        ],
+        "defined_jni_exports": [
+          "Java_app_skein_core_vault_db_RecoveryProofNative_nativeVerify",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindBlob",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindDouble",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindLong",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindNull",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindText",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindUtf8Text",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeChanges",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeClearBindings",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeClose",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnBlob",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnCount",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnDouble",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnLong",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnName",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnText",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnType",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeExec",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeFinalize",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeKey",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeLastInsertRowId",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeLexicalTerms",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeOpen",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativePrepare",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeReset",
+          "Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeStep"
+        ]
+      }
+    },
+    "installed_attestation": false
+  },
+  "preserved_failure": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci/unit-test-results.zip",
+    "bytes": 1482236,
+    "sha256": "8b4c78337db113085e10227001378361912d5a490d92d3c3779998246464c49f"
+  },
+  "reviewer_assumption_correction": {
+    "path": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/agent-logs/ci465dac-independent-20260930/attempt1-note.json",
+    "bytes": 542,
+    "sha256": "6f973d00f6a0eb5bdc7515076b38d9243d26ce2ef8d01ec2edb454948284674c"
+  },
+  "limitations": [
+    "Host tests and CI guards do not accept the five encrypted recovery runtime methods or future ordinary300 gate. Prior ordinary08b0 failures remain retained.",
+    "The unchanged native hashes establish byte identity only; no runtime behavior or performance acceptance follows from them.",
+    "Host synthetic evaluator/reviewer checks are not fresh40 quality results, app context resolution, backend readiness, model generation, Fold geometry or owner-content acceptance.",
+    "Actual APK source is associated with exact workflow checkout; installed bytes were not independently measured.",
+    "Required direct packaged alignment/JNI inspection covers libskein_llama.so and libskein_sqlite_jni.so, matching CI guard scope."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "run": 36712322980,
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11094936410,
+      "name": "ux-verification-records",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/ux465dac/ux-verification-records.zip",
+      "bytes": 455717,
+      "sha256": "8e72b0a5434a2e7b1a49b0a88d6b04e7a82350a2b3cc347ac6a5ed5ee7d0299a",
+      "api_digest": "sha256:8e72b0a5434a2e7b1a49b0a88d6b04e7a82350a2b3cc347ac6a5ed5ee7d0299a"
+    }
+  ],
+  "logs_sha256": "f585fb74a0b42435e040bc3ffb30c683f19a293f23ca536a341917aecfedab21"
+}

@@ -1,0 +1,1032 @@
+{
+  "review": "independent fresh40 original artifact, frozen source, actual runtime and collection attribution",
+  "result": "PASS_BOUNDED_ARTIFACT_ATTRIBUTION; QUALITY_FAIL_AND_FRESH40_INCOMPLETE_RETAINED",
+  "run": 36710813526,
+  "build_revision": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "require_quality": false,
+  "require_hybrid": false,
+  "raw_audit": {
+    "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/actual08b0-review.json",
+    "sha256": "db0643458a1bf747862831c6e04426095e6023500b93aef502afccc083ffb1dc",
+    "status": "PASS_RAW_REPORT_CONSISTENCY"
+  },
+  "archive": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/fresh40-08b0/real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-08b0f10771b26202c57cceed9e1027f0654ad3cb.zip",
+    "bytes": 2055027,
+    "sha256": "3a8107bcba7d1b6edaafcd3e22af403bc29996754d94e830af7ba387659e47ab",
+    "api_digest": "sha256:3a8107bcba7d1b6edaafcd3e22af403bc29996754d94e830af7ba387659e47ab",
+    "api_artifact_id": 11094505365
+  },
+  "workflow_logs_sha256": "197f7e2b0010ff57e01e1377b267d7b952f7524105e4f36eeb2da05dc72527ce",
+  "metadata_hashes": {
+    "run.json": "8308839af1b2d161dd42af0bf6fa46fcca83b8a3bdc03fb958bff2efcc4f73c9",
+    "jobs.json": "438a4afcac6ccc32dbb9a5b976f4e0ca0aced2b7eaab122b75c444caf73e802c",
+    "artifact-list.json": "49f835f7408a3b2148603464907673161fa144c6028af3aabbb39695cbc73bea",
+    "download-review.json": "acb6f1e07da5ac0318d55e0477a62e09f93f3f50edf8c44ae4656029ae6555bd"
+  },
+  "required_steps": {
+    "Verify diagnostic runner and build only the vault test APK": "success",
+    "Measure only the explicitly opted-in retrieval class": "success",
+    "Retain measured diagnostic, actual instrumentation XML, and failures": "success"
+  },
+  "all_unpacked_files_match_archive": true,
+  "artifact_files": [
+    {
+      "path": "build/retrieval-diagnostic/build.log",
+      "bytes": 25920,
+      "sha256": "22e427d17a20e41dc4b1412991ec47d51f6837f7e8aee42af865e4376146f926"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-path.command.json",
+      "bytes": 147,
+      "sha256": "00d4c964ce94a0aa1b83497dcf49a64aeecadaa175363f0534fbcce025fa489c"
+    },
+    {
+      "path": "build/retrieval-diagnostic/fresh40-source-freeze.json",
+      "bytes": 17943,
+      "sha256": "09c681e9e4bda3a7fdb7b6b16185c042bb2eb1f6d455016400bd7140e9a0a2cf"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-path.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-path.stdout",
+      "bytes": 105,
+      "sha256": "b4eb6678e0084604ba9d7197e2e86ed7dfd0933762d07ea375c3bf71d4bc96bd"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.command.json",
+      "bytes": 213,
+      "sha256": "804d59cc23700e417c8203c106f4f2fc15b9b9aff49b04aff7faf19043a03da8"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.stdout",
+      "bytes": 163,
+      "sha256": "a306d2cbf58d7ac69a66867b0a66477e53fa4db0082562a871954ec4e766c9fe"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.command.json",
+      "bytes": 202,
+      "sha256": "c2be41621b91c67282deae57f6bd1d65b72b63c1eee5f724e55f80d243c69b1e"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.stdout",
+      "bytes": 102,
+      "sha256": "59a96707d8d4f7a1751d367e7985eb2617ecde9470a3536c43952626a3f19277"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report.command.json",
+      "bytes": 196,
+      "sha256": "4ce43c57ec18cdb8150c9e67053d44813b7dffd987578232088cb8557bdc9fee"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report.stdout",
+      "bytes": 10207707,
+      "sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/instrumentation-gradle.log",
+      "bytes": 8497,
+      "sha256": "666e6bfd081938de3d64800f3232f2764335993e3734f58a57fc59c702b19249"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/logcat.txt",
+      "bytes": 9896016,
+      "sha256": "3e125302fc29ad7ac1cd3446b45b9e79d9ca5e8b1657c7a55ec0ff0d0505f3e8"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/retrieval.json",
+      "bytes": 10207707,
+      "sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/runner-summary.json",
+      "bytes": 24996,
+      "sha256": "ebc215151cd5d8a93be1ad410ef465bb4abbf679b55ced8ec23f8ba2c5e46456"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.eval.html",
+      "bytes": 1883,
+      "sha256": "5c0f4f923c1883651993df69b33b1a05fca26ec5ac661ac0298af7418f31fc63"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.eval.RealRetrievalEvaluationTest.html",
+      "bytes": 1818,
+      "sha256": "389c676766b8d70ed18fe4172230c908089e51bf993e32da078f31cded3086c3"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css",
+      "bytes": 2428,
+      "sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/style.css",
+      "bytes": 1798,
+      "sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/index.html",
+      "bytes": 2236,
+      "sha256": "8ff050b37b079070d15e83894b65118a1106d66145885edf2be6e2a43d5b7223"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/js/report.js",
+      "bytes": 2933,
+      "sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 611,
+      "sha256": "97b2cadb27e7d56fd95330d486894a3fc843be7bc7a30ef141d47797950bdc82"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.eval.RealRetrievalEvaluationTest-evaluate_real_ingest_and_retrieval.txt",
+      "bytes": 1735651,
+      "sha256": "1a2bddf59c6920436610407d60d704d5e2d6b9c86cd5517441243c1d38c55d90"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/device-info.pb",
+      "bytes": 112,
+      "sha256": "80fa762237b587e7b0694ca57153a584198086051fe3288c0321664fca1501d9"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/test-result.pb",
+      "bytes": 511,
+      "sha256": "d2ab89d753591d4f20ec3ea8e33fe14e204e7e21aee061c17a6de0df69482877"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt",
+      "bytes": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb",
+      "bytes": 513,
+      "sha256": "deb522f1316ea161e92a08177d061c1583bacf5b3206c0dfe5445347bb171277"
+    }
+  ],
+  "source_inventory": {
+    "candidate_count": 70,
+    "evaluator_count": 13,
+    "all83_match_frozen_and_build_git_bytes": true,
+    "freeze_ancestry_verified": true,
+    "files": [
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/AnswerPolicy.kt",
+        "bytes": 2664,
+        "sha256": "ffb9e80af19f47506a298d2e75a65b486ce0bb8b503ac860587132c28bd57309"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Blake3.kt",
+        "bytes": 13819,
+        "sha256": "46dd1dd48f66b3a8560b748b2e96a0ba1e4dab3480cc785607ee6b40a28e7739"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/ChatDraft.kt",
+        "bytes": 1549,
+        "sha256": "efdac6c437f149333cdf89ae73548aa50898ca858124f52effc34c13c2a4eaf5"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/CitationRecordJson.kt",
+        "bytes": 13894,
+        "sha256": "ee8c00733be9a7a5287de89df8e986bec9a11b6ed79336c79e07be9dc15fee75"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+        "bytes": 2233,
+        "sha256": "87e3dadf95d746e33c7711af8aad5de084aa28f5d20510b90724b69026383cf0"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Embedder.kt",
+        "bytes": 2620,
+        "sha256": "25fb1a476099e3065391976b793511f1691105b3c14e04bb725b2973d696b5cc"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/FileLifecycle.kt",
+        "bytes": 4111,
+        "sha256": "8f7b8297352f062e407e82e9eda757d686d8a045276d3a5ded24561de40e5565"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Hex.kt",
+        "bytes": 1942,
+        "sha256": "3791f1880283e5ab488b6a3901e2ab2eb7cff5dd9f49d686536765b079bc2e06"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Inference.kt",
+        "bytes": 14082,
+        "sha256": "f87a63b309decaf470c705c7085a64ececefe1e4724290fc90bf3f13117140ce"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Int8Quantizer.kt",
+        "bytes": 1263,
+        "sha256": "23615f6856415a8417658b74b93db7b316d1c494b6d7767af4872af64d60c74d"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/LexicalQueryLimits.kt",
+        "bytes": 288,
+        "sha256": "c503370f05538ef44ddaa6b34bb9e83f4dc230c720ff2705d717889799687f50"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/ModelOrigin.kt",
+        "bytes": 4497,
+        "sha256": "e88df8e65ac5aee6617b6180b0ebe79c9ec9e5c2454ece59f34bb97e1e732763"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/ModelRegistry.kt",
+        "bytes": 2336,
+        "sha256": "fb11eca6b793020c46fb9e9fb270f2f0f6d003242628bb9c25ffd8b0f2a0bd60"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Personas.kt",
+        "bytes": 2097,
+        "sha256": "1fdeaeaf3df60979ffeea1d31a48b55cd01f795be8b3e55d339cf127decb4ace"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Placeholder.kt",
+        "bytes": 250,
+        "sha256": "ca54d168f2251275fa5cf07c12284379f7f99259e9ef6aca4bffe179cde9cdac"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/PromptHistory.kt",
+        "bytes": 691,
+        "sha256": "9ba9b9697fa12a69bb9c89f9b3731e5dc00c74ee84420d09f3ba572d472bad1a"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Retrieval.kt",
+        "bytes": 13224,
+        "sha256": "4510de03113eef653109680f0f9f765e6373c20332a30396824d832835c4c2a3"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Revisions.kt",
+        "bytes": 8760,
+        "sha256": "47cd77fb5f92a4d8a91ae9150e9511ad9556424db81d2fc6e64a44646b632cc6"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/SkeinLog.kt",
+        "bytes": 4711,
+        "sha256": "fafd0958a17349eeafde47e900f3bfc8cad5de3a1b2b46b202a88ea684ae70dd"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Transfer.kt",
+        "bytes": 10847,
+        "sha256": "cf492446aa4b92fbfa946c88799068695a533a4e3001404ffe6b5befa2355914"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/kotlin/app/skein/core/model/Vault.kt",
+        "bytes": 44872,
+        "sha256": "09047aa23e01f1c601d0c8981669b99045ceb3cb3f1f6915aaf3195c92b2110d"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/model/src/main/resources/schema/model-manifest.schema.json",
+        "bytes": 7625,
+        "sha256": "d2a92c143f3158636a999164a7684ce2d25bf8b223270e74ef2322d282b841ee"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/Placeholder.kt",
+        "bytes": 199,
+        "sha256": "08fce05a12115e181799d953d9ecb570c70e68e998fa60a9fd21c189c104a912"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/CitationParser.kt",
+        "bytes": 9622,
+        "sha256": "d666ef2d3c673c7f6cb516c422d2ca78b908c33d1b3d9b944db4c7f3b25d5ccc"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/CitationRecords.kt",
+        "bytes": 5187,
+        "sha256": "081f3be4f83d29c4cd5aba3528474dd08953cf44740af96fd06cb736f946221c"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/Segment.kt",
+        "bytes": 1461,
+        "sha256": "744d841e5025df311ed395122ee3bd1ac5dc76be797071cb8fb88f25495e813b"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/chunk/Chunk.kt",
+        "bytes": 1923,
+        "sha256": "4b412f9fd64fafc841eb243098e1e60bad4dcbe0524d4a91f98e2a949dc326ed"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/chunk/Chunker.kt",
+        "bytes": 15149,
+        "sha256": "77e13e97374a0fc0387d1eeccc14a33e98ef2bf9cad39102a0f871bb67262047"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/chunk/MarkdownBlocks.kt",
+        "bytes": 11240,
+        "sha256": "243ce2f65f8ccd3d44736b6b17c12d0c2768ba081f4b792f71b3a87208305c28"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/embed/EmbeddingVectors.kt",
+        "bytes": 499,
+        "sha256": "e4f57a43ece7dbb058f3acd9ea172a48214fd4cb7c53f5ec56da9f0660525f44"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/ingest/IngestPipeline.kt",
+        "bytes": 15964,
+        "sha256": "bf4b0e1f5f9e0fc1d5ccbf1f8fd9bc5d36d9c30d10fa08cbc38e34090af5aeff"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/ingest/IngestSteps.kt",
+        "bytes": 11487,
+        "sha256": "511b2eeaadb8ee29046273d6f6cdd4f6a01f97d7fa5746d4fbd6ad52387d8479"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/prompt/ExactPromptAssembler.kt",
+        "bytes": 4216,
+        "sha256": "1fc22a739b2e39948a5c9774d8e95fc8df3e9f8656f7e211a649a39139b97e0b"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/prompt/PromptAssemblerImpl.kt",
+        "bytes": 5422,
+        "sha256": "6bee402d5401d8a8b19bb69ceb8a24aa2241db765f214916f6d161301132ace2"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/PersonalizedPageRank.kt",
+        "bytes": 10687,
+        "sha256": "21992e521817efe8aa8c6a7e3c74046d287a4185befb6335448d00ad9f58cd79"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/PprRanker.kt",
+        "bytes": 10930,
+        "sha256": "61b19d37d91f603f1a77cfc23130d70e4b5975eacb2b3b8aaee6400f1b325cf7"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/RankerConfig.kt",
+        "bytes": 6198,
+        "sha256": "9bdaea46ae43e46ea6641d5ca309895d5c11d79dd7eb2b7ff2cbaf42f15ac4bd"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/RetrievedAssembler.kt",
+        "bytes": 11754,
+        "sha256": "b71930de253cdf2fb8018f1b019b7aa00e23d6729ffa3af4d0b4c5e3c624fc26"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/ScoreFusion.kt",
+        "bytes": 7630,
+        "sha256": "125f3ca30fe5952eaf9b8e1207faf7fd014e160b7a7b66afecd0b590162d2715"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/GraphRecall.kt",
+        "bytes": 9051,
+        "sha256": "a25b7d0728d0c56eff12b65d24ba0522cf417104e34a488a2006c535ca32c82e"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/LexicalRecall.kt",
+        "bytes": 4995,
+        "sha256": "61992dacff958c5772533cccb9f28a5bcba49d149cf2d49a9ff733c3358f5c83"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/QueryNgrams.kt",
+        "bytes": 2605,
+        "sha256": "d239ba06b0ea2f37f4f7cfdba785f205ef19a0e16661d783b4f9902f182857e1"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/VectorRecall.kt",
+        "bytes": 4896,
+        "sha256": "eaa3f784201fbfa9de711fcdbdb9c33986192ceb08502d4c8d9a60f8658b7371"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceSelection.kt",
+        "bytes": 1526,
+        "sha256": "5d578bb285ab2bca19205ddad425a8cc770503e575c0e4ba6d2f54b998657abb"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+        "bytes": 11696,
+        "sha256": "a12b81d4eaebfcb3607725f83e50de63b6743a11ef64e23584173b0afc3d6151"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/LexicalEvidenceGate.kt",
+        "bytes": 4694,
+        "sha256": "33f6c132c932c9482c9850217c6dc5aedb379fbd383cbaed87971b48d042b445"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/ProvenanceFollowUpResolver.kt",
+        "bytes": 2951,
+        "sha256": "7be817e3dd1c739b0f8586618816241e1e62d1ff1105816a72501a19d9ff6795"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RecallStages.kt",
+        "bytes": 401,
+        "sha256": "aa99cb23ff3846b4e9ac0ff60f4c365a0b8574a91bd14279a8e29de1d34cc753"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RequestedValue.kt",
+        "bytes": 3208,
+        "sha256": "c18b49c6d1576fc60bee65c9dce02f16a15c2521eb0dd64a130d8894e52191b7"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+        "bytes": 13809,
+        "sha256": "1fbc77f1c5b81edee720c99eb9cb0f82935b7bb49e8056c04d305fe7f5703920"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/ApproximateTokenizer.kt",
+        "bytes": 4187,
+        "sha256": "c91fed1d6a92fba4067a04117891a725c207e7a61a70b3d7c307785dd4e853b7"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/HfTokenizer.kt",
+        "bytes": 4989,
+        "sha256": "23a8dff83b43aa4648f6873738f521a8f7412ef5f1ed50bc066fce6706e79073"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Models.kt",
+        "bytes": 9936,
+        "sha256": "44f5b56e86e989774b259750327e27ee77321130a1d2aa62b4eba30a67124a4a"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/NormalizedString.kt",
+        "bytes": 16892,
+        "sha256": "cb598948197562a7839c7852e72a3486a40d3f71a3716df8c75765595489b1bf"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Normalizers.kt",
+        "bytes": 7571,
+        "sha256": "0d5b6f30b749bc5682ef186502e50ce629abecea241e3a04621d88d20241479c"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Patterns.kt",
+        "bytes": 3409,
+        "sha256": "2bb504c55a3457013d191c79fae1b6a0cc2eb9fa43bf1cfe4737072a0e0d5d05"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/PostProcessors.kt",
+        "bytes": 5291,
+        "sha256": "b2b7918cd84ef9722b0838c95b72555f410bac633d22fb7a4b36a021fa139766"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/PreTokenizers.kt",
+        "bytes": 4922,
+        "sha256": "84c505eb8d83a21983e570f2434ae41c3a18f107c31d637d694460fa13e651f4"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Tokenizer.kt",
+        "bytes": 3633,
+        "sha256": "281f1b473ea6831c2a0d7c956814f55169640ecc548084528bfc447072c6adee"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/TokenizerFactory.kt",
+        "bytes": 13327,
+        "sha256": "955aabddeaf715e3406d43007a69d683369620291155699189bcbaa770841d9f"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/TokenizerJson.kt",
+        "bytes": 1873,
+        "sha256": "d1b7c8254a2fcca164e9417adb0ce2918271c62e409ca7a044be8299b6428ae4"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Unicode.kt",
+        "bytes": 2978,
+        "sha256": "9946a3d7fafc8d26935b909a462b1c17a1183295af25c62e1343a23f822d9269"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/FtsQuerySanitizer.kt",
+        "bytes": 1041,
+        "sha256": "5572116a880204a627efa7d84f534ad6980e60723b847c9fcf325f87f95fedd8"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexSql.kt",
+        "bytes": 9368,
+        "sha256": "a7532369212245061587a1516d5120464f17dee2396b3fd8397b4c4890b9415b"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexStoreImpl.kt",
+        "bytes": 27361,
+        "sha256": "f3c992de0790310fe0a06095ab07c8bf04a263a414cdf308431f6063325903c4"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/ChangeBus.kt",
+        "bytes": 1730,
+        "sha256": "959d21e7f28294c06a677c247a246eb06e1b444a3311d59067036b6359558af2"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/DraftSql.kt",
+        "bytes": 676,
+        "sha256": "8ddc6e7951263431fa89dd51d0ff449d7cb5239a87399cd86bca861f40f3852f"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/TableChange.kt",
+        "bytes": 1680,
+        "sha256": "c0b5a124ce06555a408e26f3752466214b137dceba698831e273f3ca641ae340"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+        "bytes": 68499,
+        "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1"
+      },
+      {
+        "group": "candidate",
+        "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultSql.kt",
+        "bytes": 23358,
+        "sha256": "584d0635f7a7be587bedbb95bb454c5ddb89f4939e3b7a2b09985d0cb68281a1"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": ".github/workflows/retrieval-diagnostic.yml",
+        "bytes": 6150,
+        "sha256": "b262682cc91e9efdea9240311baca22b215b8507b482502a42b28e5a4079b7c2"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/FreshContextualValidationEvaluation.kt",
+        "bytes": 27488,
+        "sha256": "bfc7c1da1996affd2cb4106c7d848b7f4f29437fc967a32e1830161a3c5c4caf"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt",
+        "bytes": 30304,
+        "sha256": "75a43bb338f1d9b4625ea990c59eae31c5ec41ebe84282dcca5f8d6e7c34444a"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md",
+        "bytes": 5681,
+        "sha256": "23eb2fb642e49406cf098aa1b5997a60a48f01c95aeead46e46aff759441516a"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "testing/src/main/kotlin/app/skein/testing/eval/ExpandedRetrievalMetrics.kt",
+        "bytes": 13693,
+        "sha256": "374639ba7a4f95c93d4d4e6b11e36b5ab940374639db9c4053c71b9484defd7c"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationFixture.kt",
+        "bytes": 9625,
+        "sha256": "700e3e08c3a95dfa2ecbd227db345ce0c8b4318d2b98ee850ca6c032ce23d29e"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationReport.kt",
+        "bytes": 13263,
+        "sha256": "a42db7644a1f7895ffc04aa15d3b492ad084f59f0641be4b473b6c99255e3d23"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "testing/src/main/resources/eval/rejection-validation-20260930.json",
+        "bytes": 38295,
+        "sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "testing/src/test/kotlin/app/skein/testing/eval/ExpandedRetrievalMetricsTest.kt",
+        "bytes": 15048,
+        "sha256": "8a5bf61f4e0df1b2df551a578b8246340b9869b60b90198937856929b74f4fef"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationFixtureTest.kt",
+        "bytes": 4961,
+        "sha256": "8c5ed9eaba7ecdcd2d9228c5b4ea4c463850aac5513a698953ca9b720cfb20a9"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationReportTest.kt",
+        "bytes": 8868,
+        "sha256": "aa0450cb83c45a2467d2ff3b064b3ee0bb301e737f28970bf8b22218db3509e7"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "tools/eval/run_real_retrieval.py",
+        "bytes": 49270,
+        "sha256": "099703645f1ff03c27be9cc869072905b3f1ff6bc56e430d75092af98d7a9f08"
+      },
+      {
+        "group": "evaluator",
+        "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+        "path": "tools/eval/test_run_real_retrieval.py",
+        "bytes": 57439,
+        "sha256": "fa34bf18d1b0f0615b48d28eb1e74468e124e5779c13e80c79e129a1a8d32737"
+      }
+    ]
+  },
+  "actual_runtime": {
+    "xml": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/fresh40-08b0/unpacked/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "sha256": "97b2cadb27e7d56fd95330d486894a3fc843be7bc7a30ef141d47797950bdc82",
+    "passed": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "case": {
+      "name": "evaluate_real_ingest_and_retrieval",
+      "classname": "app.skein.core.vault.eval.RealRetrievalEvaluationTest",
+      "time": "37.990"
+    },
+    "source_identity_limit": "Host-declared clean source; no embedded APK source attestation."
+  },
+  "collection": {
+    "attempts": 1,
+    "selected_attempt": 1,
+    "recovered": false,
+    "commands": {
+      "report": {
+        "argv": [
+          "adb",
+          "-s",
+          "emulator-5554",
+          "exec-out",
+          "run-as",
+          "app.skein.core.vault.test",
+          "cat",
+          "files/artifacts/eval/retrieval.json"
+        ],
+        "exit_code": 0
+      },
+      "report-sha256": {
+        "argv": [
+          "adb",
+          "-s",
+          "emulator-5554",
+          "exec-out",
+          "run-as",
+          "app.skein.core.vault.test",
+          "sha256sum",
+          "files/artifacts/eval/retrieval.json"
+        ],
+        "exit_code": 0
+      },
+      "installed-path": {
+        "argv": [
+          "adb",
+          "-s",
+          "emulator-5554",
+          "shell",
+          "pm",
+          "path",
+          "app.skein.core.vault.test"
+        ],
+        "exit_code": 0
+      },
+      "installed-sha256": {
+        "argv": [
+          "adb",
+          "-s",
+          "emulator-5554",
+          "shell",
+          "sha256sum",
+          "/data/app/~~jpN82GHXKvrkY9ZeHxtSEQ==/app.skein.core.vault.test-2wwkFceTuvLFvUUBX47kUw==/base.apk"
+        ],
+        "exit_code": 0
+      }
+    },
+    "all_exit_zero_and_stderr_empty": true,
+    "host_and_recorded_device_report_sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9",
+    "host_build_postbuild_and_recorded_installed_apk_sha256": "29d2ac425d1b320af0053f166a007edfe4034059a9d985fadb4beca7af014d5f",
+    "report_stdout_byte_identical": true,
+    "apk_payload_in_artifact": false
+  },
+  "raw_runtime_header": {
+    "status": "MEASURED_DIAGNOSTIC",
+    "device": "Google sdk_gphone64_x86_64",
+    "android_api": 35,
+    "abi": "x86_64",
+    "embedder": null,
+    "vector_count": 0,
+    "sqlite_version": "3.53.3",
+    "schema_version_applied": 11,
+    "full_hybrid_gate": "INELIGIBLE"
+  },
+  "quality_gate": {
+    "status": "FAIL",
+    "gates": {
+      "development_ranking": "PASS",
+      "development_absence": "PASS",
+      "reserved_regression": "FAIL",
+      "independent_validation": "FAIL",
+      "fresh_contextual_validation": "INCOMPLETE"
+    }
+  },
+  "primary_modes": {
+    "raw_string_baseline": {
+      "queries": 40,
+      "answerable_queries": 22,
+      "absence_queries": 18,
+      "labelled_evidence_spans": 24,
+      "attempted": 34,
+      "completed": 34,
+      "scored": 34,
+      "covered_evidence_spans": 18,
+      "micro_span_coverage": 0.75,
+      "macro_span_coverage": 0.7727272727272727,
+      "any_span_successes": 17,
+      "all_span_successes": 17,
+      "complete_conflict_queries": 1,
+      "conflict_queries": 2,
+      "correct_absence_rejections": 3,
+      "false_absence_admissions": 12,
+      "absence_rejection_rate": 0.16666666666666666,
+      "empty_answer_rejections": 2,
+      "related_but_insufficient_admissions": 0,
+      "strict_successes": 20,
+      "strict_success_rate": 0.5,
+      "provenance_violations": 0,
+      "execution_errors": 0,
+      "timeouts": 0,
+      "unexecuted": 6,
+      "nondeterministic_queries": 0,
+      "hard_provenance_gate": "INCOMPLETE",
+      "expanded_ranking_gate": "INELIGIBLE"
+    },
+    "contextual_candidate": {
+      "queries": 40,
+      "answerable_queries": 22,
+      "absence_queries": 18,
+      "labelled_evidence_spans": 24,
+      "attempted": 34,
+      "completed": 34,
+      "scored": 34,
+      "covered_evidence_spans": 18,
+      "micro_span_coverage": 0.75,
+      "macro_span_coverage": 0.7727272727272727,
+      "any_span_successes": 17,
+      "all_span_successes": 17,
+      "complete_conflict_queries": 1,
+      "conflict_queries": 2,
+      "correct_absence_rejections": 3,
+      "false_absence_admissions": 12,
+      "absence_rejection_rate": 0.16666666666666666,
+      "empty_answer_rejections": 2,
+      "related_but_insufficient_admissions": 0,
+      "strict_successes": 20,
+      "strict_success_rate": 0.5,
+      "provenance_violations": 0,
+      "execution_errors": 0,
+      "timeouts": 0,
+      "unexecuted": 6,
+      "nondeterministic_queries": 0,
+      "hard_provenance_gate": "INCOMPLETE",
+      "expanded_ranking_gate": "INELIGIBLE"
+    }
+  },
+  "component_diagnostics_excluded_from_primary": {
+    "raw_string_baseline": {
+      "cases": 6,
+      "strict_successes": 5,
+      "covered_spans": 3,
+      "correct_absence_rejections": 2,
+      "false_absence_admissions": 1,
+      "primary_credits": 0
+    },
+    "contextual_candidate": {
+      "cases": 6,
+      "strict_successes": 6,
+      "covered_spans": 3,
+      "correct_absence_rejections": 3,
+      "false_absence_admissions": 0,
+      "primary_credits": 0
+    }
+  },
+  "revision_rows": {
+    "raw_string_baseline": [
+      {
+        "id": "independent-20260930-21",
+        "status": "EXECUTED",
+        "strict_success": true,
+        "false_absence_admission": false
+      },
+      {
+        "id": "independent-20260930-22",
+        "status": "EXECUTED",
+        "strict_success": true,
+        "false_absence_admission": false
+      },
+      {
+        "id": "independent-20260930-23",
+        "status": "EXECUTED",
+        "strict_success": false,
+        "false_absence_admission": true
+      },
+      {
+        "id": "independent-20260930-24",
+        "status": "EXECUTED",
+        "strict_success": false,
+        "false_absence_admission": true
+      }
+    ],
+    "contextual_candidate": [
+      {
+        "id": "independent-20260930-21",
+        "status": "EXECUTED",
+        "strict_success": true,
+        "false_absence_admission": false
+      },
+      {
+        "id": "independent-20260930-22",
+        "status": "EXECUTED",
+        "strict_success": true,
+        "false_absence_admission": false
+      },
+      {
+        "id": "independent-20260930-23",
+        "status": "EXECUTED",
+        "strict_success": false,
+        "false_absence_admission": true
+      },
+      {
+        "id": "independent-20260930-24",
+        "status": "EXECUTED",
+        "strict_success": false,
+        "false_absence_admission": true
+      }
+    ]
+  },
+  "independent_raw_checks": [
+    "22 frozen source bodies, frontmatter/revision BLAKE3, exact22 current rows/chunks, title/kind/Space and83 frozen source files.",
+    "Raw user query, real-source pins and historical/current revision identities; all4 revision cases executed repository update/ingest.",
+    "Original ranks and exact member identity/signals; full UTF8 span bounds and interval unions; both required conflict spans; no credit from empty unsupported primary context.",
+    "One warmup and3 repeat records per executed primary/component case; conservative span minimum, any nonempty absence admission, errors/timeouts and deterministic status.",
+    "Primary40/22answer/18absence/24span denominators and6UNEXECUTED context rows; independent summary recomputation agrees."
+  ],
+  "bounded_findings": [
+    "Both primary modes are identical at20/40strict successes;18/24required spans;17/22all-span answers;3/18correctabsence and12falseabsence admissions;1/2complete conflicts.",
+    "All34attempted primary rows complete without provenance violations, errors, timeouts or nondeterminism, but6applicationcontext rows remain unexecuted.",
+    "Four revision rows have2answer successes and2falseabsence admissions; replay execution does not prove semantic rejection.",
+    "Separate component baseline5/6andcandidate6/6 strict successes do not count toward primary40 and do not prove app SendPipeline wiring.",
+    "Overall runner quality gate remainsFAIL; fresh40hardprovenanceINCOMPLETE and expanded/fullhybridINELIGIBLE; diagnostic job success is not quality acceptance."
+  ],
+  "limitations": [
+    "No retrieval/build/test/CI/device invocation by reviewer; only frozen offline auditor and local artifact/Git reads.",
+    "Raw report JSON cannot attest original DB/WAL bytes, cleanup durability, live process identity or application lifecycle/Space resolution.",
+    "APK bytes are absent; equal host-built/post-run/device-reported hash receipts are bounded attribution, not independently rehashed installed APK payload.",
+    "No SDK image payload bytes or native device/physical Fold/model/embedding performance acceptance.",
+    "No thresholds, source, candidate, fixtures or golds changed and no post-output calibration performed."
+  ],
+  "outstanding_gates": {
+    "application_context": "UNEXECUTED",
+    "hard_provenance": "INCOMPLETE",
+    "expanded_ranking": "INELIGIBLE",
+    "full_hybrid": "INELIGIBLE",
+    "runner_quality": "FAIL"
+  }
+}

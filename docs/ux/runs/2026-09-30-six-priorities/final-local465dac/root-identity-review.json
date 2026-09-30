@@ -1,0 +1,63 @@
+{
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "archive_sha256": "48a08cdda87724b3b83f91d481cda2cab2054402bf2ace9786d7007e1b2a8e58",
+  "counts": {
+    "passed": 5500,
+    "skipped": 86
+  },
+  "added": [
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "absent source WAL stages an empty private WAL without changing source absence"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "captured WAL keeps exact private identity including empty and nonempty evidence"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "staged empty private WAL cannot disappear become nonempty or redirect to another file"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "empty WAL or SHM appearing at source during proof still refuses and zeros candidate"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "read only native work leaving empty private WAL proves without changing source absence"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "absent source WAL stages an empty private WAL without changing source absence"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "captured WAL keeps exact private identity including empty and nonempty evidence"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "staged empty private WAL cannot disappear become nonempty or redirect to another file"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "empty WAL or SHM appearing at source during proof still refuses and zeros candidate"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "read only native work leaving empty private WAL proves without changing source absence"
+    ]
+  ],
+  "removed": [],
+  "unchanged_skip_identities_and_xml": 86,
+  "all_manifest_records_rehashed": true
+}

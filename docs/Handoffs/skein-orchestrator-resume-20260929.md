@@ -1,5 +1,7 @@
 # Skein orchestrator resume, 29 September 2026
 
+**Latest execution:** use the [six-priority handoff](skein-six-priorities-20260930.md) and live `six_priorities_20260930` coordination record. Main is now beyond this historical e62 checkpoint. Physical deletion is complete; subsequent source changes are not installed on the Fold, which remains held after disconnection. Refresh origin, Beads and leases before taking ownership. Preserve the installed app/models and do not repeat setup, import or completed deletion fixtures.
+
 **30 September continuation:** the normal owner unlock and bounded e62 physical deletion checks are complete. The [current continuation handoff](skein-orchestrator-continuation-20260930.md) records the new evidence, source changes and remaining gates. The pending-unlock and outgoing-owner descriptions below are the preserved earlier checkpoint, not current instructions to repeat fixtures or installation.
 
 Start here for the next session. The owner requested this handoff after the chat/note deletion update. It supersedes historical pause/HOLD and installed-build summaries only where explicitly stated below. Read `AGENTS.md`, run `bd prime`, refresh Git/Beads/coordination state, and continue autonomously. Do not restart completed September 28 graph/FTS/instrumentation assignments or completed September 29 UX/inference implementations.

@@ -1,0 +1,10 @@
+{
+  "run": 36712945986,
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "event": "schedule",
+  "conclusion": "cancelled",
+  "actual_xml_files": 0,
+  "test_acceptance": "NONE; not a tested failure or success",
+  "reason": "Coordinatorterminatedunexpectednightlyoverlap to preserve requestedserializedqueue",
+  "archive_sha256": "26acebacda920f2282e4339df48e9fd4f0d76be683802d7d9dd07d31cfe4cbf0"
+}

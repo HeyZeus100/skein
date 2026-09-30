@@ -1,0 +1,227 @@
+{
+  "run": 36710813526,
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "archive_sha256": "3a8107bcba7d1b6edaafcd3e22af403bc29996754d94e830af7ba387659e47ab",
+  "report_sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9",
+  "freeze_actual_git_source_files": 83,
+  "candidate_and_evaluator_ancestry": true,
+  "raw_report_device_hash_and_collected_bytes_equal": true,
+  "declared_built_after_installed_test_apk_hashes_equal": true,
+  "test_apk_hash": "29d2ac425d1b320af0053f166a007edfe4034059a9d985fadb4beca7af014d5f",
+  "actual_xml": [
+    {
+      "class": "app.skein.core.vault.eval.RealRetrievalEvaluationTest",
+      "name": "evaluate_real_ingest_and_retrieval",
+      "nonpassing": []
+    }
+  ],
+  "actual_files": [
+    {
+      "path": "build/retrieval-diagnostic/build.log",
+      "bytes": 25920,
+      "sha256": "22e427d17a20e41dc4b1412991ec47d51f6837f7e8aee42af865e4376146f926"
+    },
+    {
+      "path": "build/retrieval-diagnostic/fresh40-source-freeze.json",
+      "bytes": 17943,
+      "sha256": "09c681e9e4bda3a7fdb7b6b16185c042bb2eb1f6d455016400bd7140e9a0a2cf"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-path.command.json",
+      "bytes": 147,
+      "sha256": "00d4c964ce94a0aa1b83497dcf49a64aeecadaa175363f0534fbcce025fa489c"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-path.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-path.stdout",
+      "bytes": 105,
+      "sha256": "b4eb6678e0084604ba9d7197e2e86ed7dfd0933762d07ea375c3bf71d4bc96bd"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.command.json",
+      "bytes": 213,
+      "sha256": "804d59cc23700e417c8203c106f4f2fc15b9b9aff49b04aff7faf19043a03da8"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.stdout",
+      "bytes": 163,
+      "sha256": "a306d2cbf58d7ac69a66867b0a66477e53fa4db0082562a871954ec4e766c9fe"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.command.json",
+      "bytes": 202,
+      "sha256": "c2be41621b91c67282deae57f6bd1d65b72b63c1eee5f724e55f80d243c69b1e"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.stdout",
+      "bytes": 102,
+      "sha256": "59a96707d8d4f7a1751d367e7985eb2617ecde9470a3536c43952626a3f19277"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report.command.json",
+      "bytes": 196,
+      "sha256": "4ce43c57ec18cdb8150c9e67053d44813b7dffd987578232088cb8557bdc9fee"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/collection-attempts/01/report.stdout",
+      "bytes": 10207707,
+      "sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/instrumentation-gradle.log",
+      "bytes": 8497,
+      "sha256": "666e6bfd081938de3d64800f3232f2764335993e3734f58a57fc59c702b19249"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/logcat.txt",
+      "bytes": 9896016,
+      "sha256": "3e125302fc29ad7ac1cd3446b45b9e79d9ca5e8b1657c7a55ec0ff0d0505f3e8"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/retrieval.json",
+      "bytes": 10207707,
+      "sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9"
+    },
+    {
+      "path": "build/retrieval-diagnostic/run/runner-summary.json",
+      "bytes": 24996,
+      "sha256": "ebc215151cd5d8a93be1ad410ef465bb4abbf679b55ced8ec23f8ba2c5e46456"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 611,
+      "sha256": "97b2cadb27e7d56fd95330d486894a3fc843be7bc7a30ef141d47797950bdc82"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/device-info.pb",
+      "bytes": 112,
+      "sha256": "80fa762237b587e7b0694ca57153a584198086051fe3288c0321664fca1501d9"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.eval.RealRetrievalEvaluationTest-evaluate_real_ingest_and_retrieval.txt",
+      "bytes": 1735651,
+      "sha256": "1a2bddf59c6920436610407d60d704d5e2d6b9c86cd5517441243c1d38c55d90"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/test-result.pb",
+      "bytes": 511,
+      "sha256": "d2ab89d753591d4f20ec3ea8e33fe14e204e7e21aee061c17a6de0df69482877"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt",
+      "bytes": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb",
+      "bytes": 513,
+      "sha256": "deb522f1316ea161e92a08177d061c1583bacf5b3206c0dfe5445347bb171277"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.eval.RealRetrievalEvaluationTest.html",
+      "bytes": 1818,
+      "sha256": "389c676766b8d70ed18fe4172230c908089e51bf993e32da078f31cded3086c3"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.eval.html",
+      "bytes": 1883,
+      "sha256": "5c0f4f923c1883651993df69b33b1a05fca26ec5ac661ac0298af7418f31fc63"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css",
+      "bytes": 2428,
+      "sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/style.css",
+      "bytes": 1798,
+      "sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/index.html",
+      "bytes": 2236,
+      "sha256": "8ff050b37b079070d15e83894b65118a1106d66145885edf2be6e2a43d5b7223"
+    },
+    {
+      "path": "core/vault/build/reports/androidTests/connected/debug/flavors/dev/js/report.js",
+      "bytes": 2933,
+      "sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a"
+    }
+  ],
+  "reported_fresh40": {
+    "status": "INCOMPLETE",
+    "modes": {
+      "raw_string_baseline": {
+        "queries": 40,
+        "answerable_queries": 22,
+        "absence_queries": 18,
+        "labelled_evidence_spans": 24,
+        "attempted": 34,
+        "completed": 34,
+        "scored": 34,
+        "covered_evidence_spans": 18,
+        "all_span_successes": 17,
+        "correct_absence_rejections": 3,
+        "false_absence_admissions": 12,
+        "strict_successes": 20,
+        "provenance_violations": 0,
+        "execution_errors": 0,
+        "timeouts": 0,
+        "unexecuted": 6,
+        "hard_provenance_gate": "INCOMPLETE",
+        "nondeterministic_queries": 0,
+        "strict_success_rate": 0.5
+      },
+      "contextual_candidate": {
+        "queries": 40,
+        "answerable_queries": 22,
+        "absence_queries": 18,
+        "labelled_evidence_spans": 24,
+        "attempted": 34,
+        "completed": 34,
+        "scored": 34,
+        "covered_evidence_spans": 18,
+        "all_span_successes": 17,
+        "correct_absence_rejections": 3,
+        "false_absence_admissions": 12,
+        "strict_successes": 20,
+        "provenance_violations": 0,
+        "execution_errors": 0,
+        "timeouts": 0,
+        "unexecuted": 6,
+        "hard_provenance_gate": "INCOMPLETE",
+        "nondeterministic_queries": 0,
+        "strict_success_rate": 0.5
+      }
+    },
+    "application_context": "UNEXECUTED",
+    "expanded_ranking_gate": "INELIGIBLE",
+    "limitation": "Structural row/count review; raw source, member and span evidence also requires independent review."
+  },
+  "raw_independent_span_review": "PENDING",
+  "limitations": [
+    "APKbytes not uploaded: these are host/device shell receipts, not independent APKmanifest/installedcontent attestation.",
+    "All6application-context rows remainUNEXECUTED; no primarycredit.",
+    "Quality enforcement disabled to preserve diagnosticfailures; successfulworkflow notqualitypass.",
+    "Fullhybrid/expandedranking INELIGIBLE; sourcehypothesis andsnapshotrecords do not establish answercorrectness."
+  ]
+}

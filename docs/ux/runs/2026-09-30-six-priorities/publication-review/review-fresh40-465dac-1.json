@@ -1,0 +1,253 @@
+{
+  "review": "read-only current handoffs and fresh40 capsule claims",
+  "result": "MEASURED_AND_PHYSICAL_CLAIMS_ACCURATE; STALE_STATUS_CORRECTIONS_REQUESTED",
+  "documents": [
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "sha256": "157145fc0d6e9f513813e4b977c86ca49fb83e55feae1137d10124f9e01c4a29",
+      "bytes": 29541,
+      "local_links": [
+        {
+          "target": "skein-orchestrator-continuation-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote8042/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/integration-wave2-actual-xml.zip",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/integration-wave2-independent-review.json",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/final-local11e308/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote05ca/ci/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote05ca/repro/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/p0-cancellation/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/fresh40-independent-auditor/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/final-local08b0/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/ordinary/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/foldable/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/recovery-private-wal/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote08b0/fresh40/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/final-local465dac/",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-six-priorities/remote465dac/scheduled-cancelled/",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "path": "docs/Handoffs/skein-orchestrator-resume-20260929.md",
+      "sha256": "d0a2f16fe3e6d4f9cb61aaefd9cd3516035953c7fa73925dad7ac8a81f14e24d",
+      "bytes": 12004,
+      "local_links": [
+        {
+          "target": "skein-six-priorities-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "skein-orchestrator-continuation-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "skein-confirmed-deletion-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-29-confirmed-delete-e62f947/README.md",
+          "exists": true
+        },
+        {
+          "target": "skein-conference-demo-final-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "../demo/conference-2026/PRESENTER.md",
+          "exists": true
+        },
+        {
+          "target": "skein-ux-integration-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "skein-retrieval-repair-execution.md",
+          "exists": true
+        },
+        {
+          "target": "skein-inference-lifecycle-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "skein-inference-model-readiness-20260929.md",
+          "exists": true
+        },
+        {
+          "target": "../CHAT_TURN_SESSION.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/OBJECT_LIFECYCLE_SPEC.md",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "path": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "sha256": "5b9e1008a18a2bb33a38f57cfa6a880b8d4db2c1e36bd69cf357535781b2b30e",
+      "bytes": 12784,
+      "local_links": [
+        {
+          "target": "skein-six-priorities-20260930.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-delete-physical-e62/README.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-resume-verification/README.md",
+          "exists": true
+        },
+        {
+          "target": "../PRIVACY.md",
+          "exists": true
+        },
+        {
+          "target": "../research/markitdown-marker-assessment-20260930.json",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-pdf-empty/README.md",
+          "exists": true
+        },
+        {
+          "target": "../ux/runs/2026-09-30-resume-verification/recovery-next-step-static-review.json",
+          "exists": true
+        }
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-six-priorities/README.md",
+      "sha256": "398bb3ec513ff50c4faf1ff8bea243094faaa98f495d64bcd9e67d6fb2259d26",
+      "bytes": 4331,
+      "local_links": [
+        {
+          "target": "../../../Handoffs/skein-six-priorities-20260930.md",
+          "exists": true
+        }
+      ]
+    }
+  ],
+  "remaining_wording_findings": [
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "line": 7,
+      "finding": "Automatic465dac batch described as running, with ordinary following; root reports ordinary36714651814 now the sole active CI run.",
+      "required_change": "Update current queue from root verified records."
+    },
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "line": 27,
+      "finding": "Fresh40 execution and expanded metrics described as remaining open despite measured first result.",
+      "required_change": "Mark historical or distinguish completed measurement from open application/quality gates."
+    },
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "line": 33,
+      "finding": "Headless explanation says hypothesis until run executes; run executed but failed before geometry.",
+      "required_change": "State new run leaves geometry hypothesis untested, as later failed-run section already does."
+    },
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "line": 59,
+      "finding": "Historical05ca paragraph ends with present-tense no fresh40 outputs generated.",
+      "required_change": "Use had been generated at that checkpoint."
+    },
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "line": 81,
+      "finding": "Recovery only locally integrated with publication pending and fresh40 sole active conflicts with published465dac and completedfresh40.",
+      "required_change": "Historical worker-checkpoint wording and current runtime status from later section."
+    },
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "line": 91,
+      "finding": "Automatic465dac workflows are called current batch.",
+      "required_change": "Record actual terminal results from root receipts; ordinary300 is now active."
+    },
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "line": 95,
+      "finding": "Corrected ordinary remains queued conflicts with dispatched36714651814.",
+      "required_change": "Name current ordinary run and keep pending-result limit."
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-six-priorities/README.md",
+      "line": 15,
+      "finding": "All40 retrieval-quality cases remain unexecuted; parent section has historical banner but this sentence can be read current.",
+      "required_change": "Explicitly at fixture-freeze checkpoint; point to measured result."
+    }
+  ],
+  "confirmed": [
+    "Fresh40 section preserves20/40strict,12falseabsence,6primaryUNEXECUTED and diagnostic-only status.",
+    "18/24spans,17/22allspan,1/2conflicts,3/18correctabsence match sealed independent raw audit.",
+    "Component5/6baseline and6/6candidate gives no primary credit; no app wiring acceptance.",
+    "HardprovenanceINCOMPLETE, qualityFAIL, expanded/fullhybridINELIGIBLE and consumed fixture limits explicit.",
+    "APK bytes and DB absent; no modelanswers; receipt-based attribution only.",
+    "Physical runner HOLD and released lease; disconnected preflight remains historical; no new install/modelimport/ownercontent authority.",
+    "Resume and continuation forwarding banners correctly identify bodies as earlier baseline.",
+    "All38 repository-local links exist.",
+    "Four fresh40 published peer/preparation copies byte-equal original sealed reviewer receipts."
+  ],
+  "limitations": [
+    "This is a local documentation review and does not poll CI or verify new ordinary output.",
+    "Current ordinary36714651814 status supplied by root.",
+    "Document hashes identify reviewed versions; root owns correction, commit and push."
+  ],
+  "actions": "Read-only repository and artifact receipt inspection; wrote only ignored review. No edits/builds/tests/CI/device/Beads."
+}

@@ -1,0 +1,66 @@
+{
+  "verdict": "PASS_UNCHANGED_FOUR_FIX_FILES_AND_ORIGINAL_RUNTIME_ASSERTIONS",
+  "runtime_run_pending": 36714651814,
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "prior_failed_runtime_source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "sealed_source_snapshot": {
+    "path": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/agent-logs/recovery-wal-proof-20260930/source-ready-2.json",
+    "sha256": "a8c528cc3dec61dea8d1b295a2f87c0e2ca1fee776dd9ff74f03b6a98d777776"
+  },
+  "files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 6229,
+      "sha256": "632ae4d6d130eff093ccc9576fc527ec51ad96c8ec787606f70fe76046622e7f"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 7339,
+      "sha256": "4cf3840b34b0b35806e9786955eeef24e406b275b8cc2db9740e9f5fc4ad6df6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 8406,
+      "sha256": "d8327293aa8960afa158852249d9ee9ed3522e6f34db96c2e697c2eb702227e4"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  ],
+  "all_four_current_worker_integration_and_committed_bytes_equal": true,
+  "original_instrumented_methods": [
+    {
+      "method": "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources",
+      "bytes": 748,
+      "sha256": "0a69b8f01485f6656ac4b5fef7fded5aa9bdd60038d76fbc34ac126638bf811a",
+      "old08b0_and_current465dac_exact_equal": true
+    },
+    {
+      "method": "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate",
+      "bytes": 893,
+      "sha256": "5a01fc22655b15da5343b19f26852d4a4615a355e118b6dcdae8486357d41074",
+      "old08b0_and_current465dac_exact_equal": true
+    },
+    {
+      "method": "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint",
+      "bytes": 1894,
+      "sha256": "92b8df5f85d391c4e99aa33691482749c6537e4c9acac0cb3890c3f0b289699f",
+      "old08b0_and_current465dac_exact_equal": true
+    },
+    {
+      "method": "proofNeverMigratesOlderSupportedSchema",
+      "bytes": 784,
+      "sha256": "624ef150975064b5ed602fa7a62ef24129fa71d131611248266ae31fd2a38a27",
+      "old08b0_and_current465dac_exact_equal": true
+    }
+  ],
+  "all_original_test_bodies_byte_identical": true,
+  "fixture_helpers_unchanged": true,
+  "new_method": {
+    "name": "directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources",
+    "sha256": "c5ff6caa92c44070c5a7682a4390dd6570c72d5569f7376ccc4395ac7ba7da71"
+  },
+  "limit": "Read-only source identity check only. No test execution or acceptance of pending ordinary300 runtime."
+}

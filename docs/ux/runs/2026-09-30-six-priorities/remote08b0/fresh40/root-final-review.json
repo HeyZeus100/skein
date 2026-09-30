@@ -1,0 +1,46 @@
+{
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "run": 36710813526,
+  "report_sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9",
+  "root_attestation_sha256": "31a3c21bddbf63c365ad854f9ac11e4dbae79a48a6292462d231e71689c49646",
+  "independent_reviews": {
+    "actual08b0-review.json": "db0643458a1bf747862831c6e04426095e6023500b93aef502afccc083ffb1dc",
+    "actual08b0-attestation.json": "e80ff4bfc93fe2b3ab73790df382d925c2a54803db34bcf1854d5ee491c09373"
+  },
+  "raw_consistency": "PASS_RAW_REPORT_CONSISTENCY",
+  "quality": "FAIL; no measuredprimaryaggregateimprovement",
+  "both_modes": {
+    "executed": 34,
+    "total": 40,
+    "covered_spans": 18,
+    "total_spans": 24,
+    "all_span_successes": 17,
+    "answerable_queries": 22,
+    "complete_conflicts": 1,
+    "conflict_queries": 2,
+    "correct_absence_rejections": 3,
+    "absence_queries": 18,
+    "false_absence_admissions": 12,
+    "strict_successes": 20,
+    "application_context_unexecuted": 6,
+    "provenance_violations": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "nondeterministic_queries": 0
+  },
+  "component_only": {
+    "baseline_successes": 5,
+    "candidate_successes": 6,
+    "total": 6,
+    "primary_credit": 0,
+    "real_app_context": "UNEXECUTED"
+  },
+  "hard_provenance": "INCOMPLETE",
+  "expanded_ranking": "INELIGIBLE",
+  "hybrid": "INELIGIBLE",
+  "fixture_usage": "firstfrozenmeasurementcomplete; do not call reusedcases fresh or tuneexistinggolds/thresholds",
+  "limitations": [
+    "ActualAPK bytes and DB/WAL notuploaded; host/devicehashreceipts only.",
+    "Thisretrievaldiagnostic generated no modelanswers and implies no answerquality acceptance."
+  ]
+}

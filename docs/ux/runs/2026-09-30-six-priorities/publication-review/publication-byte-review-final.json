@@ -1,0 +1,780 @@
+{
+  "created_at": "2026-09-30T12:33:18.725029+00:00",
+  "scope": "Read-only publication copy/hash and actual XML audit for final-local465dac plus remote465dac CI/UX/repro; mixed handoffs excluded after boundary incident",
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "status": "PASS_CAPSULE_BYTES",
+  "errors": [],
+  "local": {
+    "archive": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/unit-actual.zip",
+      "bytes": 536730,
+      "sha256": "48a08cdda87724b3b83f91d481cda2cab2054402bf2ace9786d7007e1b2a8e58"
+    },
+    "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+    "xml": 557,
+    "records_rehashed": 557,
+    "counts": {
+      "passed": 5500,
+      "skipped": 86
+    },
+    "duplicates": 0,
+    "comparison_to08b0": {
+      "added": 10,
+      "removed": 0,
+      "all_additions_recovery": true,
+      "skip_multiset_and_reason_xml_unchanged": true
+    }
+  },
+  "ci": {
+    "archive": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/unit-test-results.zip",
+      "bytes": 2764867,
+      "sha256": "cf29b50915af45d0438aaf4c13c150d494e943f528b99f68c9c4168955712a3b"
+    },
+    "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+    "xml": 557,
+    "records_rehashed": 557,
+    "counts": {
+      "passed": 5498,
+      "skipped": 88
+    },
+    "duplicates": 0,
+    "comparison_to08b0": {
+      "added": 10,
+      "removed": 0,
+      "all_additions_recovery": true,
+      "skip_multiset_and_reason_xml_unchanged": true
+    }
+  },
+  "local_ci_case_multisets_equal": true,
+  "copied_files": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/apk-review.json",
+      "bytes": 1432,
+      "sha256": "3d2c5cfef636c28c9ebaa7b2400c28b38c0d87ab3b6b61bdf2d6d77455cbec77",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/apk-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/before.json",
+      "bytes": 210,
+      "sha256": "1aaa7e75bbf57a301a862a2715ab3571d96263a7e43b1b9a85065f503017cca9",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/before.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/combined.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/combined.exit",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/combined.log",
+      "bytes": 145934,
+      "sha256": "8b7f19a89522bce2813f0c8c4abf01fb5f963ec2bd7f20394462c3d00188db03",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/combined.log",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/independent-review.json",
+      "bytes": 44157,
+      "sha256": "87b41c4a9d00f287c2784034457f87d47286fd9fcf4d63c758b13d639d105eb7",
+      "original_comparison": "not found under expected source path; peer input receipts checked separately"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/root-identity-review.json",
+      "bytes": 3419,
+      "sha256": "c126433f1f41ffae745f4abe4f64c14c1b0ed556b34c846acf1628665608ada5",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/root-identity-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/unit-actual.zip",
+      "bytes": 536730,
+      "sha256": "48a08cdda87724b3b83f91d481cda2cab2054402bf2ace9786d7007e1b2a8e58",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/unit-actual.zip",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/final-local465dac/unit-review.json",
+      "bytes": 1708436,
+      "sha256": "8b3c83e90f0773c095d3894f1c83929a0c94533c3b37461d614882a7aab6cc77",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/unit-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/artifact-list.json",
+      "bytes": 1393,
+      "sha256": "e960b0f5b5648e22a6da5296d6d62dac1f695657589434e36d1d7ba5842b8f7f",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/artifact-list.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/download-review.json",
+      "bytes": 975,
+      "sha256": "d62f7d9263e7d37b4d9f53c1a174749c246685e956f96deb6114d1429f2b8700",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/download-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/independent-review.json",
+      "bytes": 57785,
+      "sha256": "cf8dd0387cc9a405baa3a2c4ce2b044b49fee7e31bc887ffdfcc2f931fab3fb3",
+      "original_comparison": "not found under expected source path; peer input receipts checked separately"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/jobs.json",
+      "bytes": 5817,
+      "sha256": "72212bd9ba95647d85459141d92264b693d13b3e23633795df2db9f2691cda25",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/jobs.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/logs.zip",
+      "bytes": 147731,
+      "sha256": "08dae5bb7b77c2652a5481cc9aa655cb3dea5eac8c2d07016dc152e70be98638",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/logs.zip",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/root-review.json",
+      "bytes": 5065,
+      "sha256": "07ead1d6581c9e8460a6601f715dc8218fbc578982c83e778b134eaad13aacf0",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/root-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/run.json",
+      "bytes": 12007,
+      "sha256": "a25ba4bfe60750d334bcc63c4f518c4c783d9d9b681f8922503465d4c6060a2e",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/run.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ci/unit-test-results.zip",
+      "bytes": 2764867,
+      "sha256": "cf29b50915af45d0438aaf4c13c150d494e943f528b99f68c9c4168955712a3b",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/unit-test-results.zip",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/artifact-list.json",
+      "bytes": 715,
+      "sha256": "3ee8d941062188a742d8333810f357c077586e8a97a1c14ccbaf2c019af2ca3b",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/artifact-list.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/download-review.json",
+      "bytes": 602,
+      "sha256": "1faf6f324b081ec6251ad7d9a9c7a3b2884676db7ea867341cd04594d3bf3718",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/download-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/independent-review.json",
+      "bytes": 262863,
+      "sha256": "9ec178cf29b3b8ed392a4f88dc4571a45d301584189261d31871c2b565c06dc4",
+      "original": "/Users/andrewherrera/skein-worktrees/retrieval-evidence-priorities-20260930/build/agent-logs/remote465d-peer/ux-independent-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/jobs.json",
+      "bytes": 3524,
+      "sha256": "0c5b825e5cf4326affc0d1bd9ab37190cb0639a2496cf38eeea4927540d8d32c",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/jobs.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/logs.zip",
+      "bytes": 53157,
+      "sha256": "f585fb74a0b42435e040bc3ffb30c683f19a293f23ca536a341917aecfedab21",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/logs.zip",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/root-review.json",
+      "bytes": 299,
+      "sha256": "df9e14750bdcca879bcaff15e7abf2e5b9dd6836e4ce4c846aef01bfd94f30ff",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/root-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/run.json",
+      "bytes": 12030,
+      "sha256": "1877d5af5cc9b3fcfaef44071e8baa4c3e8a32bb95d0a4eff971c245b6971681",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/run.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/ux/ux-verification-records.zip",
+      "bytes": 455717,
+      "sha256": "8e72b0a5434a2e7b1a49b0a88d6b04e7a82350a2b3cc347ac6a5ed5ee7d0299a",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/ux-verification-records.zip",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/artifact-list.json",
+      "bytes": 2056,
+      "sha256": "6c657ac49366f472dcc39500345c134459980eec732b85e531e866ca4e97c51d",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/artifact-list.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/download-review.json",
+      "bytes": 1325,
+      "sha256": "0c9c10c3509af53277833b7517fc5141eb60d93dbc6c137443bb669bce9c3e68",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/download-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/independent-review.json",
+      "bytes": 21220,
+      "sha256": "a27d51a8d6484070e48285a7c8ccf4f06b259b16a5973beb54ef2f06e87be2f0",
+      "original": "/Users/andrewherrera/skein-worktrees/retrieval-evidence-priorities-20260930/build/agent-logs/remote465d-peer/repro-independent-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/jobs.json",
+      "bytes": 18711,
+      "sha256": "a37d2d161989b4a7e9cb26e0dd4b3a294df5f362e23ea69077d0f63577875d36",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/jobs.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/logs.zip",
+      "bytes": 195103,
+      "sha256": "10b5f258d5ed93f02b06b20b339e2a70815f485c1ee49a5b467a673b3b9a15ab",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/logs.zip",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/root-pair-review.json",
+      "bytes": 536,
+      "sha256": "d9a8632e93f8e3657b884a82716b7b007d1dc19f7bdfc37be68ceb5eca375ffd",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/root-pair-review.json",
+      "byte_equal_original": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/run.json",
+      "bytes": 12045,
+      "sha256": "4291726157310d52207083379d00b0d602535f39c20f440516d70cd5cbd20d2c",
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/run.json",
+      "byte_equal_original": true
+    }
+  ],
+  "safe_peer_input_receipts_rehashed": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/before.json",
+      "bytes": 210,
+      "sha256": "1aaa7e75bbf57a301a862a2715ab3571d96263a7e43b1b9a85065f503017cca9"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/combined.log",
+      "bytes": 145934,
+      "sha256": "8b7f19a89522bce2813f0c8c4abf01fb5f963ec2bd7f20394462c3d00188db03"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/combined.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/unit-actual.zip",
+      "bytes": 536730,
+      "sha256": "48a08cdda87724b3b83f91d481cda2cab2054402bf2ace9786d7007e1b2a8e58"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/unit-review.json",
+      "bytes": 1708436,
+      "sha256": "8b3c83e90f0773c095d3894f1c83929a0c94533c3b37461d614882a7aab6cc77"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-recovery-465dac/apk-review.json",
+      "bytes": 1432,
+      "sha256": "3d2c5cfef636c28c9ebaa7b2400c28b38c0d87ab3b6b61bdf2d6d77455cbec77"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/unit-test-results.zip",
+      "bytes": 2764867,
+      "sha256": "cf29b50915af45d0438aaf4c13c150d494e943f528b99f68c9c4168955712a3b"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/artifact-list.json",
+      "bytes": 1393,
+      "sha256": "e960b0f5b5648e22a6da5296d6d62dac1f695657589434e36d1d7ba5842b8f7f"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/skein-foss-debug-apk.zip",
+      "bytes": 49757660,
+      "sha256": "681fb436ae3e6ef4c23b6916dc449bf40f3613e0991373794e55c8fbecb7f150"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/logs.zip",
+      "bytes": 147731,
+      "sha256": "08dae5bb7b77c2652a5481cc9aa655cb3dea5eac8c2d07016dc152e70be98638"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/download-review.json",
+      "bytes": 975,
+      "sha256": "d62f7d9263e7d37b4d9f53c1a174749c246685e956f96deb6114d1429f2b8700"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/run.json",
+      "bytes": 12007,
+      "sha256": "a25ba4bfe60750d334bcc63c4f518c4c783d9d9b681f8922503465d4c6060a2e"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/jobs.json",
+      "bytes": 5817,
+      "sha256": "72212bd9ba95647d85459141d92264b693d13b3e23633795df2db9f2691cda25"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/root-review.json",
+      "bytes": 5065,
+      "sha256": "07ead1d6581c9e8460a6601f715dc8218fbc578982c83e778b134eaad13aacf0"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/artifact-list.json",
+      "bytes": 715,
+      "sha256": "3ee8d941062188a742d8333810f357c077586e8a97a1c14ccbaf2c019af2ca3b"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/run.json",
+      "bytes": 12030,
+      "sha256": "1877d5af5cc9b3fcfaef44071e8baa4c3e8a32bb95d0a4eff971c245b6971681"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/jobs.json",
+      "bytes": 3524,
+      "sha256": "0c5b825e5cf4326affc0d1bd9ab37190cb0639a2496cf38eeea4927540d8d32c"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/logs.zip",
+      "bytes": 53157,
+      "sha256": "f585fb74a0b42435e040bc3ffb30c683f19a293f23ca536a341917aecfedab21"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/ux-verification-records.zip",
+      "bytes": 455717,
+      "sha256": "8e72b0a5434a2e7b1a49b0a88d6b04e7a82350a2b3cc347ac6a5ed5ee7d0299a"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/artifact-list.json",
+      "bytes": 2056,
+      "sha256": "6c657ac49366f472dcc39500345c134459980eec732b85e531e866ca4e97c51d"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/run.json",
+      "bytes": 12045,
+      "sha256": "4291726157310d52207083379d00b0d602535f39c20f440516d70cd5cbd20d2c"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/jobs.json",
+      "bytes": 18711,
+      "sha256": "a37d2d161989b4a7e9cb26e0dd4b3a294df5f362e23ea69077d0f63577875d36"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/logs.zip",
+      "bytes": 195103,
+      "sha256": "10b5f258d5ed93f02b06b20b339e2a70815f485c1ee49a5b467a673b3b9a15ab"
+    }
+  ],
+  "api_bound_original_archives": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/skein-foss-debug-apk.zip",
+      "bytes": 49757660,
+      "sha256": "681fb436ae3e6ef4c23b6916dc449bf40f3613e0991373794e55c8fbecb7f150"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ci465dac/unit-test-results.zip",
+      "bytes": 2764867,
+      "sha256": "cf29b50915af45d0438aaf4c13c150d494e943f528b99f68c9c4168955712a3b"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ux465dac/ux-verification-records.zip",
+      "bytes": 455717,
+      "sha256": "8e72b0a5434a2e7b1a49b0a88d6b04e7a82350a2b3cc347ac6a5ed5ee7d0299a"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/rb-build-b.zip",
+      "bytes": 101040802,
+      "sha256": "b13a2bf090966d23b0feb5ea72feb1aaafff61555fdd3cd9fe26992e2195c9f4"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/so-determinism.zip",
+      "bytes": 50710982,
+      "sha256": "e77a10943396f62efefa76893052daa94b92105ca349925e108a726bb19acabd"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/rb-build-a.zip",
+      "bytes": 101040788,
+      "sha256": "656993e059372b5ae10bcea3d27716451c73bec5ccae0d038224039c3c485f94"
+    }
+  ],
+  "repro_metadata_subsets": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/rb-build-a-metadata.zip",
+      "bytes": 562,
+      "sha256": "a0c803f5b127ac4893de3f1b4a5218279ac4d50985d5f94691a4bfdd0a16862d",
+      "original": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/rb-build-a.zip",
+        "bytes": 101040788,
+        "sha256": "656993e059372b5ae10bcea3d27716451c73bec5ccae0d038224039c3c485f94"
+      },
+      "members": [
+        {
+          "path": "SHA256SUMS-a.txt",
+          "bytes": 96,
+          "sha256": "b82574b83bd72c964f8b96a9fdec7c88b38d7015d21d46e0c7b668c832e64ce8"
+        },
+        {
+          "path": "context-a.txt",
+          "bytes": 363,
+          "sha256": "ba176b686296c0d19e1731f181ea550e7639e9f94ddfcb51cf60aeefdf9c8e17"
+        }
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/rb-build-b-metadata.zip",
+      "bytes": 574,
+      "sha256": "202e8937e44642d215ac2c5b76279c4ba96b8a9d7887a37006d96081ecfe4cee",
+      "original": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/rb-build-b.zip",
+        "bytes": 101040802,
+        "sha256": "b13a2bf090966d23b0feb5ea72feb1aaafff61555fdd3cd9fe26992e2195c9f4"
+      },
+      "members": [
+        {
+          "path": "SHA256SUMS-b.txt",
+          "bytes": 96,
+          "sha256": "b82574b83bd72c964f8b96a9fdec7c88b38d7015d21d46e0c7b668c832e64ce8"
+        },
+        {
+          "path": "context-b.txt",
+          "bytes": 377,
+          "sha256": "5c3c3cf54eed949e4fbf8ec84b7ed1080e6ee195c6876cb4e203a0a67a1df02c"
+        }
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/remote465dac/repro/so-determinism-metadata.zip",
+      "bytes": 7088,
+      "sha256": "158597384dd883f3d7e1850c8431917cb80027e8eed586aa9f7c2410bc501eb9",
+      "original": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro465dac/so-determinism.zip",
+        "bytes": 50710982,
+        "sha256": "e77a10943396f62efefa76893052daa94b92105ca349925e108a726bb19acabd"
+      },
+      "members": [
+        {
+          "path": "SHA256SUMS.txt",
+          "bytes": 852,
+          "sha256": "5eabad8d12df9b1e8070c0fd4077c57a492b248bd73f642af6a7652b61598856"
+        },
+        {
+          "path": "run.FMiMfUyt/SHA256SUMS.txt",
+          "bytes": 501,
+          "sha256": "35ac4aa39de0a121540c60e25bf7a4302fa2f67b2f401cb01676e00f5d7ee31f"
+        },
+        {
+          "path": "run.FMiMfUyt/build-1.log",
+          "bytes": 40110,
+          "sha256": "242a93a8b3befc23e289c3ef93a6a9c06c968a4555dedb2d450be49c211dde63"
+        },
+        {
+          "path": "run.FMiMfUyt/build-2.log",
+          "bytes": 38595,
+          "sha256": "e455a6170e173502700c24121049128e0f2a89401ef6d76471e43edf32537782"
+        },
+        {
+          "path": "run.FMiMfUyt/context.txt",
+          "bytes": 552,
+          "sha256": "ad564182c522bea7bb44a5ebffc6aa8f5fb17ffe864df25ac4cecdecdf0cecf0"
+        },
+        {
+          "path": "run.FMiMfUyt/result.txt",
+          "bytes": 14,
+          "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04"
+        },
+        {
+          "path": "run.log",
+          "bytes": 777,
+          "sha256": "cfd57ad81c21ddcdbedbd509b62e1cf72fb5c3454b8a7f2aae05e5fbfa653a29"
+        },
+        {
+          "path": "workflow-context.txt",
+          "bytes": 85,
+          "sha256": "259a1e272f558b3d436374ab292afbf509ecea360d88d4014c6aae56e542562a"
+        }
+      ]
+    }
+  ],
+  "publication_sha_index": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-six-priorities/SHA256SUMS",
+    "bytes": 24362,
+    "sha256": "e197dab99a12a9cdf2247711499bdb53965a8824bd8fa079ac15c2540bdd7e33",
+    "safe_current465_rows": 46,
+    "all_selected_rows_rehashed": true,
+    "records": [
+      {
+        "path": "final-local465dac/apk-review.json",
+        "sha256": "3d2c5cfef636c28c9ebaa7b2400c28b38c0d87ab3b6b61bdf2d6d77455cbec77",
+        "matches": true
+      },
+      {
+        "path": "final-local465dac/before.json",
+        "sha256": "1aaa7e75bbf57a301a862a2715ab3571d96263a7e43b1b9a85065f503017cca9",
+        "matches": true
+      },
+      {
+        "path": "final-local465dac/combined.exit",
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "matches": true
+      },
+      {
+        "path": "final-local465dac/combined.log",
+        "sha256": "8b7f19a89522bce2813f0c8c4abf01fb5f963ec2bd7f20394462c3d00188db03",
+        "matches": true
+      },
+      {
+        "path": "final-local465dac/independent-review.json",
+        "sha256": "87b41c4a9d00f287c2784034457f87d47286fd9fcf4d63c758b13d639d105eb7",
+        "matches": true
+      },
+      {
+        "path": "final-local465dac/root-identity-review.json",
+        "sha256": "c126433f1f41ffae745f4abe4f64c14c1b0ed556b34c846acf1628665608ada5",
+        "matches": true
+      },
+      {
+        "path": "final-local465dac/unit-actual.zip",
+        "sha256": "48a08cdda87724b3b83f91d481cda2cab2054402bf2ace9786d7007e1b2a8e58",
+        "matches": true
+      },
+      {
+        "path": "final-local465dac/unit-review.json",
+        "sha256": "8b3c83e90f0773c095d3894f1c83929a0c94533c3b37461d614882a7aab6cc77",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/README.md",
+        "sha256": "0223b40285e4c56560d986ee629d2a02b4eaedd4b5e115de8115060b5deee62e",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/artifact-list.json",
+        "sha256": "e960b0f5b5648e22a6da5296d6d62dac1f695657589434e36d1d7ba5842b8f7f",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/download-review.json",
+        "sha256": "d62f7d9263e7d37b4d9f53c1a174749c246685e956f96deb6114d1429f2b8700",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/independent-review.json",
+        "sha256": "cf8dd0387cc9a405baa3a2c4ce2b044b49fee7e31bc887ffdfcc2f931fab3fb3",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/jobs.json",
+        "sha256": "72212bd9ba95647d85459141d92264b693d13b3e23633795df2db9f2691cda25",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/logs.zip",
+        "sha256": "08dae5bb7b77c2652a5481cc9aa655cb3dea5eac8c2d07016dc152e70be98638",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/root-review.json",
+        "sha256": "07ead1d6581c9e8460a6601f715dc8218fbc578982c83e778b134eaad13aacf0",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/run.json",
+        "sha256": "a25ba4bfe60750d334bcc63c4f518c4c783d9d9b681f8922503465d4c6060a2e",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ci/unit-test-results.zip",
+        "sha256": "cf29b50915af45d0438aaf4c13c150d494e943f528b99f68c9c4168955712a3b",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/README.md",
+        "sha256": "f948fcc870c236bc781ad355a1a73b98f1daa8cae07a6bf4ee50d4dc74d79c52",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/artifact-list.json",
+        "sha256": "6c657ac49366f472dcc39500345c134459980eec732b85e531e866ca4e97c51d",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/download-review.json",
+        "sha256": "0c9c10c3509af53277833b7517fc5141eb60d93dbc6c137443bb669bce9c3e68",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/independent-review.json",
+        "sha256": "a27d51a8d6484070e48285a7c8ccf4f06b259b16a5973beb54ef2f06e87be2f0",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/jobs.json",
+        "sha256": "a37d2d161989b4a7e9cb26e0dd4b3a294df5f362e23ea69077d0f63577875d36",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/logs.zip",
+        "sha256": "10b5f258d5ed93f02b06b20b339e2a70815f485c1ee49a5b467a673b3b9a15ab",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/rb-build-a-metadata.zip",
+        "sha256": "a0c803f5b127ac4893de3f1b4a5218279ac4d50985d5f94691a4bfdd0a16862d",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/rb-build-b-metadata.zip",
+        "sha256": "202e8937e44642d215ac2c5b76279c4ba96b8a9d7887a37006d96081ecfe4cee",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/root-pair-review.json",
+        "sha256": "d9a8632e93f8e3657b884a82716b7b007d1dc19f7bdfc37be68ceb5eca375ffd",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/run.json",
+        "sha256": "4291726157310d52207083379d00b0d602535f39c20f440516d70cd5cbd20d2c",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/repro/so-determinism-metadata.zip",
+        "sha256": "158597384dd883f3d7e1850c8431917cb80027e8eed586aa9f7c2410bc501eb9",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/artifact-list.json",
+        "sha256": "c72161150c7847050a34af189aa651ed741f5019d271072074a58bc3a812c0e1",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/connected-test-reports.zip",
+        "sha256": "26acebacda920f2282e4339df48e9fd4f0d76be683802d7d9dd07d31cfe4cbf0",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/download-review.json",
+        "sha256": "f10d3880e870bbc66b1e729891eea2d9351cf274105304a3cdcfbdfe320e2776",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/jobs-before-cancel.json",
+        "sha256": "7bc17dcdf64c517558003c1da04eae12a95d65512490af0a64b4b8e40d79033d",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/jobs.json",
+        "sha256": "79baad6e0f5a1ed87559d4e46b7de1cafd439c3226aa889e5d7ffc7691e23b92",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/logs.zip",
+        "sha256": "e70231714d974fac07d37cb55c71c0fe91c6295a02aec91f9044cb336909ef02",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/reason.json",
+        "sha256": "f10c608158f90cc20ceb5574ed7e016dceebe54a9763a621c5c72712a687d8fc",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/root-review.json",
+        "sha256": "f9158b3af74b4285baf0a2b9bd239862776d10338a8ba0a2e08c6eca33ab3d5f",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/run-before-cancel.json",
+        "sha256": "479b5844d249fb8cdcb0f4647af3c9e749d92166b6133267be9fcfee39b5a0d5",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/scheduled-cancelled/run.json",
+        "sha256": "ae56c44b051040175321c9f0d98baf5c50853d7f6975dab5155b0d7f23fbe1bb",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/artifact-list.json",
+        "sha256": "3ee8d941062188a742d8333810f357c077586e8a97a1c14ccbaf2c019af2ca3b",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/download-review.json",
+        "sha256": "1faf6f324b081ec6251ad7d9a9c7a3b2884676db7ea867341cd04594d3bf3718",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/independent-review.json",
+        "sha256": "9ec178cf29b3b8ed392a4f88dc4571a45d301584189261d31871c2b565c06dc4",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/jobs.json",
+        "sha256": "0c5b825e5cf4326affc0d1bd9ab37190cb0639a2496cf38eeea4927540d8d32c",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/logs.zip",
+        "sha256": "f585fb74a0b42435e040bc3ffb30c683f19a293f23ca536a341917aecfedab21",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/root-review.json",
+        "sha256": "df9e14750bdcca879bcaff15e7abf2e5b9dd6836e4ce4c846aef01bfd94f30ff",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/run.json",
+        "sha256": "1877d5af5cc9b3fcfaef44071e8baa4c3e8a32bb95d0a4eff971c245b6971681",
+        "matches": true
+      },
+      {
+        "path": "remote465dac/ux/ux-verification-records.zip",
+        "sha256": "8e72b0a5434a2e7b1a49b0a88d6b04e7a82350a2b3cc347ac6a5ed5ee7d0299a",
+        "matches": true
+      }
+    ],
+    "observation": "Coordinator regenerated index during review; final recheck finds all selected current465 records present and correct."
+  },
+  "stale_claim_review": {
+    "scope": "Safe non-retrieval paragraphs inspected before scope tightened; mixed handoff/current-verification content now excluded. No full-document review claimed.",
+    "findings": [
+      "No contradictory current source/count claim in safe reviewed CI/UX/repro receipts.",
+      "Repro root-pair PENDING is historical and explicitly resolved by README and sealed final independent report.",
+      "Older local and08b0 failure counts remain explicitly historical. Corrected ordinary36714651814 runtime is not yet accepted by this audit."
+    ]
+  },
+  "blind_boundary_incident": {
+    "date_utc": "2026-09-30",
+    "scope": "One aggregate-result paragraph from mixed execution handoff was accidentally emitted by a line-level keyword exclusion filter. No fixture facts, raw queries, labels, per-case result bodies or golds were opened.",
+    "response": "Immediately notified coordinator; excluded all mixed handoff/current-verification content. No new candidate edits or calibration. Pre-output code freeze remains unchanged.",
+    "aggregate_values_not_copied_here": true
+  },
+  "limitations": [
+    "No new builds/tests/CI/device actions.",
+    "CI actual APK export/alignment checks are attributed to readiness peer; this audit rehashed its original archive and peer receipts.",
+    "Previously independently audited same-head reproducibility bytes remain preserved; metadata subsets do not independently contain binary outputs.",
+    "No current ordinary300 acceptance, installed-device attestation, backend production activation, AL16 geometry acceptance or tag-only SQLCipher regeneration pass inferred.",
+    "Fresh40/gg11.32 candidate evaluation, fixtures/golds/results are outside this audit."
+  ],
+  "supersedes_unsealed_draft": {
+    "path": "build/agent-logs/publication465dac-peer/publication-byte-review.json",
+    "sha256": "bd53ac57c08773c431888ca39550a05d5d4e083567f942eea18178068c84a2fc",
+    "reason": "Replace stale pre-index observation with actual final selected46 row hash check; original draft retained."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "run": 36712322980,
+  "manifest_records": 719,
+  "counts": {
+    "passed": 1354,
+    "skipped": 80
+  },
+  "result_types": {
+    "unchanged": 552
+  },
+  "archive_sha256": "8e72b0a5434a2e7b1a49b0a88d6b04e7a82350a2b3cc347ac6a5ed5ee7d0299a"
+}

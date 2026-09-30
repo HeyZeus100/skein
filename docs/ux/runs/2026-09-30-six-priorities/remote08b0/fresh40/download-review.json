@@ -1,0 +1,16 @@
+{
+  "run": 36710813526,
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11094505365,
+      "name": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-08b0f10771b26202c57cceed9e1027f0654ad3cb",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/fresh40-08b0/real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-08b0f10771b26202c57cceed9e1027f0654ad3cb.zip",
+      "bytes": 2055027,
+      "sha256": "3a8107bcba7d1b6edaafcd3e22af403bc29996754d94e830af7ba387659e47ab",
+      "api_digest": "sha256:3a8107bcba7d1b6edaafcd3e22af403bc29996754d94e830af7ba387659e47ab"
+    }
+  ],
+  "logs_sha256": "197f7e2b0010ff57e01e1377b267d7b952f7524105e4f36eeb2da05dc72527ce"
+}

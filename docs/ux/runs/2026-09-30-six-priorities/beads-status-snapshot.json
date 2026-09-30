@@ -1,0 +1,140 @@
+{
+  "captured_at": "2026-09-30T12:49:12.268843+00:00",
+  "source": "local Beads database, coordinator sole writer",
+  "remote_sync": "not claimed; no configured Dolt remote",
+  "issues": [
+    {
+      "id": "skein-57m1",
+      "title": "Confirmed deletion for chats and notes in the Fold UI",
+      "status": "closed",
+      "priority": 1,
+      "updated_at": "2026-09-30T02:47:14Z"
+    },
+    {
+      "id": "skein-y2xm",
+      "title": "Close inference request when collector cancels before awaitClose registration",
+      "status": "closed",
+      "priority": 0,
+      "updated_at": "2026-09-30T11:12:12Z"
+    },
+    {
+      "id": "skein-1544",
+      "title": "Recovery proof rejects valid closed WAL-mode snapshots with absent private WAL",
+      "status": "closed",
+      "priority": 1,
+      "updated_at": "2026-09-30T12:47:27Z"
+    },
+    {
+      "id": "skein-gg11.29",
+      "title": "Vault unlock dead-ends with a generic 'Authentication failed' when the fingerprint is unavailable to apps: no device-credential fallback, no reason class in the log",
+      "status": "in_progress",
+      "priority": 0,
+      "updated_at": "2026-09-30T02:28:21Z"
+    },
+    {
+      "id": "skein-gg11.32",
+      "title": "Add relevance rejection and provenance-aware follow-up retrieval",
+      "status": "in_progress",
+      "priority": 1,
+      "updated_at": "2026-09-29T06:51:49Z"
+    },
+    {
+      "id": "skein-lbw",
+      "title": "E5.I1 :embedder isolated service (ONNX Runtime sessions, AIDL implementation)",
+      "status": "in_progress",
+      "priority": 0,
+      "updated_at": "2026-09-30T08:08:10Z"
+    },
+    {
+      "id": "skein-079",
+      "title": "E5.I3 nomic-embed backend per the M0 decision",
+      "status": "in_progress",
+      "priority": 0,
+      "updated_at": "2026-09-30T08:08:11Z"
+    },
+    {
+      "id": "skein-hwsa",
+      "title": "E5.I10 follow-up: wire the real EmbedderService + its tokenizer.json into IngestPipelines.forSession when skein-079 lands",
+      "status": "in_progress",
+      "priority": 1,
+      "updated_at": "2026-09-30T08:08:11Z"
+    },
+    {
+      "id": "skein-5hr",
+      "title": "E0.I8 Write docs/MEASUREMENTS.md with the M0 decisions",
+      "status": "in_progress",
+      "priority": 0,
+      "updated_at": "2026-09-30T08:08:12Z"
+    },
+    {
+      "id": "skein-9744",
+      "title": "E10.I5 Retrieval evaluation harness in CI",
+      "status": "in_progress",
+      "priority": 1,
+      "updated_at": "2026-09-29T06:51:50Z"
+    },
+    {
+      "id": "skein-gg11.30",
+      "title": "Add real-model answer-quality evaluation and controlled model comparisons",
+      "status": "in_progress",
+      "priority": 1,
+      "updated_at": "2026-09-29T01:12:03Z"
+    },
+    {
+      "id": "skein-66be",
+      "title": "Qualify Knowledge-off general-answer accuracy on official 1.5B profile",
+      "status": "in_progress",
+      "priority": 2,
+      "updated_at": "2026-09-30T08:08:12Z"
+    },
+    {
+      "id": "skein-830f",
+      "title": "Fold smoke #2 \u2014 'ask': import the Q3_K_M smoke GGUF, load it in :inference, stream a cited answer, lock unloads (hardware runner)",
+      "status": "in_progress",
+      "priority": 0,
+      "updated_at": "2026-09-29T08:27:13Z"
+    },
+    {
+      "id": "skein-7s1",
+      "title": "E4.I10 On-device inference validation (both default models)",
+      "status": "in_progress",
+      "priority": 0,
+      "updated_at": "2026-09-30T08:08:13Z"
+    },
+    {
+      "id": "skein-xtov.24.10",
+      "title": "AL-10 Retained chat state (entry ViewModel over session turn controller; DraftStore)",
+      "status": "in_progress",
+      "priority": 1,
+      "updated_at": "2026-09-29T08:09:35Z"
+    },
+    {
+      "id": "skein-xtov.24.16",
+      "title": "AL-16 Fold tests on the emulator lane (Pixel 9 Pro Fold AVD)",
+      "status": "in_progress",
+      "priority": 2,
+      "updated_at": "2026-09-29T08:02:56Z"
+    },
+    {
+      "id": "skein-xtov.27.2",
+      "title": "LC-09: atomic file and extracted-text deletion with orphan-blob sweep",
+      "status": "in_progress",
+      "priority": 1,
+      "updated_at": "2026-09-30T08:08:13Z"
+    },
+    {
+      "id": "skein-12pt",
+      "title": "Foldable gate controller times out before any posture exchange on headful generic AVD",
+      "status": "open",
+      "priority": 2,
+      "updated_at": "2026-09-30T11:46:45Z"
+    },
+    {
+      "id": "skein-8gbi",
+      "title": "Freeze synthetic document-extraction benchmark before converter evaluation",
+      "status": "open",
+      "priority": 2,
+      "updated_at": "2026-09-30T03:08:10Z"
+    }
+  ]
+}

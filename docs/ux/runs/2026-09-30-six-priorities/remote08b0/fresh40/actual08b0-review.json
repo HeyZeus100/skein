@@ -1,0 +1,6386 @@
+{
+  "audit_status": "PASS_RAW_REPORT_CONSISTENCY",
+  "application_context": "UNEXECUTED",
+  "expanded_ranking_gate": "INELIGIBLE",
+  "full_hybrid_gate": "INELIGIBLE",
+  "modes": {
+    "raw_string_baseline": {
+      "summary": {
+        "queries": 40,
+        "answerable_queries": 22,
+        "absence_queries": 18,
+        "labelled_evidence_spans": 24,
+        "attempted": 34,
+        "completed": 34,
+        "scored": 34,
+        "covered_evidence_spans": 18,
+        "micro_span_coverage": 0.75,
+        "macro_span_coverage": 0.7727272727272727,
+        "any_span_successes": 17,
+        "all_span_successes": 17,
+        "complete_conflict_queries": 1,
+        "conflict_queries": 2,
+        "correct_absence_rejections": 3,
+        "false_absence_admissions": 12,
+        "absence_rejection_rate": 0.16666666666666666,
+        "empty_answer_rejections": 2,
+        "related_but_insufficient_admissions": 0,
+        "strict_successes": 20,
+        "strict_success_rate": 0.5,
+        "provenance_violations": 0,
+        "execution_errors": 0,
+        "timeouts": 0,
+        "unexecuted": 6,
+        "nondeterministic_queries": 0,
+        "hard_provenance_gate": "INCOMPLETE",
+        "expanded_ranking_gate": "INELIGIBLE"
+      },
+      "rows": [
+        {
+          "id": "independent-20260930-01",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-02",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-03",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 1,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 1,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 1,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 1,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-04",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 7,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-05",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-06",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-07",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 7,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-08",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-09",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-10",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-11",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-12",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-13",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-14",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-15",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-16",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-17",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 2,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 2,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 2,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 2,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-18",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 2,
+            "total_spans": 2,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 2,
+              "covered_span_ordinals": [
+                0,
+                1
+              ],
+              "total_spans": 2,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 2,
+              "covered_span_ordinals": [
+                0,
+                1
+              ],
+              "total_spans": 2,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 2,
+              "covered_span_ordinals": [
+                0,
+                1
+              ],
+              "total_spans": 2,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-19",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-20",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-21",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-22",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-23",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-24",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-25",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 1,
+            "valid_ranks": [
+              1
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-26",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 1,
+            "valid_ranks": [
+              1
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-27",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 2,
+            "valid_ranks": [
+              1,
+              2
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-28",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 2,
+            "valid_ranks": [
+              1,
+              2
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-29",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-30",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-31",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-32",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-33",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-34",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-35",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-36",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-37",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-38",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-39",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-40",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        }
+      ],
+      "component_diagnostics_excluded_from_primary": {
+        "independent-20260930-31": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-32": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-33": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-34": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 2,
+            "valid_ranks": [
+              1,
+              2
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-35": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-36": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        }
+      }
+    },
+    "contextual_candidate": {
+      "summary": {
+        "queries": 40,
+        "answerable_queries": 22,
+        "absence_queries": 18,
+        "labelled_evidence_spans": 24,
+        "attempted": 34,
+        "completed": 34,
+        "scored": 34,
+        "covered_evidence_spans": 18,
+        "micro_span_coverage": 0.75,
+        "macro_span_coverage": 0.7727272727272727,
+        "any_span_successes": 17,
+        "all_span_successes": 17,
+        "complete_conflict_queries": 1,
+        "conflict_queries": 2,
+        "correct_absence_rejections": 3,
+        "false_absence_admissions": 12,
+        "absence_rejection_rate": 0.16666666666666666,
+        "empty_answer_rejections": 2,
+        "related_but_insufficient_admissions": 0,
+        "strict_successes": 20,
+        "strict_success_rate": 0.5,
+        "provenance_violations": 0,
+        "execution_errors": 0,
+        "timeouts": 0,
+        "unexecuted": 6,
+        "nondeterministic_queries": 0,
+        "hard_provenance_gate": "INCOMPLETE",
+        "expanded_ranking_gate": "INELIGIBLE"
+      },
+      "rows": [
+        {
+          "id": "independent-20260930-01",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-02",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-03",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 1,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 1,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 1,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 1,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-04",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 7,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-05",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-06",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-07",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 7,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 7,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-08",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-09",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-10",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-11",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-12",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-13",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-14",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-15",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-16",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-17",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 2,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 2,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 2,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 2,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-18",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 2,
+            "total_spans": 2,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 2,
+              "covered_span_ordinals": [
+                0,
+                1
+              ],
+              "total_spans": 2,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 2,
+              "covered_span_ordinals": [
+                0,
+                1
+              ],
+              "total_spans": 2,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 2,
+              "covered_span_ordinals": [
+                0,
+                1
+              ],
+              "total_spans": 2,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-19",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-20",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-21",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-22",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-23",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-24",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-25",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 1,
+            "valid_ranks": [
+              1
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-26",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 1,
+            "valid_ranks": [
+              1
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-27",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 2,
+            "valid_ranks": [
+              1,
+              2
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-28",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 2,
+            "valid_ranks": [
+              1,
+              2
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 2,
+              "valid_ranks": [
+                1,
+                2
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-29",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-30",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-31",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-32",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-33",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-34",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-35",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-36",
+          "status": "UNEXECUTED",
+          "attempted": false,
+          "deterministic": false,
+          "strict_success": false,
+          "score": null,
+          "samples": []
+        },
+        {
+          "id": "independent-20260930-37",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-38",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-39",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        {
+          "id": "independent-20260930-40",
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": false,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 8,
+            "valid_ranks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": true,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 8,
+              "valid_ranks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        }
+      ],
+      "component_diagnostics_excluded_from_primary": {
+        "independent-20260930-31": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 1,
+            "valid_ranks": [
+              1
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-32": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 1,
+            "valid_ranks": [
+              1
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-33": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-34": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-35": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 0,
+            "total_spans": 0,
+            "all_spans_covered": false,
+            "raw_evidence_count": 0,
+            "valid_ranks": [],
+            "correct_absence_rejection": true,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 0,
+              "covered_span_ordinals": [],
+              "total_spans": 0,
+              "raw_evidence_count": 0,
+              "valid_ranks": [],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        },
+        "independent-20260930-36": {
+          "status": "EXECUTED",
+          "attempted": true,
+          "deterministic": true,
+          "strict_success": true,
+          "score": {
+            "covered_spans": 1,
+            "total_spans": 1,
+            "all_spans_covered": true,
+            "raw_evidence_count": 1,
+            "valid_ranks": [
+              1
+            ],
+            "correct_absence_rejection": false,
+            "false_absence_admission": false,
+            "provenance_violations": []
+          },
+          "samples": [
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            },
+            {
+              "covered_spans": 1,
+              "covered_span_ordinals": [
+                0
+              ],
+              "total_spans": 1,
+              "raw_evidence_count": 1,
+              "valid_ranks": [
+                1
+              ],
+              "provenance_violations": []
+            }
+          ],
+          "warmup_provenance_violations": []
+        }
+      }
+    }
+  },
+  "snapshot_counts": {
+    "documents": 22,
+    "stored_chunks": 22,
+    "requests": 40,
+    "historical_documents": 2
+  },
+  "raw_report_sha256": "040bebe15f4d5e6247c70d704b3c94fe34b60b72d1a53ba4a7f6dfd0cb649cc9",
+  "fixture_sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+  "auditor_sha256": "97c60fc08e1d95bd4d74f8179fea9ff11665b6e6691c026955ff2f2e4a966fec",
+  "candidate_freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+  "evaluator_freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+  "build_revision": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "source_files": [
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/AnswerPolicy.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "ffb9e80af19f47506a298d2e75a65b486ce0bb8b503ac860587132c28bd57309"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Blake3.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "46dd1dd48f66b3a8560b748b2e96a0ba1e4dab3480cc785607ee6b40a28e7739"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/ChatDraft.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "efdac6c437f149333cdf89ae73548aa50898ca858124f52effc34c13c2a4eaf5"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/CitationRecordJson.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "ee8c00733be9a7a5287de89df8e986bec9a11b6ed79336c79e07be9dc15fee75"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "87e3dadf95d746e33c7711af8aad5de084aa28f5d20510b90724b69026383cf0"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Embedder.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "25fb1a476099e3065391976b793511f1691105b3c14e04bb725b2973d696b5cc"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/FileLifecycle.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "8f7b8297352f062e407e82e9eda757d686d8a045276d3a5ded24561de40e5565"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Hex.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "3791f1880283e5ab488b6a3901e2ab2eb7cff5dd9f49d686536765b079bc2e06"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Inference.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "f87a63b309decaf470c705c7085a64ececefe1e4724290fc90bf3f13117140ce"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Int8Quantizer.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "23615f6856415a8417658b74b93db7b316d1c494b6d7767af4872af64d60c74d"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/LexicalQueryLimits.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "c503370f05538ef44ddaa6b34bb9e83f4dc230c720ff2705d717889799687f50"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/ModelOrigin.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "e88df8e65ac5aee6617b6180b0ebe79c9ec9e5c2454ece59f34bb97e1e732763"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/ModelRegistry.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "fb11eca6b793020c46fb9e9fb270f2f0f6d003242628bb9c25ffd8b0f2a0bd60"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Personas.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "1fdeaeaf3df60979ffeea1d31a48b55cd01f795be8b3e55d339cf127decb4ace"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Placeholder.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "ca54d168f2251275fa5cf07c12284379f7f99259e9ef6aca4bffe179cde9cdac"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/PromptHistory.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "9ba9b9697fa12a69bb9c89f9b3731e5dc00c74ee84420d09f3ba572d472bad1a"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Retrieval.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "4510de03113eef653109680f0f9f765e6373c20332a30396824d832835c4c2a3"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Revisions.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "47cd77fb5f92a4d8a91ae9150e9511ad9556424db81d2fc6e64a44646b632cc6"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/SkeinLog.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "fafd0958a17349eeafde47e900f3bfc8cad5de3a1b2b46b202a88ea684ae70dd"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Transfer.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "cf492446aa4b92fbfa946c88799068695a533a4e3001404ffe6b5befa2355914"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Vault.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "09047aa23e01f1c601d0c8981669b99045ceb3cb3f1f6915aaf3195c92b2110d"
+    },
+    {
+      "path": "core/model/src/main/resources/schema/model-manifest.schema.json",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "d2a92c143f3158636a999164a7684ce2d25bf8b223270e74ef2322d282b841ee"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/Placeholder.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "08fce05a12115e181799d953d9ecb570c70e68e998fa60a9fd21c189c104a912"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/CitationParser.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "d666ef2d3c673c7f6cb516c422d2ca78b908c33d1b3d9b944db4c7f3b25d5ccc"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/CitationRecords.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "081f3be4f83d29c4cd5aba3528474dd08953cf44740af96fd06cb736f946221c"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/Segment.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "744d841e5025df311ed395122ee3bd1ac5dc76be797071cb8fb88f25495e813b"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chunk/Chunk.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "4b412f9fd64fafc841eb243098e1e60bad4dcbe0524d4a91f98e2a949dc326ed"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chunk/Chunker.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "77e13e97374a0fc0387d1eeccc14a33e98ef2bf9cad39102a0f871bb67262047"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chunk/MarkdownBlocks.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "243ce2f65f8ccd3d44736b6b17c12d0c2768ba081f4b792f71b3a87208305c28"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/embed/EmbeddingVectors.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "e4f57a43ece7dbb058f3acd9ea172a48214fd4cb7c53f5ec56da9f0660525f44"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/ingest/IngestPipeline.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "bf4b0e1f5f9e0fc1d5ccbf1f8fd9bc5d36d9c30d10fa08cbc38e34090af5aeff"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/ingest/IngestSteps.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "511b2eeaadb8ee29046273d6f6cdd4f6a01f97d7fa5746d4fbd6ad52387d8479"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/prompt/ExactPromptAssembler.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "1fc22a739b2e39948a5c9774d8e95fc8df3e9f8656f7e211a649a39139b97e0b"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/prompt/PromptAssemblerImpl.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "6bee402d5401d8a8b19bb69ceb8a24aa2241db765f214916f6d161301132ace2"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/PersonalizedPageRank.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "21992e521817efe8aa8c6a7e3c74046d287a4185befb6335448d00ad9f58cd79"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/PprRanker.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "61b19d37d91f603f1a77cfc23130d70e4b5975eacb2b3b8aaee6400f1b325cf7"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/RankerConfig.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "9bdaea46ae43e46ea6641d5ca309895d5c11d79dd7eb2b7ff2cbaf42f15ac4bd"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/RetrievedAssembler.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "b71930de253cdf2fb8018f1b019b7aa00e23d6729ffa3af4d0b4c5e3c624fc26"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/rank/ScoreFusion.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "125f3ca30fe5952eaf9b8e1207faf7fd014e160b7a7b66afecd0b590162d2715"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/GraphRecall.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "a25b7d0728d0c56eff12b65d24ba0522cf417104e34a488a2006c535ca32c82e"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/LexicalRecall.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "61992dacff958c5772533cccb9f28a5bcba49d149cf2d49a9ff733c3358f5c83"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/QueryNgrams.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "d239ba06b0ea2f37f4f7cfdba785f205ef19a0e16661d783b4f9902f182857e1"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/recall/VectorRecall.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "eaa3f784201fbfa9de711fcdbdb9c33986192ceb08502d4c8d9a60f8658b7371"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceSelection.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "5d578bb285ab2bca19205ddad425a8cc770503e575c0e4ba6d2f54b998657abb"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "a12b81d4eaebfcb3607725f83e50de63b6743a11ef64e23584173b0afc3d6151"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/LexicalEvidenceGate.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "33f6c132c932c9482c9850217c6dc5aedb379fbd383cbaed87971b48d042b445"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/ProvenanceFollowUpResolver.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "7be817e3dd1c739b0f8586618816241e1e62d1ff1105816a72501a19d9ff6795"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RecallStages.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "aa99cb23ff3846b4e9ac0ff60f4c365a0b8574a91bd14279a8e29de1d34cc753"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RequestedValue.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "c18b49c6d1576fc60bee65c9dce02f16a15c2521eb0dd64a130d8894e52191b7"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "1fbc77f1c5b81edee720c99eb9cb0f82935b7bb49e8056c04d305fe7f5703920"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/ApproximateTokenizer.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "c91fed1d6a92fba4067a04117891a725c207e7a61a70b3d7c307785dd4e853b7"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/HfTokenizer.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "23a8dff83b43aa4648f6873738f521a8f7412ef5f1ed50bc066fce6706e79073"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Models.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "44f5b56e86e989774b259750327e27ee77321130a1d2aa62b4eba30a67124a4a"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/NormalizedString.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "cb598948197562a7839c7852e72a3486a40d3f71a3716df8c75765595489b1bf"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Normalizers.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "0d5b6f30b749bc5682ef186502e50ce629abecea241e3a04621d88d20241479c"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Patterns.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "2bb504c55a3457013d191c79fae1b6a0cc2eb9fa43bf1cfe4737072a0e0d5d05"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/PostProcessors.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "b2b7918cd84ef9722b0838c95b72555f410bac633d22fb7a4b36a021fa139766"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/PreTokenizers.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "84c505eb8d83a21983e570f2434ae41c3a18f107c31d637d694460fa13e651f4"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Tokenizer.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "281f1b473ea6831c2a0d7c956814f55169640ecc548084528bfc447072c6adee"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/TokenizerFactory.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "955aabddeaf715e3406d43007a69d683369620291155699189bcbaa770841d9f"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/TokenizerJson.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "d1b7c8254a2fcca164e9417adb0ce2918271c62e409ca7a044be8299b6428ae4"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/tokenizers/Unicode.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "9946a3d7fafc8d26935b909a462b1c17a1183295af25c62e1343a23f822d9269"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/FtsQuerySanitizer.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "5572116a880204a627efa7d84f534ad6980e60723b847c9fcf325f87f95fedd8"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexSql.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "a7532369212245061587a1516d5120464f17dee2396b3fd8397b4c4890b9415b"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexStoreImpl.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "f3c992de0790310fe0a06095ab07c8bf04a263a414cdf308431f6063325903c4"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/ChangeBus.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "959d21e7f28294c06a677c247a246eb06e1b444a3311d59067036b6359558af2"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/DraftSql.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "8ddc6e7951263431fa89dd51d0ff449d7cb5239a87399cd86bca861f40f3852f"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/TableChange.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "c0b5a124ce06555a408e26f3752466214b137dceba698831e273f3ca641ae340"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultSql.kt",
+      "freeze": "687c8eea8342779b3d87517fc1f2cd20cd4385fb",
+      "sha256": "584d0635f7a7be587bedbb95bb454c5ddb89f4939e3b7a2b09985d0cb68281a1"
+    },
+    {
+      "path": ".github/workflows/retrieval-diagnostic.yml",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "b262682cc91e9efdea9240311baca22b215b8507b482502a42b28e5a4079b7c2"
+    },
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/FreshContextualValidationEvaluation.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "bfc7c1da1996affd2cb4106c7d848b7f4f29437fc967a32e1830161a3c5c4caf"
+    },
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "75a43bb338f1d9b4625ea990c59eae31c5ec41ebe84282dcca5f8d6e7c34444a"
+    },
+    {
+      "path": "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "23eb2fb642e49406cf098aa1b5997a60a48f01c95aeead46e46aff759441516a"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/ExpandedRetrievalMetrics.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "374639ba7a4f95c93d4d4e6b11e36b5ab940374639db9c4053c71b9484defd7c"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationFixture.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "700e3e08c3a95dfa2ecbd227db345ce0c8b4318d2b98ee850ca6c032ce23d29e"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationReport.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "a42db7644a1f7895ffc04aa15d3b492ad084f59f0641be4b473b6c99255e3d23"
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation-20260930.json",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/ExpandedRetrievalMetricsTest.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "8a5bf61f4e0df1b2df551a578b8246340b9869b60b90198937856929b74f4fef"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationFixtureTest.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "8c5ed9eaba7ecdcd2d9228c5b4ea4c463850aac5513a698953ca9b720cfb20a9"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationReportTest.kt",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "aa0450cb83c45a2467d2ff3b064b3ee0bb301e737f28970bf8b22218db3509e7"
+    },
+    {
+      "path": "tools/eval/run_real_retrieval.py",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "099703645f1ff03c27be9cc869072905b3f1ff6bc56e430d75092af98d7a9f08"
+    },
+    {
+      "path": "tools/eval/test_run_real_retrieval.py",
+      "freeze": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+      "sha256": "fa34bf18d1b0f0615b48d28eb1e74468e124e5779c13e80c79e129a1a8d32737"
+    }
+  ],
+  "limitations": [
+    "PASS means raw-report accounting and source attribution are internally consistent, not that retrieval quality passed.",
+    "JSON snapshot and revision traces are host/instrumentation declarations; independent APK, archive/API digest and actual JUnit checks remain required.",
+    "No attestation of runtime process memory, encrypted database bytes, actual SQL history retention, or physical Fold follows from JSON alone.",
+    "Six app conversation-context cases remain primary UNEXECUTED; component diagnostics cannot establish SendPipeline acceptance.",
+    "Independent scorer has no quality threshold, embedding qualification, human grading or answer-generation acceptance."
+  ]
+}
