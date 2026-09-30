@@ -437,6 +437,191 @@ class SessionDraftStoreTest {
             assertEquals(0, f.repo.writes)
         }
 
+    @Test
+    fun `committed discard closes existing holders and preserves unrelated existing and new drafts`() =
+        runTest {
+            val f = Fixture(backgroundScope)
+            val chat = f.repo.createDocument(NewDocument(DocumentKind.CHAT, "Deleted", null))
+            val otherChat = f.repo.createDocument(NewDocument(DocumentKind.CHAT, "Kept", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            val otherKey = ChatDraftKey.Existing(otherChat.id)
+            val old = f.store.state(key)
+            val other = f.store.state(otherKey)
+            val fresh = f.store.state(KEY)
+            runCurrent()
+            f.store.update(key, ChatDraft("discarded"))
+            f.store.update(otherKey, ChatDraft("kept existing"))
+            f.store.update(KEY, ChatDraft("kept new"))
+            assertTrue(f.store.flushOnStop())
+            f.repo.transaction {
+                f.repo.deleteDocument(chat.id)
+                f.repo.afterTransactionCommit { f.store.discardCommitted(chat.id) }
+            }
+            f.store.discardCommitted(chat.id)
+            assertEquals(DraftLoadState.Closed, old.value)
+            assertEquals(DraftLoadState.Closed, f.store.state(key).value)
+            assertNull(f.store.update(key, ChatDraft("late keystroke")))
+            assertFalse(f.store.retryLoad(key))
+            assertNull(f.repo.readDraft(key))
+            assertEquals("kept existing", other.ready().draft.text)
+            assertEquals("kept new", fresh.ready().draft.text)
+            f.store.update(KEY, ChatDraft("new remains writable"))
+            f.phase = Phase.LOCKING
+            assertTrue(f.store.onLocking(EPOCH, 100))
+            assertNull(f.repo.readDraft(key))
+            assertEquals("new remains writable", f.repo.readDraft(KEY)?.text)
+            assertEquals("kept existing", f.repo.readDraft(otherKey)?.text)
+        }
+
+    @Test
+    fun `late noncancellable read cannot reopen a committed discarded key`() =
+        runTest {
+            val f = Fixture(backgroundScope)
+            val chat = f.repo.createDocument(NewDocument(DocumentKind.CHAT, "Deleted", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            f.repo.writeDraft(key, ChatDraft("old plaintext"))
+            val entered = CompletableDeferred<Unit>()
+            val release = CompletableDeferred<Unit>()
+            f.repo.beforeRead = {
+                withContext(NonCancellable) {
+                    entered.complete(Unit)
+                    release.await()
+                }
+            }
+            val old = f.store.state(key)
+            entered.await()
+            f.repo.transaction {
+                f.repo.deleteDocument(chat.id)
+                f.repo.afterTransactionCommit { f.store.discardCommitted(chat.id) }
+            }
+            assertEquals(DraftLoadState.Closed, old.value)
+            release.complete(Unit)
+            runCurrent()
+            assertEquals(DraftLoadState.Closed, old.value)
+            assertEquals(DraftLoadState.Closed, f.store.state(key).value)
+            assertFalse(f.store.retryLoad(key))
+            assertNull(f.repo.readDraft(key))
+        }
+
+    @Test
+    fun `queued mixed flush skips committed deletion and still saves unrelated new draft`() =
+        runTest {
+            val f = Fixture(backgroundScope)
+            val chat = f.repo.createDocument(NewDocument(DocumentKind.CHAT, "Deleted", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            val old = f.store.state(key)
+            f.store.state(KEY)
+            runCurrent()
+            f.store.update(key, ChatDraft("stale pending save"))
+            f.store.update(KEY, ChatDraft("new draft"))
+            val entered = CompletableDeferred<Unit>()
+            val release = CompletableDeferred<Unit>()
+            f.repo.beforeTransaction = {
+                entered.complete(Unit)
+                release.await()
+            }
+            val flush = async { f.store.flushOnStop() }
+            entered.await()
+            f.repo.base.transaction {
+                f.repo.base.deleteDocument(chat.id)
+                f.repo.base.afterTransactionCommit { f.store.discardCommitted(chat.id) }
+            }
+            release.complete(Unit)
+            assertTrue(flush.await())
+            assertEquals(DraftLoadState.Closed, old.value)
+            assertNull(f.repo.readDraft(key))
+            assertEquals("new draft", f.repo.readDraft(KEY)?.text)
+            advanceTimeBy(5_000)
+            runCurrent()
+            assertNull(f.repo.readDraft(key))
+        }
+
+    @Test
+    fun `committed discard revokes send waiting for flush without appending user`() =
+        runTest {
+            val f = Fixture(backgroundScope)
+            val chat = f.repo.createDocument(NewDocument(DocumentKind.CHAT, "Deleted", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            val old = f.store.state(key)
+            f.store.state(KEY)
+            runCurrent()
+            val capture = f.store.update(key, ChatDraft("stale send"))!!
+            f.store.update(KEY, ChatDraft("unrelated"))
+            val entered = CompletableDeferred<Unit>()
+            val release = CompletableDeferred<Unit>()
+            f.repo.beforeTransaction = {
+                entered.complete(Unit)
+                release.await()
+            }
+            val flush = async { f.store.flushOnStop() }
+            entered.await()
+            var appendCalls = 0
+            val send = launch { f.store.commitSend(key, capture.version) { appendCalls++ } }
+            runCurrent()
+            f.repo.base.transaction {
+                f.repo.base.deleteDocument(chat.id)
+                f.repo.base.afterTransactionCommit { f.store.discardCommitted(chat.id) }
+            }
+            send.join()
+            assertTrue(send.isCancelled)
+            release.complete(Unit)
+            assertTrue(flush.await())
+            assertEquals(0, appendCalls)
+            assertEquals(DraftLoadState.Closed, old.value)
+            assertTrue(runCatching { f.store.commitSend(key, capture.version) { appendCalls++ } }.isFailure)
+            assertEquals(0, appendCalls)
+            assertEquals("unrelated", f.repo.readDraft(KEY)?.text)
+            assertNull(f.repo.readDraft(key))
+        }
+
+    @Test
+    fun `delete queued behind in-flight save cascades its commit and rollback keeps draft writable`() =
+        runTest {
+            val f = Fixture(backgroundScope)
+            val chat = f.repo.createDocument(NewDocument(DocumentKind.CHAT, "Deleted", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            val old = f.store.state(key)
+            runCurrent()
+            f.store.update(key, ChatDraft("save before delete"))
+            assertTrue(
+                runCatching {
+                    f.repo.transaction {
+                        f.repo.deleteDocument(chat.id)
+                        f.repo.afterTransactionCommit { f.store.discardCommitted(chat.id) }
+                        error("rollback")
+                    }
+                }.isFailure,
+            )
+            assertEquals("save before delete", old.ready().draft.text)
+            assertTrue(f.store.update(key, ChatDraft("still writable")) != null)
+            val entered = CompletableDeferred<Unit>()
+            val release = CompletableDeferred<Unit>()
+            f.repo.beforeWrite = {
+                entered.complete(Unit)
+                release.await()
+            }
+            val save = async { f.store.flushOnStop() }
+            entered.await()
+            val deletion =
+                async {
+                    f.repo.transaction {
+                        f.repo.deleteDocument(chat.id)
+                        f.repo.afterTransactionCommit { f.store.discardCommitted(chat.id) }
+                    }
+                }
+            runCurrent()
+            assertFalse(deletion.isCompleted)
+            release.complete(Unit)
+            assertTrue(save.await())
+            deletion.await()
+            assertEquals(DraftLoadState.Closed, old.value)
+            assertNull(f.repo.readDraft(key))
+            assertNull(f.repo.getDocument(chat.id))
+            advanceTimeBy(5_000)
+            runCurrent()
+            assertNull(f.repo.readDraft(key))
+        }
+
     private enum class Phase { UNLOCKED, LOCKING, LOCKED }
 
     private class Fixture(
