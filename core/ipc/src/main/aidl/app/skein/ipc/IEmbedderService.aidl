@@ -19,6 +19,7 @@ import app.skein.ipc.EmbedResult;
 import app.skein.ipc.ExtractEntitiesRequest;
 import app.skein.ipc.RerankRequest;
 import app.skein.ipc.EntitySpanParcel;
+import app.skein.ipc.EmbedderTokenCountRequest;
 
 interface IEmbedderService {
     /** Sync. Verifies every fd in each of req's bindings, pre- and post-mmap, exactly as IInferenceService.load does. */
@@ -34,13 +35,22 @@ interface IEmbedderService {
     List<EntitySpanParcel> extractEntities(in ExtractEntitiesRequest req);
     /** Same "inline or shared-memory" rule as embed: req.candidates or req.inputFd. One score per candidate. */
     float[] rerank(in RerankRequest req);
+    /** Legacy unauthenticated method. The service refuses it; use tokenCountForSession. */
     int tokenCount(String text);
+    /** Legacy epochless unload is ignored; use unloadForSession. */
     void unload();
     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20), additive to the v2 AIDL contract:
     /** oneway. Previously absent (POST_REVIEW_RESOLUTIONS.md §3.3 defined embed as synchronous with no cancel path). Interrupts an in-flight embed/extractEntities batch between chunks (§4.2). */
+    /** Legacy epochless cancellation cannot safely name work after a rebind; ignored. */
     oneway void cancel(int requestId);
     /** oneway. Pushed the instant SessionState enters LOCKING; see LOCK_POLICY_INDEXING.md §5.2. */
     oneway void onSessionLocking(long epoch, long budgetMillis);
     /** oneway. Pushed once LOCKING's budget has elapsed or all in-flight work acknowledged. Idempotent. */
     oneway void onSessionLocked(long epoch);
+    /** Two-way: only this explicit push authorizes a cold or rebound service. */
+    void onSessionUnlocked(long epoch);
+    int tokenCountForSession(in EmbedderTokenCountRequest req);
+    /** Matches both epoch and positive, non-reused request ID. */
+    oneway void cancelForSession(long sessionEpoch, int requestId);
+    void unloadForSession(long sessionEpoch);
 }

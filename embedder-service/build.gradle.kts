@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     // E1.I2: isolation guard — this module may depend only on :core:ipc,
-    // :core:model, Kotlin stdlib/coroutines, and onnxruntime-android (spec
+    // :core:model, :core:verify, Kotlin stdlib/coroutines, and onnxruntime-android (spec
     // §2.6, plan §2.4).
     id("app.skein.guard.isolation")
 }
@@ -31,12 +31,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ipc"))
+    implementation(project(":core:verify"))
     // Backend-neutral Matryoshka output uses the shared, fixed int8 rule.
     implementation(project(":core:model"))
-    // No androidx-core-ktx: it isn't used by this stub, and this module's
-    // isolation allowlist (E1.I2) only permits :core:ipc, :core:model,
-    // Kotlin stdlib/coroutines, and onnxruntime-android — androidx.* is out
-    // of scope for the isolated embedder process.
+    // Keep the isolated service free of app/vault and AndroidX dependencies.
+    // This pre-existing runtime dependency is not an approved backend selection.
     implementation(libs.onnxruntime.android)
 
     testImplementation(libs.junit)

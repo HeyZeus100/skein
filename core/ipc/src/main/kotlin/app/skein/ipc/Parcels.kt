@@ -720,6 +720,8 @@ data class EmbedderLoadRequest(
     val rerankBinding: ManifestBinding?,
     val threads: Int,
     val sessionEpoch: Long,
+    /** Positive, strictly increasing within the epoch; zero is an unassigned legacy request. */
+    val requestId: Int = 0,
 ) : Parcelable
 
 @Parcelize
@@ -752,6 +754,8 @@ data class EmbedRequest(
     val inputFd: SharedMemRef? = null,
     val isQuery: Boolean = false,
     val sessionEpoch: Long,
+    /** Required by IEmbedderService; IInferenceService preserves its existing behavior. */
+    val requestId: Int = 0,
 ) : Parcelable
 
 /**
@@ -779,6 +783,7 @@ data class ExtractEntitiesRequest(
     val labels: List<String>,
     val inputFd: SharedMemRef? = null,
     val sessionEpoch: Long,
+    val requestId: Int = 0,
 ) : Parcelable
 
 /**
@@ -792,4 +797,5 @@ data class RerankRequest(
     val candidates: List<String>,
     val inputFd: SharedMemRef? = null,
     val sessionEpoch: Long,
+    val requestId: Int = 0,
 ) : Parcelable

@@ -314,6 +314,29 @@ class AidlContractTest {
         assertThat(fake.measureRequests.single()).isEqualTo(request)
     }
 
+    @Test
+    fun embedderUnlockIsTwoWayAndCancellationIsOneWay() {
+        val binder = RecordingBinder()
+        val proxy = IEmbedderService.Stub.asInterface(binder)
+        proxy.onSessionUnlocked(19)
+        proxy.cancelForSession(19, 42)
+        proxy.unloadForSession(19)
+        assertThat(binder.transactions.map { it.oneway }).containsExactly(false, true, false).inOrder()
+    }
+
+    @Test
+    fun embedderNewTransactionsAreAppendedAfterExistingLockedMethod() {
+        val stub = IEmbedderService.Stub::class.java
+
+        fun code(name: String): Int =
+            stub.getDeclaredField("TRANSACTION_$name").apply { isAccessible = true }.getInt(null)
+        val locked = code("onSessionLocked")
+        assertThat(code("onSessionUnlocked")).isEqualTo(locked + 1)
+        assertThat(code("tokenCountForSession")).isEqualTo(locked + 2)
+        assertThat(code("cancelForSession")).isEqualTo(locked + 3)
+        assertThat(code("unloadForSession")).isEqualTo(locked + 4)
+    }
+
     /** A binding with no descriptors: `inspect`'s marshalling, not its verifier. */
     private fun binding(): ManifestBinding =
         ManifestBinding(
@@ -491,6 +514,19 @@ class AidlContractTest {
         override fun rerank(req: RerankRequest): FloatArray = FloatArray(req.candidates.size)
 
         override fun tokenCount(text: String): Int = text.length
+
+        override fun unloadForSession(sessionEpoch: Long) = Unit
+
+        override fun tokenCountForSession(req: EmbedderTokenCountRequest): Int = req.text.length
+
+        override fun onSessionUnlocked(epoch: Long) = Unit
+
+        override fun cancelForSession(
+            sessionEpoch: Long,
+            requestId: Int,
+        ) {
+            cancelledRequestIds += requestId
+        }
 
         override fun unload() = Unit
 
