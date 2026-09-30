@@ -1,0 +1,8 @@
+{
+  "result": "PASS_SOURCE_REVIEW_ONLY",
+  "assessment_sha256": "7aba6106fdc6511b63c7570aa4c308c698d42d683b8a4a7580c63623b3923aea",
+  "upstream_files_rehashed": 21,
+  "skein_source_files_rehashed": 6,
+  "conversions_or_models_executed": 0,
+  "scope": "Pinned source and applicability assessment only; no benchmark or Android performance acceptance."
+}

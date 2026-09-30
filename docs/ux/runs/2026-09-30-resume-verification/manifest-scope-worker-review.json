@@ -1,0 +1,75 @@
+{
+  "status": "PASS_HOST_SCOPE_REGRESSION",
+  "host_tests": 9,
+  "pre_fix_negative_control": {
+    "expected_failed_subcases": 4,
+    "observed_failed_subcases": 4,
+    "errors": 0
+  },
+  "supported_module_output_roots": [
+    "app/build",
+    "build",
+    "build-logic/guards/build",
+    "core/agent/build",
+    "core/designsystem/build",
+    "core/export/build",
+    "core/inference/build",
+    "core/ipc/build",
+    "core/markdown/build",
+    "core/model/build",
+    "core/navigation/build",
+    "core/rag/build",
+    "core/security/build",
+    "core/vault/build",
+    "core/verify/build",
+    "embedder-service/build",
+    "feature/chat/build",
+    "feature/editor/build",
+    "feature/graph/build",
+    "feature/models/build",
+    "feature/onboarding/build",
+    "feature/personas/build",
+    "feature/settings/build",
+    "feature/shell/build",
+    "feature/timeline/build",
+    "inference-service/build",
+    "testing/build",
+    "testing-fakes/build",
+    "testing-ui/build"
+  ],
+  "supported_module_count": 29,
+  "preserved_logs": [
+    {
+      "path": "build/agent-logs/manifest-scope/final-host-tests.log",
+      "bytes": 1922,
+      "sha256": "e7d877d0e16b618c06a578767794714b91898bf44f981b34347704520c68794f"
+    },
+    {
+      "path": "build/agent-logs/manifest-scope/initial-dot-pattern-failure.log",
+      "bytes": 13338,
+      "sha256": "6703faaa08ce3e84a4f4b295cc9cbb7a4af9a7fcb53fce339f254a3bbe53fc04"
+    },
+    {
+      "path": "build/agent-logs/manifest-scope/pre-fix-negative-control.log",
+      "bytes": 9479,
+      "sha256": "3affe111c57e535f7d47b024e17d90653c63b1379716cacd4ee7a9bec91eb6a1"
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "tools/ci/verification-manifest.py",
+      "bytes": 3572,
+      "sha256": "26e62bc0eed6508f3486ed52a9804f60d155782d5b05befa8167aca302977d17"
+    },
+    {
+      "path": "tools/ci/test_verification_manifest.py",
+      "bytes": 11836,
+      "sha256": "0d899cf5296484df5f6ee3c2b03376abae88320ecb1d46e122b6b67408ca329b"
+    }
+  ],
+  "limits": [
+    "Current repository layout explicitly enumerated; new deeper modules must extend recognition (declared-project test detects drift).",
+    "No Gradle/build/device/CI execution; instrumentation logic unchanged and host regression tests retained.",
+    "Evidence selection only; no failures/skips/results rewritten or historical evidence deleted."
+  ]
+}

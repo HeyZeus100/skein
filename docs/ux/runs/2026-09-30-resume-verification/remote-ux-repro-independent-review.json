@@ -1,0 +1,669 @@
+{
+  "schema": "skein-remote-independent-review-v1",
+  "status": "PASS",
+  "source_sha": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+  "errors": [],
+  "archives": [
+    {
+      "name": "ux-verification-records",
+      "run_id": 36661424105,
+      "sha256": "cc405fab4ed9c9de87ef29f4819f86c01a218820af23f49841b454e7dfce2528",
+      "bytes": 452304,
+      "members_verified_equal_extraction": 716,
+      "path": "build/agent-logs/resume-20260930/remote/36661424105/11074183654/archive.zip"
+    },
+    {
+      "name": "rb-build-a",
+      "run_id": 36661424026,
+      "sha256": "90eb5746f2cd1069deb8f1c07de527ea4ff1541dc094f593a1332e81d92542b0",
+      "bytes": 100841100,
+      "members_verified_equal_extraction": 3,
+      "path": "build/agent-logs/resume-20260930/remote/36661424026/11075070305/archive.zip"
+    },
+    {
+      "name": "rb-build-b",
+      "run_id": 36661424026,
+      "sha256": "26e3a6d47b4b842675b21b07cad3f352ebf32870f7a2d1104393cdb390c76778",
+      "bytes": 100841114,
+      "members_verified_equal_extraction": 3,
+      "path": "build/agent-logs/resume-20260930/remote/36661424026/11074841997/archive.zip"
+    },
+    {
+      "name": "so-determinism",
+      "run_id": 36661424026,
+      "sha256": "feee36a96527ff69f035c33e5cc4a426a816ae73b46b9117241e554bb37eb090",
+      "bytes": 50710914,
+      "members_verified_equal_extraction": 10,
+      "path": "build/agent-logs/resume-20260930/remote/36661424026/11074632326/archive.zip"
+    }
+  ],
+  "ux": {
+    "totals": {
+      "tests": 1419,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 80,
+      "passed": 1339
+    },
+    "xml_files": 155,
+    "case_count": 1419,
+    "manifest_pins_verified": 715,
+    "images": {
+      "unchanged": 552
+    },
+    "image_summaries": 8,
+    "timestamps": {
+      "min": "2026-09-30T02:49:10.153Z",
+      "max": "2026-09-30T02:53:50.364Z"
+    },
+    "fresh_tasks": [
+      ":core:designsystem:testDebugUnitTest",
+      ":feature:chat:testDebugUnitTest",
+      ":feature:editor:testDebugUnitTest",
+      ":feature:graph:testDebugUnitTest",
+      ":feature:models:testDebugUnitTest",
+      ":feature:settings:testDebugUnitTest",
+      ":feature:timeline:testDebugUnitTest",
+      ":feature:shell:testDebugUnitTest"
+    ],
+    "exact_skips_equal_current_local_raw_xml": true,
+    "skips": [
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-443__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-443__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-443__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-443__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-524__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-524__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-524__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-524__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007__light__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007__dark__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[phone__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[phone__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[phone__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[phone__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[phone__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[phone__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[phone__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[phone__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[phone__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[phone__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[phone__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[phone__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[phone__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[phone__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[phone__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[phone__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-524__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-524__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__dark__fs100]"
+      ]
+    ],
+    "required_steps_success": [
+      "Verify screenshots",
+      "Goldens untouched by verify",
+      "Baseline size budget",
+      "Record screenshot evidence source and hashes",
+      "Upload screenshot verification records"
+    ]
+  },
+  "repro": {
+    "apk_pair_byte_equal": true,
+    "apk_sha256": "61fbf3c66b70cdb14340a7965284388ddecc7483f74e29dd5872723a11f06b4b",
+    "apk_bytes": 100840227,
+    "native_pair_byte_equal": true,
+    "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "native_bytes": 25314032,
+    "native_manifest_entries_verified": 15,
+    "embedded_llama_matches_native_pair": true,
+    "old_e62_sha256": "669f359ae8e24cf081f077f3df060518fafef19e1edc7384dcaf31c69785c613",
+    "old_e62_bytes": 100840227,
+    "new_and_e62_equal_total_length": true,
+    "new_and_e62_byte_equal": false,
+    "changed_entries_vs_e62": [
+      "assets/dexopt/baseline.prof",
+      "assets/dexopt/baseline.profm",
+      "classes.dex",
+      "classes2.dex",
+      "classes3.dex",
+      "classes4.dex",
+      "lib/arm64-v8a/libskein_sqlite.so"
+    ],
+    "new_key_material_gone_dex": [
+      "classes3.dex"
+    ],
+    "sqlite_hash_old": "5230f9710256f829e7c9bdbaa0a1063fa0140dcbabfe9e1fd3f5db6fa0130cc2",
+    "sqlite_hash_new": "af1e6212899e39f6091f8fc6e005764be78d2efa8e1b06cae24e2bcaaae07df6"
+  },
+  "run_records": {
+    "36661424105": {
+      "source_sha": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "run_json_sha256": "e314a8951645b130930add31ad296f84cba899e0273cea6d0e02b494b720fa8a",
+      "workflow_log_sha256": "4242d5a71dbd8a26f06c880cb2f104de86f40dff0456f6422d3791158c012ccc",
+      "jobs": [
+        {
+          "name": "Verify Roborazzi goldens",
+          "conclusion": "success",
+          "steps": {
+            "Set up job": "success",
+            "Checkout": "success",
+            "Set up JDK 17 (Temurin)": "success",
+            "Install required Android SDK platform": "success",
+            "Set up Gradle": "success",
+            "Verify screenshots": "success",
+            "Goldens untouched by verify": "success",
+            "Baseline size budget": "success",
+            "Job summary": "skipped",
+            "Upload screenshot diffs": "skipped",
+            "Record screenshot evidence source and hashes": "success",
+            "Upload screenshot verification records": "success",
+            "Post Set up Gradle": "success",
+            "Post Set up JDK 17 (Temurin)": "success",
+            "Post Checkout": "success",
+            "Complete job": "success"
+          }
+        }
+      ]
+    },
+    "36661424026": {
+      "source_sha": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "run_json_sha256": "93c0e6ffa3378607d01b57162740ed2423dfd1f6bcdfeb14f5b4c6fa2da935c9",
+      "workflow_log_sha256": "9c81d1270afc1b338c2cee1b11a5d47a02259ca7200f5fac2b91d5f85abb70d9",
+      "jobs": [
+        {
+          "name": "Toolchain manifest and tool self-tests",
+          "conclusion": "success",
+          "steps": {
+            "Set up job": "success",
+            "Checkout": "success",
+            "Set up Python": "success",
+            "Install PyYAML (reproducible-builds.yml parser)": "success",
+            "reproducible-builds.yml agrees with the tree": "success",
+            "manifest-check self-test": "success",
+            "SOURCE_DATE_EPOCH derivation self-test": "success",
+            "strip-signature self-test": "success",
+            "normalize-apk self-test": "success",
+            "APK comparator self-test": "success",
+            "verify.sh self-test": "success",
+            "so-determinism self-test": "success",
+            "Post Set up Python": "success",
+            "Post Checkout": "success",
+            "Complete job": "success"
+          }
+        },
+        {
+          "name": "Verify SQLCipher amalgamation matches pinned source",
+          "conclusion": "skipped",
+          "steps": {}
+        },
+        {
+          "name": "libskein_llama.so is a function of its sources",
+          "conclusion": "success",
+          "steps": {
+            "Set up job": "success",
+            "Checkout": "success",
+            "Verify third_party submodule pins": "success",
+            "Set up JDK 17 (Temurin)": "success",
+            "Install required Android SDK platform": "success",
+            "Set up Gradle": "success",
+            "Derive SOURCE_DATE_EPOCH from the commit": "success",
+            "Two cold builds of libskein_llama.so, compared": "success",
+            "Hash the retained native evidence": "success",
+            "Upload native determinism evidence": "success",
+            "Post Set up Gradle": "success",
+            "Post Set up JDK 17 (Temurin)": "success",
+            "Post Checkout": "success",
+            "Complete job": "success"
+          }
+        },
+        {
+          "name": "Build a (unsigned foss release)",
+          "conclusion": "success",
+          "steps": {
+            "Set up job": "success",
+            "Checkout (build a)": "success",
+            "Verify third_party submodule pins": "success",
+            "Set up JDK 17 (Temurin)": "success",
+            "Install required Android SDK platform": "success",
+            "Choose the OpenSSL tarball cache directory": "success",
+            "Derive pinned OpenSSL sha256 (cache key)": "success",
+            "Cache the pinned OpenSSL tarball": "success",
+            "Set up Gradle": "success",
+            "Derive SOURCE_DATE_EPOCH from the commit": "success",
+            "Assemble foss release": "success",
+            "Record hash and build context": "success",
+            "Upload build a": "success",
+            "Post Set up Gradle": "success",
+            "Post Cache the pinned OpenSSL tarball": "success",
+            "Post Set up JDK 17 (Temurin)": "success",
+            "Post Checkout (build a)": "success",
+            "Complete job": "success"
+          }
+        },
+        {
+          "name": "Build b (unsigned foss release)",
+          "conclusion": "success",
+          "steps": {
+            "Set up job": "success",
+            "Checkout (build b)": "success",
+            "Verify third_party submodule pins": "success",
+            "Set up JDK 17 (Temurin)": "success",
+            "Install required Android SDK platform": "success",
+            "Choose the OpenSSL tarball cache directory": "success",
+            "Derive pinned OpenSSL sha256 (cache key)": "success",
+            "Cache the pinned OpenSSL tarball": "success",
+            "Set up Gradle": "success",
+            "Derive SOURCE_DATE_EPOCH from the commit": "success",
+            "Assemble foss release": "success",
+            "Record hash and build context": "success",
+            "Upload build b": "success",
+            "Post Set up Gradle": "success",
+            "Post Cache the pinned OpenSSL tarball": "success",
+            "Post Set up JDK 17 (Temurin)": "success",
+            "Post Checkout (build b)": "success",
+            "Complete job": "success"
+          }
+        },
+        {
+          "name": "Compare the two builds",
+          "conclusion": "success",
+          "steps": {
+            "Set up job": "success",
+            "Checkout": "success",
+            "Download build a": "success",
+            "Download build b": "success",
+            "Show both build contexts": "success",
+            "Self-test the APK comparator": "success",
+            "sha256sum -c across runners": "success",
+            "Compare unsigned release APKs entry by entry": "success",
+            "Classify the difference": "skipped",
+            "Install diffoscope": "skipped",
+            "Produce the diffoscope report": "skipped",
+            "Upload apk-diff": "skipped",
+            "Verdict": "success",
+            "Post Checkout": "success",
+            "Complete job": "success"
+          }
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Static downloaded artifact verification; no build, device, installed bytes or runtime proof",
+    "Unsigned release pair differs from installed signed debug e62",
+    "Same APK total length does not establish same content; DEX/profile/sqlite changed from e62",
+    "No all-native-unchanged claim; only retained llama pair and embedded llama agree",
+    "Tag-only SQLCipher regeneration skipped; no fresh shader negative control",
+    "Strict host screenshot results do not close missing-key physical layout or broader Fold gates"
+  ]
+}

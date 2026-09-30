@@ -1,0 +1,22 @@
+{
+  "source_head": "e8d4014a8",
+  "root_ci_host_tests": 41,
+  "result": "PASS",
+  "log_sha256": "3ce1080350d3622708c0412b66b824d467509fce6e2be68bc0c323ab5fb73459",
+  "live_manifests": [
+    {
+      "path": "build/agent-logs/resume-20260930/scoped-live-unit-manifest.json",
+      "sha256": "ed95b2446d3cd7ee27d66e667d02a66325b0d2a5206eff79c85e9032c8f7a04f",
+      "files": 518,
+      "archive_paths": []
+    },
+    {
+      "path": "build/agent-logs/resume-20260930/scoped-live-screenshot-manifest.json",
+      "sha256": "e67dd5578eedc5f0a94105c937c9ca7fe3685a95525f91f7da17bd978a9726eb",
+      "files": 1078,
+      "archive_paths": []
+    }
+  ],
+  "application_change": false,
+  "limits": "Historical report bytes were preserved; these are current output inventories, not reattribution of earlier overwritten reports."
+}

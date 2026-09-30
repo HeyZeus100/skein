@@ -1,0 +1,67 @@
+{
+  "schema": "skein-privacy-peer-review-v1",
+  "scope": "Read-only source-backed overstatement review of privacy documentation; no new runtime/build/device verification",
+  "document_commit": "da2b7996aac0d9f484d9b3ccb9a191918d93933b",
+  "document_sha256": "c983fca6d387121078761c7bc0739f04f487bb22007da19d9586bc56de6dbe4e",
+  "source_baseline": "b62977f3a62e813ef21c0928a8a425ca5562a679",
+  "source_receipts_verified": 54,
+  "source_hash_errors": [],
+  "missing_key_section_identical_to_baseline": true,
+  "source_declared_permissions_excluding_removals": [
+    "android.permission.POST_NOTIFICATIONS",
+    "android.permission.USE_BIOMETRIC",
+    "android.permission.RECEIVE_BOOT_COMPLETED",
+    "android.permission.FOREGROUND_SERVICE",
+    "android.permission.FOREGROUND_SERVICE_DATA_SYNC"
+  ],
+  "blockers": [],
+  "findings": [
+    {
+      "claim": "PDF UI does not establish intended timer",
+      "verdict": "supported",
+      "anchors": [
+        "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt:227",
+        "core/export/src/main/kotlin/app/skein/core/export/pdf/PdfExportService.kt:35",
+        "app/src/main/kotlin/app/skein/export/stage/ExportStageCoordinator.kt:82"
+      ],
+      "reason": "NoteTab supplies no stage recorder; default is NoOp. Coordinator purge paths are distinct and do not repair omitted timer scheduling."
+    },
+    {
+      "claim": "Five source permissions, with merged compatibility allowances",
+      "verdict": "supported",
+      "anchors": [
+        "app/src/main/AndroidManifest.xml",
+        "app/src/test/kotlin/app/skein/ManifestPolicyTest.kt:531"
+      ],
+      "reason": "XML parsed as five actual requests; ACCESS_NETWORK_STATE and WAKE_LOCK declarations are remove directives. Document does not misrepresent this as total actual APK permission count."
+    },
+    {
+      "claim": "Conditional second hash and unavailable attestation",
+      "verdict": "supported",
+      "anchors": [
+        "core/verify/src/main/kotlin/app/skein/core/verify/ModelVerifier.kt:519",
+        "core/inference/src/main/kotlin/app/skein/core/inference/models/ManifestAttestation.kt:107"
+      ],
+      "reason": "Actual verifyForLoad condition selects declared BLAKE3 or SHA256 over mapped bytes. Unavailable attestation returns Unattested. Document avoids stale dual-algorithm source-comment guarantee."
+    },
+    {
+      "claim": "Production embedder absent",
+      "verdict": "supported",
+      "anchors": [
+        "app/src/main/kotlin/app/skein/models/ModelServices.kt:355",
+        "app/src/main/kotlin/app/skein/ingest/IngestPipelines.kt:43"
+      ],
+      "reason": "Production RetrievalServiceImpl is wired with embedder=null; ingest Chunker uses ApproximateTokenizer."
+    },
+    {
+      "claim": "e62 physical evidence scope",
+      "verdict": "consistent_with_prior_independent_audit",
+      "reason": "One disposable note/chat; no broad native generation, backup or current missing-key runtime acceptance claimed. Previous independent audit checked actual public XML and retained artifact hashes."
+    }
+  ],
+  "limitations": [
+    "Bounded factual review, not complete privacy/security certification",
+    "Source receipts hash-checked for 54 files, but focused source reasoning covers the four requested claim clusters and preserved missing-key section",
+    "No new APK inspection or runtime test; e62 evidence remains its own historical scope"
+  ]
+}

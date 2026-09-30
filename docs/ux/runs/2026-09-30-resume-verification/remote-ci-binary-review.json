@@ -1,0 +1,152 @@
+{
+  "log_sha256": "142882e18f0f4c0029ad672543d8dd591561adc952aec43cb8bd92bb41d7024b",
+  "actual_guard_output_sha256": "771395e21cb6b1d68d9fa46e6b5f6acef78c02fb7b8acdd925eaf0cf3de3ce6d",
+  "actual_guard_lines": [
+    "Unit tests, lint, assemble (foss debug)\tNative optimisation level (libskein_llama.so translation units)\t2026-09-30T03:02:30.2468773Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/Debug/w4c23683/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3",
+    "Unit tests, lint, assemble (foss debug)\tNative optimisation level (libskein_llama.so translation units)\t2026-09-30T03:02:30.2717032Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/tools/devDebug/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.3723198Z elf-alignment: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.3895990Z elf-alignment: core/vault/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.4072044Z elf-alignment: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.4257903Z elf-alignment: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.4434745Z elf-alignment: core/vault/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.4616928Z elf-alignment: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.4798864Z elf-alignment: inference-service/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.4982375Z elf-alignment: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.5165695Z elf-alignment: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\t16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)\t2026-09-30T03:02:30.5354460Z elf-alignment: inference-service/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_llama.so)\t2026-09-30T03:02:30.5619220Z jni-symbols: no std::cout/printf/__android_log_* in native/llama/jni",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_llama.so)\t2026-09-30T03:02:30.5674193Z jni-symbols: LlamaNative.kt declares 27 external fun(s)",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_llama.so)\t2026-09-30T03:02:32.0334172Z jni-symbols: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_llama.so)\t2026-09-30T03:02:32.0524545Z jni-symbols: inference-service/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_llama.so)\t2026-09-30T03:02:32.0725073Z jni-symbols: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_llama.so)\t2026-09-30T03:02:32.0919880Z jni-symbols: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_llama.so)\t2026-09-30T03:02:32.1111538Z jni-symbols: inference-service/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_sqlite_jni.so)\t2026-09-30T03:02:32.1425049Z sqlite-jni-symbols: SkeinSQLiteNative.kt declares 25 external fun(s) on SkeinSQLiteNativeImpl",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_sqlite_jni.so)\t2026-09-30T03:02:32.1814517Z sqlite-jni-symbols: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_sqlite_jni.so)\t2026-09-30T03:02:32.1961515Z sqlite-jni-symbols: core/vault/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_sqlite_jni.so)\t2026-09-30T03:02:32.2107140Z sqlite-jni-symbols: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_sqlite_jni.so)\t2026-09-30T03:02:32.2253876Z sqlite-jni-symbols: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tJNI symbol surface (libskein_sqlite_jni.so)\t2026-09-30T03:02:32.2396430Z sqlite-jni-symbols: core/vault/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+    "Unit tests, lint, assemble (foss debug)\tNo prompt/token content in service logs\t2026-09-30T03:02:32.3526280Z no-content-logging: clean: 19 file(s), no SkeinLog call references model content",
+    "Unit tests, lint, assemble (foss debug)\tManifest audit (exported components, permissions, backup posture)\t2026-09-30T03:02:32.3787343Z manifest-audit: auditing app/build/outputs/apk/foss/debug/app-foss-debug.apk (variant: debug)",
+    "Unit tests, lint, assemble (foss debug)\tManifest audit (exported components, permissions, backup posture)\t2026-09-30T03:02:33.6461781Z manifest-audit: PASS",
+    "Unit tests, lint, assemble (foss debug)\tValidate model manifests\t2026-09-30T03:02:33.6944858Z validate-manifests: checked 24 manifest(s) (0 shipped)",
+    "Unit tests, lint, assemble (foss debug)\tValidate model manifests\t2026-09-30T03:02:33.6945453Z validate-manifests: OK"
+  ],
+  "apk_sha256": "c9aa66c0377838a0a8da28b9cf344d46b75bdd30379afe728d19d69445658be9",
+  "actual_apk_elf": [
+    {
+      "path": "lib/arm64-v8a/libskein_llama.so",
+      "bytes": 33413072,
+      "sha256": "b3fe7bf00e66a9d476479ea5c1e65497586552d8d9c03efb470c856439101a88",
+      "elf_class": 64,
+      "endian": "little",
+      "pt_load": [
+        {
+          "offset": 0,
+          "vaddr": 0,
+          "filesz": 33273600,
+          "memsz": 33273600,
+          "flags": 5,
+          "align": 16384
+        },
+        {
+          "offset": 33273600,
+          "vaddr": 33289984,
+          "filesz": 125264,
+          "memsz": 133376,
+          "flags": 6,
+          "align": 16384
+        },
+        {
+          "offset": 33398864,
+          "vaddr": 33431632,
+          "filesz": 12000,
+          "memsz": 555936,
+          "flags": 6,
+          "align": 16384
+        }
+      ],
+      "minimum_align": 16384
+    },
+    {
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "bytes": 6268816,
+      "sha256": "ef84dfbbbf1806ef24ddf2e94c270a450b643f4b64e798bacb156a437d7643d6",
+      "elf_class": 64,
+      "endian": "little",
+      "pt_load": [
+        {
+          "offset": 0,
+          "vaddr": 0,
+          "filesz": 5789968,
+          "memsz": 5789968,
+          "flags": 5,
+          "align": 16384
+        },
+        {
+          "offset": 5789968,
+          "vaddr": 5806352,
+          "filesz": 454808,
+          "memsz": 468720,
+          "flags": 6,
+          "align": 16384
+        },
+        {
+          "offset": 6244776,
+          "vaddr": 6277544,
+          "filesz": 21848,
+          "memsz": 31640,
+          "flags": 6,
+          "align": 16384
+        }
+      ],
+      "minimum_align": 16384
+    },
+    {
+      "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+      "bytes": 19296,
+      "sha256": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229",
+      "elf_class": 64,
+      "endian": "little",
+      "pt_load": [
+        {
+          "offset": 0,
+          "vaddr": 0,
+          "filesz": 16768,
+          "memsz": 16768,
+          "flags": 5,
+          "align": 16384
+        },
+        {
+          "offset": 16768,
+          "vaddr": 33152,
+          "filesz": 768,
+          "memsz": 16000,
+          "flags": 6,
+          "align": 16384
+        }
+      ],
+      "minimum_align": 16384
+    }
+  ],
+  "native_input_source_objects_equal": {
+    "native": true,
+    "third_party/llama.cpp": true,
+    "third_party/Vulkan-Headers": true,
+    "third_party/SPIRV-Headers": true,
+    "inference-service/src/main": true,
+    "core/inference": true,
+    "gradle/libs.versions.toml": true
+  },
+  "new_cases_status": {
+    "pass": 26,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "limits": [
+    "No claim of installed new source or physical/runtime validation. Exact native byte equivalence to installed e62 is false for the three Skein-produced libraries despite equal source trees; this audit does not assign the differences a proven cause.",
+    "24 model manifests checked includes zero shipped manifests; this does not qualify a production model or embedder."
+  ]
+}

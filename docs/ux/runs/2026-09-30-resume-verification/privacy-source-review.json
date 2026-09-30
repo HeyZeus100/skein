@@ -1,0 +1,186 @@
+{
+  "task": "skein-dtoc",
+  "reviewed_source": "b62977f3a62e813ef21c0928a8a425ca5562a679",
+  "integration_base": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+  "document_sha256": "c983fca6d387121078761c7bc0739f04f487bb22007da19d9586bc56de6dbe4e",
+  "document_lines": 317,
+  "protected_missing_key_section_sha256": "fa6872f642ff97c98801fa25c937c19cf719d1636599729e3459f9bd57e2328b",
+  "protected_missing_key_section_unchanged": true,
+  "changed_tracked_files": [
+    "docs/PRIVACY.md"
+  ],
+  "source_files_reviewed": 54,
+  "source_receipts_sha256": "71302b58d45b3d8989fb8384fdbbd05f6c5b7343d81c8105832f2463f36d50a2",
+  "existing_xml_records_reparsed": 20,
+  "existing_e62_xml_receipt_sha256": "6f73270774750ea973c52d9ea665c2b88938bc4cf056b0321ff0cf48851444df",
+  "local_links": [
+    {
+      "target": "ux/runs/2026-09-29-confirmed-delete-e62f947/README.md",
+      "sha256": "7056e0e163a67b1f98b53fcfa302e9b495709980a18318653adc9043e339e0fc"
+    },
+    {
+      "target": "ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "sha256": "8639909b9206c0f2acfff7d51985e4ba59172aab257c226a8aa520cba94e89a9"
+    },
+    {
+      "target": "../core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt",
+      "sha256": "ee3e899f4f24ac8a5ab19651b83f82d31914072577df764e36394e5494c8c8c6"
+    },
+    {
+      "target": "../core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "sha256": "400a8be6b5d6e14d20aa6791407c51ddfa34c5846115eeb7bf5c6199d626c73b"
+    },
+    {
+      "target": "../core/vault/src/main/resources/migrations/INDEX.txt",
+      "sha256": "f0f54fafaf09524d8021f812f32a48634069294eb1bd66bf195c109ec0cc07f9"
+    },
+    {
+      "target": "../core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt",
+      "sha256": "e1502fdadc33ec564bb23b3afb29265143bbfad808966134ac6f3a0f3ada0551"
+    },
+    {
+      "target": "../core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidKeystoreFacade.kt",
+      "sha256": "7962fee6815a912c15518da1f648d18c9444595ff86d3d64ae55020627d0afad"
+    },
+    {
+      "target": "../core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "sha256": "713041697ed958c9def5c1c7b184465dcc9538b9c8117df5e57b9ab9bde73b8a"
+    },
+    {
+      "target": "../core/vault/src/main/resources/migrations/010_fts_secure_delete.sql",
+      "sha256": "8dd08037dc4f11c4860fd66be91e363ed3593dce89d0b58c3368fa23d1a5d590"
+    },
+    {
+      "target": "ux/OBJECT_LIFECYCLE_SPEC.md",
+      "sha256": "06c5326679ce330cd595025a436e6c1697f806801ec0bf1db24f0ca2d3f6e816"
+    },
+    {
+      "target": "../core/model/src/main/kotlin/app/skein/core/model/SkeinLog.kt",
+      "sha256": "fafd0958a17349eeafde47e900f3bfc8cad5de3a1b2b46b202a88ea684ae70dd"
+    },
+    {
+      "target": "../app/src/main/kotlin/app/skein/system/AndroidSkeinLogSink.kt",
+      "sha256": "1dc41a2cea44258e46ba9abdce5777827d545ae4f0472c1d67c95b6a6721da72"
+    },
+    {
+      "target": "../app/src/main/AndroidManifest.xml",
+      "sha256": "5815b27255f650cf784c04eb5694ef59b7e886bdbeb92c5d79ba5c33d976543b"
+    },
+    {
+      "target": "../app/src/test/kotlin/app/skein/ManifestPolicyTest.kt",
+      "sha256": "89cc9cb80816fa6de4a899121e69b27516392daf352bc65fe74af26cad3dc9ac"
+    },
+    {
+      "target": "../build-logic/guards/src/main/kotlin/app/skein/gradle/ManifestGuardPlugin.kt",
+      "sha256": "b9e13f04b077f5ec5aa98820b8b6dba10ae1fd1c089605702f2a8f71e53b5ddd"
+    },
+    {
+      "target": "../app/src/main/kotlin/app/skein/models/ModelServices.kt",
+      "sha256": "0d7a6406562ad44ada81a9eadd6950aed7188520bb278f69d04bae08c846162d"
+    },
+    {
+      "target": "Handoffs/skein-retrieval-repair-execution.md",
+      "sha256": "ac00e057cb8603602bf71452974476878915bfff0ce56a704f299deb1841c7ca"
+    },
+    {
+      "target": "../core/vault/src/main/kotlin/app/skein/core/vault/export/ExportServiceImpl.kt",
+      "sha256": "2f88574d176d4c37d331b8b360d41bb8ccc7675f3c898477bc6d4460796a4a37"
+    },
+    {
+      "target": "../feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+      "sha256": "8f21f2f0005c1e77f1159b9537227610e359ac5e1a3f1aa86a59f5c8f0e981a3"
+    },
+    {
+      "target": "../app/src/main/kotlin/app/skein/export/stage/ExportStageCoordinator.kt",
+      "sha256": "863c56b36b19f61494f305bd4f49fc6e1cf7d94b043fa70144ab455464e1211d"
+    },
+    {
+      "target": "../app/src/main/kotlin/app/skein/export/stage/BootReceiver.kt",
+      "sha256": "67ade2584e962ba624a657b7d2ddd07dbcfa30e99560f5ba14dbaa684dca1700"
+    },
+    {
+      "target": "../core/vault/src/main/kotlin/app/skein/core/vault/provider/VaultDocumentsProvider.kt",
+      "sha256": "d6f13a61b55fc4d9db4c995013ea3845e8a9c70d380187fa681e322010d59b34"
+    },
+    {
+      "target": "../core/inference/src/main/kotlin/app/skein/core/inference/models/ModelImportStager.kt",
+      "sha256": "d5f09a21cc5edda1b3d24d2148571dbaeb8543106848c5ace0371be2d76c456b"
+    },
+    {
+      "target": "../core/inference/src/main/kotlin/app/skein/core/inference/models/ImmutableModelStore.kt",
+      "sha256": "f046f3f4c7c9a16369931a2836194f4a21526acb2e0ea5b11b9b495a1963b02f"
+    },
+    {
+      "target": "Handoffs/skein-inference-lifecycle-20260929.md",
+      "sha256": "238415e551d4eed60662bd6aefa52ec93961231e53379653136ba836f9fe2c12"
+    },
+    {
+      "target": "../core/verify/src/main/kotlin/app/skein/core/verify/ModelVerifier.kt",
+      "sha256": "3c7f1285a7fc58a62912d8b7145883bcf54788fd2f14281eb70bf3e64ee10d9e"
+    },
+    {
+      "target": "../core/inference/src/main/kotlin/app/skein/core/inference/models/ManifestAttestation.kt",
+      "sha256": "4a2c1884fbce18d043a64c5e588a1b15f5b5f7a6027aa35676f030dd901adf64"
+    },
+    {
+      "target": "../app/src/main/res/xml/data_extraction_rules.xml",
+      "sha256": "f702fd7e88f1a6f385645c1317219f20d8addb73ec8833bfad836e24ffbe9b9d"
+    },
+    {
+      "target": "../app/src/main/res/xml/backup_rules_legacy.xml",
+      "sha256": "828f975c376aec7fbb2250883e8ae89da73d0014f677bbcfc2057c12fb8072b3"
+    },
+    {
+      "target": "BACKUP_EXCLUSIONS.md",
+      "sha256": "87229bdf7ddeb33fcd21ce5f59ab3976f6940ad874488ac166ccd6671cab51af"
+    },
+    {
+      "target": "superpowers/specs/2026-09-19-skein-design.md",
+      "sha256": "1aeb3ff1ccdab67c9322b2beef5aea0c4f9af546cda1942001f2757120a8da8c"
+    },
+    {
+      "target": "ux/SECURITY_REVIEW_D7.md",
+      "sha256": "59f8687fddc794e21837238a2f4a9202f9a8b14a9d9f113878c1633040d02339"
+    },
+    {
+      "target": "../app/src/main/kotlin/app/skein/MainActivity.kt",
+      "sha256": "9b1315fb0fbb12328cf2a376bf5802aa97a8bf76d127dd80aef209efa3365115"
+    },
+    {
+      "target": "../feature/shell/src/main/kotlin/app/skein/feature/shell/input/SecureTextField.kt",
+      "sha256": "60bfb271a153fa8af9ed20cc8fd03a4bb68a283d0565fa0122923b11dc6e1565"
+    },
+    {
+      "target": "VERIFICATION.md",
+      "sha256": "d665ebb4c23851eb802c4138304cd39eac848c7107bfd07b2a4b3933bdef28a8"
+    }
+  ],
+  "validation": [
+    "git diff --check passed",
+    "all local Markdown links resolve and hashed",
+    "protected section byte-for-byte unchanged",
+    "all selected existing XML receipts match actual hashes and testcase counts",
+    "all implementation source receipts identical to b62977f3a",
+    "ignored audit directory confirmed"
+  ],
+  "no_new_build_ci_device_beads_commands": true,
+  "limitations": [
+    "e62 remains the installed Fold application; missing-key source diagnosis not installed",
+    "no physical backup transport or broad runtime/security proof",
+    "production embedding/reindex and M0 gates remain open",
+    "Sigstore attestation implementation unavailable",
+    "PDF UI selects NoOpExportStageRecorder: skein-efwt wiring and skein-xg6d staging/adversarial verification remain open",
+    "no promise of secure erasure from flash, transient RAM, exported copies or quoted source text in other chats",
+    "existing XML results are e62 evidence; cached unit output is not fresh execution"
+  ],
+  "major_corrections": [
+    "actual five source permissions and AndroidX compatibility allowlist",
+    "StrongBox fallback instead of universal StrongBox promise",
+    "SKAT v2 per-write salt and authenticated final marker",
+    "implemented vault/provider/export/native paths distinguished from remaining placeholders",
+    "model load post-mmap hash falls back to SHA-256 when BLAKE3 not declared",
+    "real local diagnostics with limited marker redaction",
+    "backup exclusion configuration distinguished from transport verification",
+    "export timer production wiring gap made explicit"
+  ]
+}

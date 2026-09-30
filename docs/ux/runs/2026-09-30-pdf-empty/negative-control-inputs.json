@@ -1,0 +1,22 @@
+{
+  "phase": "negative-control-ready",
+  "base": "a27e256d5c9875bed724fa5daa584a48678e937c",
+  "production_unchanged": true,
+  "paths": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/PdfImporter.kt",
+      "sha256": "1e704fbcadfb6179f22af57d4c093ec86b9a706e5e35a71fc3089858058d7a87"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/transfer/ImportPdfTest.kt",
+      "sha256": "bde5c274cf48a6bb1fe6268172c4f9b3d03175eead637a7b829d9db65ee84e1f"
+    }
+  ],
+  "new_real_pdfbox_import_cases": [
+    "two blank pages: fallback notice, trimmed metadata title, source link, PDF MIME, exact attachment bytes",
+    "two whitespace-only pages: fallback notice and exact attachment bytes",
+    "mixed leading, internal and trailing blank pages: preserved page positions, trimmed title, source link, exact bytes"
+  ],
+  "gradle_run": false,
+  "requested_negative_task": ":core:vault:testFossDebugUnitTest --tests app.skein.core.vault.transfer.ImportPdfTest"
+}

@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "source_sha": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+  "run_id": 36661424105,
+  "totals": {
+    "tests": 1419,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 80,
+    "passed": 1339
+  },
+  "images": {
+    "unchanged": 552
+  },
+  "xml_files": 155,
+  "manifest_hashes_verified": 715,
+  "exact_skips_equal_local": true,
+  "fresh_test_tasks": [
+    ":core:designsystem:testDebugUnitTest",
+    ":feature:chat:testDebugUnitTest",
+    ":feature:editor:testDebugUnitTest",
+    ":feature:graph:testDebugUnitTest",
+    ":feature:models:testDebugUnitTest",
+    ":feature:settings:testDebugUnitTest",
+    ":feature:timeline:testDebugUnitTest",
+    ":feature:shell:testDebugUnitTest"
+  ],
+  "required_steps_success": [
+    "Verify screenshots",
+    "Goldens untouched by verify",
+    "Baseline size budget",
+    "Record screenshot evidence source and hashes",
+    "Upload screenshot verification records"
+  ],
+  "archives": [
+    {
+      "name": "ux-verification-records",
+      "id": 11074183654,
+      "bytes": 452304,
+      "sha256": "cc405fab4ed9c9de87ef29f4819f86c01a218820af23f49841b454e7dfce2528",
+      "archive": "build/agent-logs/resume-20260930/remote/36661424105/11074183654/archive.zip",
+      "extracted": "build/agent-logs/resume-20260930/remote/36661424105/11074183654/extracted"
+    }
+  ],
+  "workflow_log_sha256": "4242d5a71dbd8a26f06c880cb2f104de86f40dff0456f6422d3791158c012ccc",
+  "limits": [
+    "Host source attribution, not installed APK attestation.",
+    "No new screenshot goldens; missing-key device layout and broad Fold acceptance remain open."
+  ]
+}

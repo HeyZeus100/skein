@@ -1,0 +1,76 @@
+{
+  "task": "skein-qzci",
+  "base": "a27e256d5c9875bed724fa5daa584a48678e937c",
+  "root_serialized_runner": true,
+  "delegate_started_no_builds": true,
+  "negative_control": {
+    "phase": "fixed-ready",
+    "production_sha256": "2dcae4e54e2ff2b32121b82f7a57d3fd15bd1bb3ead01ef215c56b28eba338c4",
+    "test_sha256": "bde5c274cf48a6bb1fe6268172c4f9b3d03175eead637a7b829d9db65ee84e1f",
+    "tests_unchanged_from_negative_control": true,
+    "negative_xml_sha256": "c60e3da2cb552ab8c92c0f516cbcb35ef3a2e91ffb9be5b81be915f62b1d4b22",
+    "negative_counts": {
+      "pass": 9,
+      "failure": 2,
+      "error": 0,
+      "skip": 0
+    },
+    "negative_failures": [
+      {
+        "test": "whitespace-only pages yield the notice rather than page separators",
+        "state": "failure"
+      },
+      {
+        "test": "two blank pages yield the notice while preserving metadata and attachment bytes",
+        "state": "failure"
+      }
+    ],
+    "fix": "Track any nonblank extracted page before treating joined formatting as content; preserve all page boundaries when text exists.",
+    "no_gradle_by_delegate": true
+  },
+  "fixed_totals": {
+    "tests": 13,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "fixed_xml": [
+    {
+      "path": "build/agent-logs/pdf-empty-regression-20260930/fixed-1-actual/TEST-app.skein.core.vault.transfer.ImportPdfMemorySmokeTest.xml",
+      "sha256": "e21262b51f7405b6da463b713be32aed3017c4953dda4696c378ba0e70d1ad77",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/pdf-empty-regression-20260930/fixed-1-actual/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "sha256": "cc660e2afc5dd6f4427bdc2bfc7ce8bd595d3306752a43e64c603b8741dabdc1",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/pdf-empty-regression-20260930/fixed-1-actual/TEST-app.skein.core.vault.transfer.PdfResourceLoaderTest.xml",
+      "sha256": "ce44af92134c72ab78d53a17eb37100520e1b8f24980d28c3b3cb67068919c14",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "fixed_log_sha256": "0f99aefcb6a286db23ffbf443c7066393960702ce6a8534eb4dbaee9d697b8da",
+  "ktlint": "PASS; main/test source checks and aggregate actually executed; empty source-set tasks skipped as usual",
+  "regression_tests_unchanged_between_runs": true,
+  "tracked_scope": [
+    "core/vault/src/main/kotlin/app/skein/core/vault/transfer/PdfImporter.kt",
+    "core/vault/src/test/kotlin/app/skein/core/vault/transfer/ImportPdfTest.kt"
+  ],
+  "diff_check": "PASS",
+  "limitations": [
+    "Synthetic Robolectric/PDFBox import evidence only; no new device validation.",
+    "No OCR, table/layout recovery, dependency changes, broad PDF security guarantee or model work.",
+    "Root owns integration, public evidence capsule, full checks and push."
+  ]
+}

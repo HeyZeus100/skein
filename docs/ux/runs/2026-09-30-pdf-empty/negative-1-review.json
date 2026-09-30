@@ -1,0 +1,14 @@
+{
+  "phase": "OLD_PRODUCTION_EXPECTED_FAILURE",
+  "tests": 11,
+  "failures": 2,
+  "errors": 0,
+  "skipped": 0,
+  "failed_cases": [
+    "whitespace-only pages yield the notice rather than page separators",
+    "two blank pages yield the notice while preserving metadata and attachment bytes"
+  ],
+  "xml_sha256": "c60e3da2cb552ab8c92c0f516cbcb35ef3a2e91ffb9be5b81be915f62b1d4b22",
+  "log_sha256": "a2d6b34c89adb6789449971dc0f9a842f2fff856c890b54a95d78ca5a57c8feb",
+  "production_sha256": "1e704fbcadfb6179f22af57d4c093ec86b9a706e5e35a71fc3089858058d7a87"
+}

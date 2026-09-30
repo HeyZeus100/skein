@@ -1,0 +1,247 @@
+{
+  "application_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+  "current_source_review": "b62977f3a62e813ef21c0928a8a425ca5562a679",
+  "scope": "existing original XML parsed read-only; no reruns; e62 evidence predates missing-key code",
+  "records": [
+    {
+      "lane": "unit",
+      "class": "app.skein.DataExtractionRulesTest",
+      "counts": {
+        "pass": 5,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testFossDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "sha256": "072a3fcbccf9930b005f32eb562626ba2537dcfcf4a12375e53befce6456676a"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.export.stage.StagedPlaintextSweeperTest",
+      "counts": {
+        "pass": 13,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "sha256": "67be0767e8f310d66e21fac6c9fbb0cfb18827345c8fbc57ac99cc28e1e9a826"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.ManifestPolicyTest",
+      "counts": {
+        "pass": 25,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "sha256": "dcd38e67b015f1a6eb79f4ca826e69e7c40187053e96fcda7cb759515a4bee22"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.export.stage.BootReceiverTest",
+      "counts": {
+        "pass": 8,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "sha256": "bead593dcc64ddf6c1503201795f0a73f9d96f601a9d79038d748fb30b6ef87d"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.MainActivityFlagSecureTest",
+      "counts": {
+        "pass": 3,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "sha256": "4b802d9a214a68b5ec5b0fce2a6d17daa10e4a7e8a34421e7dd9b53c15cd6c49"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.RecentsScreenshotDisabledTest",
+      "counts": {
+        "pass": 2,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testFossDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "sha256": "6a79af2d2850df4ea0bbac3cdcc8b0bff77efbdb70eb2739765c8811f75defbe"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.DataExtractionRulesTest",
+      "counts": {
+        "pass": 5,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testDevDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "sha256": "7385f00039e0cb2c0cbc7357d0424d58d73e1cc899aaae86982d59c4f3d67916"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.export.stage.StagedPlaintextSweeperTest",
+      "counts": {
+        "pass": 13,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "sha256": "50c67dc3734fc65d4f99a058139661fd2e6fb06ae45c10aad38174f3981357c5"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.ManifestPolicyTest",
+      "counts": {
+        "pass": 25,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "sha256": "549b69dd61822b5682897c0c290c076db671fe4f4517331c2efbc031c005c86b"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.export.stage.BootReceiverTest",
+      "counts": {
+        "pass": 8,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "sha256": "23512875675bbc0054be55a44cda47a1f01bda19972d8d11c8dd5f10d7feb21f"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.MainActivityFlagSecureTest",
+      "counts": {
+        "pass": 3,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "sha256": "277ba4f5afc4598aefb7bbe042694a75519a9defbf85aa9cabadcfa00f6b6158"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.RecentsScreenshotDisabledTest",
+      "counts": {
+        "pass": 2,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/app/build/test-results/testDevDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "sha256": "af678078b46eca0d9ff9c891e2cf7af0ed6fdae9eb02ed324f04facac189f351"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+      "counts": {
+        "pass": 21,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.blob.FileAttachmentStoreTest.xml",
+      "sha256": "03d662a49900b1299c2dc2bc6110305e609af969d65d44299f9630136cd9959f"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+      "counts": {
+        "pass": 21,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.blob.FileAttachmentStoreTest.xml",
+      "sha256": "d0ff78c79c6ff144da92f6122c1a2f47c9ef73f1a7edd57bf9ffb83d9e7a11c6"
+    },
+    {
+      "lane": "unit",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "counts": {
+        "pass": 19,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "sha256": "8301853bf64f3d99b88e950e3a3d301885399c4daf95e237faaa5f050711dabb"
+    },
+    {
+      "lane": "ordinary",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "counts": {
+        "pass": 5,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "2d6ac6c29a107c95b651589720476ee3599754116cf2a4473e7c6da35aa2d5d0"
+    },
+    {
+      "lane": "ordinary",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "counts": {
+        "pass": 11,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "2d6ac6c29a107c95b651589720476ee3599754116cf2a4473e7c6da35aa2d5d0"
+    },
+    {
+      "lane": "ordinary",
+      "class": "app.skein.vault.security.AtRestEncryptionInstrumentedTest",
+      "counts": {
+        "pass": 1,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "2d6ac6c29a107c95b651589720476ee3599754116cf2a4473e7c6da35aa2d5d0"
+    },
+    {
+      "lane": "ordinary",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "counts": {
+        "pass": 21,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "f807938aa1888100ecb62d40055ba9213f0189b007a4852053abe83d26bda0c3"
+    },
+    {
+      "lane": "ordinary",
+      "class": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "counts": {
+        "pass": 3,
+        "failure": 0,
+        "error": 0,
+        "skip": 0
+      },
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "f807938aa1888100ecb62d40055ba9213f0189b007a4852053abe83d26bda0c3"
+    }
+  ]
+}

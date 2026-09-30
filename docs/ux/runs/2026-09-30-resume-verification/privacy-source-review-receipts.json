@@ -1,0 +1,1431 @@
+{
+  "reviewed_source": "b62977f3a62e813ef21c0928a8a425ca5562a679",
+  "integration_base": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+  "scope": "Implementation source read; locations are review anchors, not standalone proof. No builds or device commands.",
+  "files": [
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "sha256": "5815b27255f650cf784c04eb5694ef59b7e886bdbeb92c5d79ba5c33d976543b",
+      "line_count": 252,
+      "review_locations": [
+        {
+          "anchor": "uses-permission",
+          "lines": [
+            17,
+            18,
+            38,
+            42,
+            52,
+            56,
+            57,
+            58
+          ]
+        },
+        {
+          "anchor": "allowBackup",
+          "lines": [
+            70
+          ]
+        },
+        {
+          "anchor": "isolatedProcess",
+          "lines": [
+            127,
+            136
+          ]
+        },
+        {
+          "anchor": "grant-uri-permission",
+          "lines": [
+            149,
+            166,
+            167
+          ]
+        },
+        {
+          "anchor": "BootReceiver",
+          "lines": [
+            23,
+            33,
+            36,
+            44,
+            189,
+            192
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/test/kotlin/app/skein/ManifestPolicyTest.kt",
+      "sha256": "89cc9cb80816fa6de4a899121e69b27516392daf352bc65fe74af26cad3dc9ac",
+      "line_count": 549,
+      "review_locations": [
+        {
+          "anchor": "POST_NOTIFICATIONS",
+          "lines": [
+            62,
+            539
+          ]
+        },
+        {
+          "anchor": "USE_FINGERPRINT",
+          "lines": [
+            522,
+            534
+          ]
+        },
+        {
+          "anchor": "DYNAMIC_RECEIVER",
+          "lines": [
+            513,
+            533
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "build-logic/guards/src/main/kotlin/app/skein/gradle/ManifestGuardPlugin.kt",
+      "sha256": "b9e13f04b077f5ec5aa98820b8b6dba10ae1fd1c089605702f2a8f71e53b5ddd",
+      "line_count": 44,
+      "review_locations": [
+        {
+          "anchor": "onVariants",
+          "lines": [
+            31
+          ]
+        },
+        {
+          "anchor": "MERGED_MANIFEST",
+          "lines": [
+            11,
+            36
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "build-logic/guards/src/main/kotlin/app/skein/gradle/ManifestGuardTask.kt",
+      "sha256": "029c24e64072d30941752802d57e6e77c72beef8d2741b4ef485a22818328cb7",
+      "line_count": 104,
+      "review_locations": [
+        {
+          "anchor": "fun checkManifest",
+          "lines": [
+            35
+          ]
+        },
+        {
+          "anchor": "BANNED_PERMISSIONS",
+          "lines": [
+            41,
+            92
+          ]
+        },
+        {
+          "anchor": "ACCESS_NETWORK_STATE",
+          "lines": [
+            17,
+            94
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultPaths.kt",
+      "sha256": "963b57cc7f0a0eb97b889aa99c86852f4de4483c70da00eed06bcd8b12854fff",
+      "line_count": 30,
+      "review_locations": [
+        {
+          "anchor": "vault.db",
+          "lines": [
+            11,
+            17,
+            18,
+            28
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt",
+      "sha256": "ee3e899f4f24ac8a5ab19651b83f82d31914072577df764e36394e5494c8c8c6",
+      "line_count": 645,
+      "review_locations": [
+        {
+          "anchor": "key.fill(0)",
+          "lines": [
+            187,
+            193,
+            254,
+            260,
+            266
+          ]
+        },
+        {
+          "anchor": "suspend fun close",
+          "lines": [
+            348
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteDriver.kt",
+      "sha256": "d4110d897cfeee84e0df153a4d86fbc113d1c12672048e77b8755adf293bccec",
+      "line_count": 277,
+      "review_locations": [
+        {
+          "anchor": "fill(0)",
+          "lines": [
+            75,
+            117,
+            133
+          ]
+        },
+        {
+          "anchor": "key",
+          "lines": [
+            10,
+            13,
+            14,
+            15,
+            17,
+            18,
+            22,
+            23,
+            24,
+            26,
+            30,
+            32,
+            34,
+            35,
+            40,
+            41,
+            44,
+            52,
+            54,
+            55,
+            57,
+            60,
+            65,
+            67,
+            72,
+            76,
+            79,
+            80,
+            81,
+            83,
+            85,
+            93,
+            94,
+            95,
+            101,
+            102,
+            110,
+            116,
+            123,
+            129,
+            140,
+            141,
+            142,
+            143,
+            152,
+            157,
+            158,
+            160,
+            162,
+            163,
+            164,
+            171,
+            177,
+            178,
+            181,
+            187,
+            190,
+            207,
+            208,
+            214,
+            217,
+            236,
+            237,
+            240,
+            242
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidKeystoreFacade.kt",
+      "sha256": "7962fee6815a912c15518da1f648d18c9444595ff86d3d64ae55020627d0afad",
+      "line_count": 109,
+      "review_locations": [
+        {
+          "anchor": "setUserAuthenticationRequired",
+          "lines": [
+            57
+          ]
+        },
+        {
+          "anchor": "setIsStrongBoxBacked",
+          "lines": [
+            65
+          ]
+        },
+        {
+          "anchor": "private fun requireKey",
+          "lines": [
+            100
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "sha256": "713041697ed958c9def5c1c7b184465dcc9538b9c8117df5e57b9ab9bde73b8a",
+      "line_count": 583,
+      "review_locations": [
+        {
+          "anchor": "zero(master)",
+          "lines": [
+            103,
+            297,
+            391
+          ]
+        },
+        {
+          "anchor": "StrongBoxUnavailableException",
+          "lines": [
+            35,
+            413
+          ]
+        },
+        {
+          "anchor": "requireStrongBox = false",
+          "lines": [
+            415
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/FileMasterKeyStorage.kt",
+      "sha256": "2dbc60d3c15d0a8f9f6ae35fe40a3732aeb58d971f498fdd43916eb5cd1d4cfc",
+      "line_count": 406,
+      "review_locations": [
+        {
+          "anchor": "fun envelopeFileIn",
+          "lines": [
+            262
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "sha256": "400a8be6b5d6e14d20aa6791407c51ddfa34c5846115eeb7bf5c6199d626c73b",
+      "line_count": 1428,
+      "review_locations": [
+        {
+          "anchor": "suspend fun deleteDocument",
+          "lines": [
+            439
+          ]
+        },
+        {
+          "anchor": "suspend fun sweepUnreferencedRevisions",
+          "lines": [
+            660
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultSql.kt",
+      "sha256": "8afd2ad9f2d571b9afea4b295bec9d688bf295d482026a9ec204e574a171020e",
+      "line_count": 396,
+      "review_locations": [
+        {
+          "anchor": "SELECT_ALL_RETRIEVED_CHUNKS",
+          "lines": [
+            213,
+            268
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/resources/migrations/010_fts_secure_delete.sql",
+      "sha256": "8dd08037dc4f11c4860fd66be91e363ed3593dce89d0b58c3368fa23d1a5d590",
+      "line_count": 83,
+      "review_locations": [
+        {
+          "anchor": "secure-delete",
+          "lines": [
+            1,
+            10,
+            32,
+            38,
+            81
+          ]
+        },
+        {
+          "anchor": "optimize",
+          "lines": [
+            2,
+            11,
+            32,
+            43,
+            65,
+            72,
+            83
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/resources/migrations/011_chat_drafts.sql",
+      "sha256": "07c320495a48855195dccf26c1c8a6a4a00bafe734920a024a6372e0aa119b92",
+      "line_count": 16,
+      "review_locations": [
+        {
+          "anchor": "CREATE TABLE",
+          "lines": [
+            3
+          ]
+        },
+        {
+          "anchor": "ON DELETE CASCADE",
+          "lines": [
+            7
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/ingest/IngestScheduler.kt",
+      "sha256": "1cc374e97af4bc02c55143b1aa2b27be60cc24a9fe744779a1de392d6781ab74",
+      "line_count": 252,
+      "review_locations": [
+        {
+          "anchor": "sweepUnreferencedRevisions",
+          "lines": [
+            37,
+            218,
+            227
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt",
+      "sha256": "fad7972f4900b2cf74f6f7b8843dc13efad408f0004a96c52c11b78ff0db4237",
+      "line_count": 221,
+      "review_locations": [
+        {
+          "anchor": "DocumentDeletePrompt",
+          "lines": [
+            30,
+            70,
+            187,
+            219
+          ]
+        },
+        {
+          "anchor": "Those quotes stay.",
+          "lines": [
+            214,
+            216
+          ]
+        },
+        {
+          "anchor": "canDeleteIndependentNote",
+          "lines": [
+            9,
+            90,
+            126,
+            145
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt",
+      "sha256": "e1502fdadc33ec564bb23b3afb29265143bbfad808966134ac6f3a0f3ada0551",
+      "line_count": 223,
+      "review_locations": [
+        {
+          "anchor": "newFileSalt",
+          "lines": [
+            120
+          ]
+        },
+        {
+          "anchor": "deriveFileKey",
+          "lines": [
+            121,
+            140,
+            198
+          ]
+        },
+        {
+          "anchor": "Files.move",
+          "lines": [
+            107
+          ]
+        },
+        {
+          "anchor": "AlreadyExists",
+          "lines": [
+            53,
+            98,
+            100
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/SkatFormat.kt",
+      "sha256": "69b63ab21023d5b3ecdb577500df22545a5fe63d573ef685e790243f9fa5b4f3",
+      "line_count": 234,
+      "review_locations": [
+        {
+          "anchor": "fun newFileSalt",
+          "lines": [
+            103
+          ]
+        },
+        {
+          "anchor": "fun aadFor",
+          "lines": [
+            179
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/SkeinAttachmentOutputStream.kt",
+      "sha256": "0806a1d563af57c00b07651ff34c799acfbba9be1900b0a3139bb84aaad06114",
+      "line_count": 144,
+      "review_locations": [
+        {
+          "anchor": "private fun sealChunk",
+          "lines": [
+            91
+          ]
+        },
+        {
+          "anchor": "cipher.updateAAD",
+          "lines": [
+            101
+          ]
+        },
+        {
+          "anchor": "sealChunk(isFinal = true)",
+          "lines": [
+            122
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/SkeinLog.kt",
+      "sha256": "fafd0958a17349eeafde47e900f3bfc8cad5de3a1b2b46b202a88ea684ae70dd",
+      "line_count": 127,
+      "review_locations": [
+        {
+          "anchor": "fun d",
+          "lines": [
+            54
+          ]
+        },
+        {
+          "anchor": "fun i",
+          "lines": [
+            24,
+            60,
+            114
+          ]
+        },
+        {
+          "anchor": "redact",
+          "lines": [
+            102,
+            108,
+            109,
+            122
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/system/AndroidSkeinLogSink.kt",
+      "sha256": "1dc41a2cea44258e46ba9abdce5777827d545ae4f0472c1d67c95b6a6721da72",
+      "line_count": 77,
+      "review_locations": [
+        {
+          "anchor": "Log.",
+          "lines": [
+            10,
+            11,
+            16,
+            21,
+            26,
+            28,
+            35,
+            36,
+            37,
+            38
+          ]
+        },
+        {
+          "anchor": "sanitize",
+          "lines": [
+            6,
+            24,
+            33,
+            52,
+            54,
+            59,
+            63,
+            68,
+            73
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "inference-service/src/main/kotlin/app/skein/inference/service/LlamaLogRedactor.kt",
+      "sha256": "f29a2ca3b73707ba11cbe9da102c49114dceadad632838636cbb174b654e7965",
+      "line_count": 106,
+      "review_locations": [
+        {
+          "anchor": "DEBUG",
+          "lines": [
+            10,
+            22
+          ]
+        },
+        {
+          "anchor": "ERROR",
+          "lines": [
+            10,
+            26
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "inference-service/src/main/kotlin/app/skein/inference/service/LlamaNative.kt",
+      "sha256": "5988e90938567e7adb7ef47d15e57abfb82aab6602ba8744aed2794a4a7716ec",
+      "line_count": 586,
+      "review_locations": [
+        {
+          "anchor": "LlamaLogRedactor",
+          "lines": [
+            41,
+            85,
+            522,
+            575
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ModelServices.kt",
+      "sha256": "0d7a6406562ad44ada81a9eadd6950aed7188520bb278f69d04bae08c846162d",
+      "line_count": 503,
+      "review_locations": [
+        {
+          "anchor": "embedder = null",
+          "lines": [
+            355
+          ]
+        },
+        {
+          "anchor": "PromptAssemblerImpl",
+          "lines": [
+            58,
+            358
+          ]
+        },
+        {
+          "anchor": "assets.open",
+          "lines": [
+            334
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/ingest/IngestPipelines.kt",
+      "sha256": "65c5e55f3f5df5e1abcf08d49892703afd3fa80a5091eedf31a8d30a69b916cf",
+      "line_count": 54,
+      "review_locations": [
+        {
+          "anchor": "embedder",
+          "lines": [
+            3,
+            31,
+            37,
+            44
+          ]
+        },
+        {
+          "anchor": "ApproximateTokenizer",
+          "lines": [
+            2,
+            24,
+            43
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "inference-service/src/main/kotlin/app/skein/inference/service/InferenceService.kt",
+      "sha256": "ba205b4800ade8e71f59f575cf8a8ce642d8bd6274fb34decf70a97148ed1e7e",
+      "line_count": 1251,
+      "review_locations": [
+        {
+          "anchor": "loadModelFromFd",
+          "lines": [
+            263,
+            389,
+            400
+          ]
+        },
+        {
+          "anchor": "verifyPinned",
+          "lines": [
+            978,
+            1037,
+            1044
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/prompt/PromptAssemblerImpl.kt",
+      "sha256": "6bee402d5401d8a8b19bb69ceb8a24aa2241db765f214916f6d161301132ace2",
+      "line_count": 130,
+      "review_locations": [
+        {
+          "anchor": "PromptGuard.wrapRetrieved",
+          "lines": [
+            19,
+            45,
+            69,
+            79
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/security/src/main/kotlin/app/skein/security/prompt/PromptGuard.kt",
+      "sha256": "299e10819983b2461a7bd64a83271c312ddd61c09ba196640e98a27cc4723091",
+      "line_count": 583,
+      "review_locations": [
+        {
+          "anchor": "fun wrapRetrieved",
+          "lines": [
+            105
+          ]
+        },
+        {
+          "anchor": "fun citationsAllowed",
+          "lines": [
+            207
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/CitationParser.kt",
+      "sha256": "d666ef2d3c673c7f6cb516c422d2ca78b908c33d1b3d9b944db4c7f3b25d5ccc",
+      "line_count": 203,
+      "review_locations": [
+        {
+          "anchor": "private val citations",
+          "lines": [
+            85
+          ]
+        },
+        {
+          "anchor": "citations.getValue",
+          "lines": [
+            180
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/export/ExportServiceImpl.kt",
+      "sha256": "2f88574d176d4c37d331b8b360d41bb8ccc7675f3c898477bc6d4460796a4a37",
+      "line_count": 246,
+      "review_locations": [
+        {
+          "anchor": "override suspend fun",
+          "lines": [
+            79,
+            93,
+            144
+          ]
+        },
+        {
+          "anchor": "OutputStream",
+          "lines": [
+            16,
+            19,
+            71,
+            73,
+            81,
+            94,
+            121,
+            146,
+            185
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+      "sha256": "8f21f2f0005c1e77f1159b9537227610e359ac5e1a3f1aa86a59f5c8f0e981a3",
+      "line_count": 447,
+      "review_locations": [
+        {
+          "anchor": "PdfExportService(context, vaultRepository)",
+          "lines": [
+            227
+          ]
+        },
+        {
+          "anchor": "onSaveAs",
+          "lines": [
+            219,
+            299,
+            320,
+            352,
+            393,
+            401
+          ]
+        },
+        {
+          "anchor": "onShareAsText",
+          "lines": [
+            216,
+            298,
+            319,
+            351,
+            385
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/export/src/main/kotlin/app/skein/core/export/pdf/PdfExportService.kt",
+      "sha256": "23579ef35d7792e865d93d79c680cd962e4291592bd29a80f14b7da208eb8f1a",
+      "line_count": 64,
+      "review_locations": [
+        {
+          "anchor": "stageRecorder: ExportStageRecorder = NoOpExportStageRecorder",
+          "lines": [
+            35
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/export/src/main/kotlin/app/skein/core/export/pdf/ExportStage.kt",
+      "sha256": "6df58e58ce7500d6af45274d40fdac53fc23cfaaef306f5d6811bc2d1cf23272",
+      "line_count": 73,
+      "review_locations": [
+        {
+          "anchor": "object NoOpExportStageRecorder",
+          "lines": [
+            45
+          ]
+        },
+        {
+          "anchor": "DEFAULT_LIFETIME_MILLIS",
+          "lines": [
+            56,
+            63
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/export/src/main/kotlin/app/skein/core/export/pdf/MarkdownPrintAdapter.kt",
+      "sha256": "e97a4fae5b85143a25818750da3f3ae81a343c9aeda811cd30c9acd9b4779bbb",
+      "line_count": 159,
+      "review_locations": [
+        {
+          "anchor": "FileOutputStream(stagedFile)",
+          "lines": [
+            127
+          ]
+        },
+        {
+          "anchor": "stageRecorder.record",
+          "lines": [
+            133
+          ]
+        },
+        {
+          "anchor": "FileInputStream(stagedFile)",
+          "lines": [
+            142
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/vault/VaultServices.kt",
+      "sha256": "48dce83bfadbc38afae3592477f25bf076bedef34060d13f87f88c348b0c82cf",
+      "line_count": 298,
+      "review_locations": [
+        {
+          "anchor": "ExportStageCoordinator(",
+          "lines": [
+            183
+          ]
+        },
+        {
+          "anchor": "VaultPaths(vaultDir = app.filesDir)",
+          "lines": [
+            104
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/export/stage/ExportStageCoordinator.kt",
+      "sha256": "863c56b36b19f61494f305bd4f49fc6e1cf7d94b043fa70144ab455464e1211d",
+      "line_count": 155,
+      "review_locations": [
+        {
+          "anchor": "override fun record",
+          "lines": [
+            82
+          ]
+        },
+        {
+          "anchor": "override suspend fun onLocking",
+          "lines": [
+            122
+          ]
+        },
+        {
+          "anchor": "override fun onLocked",
+          "lines": [
+            135
+          ]
+        },
+        {
+          "anchor": "override fun onUnlocked",
+          "lines": [
+            140
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/export/stage/StagedPlaintextSweeper.kt",
+      "sha256": "993a0e91b5389c1e37abe60bf27ea43c7df2dadfaf2f40286bd6d7bf1845df08",
+      "line_count": 125,
+      "review_locations": [
+        {
+          "anchor": "setInitialDelay",
+          "lines": [
+            102
+          ]
+        },
+        {
+          "anchor": "setInputData",
+          "lines": [
+            103
+          ]
+        },
+        {
+          "anchor": "override suspend fun doWork",
+          "lines": [
+            50
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/export/stage/BootReceiver.kt",
+      "sha256": "67ade2584e962ba624a657b7d2ddd07dbcfa30e99560f5ba14dbaa684dca1700",
+      "line_count": 97,
+      "review_locations": [
+        {
+          "anchor": "override fun onReceive",
+          "lines": [
+            56
+          ]
+        },
+        {
+          "anchor": "StagedPlaintextSweep.purge",
+          "lines": [
+            72
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/export/stage/StagedPlaintextSweep.kt",
+      "sha256": "b85b354d8ff3dbb83a90bf390fd0d12f8c16b3b4f508a309abb4a013554d4bef",
+      "line_count": 158,
+      "review_locations": [
+        {
+          "anchor": "suspend fun sweepAll",
+          "lines": [
+            85
+          ]
+        },
+        {
+          "anchor": "fun purge(",
+          "lines": [
+            114
+          ]
+        },
+        {
+          "anchor": "fun purgeStage",
+          "lines": [
+            135
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/provider/VaultDocumentsProvider.kt",
+      "sha256": "d6f13a61b55fc4d9db4c995013ea3845e8a9c70d380187fa681e322010d59b34",
+      "line_count": 286,
+      "review_locations": [
+        {
+          "anchor": "override fun openDocument",
+          "lines": [
+            167
+          ]
+        },
+        {
+          "anchor": "override fun queryRoots",
+          "lines": [
+            131
+          ]
+        },
+        {
+          "anchor": "FLAG_SUPPORTS_WRITE",
+          "lines": [
+            11
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/provider/VaultDocumentsBackend.kt",
+      "sha256": "f023d9bafa70ba278a4bc63589f274a93d7b0d529136e536e848816028359b3f",
+      "line_count": 281,
+      "review_locations": [
+        {
+          "anchor": "requireUnlocked",
+          "lines": [
+            5,
+            69,
+            76,
+            81,
+            95,
+            125,
+            156,
+            176,
+            230
+          ]
+        },
+        {
+          "anchor": "copy",
+          "lines": [
+            164,
+            222
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/models/ModelImportStager.kt",
+      "sha256": "d5f09a21cc5edda1b3d24d2148571dbaeb8543106848c5ace0371be2d76c456b",
+      "line_count": 122,
+      "review_locations": [
+        {
+          "anchor": "suspend fun",
+          "lines": [
+            25
+          ]
+        },
+        {
+          "anchor": "register",
+          "lines": [
+            16
+          ]
+        },
+        {
+          "anchor": "copy",
+          "lines": [
+            15,
+            16,
+            25
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/models/ImmutableModelStore.kt",
+      "sha256": "f046f3f4c7c9a16369931a2836194f4a21526acb2e0ea5b11b9b495a1963b02f",
+      "line_count": 558,
+      "review_locations": [
+        {
+          "anchor": "tryLock",
+          "lines": [
+            133,
+            375
+          ]
+        },
+        {
+          "anchor": "setPosixFilePermissions",
+          "lines": [
+            62
+          ]
+        },
+        {
+          "anchor": "ATOMIC_MOVE",
+          "lines": [
+            326
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/verify/src/main/kotlin/app/skein/core/verify/ModelVerifier.kt",
+      "sha256": "3c7f1285a7fc58a62912d8b7145883bcf54788fd2f14281eb70bf3e64ee10d9e",
+      "line_count": 624,
+      "review_locations": [
+        {
+          "anchor": "fun verifyForLoad",
+          "lines": [
+            497
+          ]
+        },
+        {
+          "anchor": "val expectedBlake3",
+          "lines": [
+            519
+          ]
+        },
+        {
+          "anchor": "verifyAfterMmapSha256",
+          "lines": [
+            538,
+            553
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/models/ManifestAttestation.kt",
+      "sha256": "4a2c1884fbce18d043a64c5e588a1b15f5b5f7a6027aa35676f030dd901adf64",
+      "line_count": 102,
+      "review_locations": [
+        {
+          "anchor": "val Unavailable:",
+          "lines": [
+            100
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/proguard-rules.pro",
+      "sha256": "339cf2f01ef4a1806a0498d46bf62ad04c7c01ef38bcbf2f4bc9d90ce795b792",
+      "line_count": 61,
+      "review_locations": [
+        {
+          "anchor": "-assumenosideeffects class app.skein.core.model.SkeinLog",
+          "lines": [
+            38
+          ]
+        },
+        {
+          "anchor": "public static void d",
+          "lines": [
+            39
+          ]
+        },
+        {
+          "anchor": "public static void i",
+          "lines": [
+            40
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ModelImportCoordinator.kt",
+      "sha256": "fbbe9a80d98369f5d7b5619766aa1081245b73e7f752afdc1e6bafa29ff68357",
+      "line_count": 301,
+      "review_locations": [
+        {
+          "anchor": "internal fun detachOwner",
+          "lines": [
+            114
+          ]
+        },
+        {
+          "anchor": "internal fun executePending",
+          "lines": [
+            123
+          ]
+        },
+        {
+          "anchor": "private suspend fun registerIfUnlocked",
+          "lines": [
+            171
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ModelImportService.kt",
+      "sha256": "8696ea544997c530c94d30bf0da8027fe854b444179ea9e1984adcffcc57c7ea",
+      "line_count": 110,
+      "review_locations": [
+        {
+          "anchor": "startForeground",
+          "lines": [
+            36
+          ]
+        },
+        {
+          "anchor": "lifetime.stopped()",
+          "lines": [
+            75,
+            81
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ModelImportServiceLifetime.kt",
+      "sha256": "ce55bbb67baa35ffaf58d45d62f59cdc11699857d01e033572c723838ebb1232",
+      "line_count": 40,
+      "review_locations": [
+        {
+          "anchor": "fun stopped",
+          "lines": [
+            36
+          ]
+        },
+        {
+          "anchor": "executionStopped",
+          "lines": [
+            37
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/res/xml/data_extraction_rules.xml",
+      "sha256": "f702fd7e88f1a6f385645c1317219f20d8addb73ec8833bfad836e24ffbe9b9d",
+      "line_count": 66,
+      "review_locations": [
+        {
+          "anchor": "<exclude",
+          "lines": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            49,
+            53,
+            54,
+            55,
+            56,
+            57,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64
+          ]
+        },
+        {
+          "anchor": "<cloud-backup>",
+          "lines": [
+            7,
+            26
+          ]
+        },
+        {
+          "anchor": "<device-transfer>",
+          "lines": [
+            7,
+            51
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/res/xml/backup_rules_legacy.xml",
+      "sha256": "828f975c376aec7fbb2250883e8ae89da73d0014f677bbcfc2057c12fb8072b3",
+      "line_count": 30,
+      "review_locations": [
+        {
+          "anchor": "<exclude",
+          "lines": [
+            17,
+            18,
+            19,
+            20,
+            21,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/MainActivity.kt",
+      "sha256": "9b1315fb0fbb12328cf2a376bf5802aa97a8bf76d127dd80aef209efa3365115",
+      "line_count": 653,
+      "review_locations": [
+        {
+          "anchor": "setRecentsScreenshotEnabled",
+          "lines": [
+            233
+          ]
+        },
+        {
+          "anchor": "FLAG_SECURE",
+          "lines": [
+            93,
+            220,
+            232,
+            239,
+            283,
+            425,
+            427
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/system/SecurityPrefs.kt",
+      "sha256": "4d94f3fdded5877e7aef824fa9b694a229e806122d266994a7933566fa869687",
+      "line_count": 180,
+      "review_locations": [
+        {
+          "anchor": "flagSecure",
+          "lines": [
+            35
+          ]
+        },
+        {
+          "anchor": "true",
+          "lines": [
+            24,
+            148,
+            166,
+            170
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    },
+    {
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/input/SecureTextField.kt",
+      "sha256": "60bfb271a153fa8af9ed20cc8fd03a4bb68a283d0565fa0122923b11dc6e1565",
+      "line_count": 191,
+      "review_locations": [
+        {
+          "anchor": "IME_FLAG_NO_PERSONALIZED_LEARNING",
+          "lines": [
+            51,
+            181,
+            189
+          ]
+        },
+        {
+          "anchor": "TYPE_TEXT_FLAG_NO_SUGGESTIONS",
+          "lines": [
+            48,
+            180,
+            187
+          ]
+        }
+      ],
+      "identical_at_reviewed_base": true
+    }
+  ]
+}

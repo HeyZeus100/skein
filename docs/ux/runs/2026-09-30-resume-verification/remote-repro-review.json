@@ -1,0 +1,64 @@
+{
+  "status": "PASS",
+  "source_sha": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+  "run_id": 36661424026,
+  "unsigned_apk_pair_byte_equal": true,
+  "unsigned_apk_sha256": "61fbf3c66b70cdb14340a7965284388ddecc7483f74e29dd5872723a11f06b4b",
+  "unsigned_apk_bytes": 100840227,
+  "native_pair_byte_equal": true,
+  "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+  "native_bytes": 25314032,
+  "embedded_release_native_matches_pair": true,
+  "archives": [
+    {
+      "name": "rb-build-a",
+      "id": 11075070305,
+      "bytes": 100841100,
+      "sha256": "90eb5746f2cd1069deb8f1c07de527ea4ff1541dc094f593a1332e81d92542b0",
+      "archive": "build/agent-logs/resume-20260930/remote/36661424026/11075070305/archive.zip",
+      "extracted": "build/agent-logs/resume-20260930/remote/36661424026/11075070305/extracted",
+      "apk_sha256": "61fbf3c66b70cdb14340a7965284388ddecc7483f74e29dd5872723a11f06b4b",
+      "apk_bytes": 100840227
+    },
+    {
+      "name": "rb-build-b",
+      "id": 11074841997,
+      "bytes": 100841114,
+      "sha256": "26e3a6d47b4b842675b21b07cad3f352ebf32870f7a2d1104393cdb390c76778",
+      "archive": "build/agent-logs/resume-20260930/remote/36661424026/11074841997/archive.zip",
+      "extracted": "build/agent-logs/resume-20260930/remote/36661424026/11074841997/extracted",
+      "apk_sha256": "61fbf3c66b70cdb14340a7965284388ddecc7483f74e29dd5872723a11f06b4b",
+      "apk_bytes": 100840227
+    },
+    {
+      "name": "so-determinism",
+      "id": 11074632326,
+      "bytes": 50710914,
+      "sha256": "feee36a96527ff69f035c33e5cc4a426a816ae73b46b9117241e554bb37eb090",
+      "archive": "build/agent-logs/resume-20260930/remote/36661424026/11074632326/archive.zip",
+      "extracted": "build/agent-logs/resume-20260930/remote/36661424026/11074632326/extracted",
+      "native_manifest_entries_verified": 15
+    }
+  ],
+  "workflow_log_sha256": "9c81d1270afc1b338c2cee1b11a5d47a02259ca7200f5fac2b91d5f85abb70d9",
+  "limits": [
+    "Unsigned release pair, not signed debug APK or installed Fold attestation.",
+    "Tag-only SQLCipher regeneration skipped.",
+    "Shader negative-control not run; existing negative-control evidence not reattributed."
+  ],
+  "previous_e62_payload_comparison": {
+    "changed_entries": [
+      "assets/dexopt/baseline.prof",
+      "assets/dexopt/baseline.profm",
+      "classes.dex",
+      "classes2.dex",
+      "classes3.dex",
+      "classes4.dex",
+      "lib/arm64-v8a/libskein_sqlite.so"
+    ],
+    "dex_changed": true,
+    "key_material_gone_string_present_in_new_dex": true,
+    "review_sha256": "70301eb406794c8465d7e381c9b951ce3fe86b6dcd992f2744f01e680d4a8579",
+    "scope": "Equal total APK lengths do not imply identical payloads: DEX and baseline-profile bytes changed and KeyMaterialGone is present. No all-native-entries-equal claim: release sqlite.so differs from prior e62."
+  }
+}

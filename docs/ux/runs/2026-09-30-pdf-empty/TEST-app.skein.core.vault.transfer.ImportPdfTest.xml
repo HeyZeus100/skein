@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.skein.core.vault.transfer.ImportPdfTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-30T03:05:42.864Z" hostname="Andrews-MacBook-Pro.local" time="1.348">
+  <properties/>
+  <testcase name="whitespace-only pages yield the notice rather than page separators" classname="app.skein.core.vault.transfer.ImportPdfTest" time="1.031"/>
+  <testcase name="a 3-page pdf yields a note with three sections separated by the page break" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.017"/>
+  <testcase name="blank pages retain their positions around extracted text and metadata" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.01"/>
+  <testcase name="single-page pdf with a Title extracts text and titles the note from metadata" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.008"/>
+  <testcase name="a scanned pdf with no text layer yields the notice body" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.008"/>
+  <testcase name="an encrypted pdf yields the notice body, not an error" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.012"/>
+  <testcase name="a malformed pdf yields the notice body and still stores the attachment" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.006"/>
+  <testcase name="an uncompressed content stream still extracts text" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.006"/>
+  <testcase name="a TJ kerning array extracts as one continuous word" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.006"/>
+  <testcase name="a pdf with no Title metadata falls back to the file name" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.006"/>
+  <testcase name="two blank pages yield the notice while preserving metadata and attachment bytes" classname="app.skein.core.vault.transfer.ImportPdfTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

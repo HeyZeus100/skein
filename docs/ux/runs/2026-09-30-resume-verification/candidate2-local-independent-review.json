@@ -1,0 +1,192 @@
+{
+  "status": "PASS_RAW_LOCAL_CANDIDATE2_REVIEW",
+  "reviewed_at": "2026-09-30T03:12:27.542125+00:00",
+  "source_sha": "9d5f7b725f5c78225741ec85e5c41e4e7e73257e",
+  "source_attribution": "host-declared git checkout, not APK attestation",
+  "public_report": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/docs/ux/runs/2026-09-30-resume-verification/candidate2-local-full.json",
+    "sha256": "582bcdca4a40d8b24f35890313dd460c0b44938221a6ccb487e223e93c42177d"
+  },
+  "archive": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/resume-20260930/candidate2-local-unit-actual.zip",
+    "bytes": 493731,
+    "sha256": "d2e322dc7dbb17e2ef7b6561f95e987273d32aa9b600f4786a1f09f1967ed513",
+    "entries": 519,
+    "xml_count": 518,
+    "all_xml_bytes_sizes_hashes_reverified": true,
+    "manifest_sha256": "7159de2a107eed54c2660e6f4552fd45b69645a9705c3dda8779e80e27ba3882"
+  },
+  "actual_totals": {
+    "tests": 5352,
+    "passed": 5266,
+    "skipped": 86,
+    "failures": 0,
+    "errors": 0
+  },
+  "prior_local_baseline": {
+    "source_sha": "b62977f3a62e813ef21c0928a8a425ca5562a679",
+    "comparison_receipt": "/Users/andrewherrera/skein-worktrees/readiness-audit-resume-20260930/build/agent-logs/readiness-review-20260930/combined-full-independent-review.json",
+    "comparison_receipt_sha256": "9eb86b8456c94c20d2806fb6c12abff37634d81b754778ec319ac56c16cc0c9c",
+    "old_retained_local_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "old_retained_raw_xml_count": 514,
+    "old_retained_review_sha256": "45282f60797efdfecfefbaea1762b037bddff98921490b5e9672fcaee0ae2409",
+    "old_retained_all_xml_hashes_reverified": true,
+    "prior_identity_count": 5346,
+    "prior_identity_set_also_equals_complete_fresh_90ec_remote_raw_cases": true,
+    "limitation": "Prior b629 local full original bytes were retained for only363 XML;155 overwritten files were semantically cross-checked from later sealed UX archive. This comparison uses retained e62 raw identities plus the sealed prior +26/no-removal audit and independently matches complete 90ec remote case identities; it does not claim original b629 bytes are newly available."
+  },
+  "skip_identity_comparison": {
+    "prior": 86,
+    "current": 86,
+    "exact_path_class_name_equal": true,
+    "added": [],
+    "removed": []
+  },
+  "added_cases": [
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "app.skein.core.vault.transfer.ImportPdfTest",
+      "whitespace-only pages yield the notice rather than page separators"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "app.skein.core.vault.transfer.ImportPdfTest",
+      "blank pages retain their positions around extracted text and metadata"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "app.skein.core.vault.transfer.ImportPdfTest",
+      "two blank pages yield the notice while preserving metadata and attachment bytes"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "app.skein.core.vault.transfer.ImportPdfTest",
+      "whitespace-only pages yield the notice rather than page separators"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "app.skein.core.vault.transfer.ImportPdfTest",
+      "blank pages retain their positions around extracted text and metadata"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "app.skein.core.vault.transfer.ImportPdfTest",
+      "two blank pages yield the notice while preserving metadata and attachment bytes"
+    ]
+  ],
+  "removed_cases": [],
+  "new_cases_all_pass": true,
+  "log": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/resume-20260930/candidate2-full-1.log",
+    "sha256": "39fb99c295af2fe2a70326fcc4e656f538161b0cd3c440dca26311760e7cf390",
+    "exit": 0,
+    "build_success": true
+  },
+  "report_test_task_states": {
+    ":app:testDevDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":app:testFossDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":build-logic:guards:test": [
+      "UP-TO-DATE"
+    ],
+    ":core:designsystem:testDebugUnitTest": [
+      "FROM-CACHE"
+    ],
+    ":core:export:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":core:inference:testDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":core:ipc:testDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":core:markdown:test": [
+      "UP-TO-DATE"
+    ],
+    ":core:model:test": [
+      "UP-TO-DATE"
+    ],
+    ":core:navigation:test": [
+      "UP-TO-DATE"
+    ],
+    ":core:rag:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":core:security:testDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":core:vault:testDevDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":core:vault:testFossDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":core:verify:test": [
+      "UP-TO-DATE"
+    ],
+    ":embedder-service:testDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":feature:chat:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":feature:editor:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":feature:graph:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":feature:models:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":feature:settings:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":feature:shell:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":feature:timeline:testDebugUnitTest": [
+      "EXECUTED"
+    ],
+    ":inference-service:testDevDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":inference-service:testFossDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":testing-fakes:test": [
+      "UP-TO-DATE"
+    ],
+    ":testing-ui:testDebugUnitTest": [
+      "UP-TO-DATE"
+    ],
+    ":testing:test": [
+      "UP-TO-DATE"
+    ]
+  },
+  "report_test_task_state_counts": {
+    "EXECUTED": 13,
+    "UP-TO-DATE": 14,
+    "FROM-CACHE": 1
+  },
+  "all_gradle_task_state_counts": {
+    "SKIPPED": 255,
+    "UP-TO-DATE": 1375,
+    "NO-SOURCE": 314,
+    "EXECUTED": 272,
+    "FROM-CACHE": 2
+  },
+  "scope": "Two-file PdfImporter blank/text-layer fix and three tests, each exercised in Dev/Foss; full candidate check+lint reported here. No physical, installed APK, instrumentation, screenshot, model qualification or remote CI validation for this source.",
+  "actual-testcases.json": {
+    "path": "/Users/andrewherrera/skein-worktrees/readiness-audit-resume-20260930/build/agent-logs/readiness-review-20260930/candidate2-local/actual-testcases.json",
+    "sha256": "819164a7a88578b609716ba66e089ce614b408da519ea754c288ec312ced5a80"
+  },
+  "xml-records.json": {
+    "path": "/Users/andrewherrera/skein-worktrees/readiness-audit-resume-20260930/build/agent-logs/readiness-review-20260930/candidate2-local/xml-records.json",
+    "sha256": "7dc959ccf9cce588b6a516f9833955f49fcf221b3abe53ee67dc8cba15ab130a"
+  }
+}

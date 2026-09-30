@@ -1,0 +1,39 @@
+{
+  "phase": "FIXED_PDF_FOCUSED_PASS",
+  "totals": {
+    "tests": 13,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "files": [
+    {
+      "file": "TEST-app.skein.core.vault.transfer.ImportPdfMemorySmokeTest.xml",
+      "sha256": "e21262b51f7405b6da463b713be32aed3017c4953dda4696c378ba0e70d1ad77",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "sha256": "cc660e2afc5dd6f4427bdc2bfc7ce8bd595d3306752a43e64c603b8741dabdc1",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "TEST-app.skein.core.vault.transfer.PdfResourceLoaderTest.xml",
+      "sha256": "ce44af92134c72ab78d53a17eb37100520e1b8f24980d28c3b3cb67068919c14",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "log_sha256": "0f99aefcb6a286db23ffbf443c7066393960702ce6a8534eb4dbaee9d697b8da",
+  "production_sha256": "2dcae4e54e2ff2b32121b82f7a57d3fd15bd1bb3ead01ef215c56b28eba338c4",
+  "test_sha256": "bde5c274cf48a6bb1fe6268172c4f9b3d03175eead637a7b829d9db65ee84e1f",
+  "fresh_no_build_cache": true
+}
