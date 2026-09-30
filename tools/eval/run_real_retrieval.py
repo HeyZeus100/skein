@@ -22,6 +22,24 @@ APK_DIRECTORY = "core/vault/build/outputs/apk/androidTest/dev/debug"
 REPOSITORY = Path(__file__).resolve().parents[2]
 VALIDATION_FIXTURE_SHA256 = "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c"
 INDEPENDENT_FIXTURE_SHA256 = "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8"
+FRESH40_FIXTURE = "testing/src/main/resources/eval/rejection-validation-20260930.json"
+FRESH40_SHA256 = "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674"
+CANDIDATE_SOURCE_ROOTS = ("core/rag/src/main", "core/model/src/main",
+                          "core/vault/src/main/kotlin/app/skein/core/vault/index",
+                          "core/vault/src/main/kotlin/app/skein/core/vault/repository")
+EVALUATOR_SOURCES = (
+    "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationFixture.kt",
+    "testing/src/main/kotlin/app/skein/testing/eval/ExpandedRetrievalMetrics.kt",
+    "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationReport.kt",
+    "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationFixtureTest.kt",
+    "testing/src/test/kotlin/app/skein/testing/eval/ExpandedRetrievalMetricsTest.kt",
+    "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationReportTest.kt",
+    "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/FreshContextualValidationEvaluation.kt",
+    "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt",
+    "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md",
+    "tools/eval/run_real_retrieval.py", "tools/eval/test_run_real_retrieval.py",
+    ".github/workflows/retrieval-diagnostic.yml", FRESH40_FIXTURE,
+)
 # Historical policy remains useful to validate immutable old artifacts. Current
 # runs take their exact policy metadata from the coordinator's frozen manifest.
 MINIMUM_QUERY_COVERAGE = .5
@@ -298,6 +316,140 @@ def load_policy_freeze(path):
     return frozen
 
 
+def verify_source_freeze(repo, revision, head, paths, *, directories=False):
+    """Pin actual tracked bytes before device access, including additions/removals in candidate roots."""
+    require(isinstance(revision, str) and re.fullmatch(r"[a-f0-9]{40}", revision),
+            "a full lowercase frozen source revision is required")
+    command(["git", "merge-base", "--is-ancestor", revision, head], cwd=repo)
+    frozen = command(["git", "ls-tree", "-r", "--name-only", revision, "--", *paths], cwd=repo).stdout.decode().splitlines()
+    current = command(["git", "ls-files", "--", *paths], cwd=repo).stdout.decode().splitlines()
+    require(frozen and set(frozen) == set(current), "frozen source file inventory changed")
+    if not directories:
+        require(set(frozen) == set(paths), "frozen evaluator source inventory is incomplete")
+    records = []
+    for relative in sorted(frozen):
+        raw = command(["git", "show", revision + ":" + relative], cwd=repo).stdout
+        digest = hashlib.sha256(raw).hexdigest()
+        require((repo / relative).is_file() and sha256(repo / relative) == digest,
+                "source changed after freeze: " + relative)
+        records.append(dict(path=relative, bytes=len(raw), sha256=digest))
+    return dict(revision=revision, files=records)
+
+
+def validate_fresh40_freeze(repo, head, candidate, evaluator):
+    require(sha256(repo / FRESH40_FIXTURE) == FRESH40_SHA256, "fresh40 frozen fixture changed")
+    return dict(fixture_sha256=FRESH40_SHA256,
+                candidate=verify_source_freeze(repo, candidate, head, CANDIDATE_SOURCE_ROOTS, directories=True),
+                evaluator=verify_source_freeze(repo, evaluator, head, EVALUATOR_SOURCES))
+
+
+def fresh40_arguments(enabled, candidate, evaluator):
+    if not enabled:
+        require(not candidate and not evaluator, "fresh40 freeze arguments require explicit --fresh40")
+        return []
+    require(all(isinstance(value, str) and re.fullmatch(r"[a-f0-9]{40}", value)
+                for value in (candidate, evaluator)), "fresh40 requires both full frozen source revisions")
+    prefix = "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval."
+    return [prefix + "fresh40=true", prefix + "fresh40CandidateFreeze=" + candidate,
+            prefix + "fresh40EvaluatorFreeze=" + evaluator]
+
+
+def validate_fresh40_report(report, head, candidate, evaluator, fixture):
+    """Check the full preregistered denominator; component-only context never earns application credit."""
+    require(isinstance(report, dict), "requested fresh40 report is missing")
+    expected = dict(schema_version=1, fixture_protocol_version=2, fixture_sha256=FRESH40_SHA256,
+                    build_revision=head, candidate_freeze=candidate, evaluator_freeze=evaluator,
+                    status="MEASURED_DIAGNOSTIC", expanded_ranking_gate="INELIGIBLE",
+                    repetitions=3, warmups_per_query_mode=1)
+    for key, value in expected.items():
+        require(type(report.get(key)) is type(value) and report[key] == value, "fresh40 metadata mismatch: " + key)
+    labels = {query["id"]: query for query in fixture["queries"]}
+    contexts = {key for key, query in labels.items() if "conversation_context" in query["execution_requirements"]}
+    require(len(labels) == 40 and len(contexts) == 6, "fresh40 fixture protocol changed")
+    app = report.get("application_context", {})
+    require(app.get("status") == "UNEXECUTED" and type(app.get("executed")) is int and app["executed"] == 0
+            and type(app.get("total")) is int and app["total"] == 6
+            and len(app.get("required_query_ids", [])) == 6 and set(app["required_query_ids"]) == contexts,
+            "fresh40 component context cannot claim application acceptance")
+    modes = report.get("modes", {})
+    require(set(modes) == {"raw_string_baseline", "contextual_candidate"}, "fresh40 modes missing or substituted")
+    verified = {}
+    for name, mode in modes.items():
+        rows = mode.get("queries", [])
+        require(len(rows) == 40 and {row["id"] for row in rows} == set(labels), "fresh40 rows missing or duplicated")
+        counts = dict(queries=40, answerable_queries=22, absence_queries=18, labelled_evidence_spans=24,
+                      attempted=0, completed=0, scored=0, covered_evidence_spans=0, all_span_successes=0,
+                      correct_absence_rejections=0, false_absence_admissions=0, strict_successes=0,
+                      provenance_violations=0, execution_errors=0, timeouts=0, unexecuted=0)
+        nondeterministic = 0
+        for row in rows:
+            label = labels[row["id"]]
+            spans = sum(e["grade"] == 3 for e in label["relevant"])
+            answerable = spans > 0
+            require(row.get("category") == label["category"] and row.get("raw_query") == label["query"]
+                    and row.get("answerable") is answerable and type(row.get("required_spans")) is int
+                    and row["required_spans"] == spans, "fresh40 query/label identity changed")
+            status = row.get("status")
+            require(status in {"EXECUTED", "ERROR", "TIMEOUT", "UNEXECUTED"}
+                    and type(row.get("attempted")) is bool, "fresh40 outcome is missing")
+            counts["attempted"] += int(row["attempted"])
+            if row["id"] in contexts:
+                require(status == "UNEXECUTED" and row["attempted"] is False and row.get("warmup") is None
+                        and row.get("samples") == [] and row.get("application_context_status") == "UNEXECUTED",
+                        "fresh40 component result credited as real application context")
+            if status != "EXECUTED":
+                require(row.get("score") is None, "fresh40 unexecuted/error row received scoring credit")
+                counts[{"ERROR": "execution_errors", "TIMEOUT": "timeouts", "UNEXECUTED": "unexecuted"}[status]] += 1
+                continue
+            require(row["attempted"] is True and type(row.get("deterministic")) is bool,
+                    "fresh40 executed outcome lacks attempt/determinism")
+            samples = row.get("samples", [])
+            warmup = row.get("warmup")
+            require(len(samples) == 3 and isinstance(warmup, dict), "fresh40 successful sampling is incomplete")
+            for sample in [warmup, *samples]:
+                require(sample.get("status") == "EXECUTED" and isinstance(sample.get("evidence"), list)
+                        and finite_number(sample.get("elapsed_ms")) and sample["elapsed_ms"] >= 0,
+                        "fresh40 failed/invalid sample reported as executed")
+            score = row.get("score")
+            require(isinstance(score, dict) and type(score.get("covered_spans")) is int
+                    and type(score.get("total_spans")) is int and score["total_spans"] == spans
+                    and 0 <= score["covered_spans"] <= spans
+                    and isinstance(score.get("provenance_violations"), list), "fresh40 score shape invalid")
+            for key in ("all_spans_covered", "correct_absence_rejection", "false_absence_admission"):
+                require(type(score.get(key)) is bool, "fresh40 score boolean invalid: " + key)
+            violations = len(score["provenance_violations"])
+            empty = all(not sample["evidence"] for sample in samples)
+            require(score["all_spans_covered"] is (answerable and score["covered_spans"] == spans),
+                    "fresh40 all-span coverage disagrees with required spans")
+            require(score["correct_absence_rejection"] is (not answerable and empty and violations == 0),
+                    "fresh40 absence rejection disagrees with successful raw outputs")
+            require(score["false_absence_admission"] is (not answerable and not empty),
+                    "fresh40 false admission disagrees with successful raw outputs")
+            counts["completed"] += 1
+            counts["scored"] += 1
+            counts["covered_evidence_spans"] += score["covered_spans"]
+            counts["provenance_violations"] += violations
+            counts["correct_absence_rejections"] += int(score["correct_absence_rejection"])
+            counts["false_absence_admissions"] += int(score["false_absence_admission"])
+            valid = violations == 0 and row["deterministic"]
+            nondeterministic += int(not row["deterministic"])
+            counts["all_span_successes"] += int(valid and answerable and score["all_spans_covered"])
+            counts["strict_successes"] += int(valid and (
+                score["all_spans_covered"] if answerable else score["correct_absence_rejection"]))
+        summary = mode.get("summary", {})
+        for key, value in counts.items():
+            require(type(summary.get(key)) is int and summary[key] == value, "fresh40 summary mismatch: " + key)
+        hard = "FAIL" if counts["provenance_violations"] or nondeterministic else (
+            "INCOMPLETE" if counts["unexecuted"] else "PASS")
+        require(summary.get("hard_provenance_gate") == hard, "fresh40 hard provenance status mismatch")
+        verified[name] = dict(counts, hard_provenance_gate=hard, nondeterministic_queries=nondeterministic,
+                              strict_success_rate=counts["strict_successes"] / 40)
+    return dict(status="INCOMPLETE" if any(v["unexecuted"] for v in verified.values()) else (
+        "PASS" if all(v["strict_successes"] == 40 for v in verified.values()) else "FAIL"),
+        modes=verified, application_context="UNEXECUTED", expanded_ranking_gate="INELIGIBLE",
+        limitation="Structural row/count review; raw source, member and span evidence also requires independent review.")
+
+
 def verify_junit(directory):
     """Require the actual AGP testcase, not an empty/success-looking runner exit."""
     cases = []
@@ -446,7 +598,11 @@ def main(argv=None):
     parser.add_argument("--policy-freeze", default="tools/eval/retrieval-policy-freeze.json")
     parser.add_argument("--require-quality", action="store_true", help="fail after collecting genuine quality failures")
     parser.add_argument("--require-hybrid", action="store_true", help="also require a measured full-hybrid pass")
+    parser.add_argument("--fresh40", action="store_true", help="explicitly measure the frozen additive fresh40 adapter")
+    parser.add_argument("--candidate-freeze", default="")
+    parser.add_argument("--evaluator-freeze", default="")
     args = parser.parse_args(argv)
+    fresh_args = fresh40_arguments(args.fresh40, args.candidate_freeze, args.evaluator_freeze)
     repo = REPOSITORY
     require(Path.cwd().resolve() == repo, "run from the repository root")
     require(re.fullmatch(r"emulator-[0-9]+", args.serial), "an explicit emulator serial is required")
@@ -471,6 +627,9 @@ def main(argv=None):
         summary["policy_freeze"] = frozen
         summary["require_quality"] = args.require_quality
         summary["require_hybrid"] = args.require_hybrid
+        if args.fresh40:
+            summary["fresh40_freeze"] = validate_fresh40_freeze(
+                repo, head, args.candidate_freeze, args.evaluator_freeze)
         require(not any((repo / RESULT_DIRECTORY).rglob("*.xml")),
                 "prior instrumentation XML exists; use a fresh isolated build directory")
         apks = list((repo / APK_DIRECTORY).glob("*.apk"))
@@ -493,6 +652,7 @@ def main(argv=None):
                 "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.repetitions=3",
                 "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.revision=" + head,
                 "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.validationFreeze=" + frozen["source_revision"]]
+        argv += fresh_args
         try:
             summary["gradle_exit_code"] = run_logged(argv, output / "instrumentation-gradle.log", env)
         except subprocess.TimeoutExpired:
@@ -543,6 +703,15 @@ def main(argv=None):
                                      ("independent_validation", json.loads(independent_fixture.read_text())))
         }
         summary["quality_gate"] = quality_gates(report)
+        if args.fresh40:
+            summary["fresh_contextual_validation"] = validate_fresh40_report(
+                report.get("fresh_contextual_validation"), head, args.candidate_freeze, args.evaluator_freeze,
+                json.loads((repo / FRESH40_FIXTURE).read_text()))
+            summary["quality_gate"]["gates"]["fresh_contextual_validation"] = summary["fresh_contextual_validation"]["status"]
+            summary["quality_gate"]["status"] = "PASS" if all(
+                value == "PASS" for value in summary["quality_gate"]["gates"].values()) else "FAIL"
+        else:
+            require("fresh_contextual_validation" not in report, "fresh40 ran without explicit opt-in")
         summary["complete"] = True
         print("Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.")
         print(json.dumps(summary["diagnostic_ranking_gates"], sort_keys=True))

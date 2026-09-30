@@ -9,11 +9,32 @@ on:
         description: Fail the job when measured relevance quality fails
         type: boolean
         default: false
+      fresh40:
+        description: Opt into the frozen contextual adapter; missing application context remains unexecuted
+        type: boolean
+        default: false
+      candidate_freeze:
+        description: Full integrated candidate commit, required only for fresh40
+        type: string
+        default: ""
+      evaluator_freeze:
+        description: Full integrated evaluator commit, required only for fresh40
+        type: string
+        default: ""
   workflow_call:
     inputs:
       require_quality:
         type: boolean
         default: false
+      fresh40:
+        type: boolean
+        default: false
+      candidate_freeze:
+        type: string
+        default: ""
+      evaluator_freeze:
+        type: string
+        default: ""
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,6 +48,10 @@ jobs:
     name: Opt-in real SQLite retrieval (API 35)
     runs-on: ubuntu-latest
     timeout-minutes: 70
+    env:
+      SKEIN_FRESH40: ${{ inputs.fresh40 }}
+      SKEIN_FRESH40_CANDIDATE: ${{ inputs.candidate_freeze }}
+      SKEIN_FRESH40_EVALUATOR: ${{ inputs.evaluator_freeze }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
         with:
@@ -66,6 +91,18 @@ jobs:
               sys.exit("No retrieval runner tests discovered")
           sys.exit(not unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful())
           PY
+          python3 - <<'PY'
+          import json, os, pathlib, sys
+          sys.path.insert(0, "tools/eval")
+          import run_real_retrieval as runner
+          enabled = os.environ["SKEIN_FRESH40"] == "true"
+          candidate = os.environ["SKEIN_FRESH40_CANDIDATE"]
+          evaluator = os.environ["SKEIN_FRESH40_EVALUATOR"]
+          runner.fresh40_arguments(enabled, candidate, evaluator)
+          if enabled:
+              receipt = runner.validate_fresh40_freeze(pathlib.Path.cwd(), os.environ["GITHUB_SHA"], candidate, evaluator)
+              pathlib.Path("build/retrieval-diagnostic/fresh40-source-freeze.json").write_text(json.dumps(receipt, indent=2) + "\n")
+          PY
           set -o pipefail
           ./gradlew -Pskein.retrievalEvaluation=true --max-workers=2 :core:vault:assembleDevDebugAndroidTest 2>&1 | tee build/retrieval-diagnostic/build.log
       - name: Measure only the explicitly opted-in retrieval class
@@ -80,7 +117,7 @@ jobs:
           # One command preserves serial selection within the action's script
           # execution model. The helper sets ANDROID_SERIAL for Gradle too.
           script: |
-            python3 tools/eval/run_real_retrieval.py --serial "$(adb devices | awk '$1 ~ /^emulator-[0-9]+$/ && $2 == "device" {print $1}')" --expected-head "${{ github.sha }}" --output build/retrieval-diagnostic/run ${{ inputs.require_quality && '--require-quality' || '' }}
+            python3 tools/eval/run_real_retrieval.py --serial "$(adb devices | awk '$1 ~ /^emulator-[0-9]+$/ && $2 == "device" {print $1}')" --expected-head "${{ github.sha }}" --output build/retrieval-diagnostic/run ${{ inputs.require_quality && '--require-quality' || '' }} ${{ inputs.fresh40 && '--fresh40' || '' }} --candidate-freeze "$SKEIN_FRESH40_CANDIDATE" --evaluator-freeze "$SKEIN_FRESH40_EVALUATOR"
       - name: Retain measured diagnostic, actual instrumentation XML, and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

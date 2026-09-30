@@ -796,7 +796,8 @@ class ProcessAndWorkflowTest(unittest.TestCase):
             if not line.startswith("            "):
                 break
             lines.append(line.strip().replace("${{ github.sha }}", HEAD)
-                         .replace("${{ inputs.require_quality && '--require-quality' || '' }}", "--require-quality"))
+                         .replace("${{ inputs.require_quality && '--require-quality' || '' }}", "--require-quality")
+                         .replace("${{ inputs.fresh40 && '--fresh40' || '' }}", "--fresh40"))
         self.assertEqual(len(lines), 1)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -808,12 +809,140 @@ class ProcessAndWorkflowTest(unittest.TestCase):
             python.chmod(0o700)
             arguments = root / "arguments"
             subprocess.run(["/bin/sh", "-c", lines[0]], check=True, cwd=root, timeout=10,
-                           env={"PATH": f"{root}:/usr/bin:/bin", "RETRIEVAL_TEST_ARGS": str(arguments)})
+                           env={"PATH": f"{root}:/usr/bin:/bin", "RETRIEVAL_TEST_ARGS": str(arguments),
+                                "SKEIN_FRESH40_CANDIDATE": "b" * 40, "SKEIN_FRESH40_EVALUATOR": "c" * 40})
             argv = arguments.read_text().splitlines()
             self.assertEqual(argv[argv.index("--serial") + 1], "emulator-5554")
             self.assertEqual(argv[argv.index("--expected-head") + 1], HEAD)
             self.assertEqual(argv[argv.index("--output") + 1], "build/retrieval-diagnostic/run")
             self.assertIn("--require-quality", argv)
+            self.assertIn("--fresh40", argv)
+            self.assertEqual(argv[argv.index("--candidate-freeze") + 1], "b" * 40)
+            self.assertEqual(argv[argv.index("--evaluator-freeze") + 1], "c" * 40)
+
+
+class Fresh40ContractTest(unittest.TestCase):
+    """Synthetic empty outputs exercise accounting, never model or retrieval quality."""
+
+    def setUp(self):
+        self.fixture = json.loads((runner.REPOSITORY / runner.FRESH40_FIXTURE).read_text())
+
+    def report(self):
+        contexts = [q["id"] for q in self.fixture["queries"] if "conversation_context" in q["execution_requirements"]]
+        rows = []
+        for q in self.fixture["queries"]:
+            spans = sum(e["grade"] == 3 for e in q["relevant"])
+            context = q["id"] in contexts
+            sample = dict(status="EXECUTED", elapsed_ms=1, evidence=[])
+            rows.append(dict(id=q["id"], category=q["category"], raw_query=q["query"], answerable=spans > 0,
+                             required_spans=spans, status="UNEXECUTED" if context else "EXECUTED",
+                             attempted=not context, application_context_status="UNEXECUTED" if context else "NOT_REQUIRED",
+                             deterministic=not context, samples=[] if context else [copy.deepcopy(sample) for _ in range(3)],
+                             warmup=None if context else copy.deepcopy(sample),
+                             score=None if context else dict(covered_spans=0, total_spans=spans, all_spans_covered=False,
+                                 correct_absence_rejection=spans == 0, false_absence_admission=False, provenance_violations=[])))
+        summary = dict(queries=40, answerable_queries=22, absence_queries=18, labelled_evidence_spans=24,
+                       attempted=34, completed=34, scored=34, covered_evidence_spans=0, all_span_successes=0,
+                       correct_absence_rejections=15, false_absence_admissions=0, strict_successes=15,
+                       provenance_violations=0, execution_errors=0, timeouts=0, unexecuted=6,
+                       hard_provenance_gate="INCOMPLETE")
+        return dict(schema_version=1, fixture_protocol_version=2, fixture_sha256=runner.FRESH40_SHA256,
+                    build_revision=HEAD, candidate_freeze="b" * 40, evaluator_freeze="c" * 40,
+                    status="MEASURED_DIAGNOSTIC", expanded_ranking_gate="INELIGIBLE", repetitions=3,
+                    warmups_per_query_mode=1,
+                    application_context=dict(status="UNEXECUTED", executed=0, total=6, required_query_ids=contexts),
+                    modes={name: dict(queries=copy.deepcopy(rows), summary=copy.deepcopy(summary))
+                           for name in ("raw_string_baseline", "contextual_candidate")})
+
+    def validate(self, report):
+        return runner.validate_fresh40_report(report, HEAD, "b" * 40, "c" * 40, self.fixture)
+
+    def test_full_denominator_keeps_component_context_unexecuted(self):
+        report = self.report()
+        context = next(r for r in report["modes"]["contextual_candidate"]["queries"] if r["status"] == "UNEXECUTED")
+        context["component_diagnostic"] = dict(status="EXECUTED", score=dict(all_spans_covered=True))
+        reviewed = self.validate(report)
+        self.assertEqual("INCOMPLETE", reviewed["status"])
+        self.assertEqual(15 / 40, reviewed["modes"]["contextual_candidate"]["strict_success_rate"])
+        self.assertEqual(6, reviewed["modes"]["contextual_candidate"]["unexecuted"])
+
+    def test_rejects_component_credit_missing_rows_and_oracle_query_substitution(self):
+        def component_credit(report):
+            r = next(r for r in report["modes"]["contextual_candidate"]["queries"] if r["status"] == "UNEXECUTED")
+            r.update(status="EXECUTED", attempted=True)
+        for mutate in (component_credit,
+                       lambda r: r["modes"]["contextual_candidate"]["queries"].pop(),
+                       lambda r: r["modes"]["raw_string_baseline"]["queries"][0].update(raw_query="oracle replacement"),
+                       lambda r: r["application_context"].update(status="PASS", executed=6),
+                       lambda r: r.update(expanded_ranking_gate="PASS"),
+                       lambda r: r.update(candidate_freeze="d" * 40),
+                       lambda r: r["modes"]["contextual_candidate"]["summary"].update(queries=34)):
+            report = self.report()
+            mutate(report)
+            with self.assertRaises(ValueError):
+                self.validate(report)
+
+    def test_errors_and_false_empty_claims_cannot_receive_absence_credit(self):
+        for status in ("ERROR", "TIMEOUT", "UNEXECUTED"):
+            report = self.report()
+            row = next(r for r in report["modes"]["contextual_candidate"]["queries"]
+                       if not r["answerable"] and r["status"] == "EXECUTED")
+            row["status"] = status
+            with self.assertRaises(ValueError):
+                self.validate(report)
+        report = self.report()
+        row = next(r for r in report["modes"]["contextual_candidate"]["queries"]
+                   if not r["answerable"] and r["status"] == "EXECUTED")
+        row["samples"][2]["evidence"] = [dict(chunk_id=999)]
+        with self.assertRaises(ValueError):
+            self.validate(report)
+
+    def test_nondeterminism_cannot_keep_successful_summary(self):
+        report = self.report()
+        row = next(r for r in report["modes"]["contextual_candidate"]["queries"]
+                   if not r["answerable"] and r["status"] == "EXECUTED")
+        row["deterministic"] = False
+        with self.assertRaises(ValueError):
+            self.validate(report)
+
+    def test_opt_in_requires_two_exact_full_freezes(self):
+        self.assertEqual([], runner.fresh40_arguments(False, "", ""))
+        self.assertEqual(3, len(runner.fresh40_arguments(True, "b" * 40, "c" * 40)))
+        for enabled, candidate, evaluator in ((False, "b" * 40, ""), (True, "", "c" * 40),
+                                               (True, "B" * 40, "c" * 40), (True, "--help", "c" * 40)):
+            with self.assertRaises(ValueError):
+                runner.fresh40_arguments(enabled, candidate, evaluator)
+
+    def test_freeze_checks_actual_git_bytes_and_added_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def git(*args):
+                return subprocess.run(["git", *args], cwd=root, capture_output=True, check=True).stdout.decode().strip()
+            git("init", "-q")
+            source = root / "module/source.kt"
+            source.parent.mkdir()
+            source.write_text("frozen source\n")
+            git("add", ".")
+            git("-c", "core.hooksPath=/dev/null", "-c", "user.name=Fixture", "-c",
+                "user.email=fixture@example.invalid", "commit", "-qm", "fixture")
+            revision = git("rev-parse", "HEAD")
+            receipt = runner.verify_source_freeze(root, revision, revision, ("module",), directories=True)
+            self.assertEqual(runner.sha256(source), receipt["files"][0]["sha256"])
+            source.write_text("changed source\n")
+            with self.assertRaises(ValueError):
+                runner.verify_source_freeze(root, revision, revision, ("module",), directories=True)
+            source.write_text("frozen source\n")
+            (root / "module/added.kt").write_text("unfrozen source\n")
+            git("add", "module/added.kt")
+            with self.assertRaises(ValueError):
+                runner.verify_source_freeze(root, revision, revision, ("module",), directories=True)
+
+    def test_freeze_arguments_rejected_before_any_external_operation(self):
+        with patch.object(runner, "command") as external:
+            with self.assertRaises(ValueError):
+                runner.main(["--serial", "emulator-5554", "--expected-head", HEAD, "--output", "unused",
+                             "--fresh40", "--candidate-freeze", "b" * 40])
+            external.assert_not_called()
 
 
 if __name__ == "__main__":
