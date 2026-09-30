@@ -1,5 +1,7 @@
 # UX, inference and demo integration — 29 September 2026
 
+Historical integration checkpoint. Start with the [latest orchestrator handoff](skein-orchestrator-resume-20260929.md) for the installed update, remaining gates and ownership transfer. Original evidence and failures below retain their original source attribution.
+
 The latest pushed combined UI source is **`28354dd25bb4995930ff46a71752f43f8a0d5df3`** on
 `main` and `codex/ux-integration-20260929`. **Released at 16:42:58 UTC for the
 owner-authorized data-preserving update and demo checks.** The sole demo runner

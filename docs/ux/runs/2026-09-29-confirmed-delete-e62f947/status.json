@@ -1,0 +1,111 @@
+{
+  "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+  "status": "INSTALLED_VERIFIED_PHYSICAL_DELETE_CHECKS_PENDING",
+  "app": {
+    "sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+    "size_bytes": 128085735,
+    "version_code": 1,
+    "version_name": "0.1.0",
+    "signer_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9"
+  },
+  "local": {
+    "full_passed": 5234,
+    "full_skipped": 86,
+    "focused_passed": 112,
+    "ktlint_lint_check": "PASS",
+    "failures": 0,
+    "errors": 0,
+    "scope": "Full reports include up-to-date and cached results; fresh strict screenshot execution separate."
+  },
+  "remote": {
+    "ci": {
+      "run_id": 36654289372,
+      "passed": 5232,
+      "skipped": 88,
+      "failures": 0,
+      "errors": 0,
+      "xml_files": 514,
+      "cached_unit_tasks": 10,
+      "new_skips": 0
+    },
+    "screenshots": {
+      "run_id": 36654289286,
+      "passed": 1333,
+      "skipped": 80,
+      "failures": 0,
+      "errors": 0,
+      "unchanged_images": 552,
+      "fresh_no_build_cache": true
+    },
+    "ordinary": {
+      "run_id": 36654289463,
+      "passed": 281,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "diagnostic_classes_absent": true
+    },
+    "reproducibility": {
+      "run_id": 36654289302,
+      "unsigned_apk_pair_byte_equal": true,
+      "unsigned_apk_sha256": "669f359ae8e24cf081f077f3df060518fafef19e1edc7384dcaf31c69785c613",
+      "unsigned_apk_bytes": 100840227,
+      "native_pair_byte_equal": true,
+      "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+      "native_bytes": 25314032,
+      "tag_only_sqlcipher_regeneration": "SKIPPED"
+    }
+  },
+  "release": {
+    "manifest_sha256": "5551c9d28a55d4efb4e6a1942ee57e6e1753fbc57355fd5aaba45601aa9333c3",
+    "driver_sha256": "7cc27ee256d0b882aa473b5d7fc4fbf5aa5c32801b805fb552aeabd0ec3faab7",
+    "host_mock_tests_passed": 46,
+    "host_dry_run": "PASS_NO_ADB"
+  },
+  "preservation": {
+    "native_entries_identical_to_installed030": 7,
+    "internet_permission": false,
+    "models_or_defaults_changed": false,
+    "gold_labels_thresholds_changed": false
+  },
+  "limits": [
+    "Files and extracted source notes excluded pending LC09.",
+    "Deletion check only fresh disposable fixtures; existing owner and demo contents preserved.",
+    "Full Fold/M0, retrieval/embedding, rendered citations and broad model quality remain open.",
+    "Earlier failed attempts remain preserved."
+  ],
+  "installation": {
+    "status": "PASS",
+    "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "app_sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+    "summary_path": "conference-demo-20260929/build/agent-logs/fold/physical-update-e62f94785-20260930T013355Z/summary.json",
+    "summary_sha256": "34b53f94c68471999273aff4dc65fbd222c599eee2342de3f288e4cce337dbcf",
+    "install_attempts": 1,
+    "copied_apks_rehashed": [
+      {
+        "role": "previous_apk_preserved",
+        "sha256": "c9b2ffd8ca4306c63c9e7bb3975de4b5e2b6a57a04385c39d4c49eb33f87c14e",
+        "bytes": 128079415
+      },
+      {
+        "role": "installed_apk_preserved",
+        "sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+        "bytes": 128085735
+      }
+    ],
+    "continuity_checks": {
+      "firstInstallTime": true,
+      "dataDir": true,
+      "ceDataInode": true,
+      "deDataInode": true,
+      "version_code": true,
+      "version_name": true
+    },
+    "uid_available": false,
+    "data_clear": false,
+    "other_apks": false,
+    "updated_at": "2026-09-30T01:34:10.460212+00:00",
+    "scope": "Exact copied-back APK and package continuity; physical interaction separate."
+  },
+  "local_path_scope": "Paths beginning with a worktree name are relative to the preserved local skein-worktrees directory."
+}

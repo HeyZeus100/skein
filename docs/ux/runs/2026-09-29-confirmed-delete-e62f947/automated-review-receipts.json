@@ -1,0 +1,94 @@
+{
+  "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+  "reviews": [
+    {
+      "review": "ci-root-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/ci-root-review.json",
+      "sha256": "0a039a3c661067162b766199dc00adb2ec94f681784a77c4768920b5019d7816",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "ordinary-root-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/ordinary-root-review.json",
+      "sha256": "652398aeeeae62113475fbe3800ca216f139e0f6429d08315d28a4a354e7eb90",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "screenshots-root-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/screenshots-root-review.json",
+      "sha256": "6f7779f60568d2d6dd69d703f082f24e6ddc034e88c55c6062bac3f75b2c7d42",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "reproducible-root-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/reproducible-root-review.json",
+      "sha256": "23bc75a25ff9af6945b13a5d502215577efa97f087bf592eaa15588d087fc3ec",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "build-source-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/build-source-review.json",
+      "sha256": "f0450bbdf4d936ecbb57fd301c68868f2d4e6bf3dea92f1b3eb1791c3b985e31",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "native-equivalence-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/native-equivalence-review.json",
+      "sha256": "ff9738845abc2050efd76b2783509785831a0d3f6bd75f858b127d4075d43e21",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "current-installed-delta.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/current-installed-delta.json",
+      "sha256": "1407b2c18e59525d03471ed0656e263153512aef158250eaf2f78b949f7e42b6",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "network-permission-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/network-permission-review.json",
+      "sha256": "e2800ede0469e741b296f452cdce7937c60eec54eaf83d99f0a57da16c5ce727",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "actual-checks-review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/actual-checks-review.json",
+      "sha256": "b6710c1ddb511bb126bffd62542890322df79ffdeaa077bfa4cd07bbdd992615",
+      "status": "PASS",
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a"
+    },
+    {
+      "review": "delete-combined-1/actual/review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/delete-combined-1/actual/review.json",
+      "sha256": "45282f60797efdfecfefbaea1762b037bddff98921490b5e9672fcaee0ae2409"
+    },
+    {
+      "review": "delete-screens-assembly-1/actual/review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/delete-screens-assembly-1/actual/review.json",
+      "sha256": "4a5521f6d606302823af19f036857fe7c386e7f06198874168cc6e3a9be5e463"
+    },
+    {
+      "review": "delete-root-focused-3-actual/review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/delete-root-focused-3-actual/review.json",
+      "sha256": "bd6afe265474f6dcf9c38fc1a7c6e73bfeea0b9403ba8bc2469b78c3880b41cc"
+    },
+    {
+      "review": "delete-updater-root-review/review.json",
+      "local_path": "ux-integration-20260929/build/agent-logs/delete-updater-root-review/review.json",
+      "sha256": "4c366b4ed208f61e7518efd47a4cda032ebe6e3e598033f1daf947457ae50d27"
+    }
+  ],
+  "scope": "Actual raw XML, JSON and APK/native bytes reviewed; physical acceptance separate.",
+  "installation_review": {
+    "local_path": "ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/installed-root-review.json",
+    "sha256": "0586deafd5afe4cdf636f180a00a33e94e76ffea94e0693cf0027437ab377478"
+  },
+  "local_path_scope": "Paths beginning with a worktree name are relative to the preserved local skein-worktrees directory."
+}
