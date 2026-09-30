@@ -5,6 +5,8 @@ import app.skein.core.model.PersonaId
 import app.skein.core.model.Retrieved
 import app.skein.core.model.RevisionHashing
 import app.skein.core.model.VaultRepository
+import app.skein.core.rag.chunk.BlockKind
+import app.skein.core.rag.chunk.MarkdownBlockScanner
 
 /**
  * Opt-in structural selection over current, byte-verified NOTE revisions. Blank lines delimit
@@ -132,9 +134,19 @@ public class EvidenceUnitSelector(
         if (anchor.byteStart < 0 || anchor.byteEnd <= anchor.byteStart || anchor.byteEnd > body.size) {
             return refused(EvidenceExclusion.INVALID_ANCHOR)
         }
-        val original = RevisionHashing.canonicalBody(candidate.text).toByteArray(Charsets.UTF_8)
-        if (!body.copyOfRange(anchor.byteStart, anchor.byteEnd).contentEquals(original)) {
+        if (!isUtf8Boundary(body, anchor.byteStart) || !isUtf8Boundary(body, anchor.byteEnd)) {
             return refused(EvidenceExclusion.INVALID_ANCHOR)
+        }
+        val original = RevisionHashing.canonicalBody(candidate.text).toByteArray(Charsets.UTF_8)
+        val slice = body.copyOfRange(anchor.byteStart, anchor.byteEnd)
+        if (!slice.contentEquals(original)) {
+            val heading =
+                headingBreadcrumbAtEnd(revision.bodyMdSnapshot, body, anchor.byteEnd)
+                    ?: return refused(EvidenceExclusion.INVALID_ANCHOR)
+            // Ingest stores embeddingText, but only an exactly source-derived breadcrumb is legal.
+            // The metadata never enters the returned evidence: that is built from body below.
+            val indexed = "$heading\n\n".toByteArray(Charsets.UTF_8) + slice
+            if (!indexed.contentEquals(original)) return refused(EvidenceExclusion.INVALID_ANCHOR)
         }
         val blocks = blocks(body).filter { it.start < anchor.byteEnd && it.end > anchor.byteStart }
         if (blocks.isEmpty() || blocks.any { !it.complete }) return refused(EvidenceExclusion.INCOMPLETE_UNIT)
@@ -148,6 +160,37 @@ public class EvidenceUnitSelector(
             sourceKind = document.kind,
             locator = Locator(start, end),
         ) to null
+    }
+
+    private fun isUtf8Boundary(
+        body: ByteArray,
+        offset: Int,
+    ): Boolean = offset == body.size || body[offset].toInt() and 0xc0 != 0x80
+
+    /**
+     * Chunker.pack uses its LAST unit's heading context, including a chunk spanning headings.
+     * Reuse its scanner (including Setext and fenced-heading handling), then the same heading
+     * stack/format convention. No tokenizer or re-chunking is needed to verify this metadata.
+     * Parity tests exercise actual Chunker -> ingest -> assembler output; convention drift refuses
+     * provenance instead of accepting an arbitrary prefix that happens to end in source text.
+     */
+    private fun headingBreadcrumbAtEnd(
+        bodyText: String,
+        body: ByteArray,
+        end: Int,
+    ): String? {
+        val charEnd = body.copyOfRange(0, end).toString(Charsets.UTF_8).length
+        val stack = mutableListOf<Pair<Int, String>>()
+        for (block in MarkdownBlockScanner.scan(bodyText)) {
+            if (block.start >= charEnd) break
+            if (block.kind == BlockKind.HEADING) {
+                // Production chunks never end part-way through an indivisible heading block.
+                if (block.end > charEnd) return null
+                while (stack.isNotEmpty() && stack.last().first >= block.headingLevel) stack.removeAt(stack.lastIndex)
+                stack += block.headingLevel to block.headingText
+            }
+        }
+        return stack.takeIf { it.isNotEmpty() }?.joinToString(" › ") { (level, text) -> "#".repeat(level) + " " + text }
     }
 
     private fun refused(reason: EvidenceExclusion): Pair<Retrieved?, EvidenceExclusion?> = null to reason

@@ -1,5 +1,6 @@
 package app.skein.core.rag.retrieval
 
+import app.skein.core.model.CitationSourceKind
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.DocumentRevision
@@ -8,7 +9,13 @@ import app.skein.core.model.NewDocument
 import app.skein.core.model.RecallSource
 import app.skein.core.model.Retrieved
 import app.skein.core.model.RevisionHashing
+import app.skein.core.model.ScoredChunk
 import app.skein.core.model.VaultRepository
+import app.skein.core.rag.chunk.Chunker
+import app.skein.core.rag.ingest.IngestSteps
+import app.skein.core.rag.rank.RetrievedAssembler
+import app.skein.core.rag.tokenizers.TokenizerFixtures
+import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
@@ -250,6 +257,115 @@ class EvidenceUnitSelectorTest {
             assertThat(source.byteEnd).isAtLeast(anchor.byteEnd)
             assertThat(unit.text).isEqualTo("\nAlpha.\n\n")
         }
+
+    @Test
+    fun `actual production heading ingest expands without embedding metadata as evidence`() =
+        runTest {
+            val body = "# Cargo\n\nSeven hooks.\n\n## Case\n\nThe box is violet."
+            val (repo, indexed) = productionIndexed(body)
+            assertThat(indexed).hasSize(1)
+            assertThat(indexed.single().text).startsWith("# Cargo › ## Case\n\n")
+            val selected = EvidenceUnitSelector(repo).select(indexed, null)
+            assertThat(selected.evidence.single().text).isEqualTo(body)
+            assertThat(selected.units.single().members).containsExactlyElementsIn(indexed)
+            assertThat(selected.evidence.single().recallScores).isEqualTo(indexed.single().recallScores)
+        }
+
+    @Test
+    fun `actual Setext Unicode CRLF ingest retains canonical byte evidence`() =
+        runTest {
+            val body = "Café cargo\r\n==========\r\n\r\nSeven hooks.\r\n\r\nCase\r\n----\r\n\r\nViolet box."
+            val (repo, indexed) = productionIndexed(body)
+            assertThat(indexed.single().text).startsWith("# Café cargo › ## Case\n\n")
+            val selected = EvidenceUnitSelector(repo).select(indexed, null)
+            assertThat(selected.evidence.single().text).isEqualTo(RevisionHashing.canonicalBody(body))
+            assertThat(selected.units.single().members).containsExactlyElementsIn(indexed)
+        }
+
+    @Test
+    fun `actual small chunks preserve last heading context through overlap and heading changes`() =
+        runTest {
+            val body =
+                "# Cargo\n\n" + "Seven copper hooks fill the box. ".repeat(16) +
+                    "\n\n## Case\n\n" + "A violet case protects the hooks. ".repeat(16) +
+                    "\n\n# Elsewhere\n\nA silver handle closes the door."
+            val (repo, indexed) = productionIndexed(body, targetTokens = 48)
+            assertThat(indexed.size).isGreaterThan(2)
+            val selected = EvidenceUnitSelector(repo).select(indexed, null)
+            assertThat(selected.exclusions.keys).doesNotContain(EvidenceExclusion.INVALID_ANCHOR)
+            assertThat(selected.units.flatMap { it.members }).containsExactlyElementsIn(indexed).inOrder()
+            val canonical = RevisionHashing.canonicalBody(body).toByteArray()
+            for (unit in selected.evidence) {
+                val locator = checkNotNull(unit.locator)
+                assertThat(unit.text)
+                    .isEqualTo(canonical.copyOfRange(locator.byteStart, locator.byteEnd).toString(Charsets.UTF_8))
+            }
+        }
+
+    @Test
+    fun `forged prefix or wrong end heading cannot pass a source suffix check`() =
+        runTest {
+            val body = "# Cargo\n\nSeven hooks.\n\n## Case\n\nViolet box."
+            val (repo, indexed) = productionIndexed(body)
+            val actual = indexed.single()
+            val canonical = RevisionHashing.canonicalBody(body)
+            val forged =
+                listOf("Invented fact", "# Cargo", "# Missing › ## Case", "# Cargo › ## Case\nextra")
+                    .map { actual.copy(text = "$it\n\n$canonical") }
+            val selected = EvidenceUnitSelector(repo).select(forged, null)
+            assertThat(selected.evidence).isEmpty()
+            assertThat(selected.exclusions).containsEntry(EvidenceExclusion.INVALID_ANCHOR, forged.size)
+        }
+
+    @Test
+    fun `fenced heading text is never promoted into breadcrumb metadata`() =
+        runTest {
+            val body = "# Real\n\n```text\n# Forged\n```\n\nSeven hooks."
+            val (repo, indexed) = productionIndexed(body)
+            val actual = indexed.single()
+            assertThat(actual.text).startsWith("# Real\n\n")
+            assertThat(
+                EvidenceUnitSelector(repo)
+                    .select(indexed, null)
+                    .evidence
+                    .single()
+                    .text,
+            ).isEqualTo(body)
+            val forged = actual.copy(text = "# Forged\n\n$body")
+            assertThat(EvidenceUnitSelector(repo).select(listOf(forged), null).evidence).isEmpty()
+        }
+
+    @Test
+    fun `heading prefix cannot legitimize a split UTF8 locator or later heading`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val doc =
+                repo.createDocument(
+                    NewDocument(DocumentKind.NOTE, "Boundary", "# Cargo\n\nCafé hooks.\n\n# Later\n\nOther."),
+                )
+            val valid = candidate(doc, "Café hooks.")
+            val wrongHeading = valid.copy(text = "# Later\n\n${valid.text}")
+            val start = checkNotNull(valid.locator).byteStart + "Caf".toByteArray().size + 1
+            val split = valid.copy(locator = Locator(start, start + 1), text = "# Cargo\n\n�")
+            val selected = EvidenceUnitSelector(repo).select(listOf(wrongHeading, split), null)
+            assertThat(selected.evidence).isEmpty()
+            assertThat(selected.exclusions).containsEntry(EvidenceExclusion.INVALID_ANCHOR, 2)
+        }
+
+    private suspend fun productionIndexed(
+        body: String,
+        targetTokens: Int = 512,
+    ): Pair<InMemoryVaultRepository, List<Retrieved>> {
+        val repo = InMemoryVaultRepository()
+        val index = InMemoryIndexStore()
+        val doc = repo.createDocument(NewDocument(DocumentKind.NOTE, "Synthetic heading source", body))
+        val tokenizer = TokenizerFixtures.tokenizer(TokenizerFixtures.NOMIC)
+        val chunks = Chunker(tokenizer, targetTokens = targetTokens, overlapTokens = 8).chunk(body)
+        val ids = IngestSteps(index, warn = {}).indexLexical(doc.id, chunks, doc.contentHash, body)
+        val ranked = ids.mapIndexed { position, id -> ScoredChunk(id, 1.0 / (position + 1), 0.003 / (position + 1)) }
+        val assembled = RetrievedAssembler(index, repo).assemble(ranked, mapOf(CitationSourceKind.LEXICAL to ranked))
+        return repo to assembled
+    }
 
     private fun candidate(
         doc: Document,
