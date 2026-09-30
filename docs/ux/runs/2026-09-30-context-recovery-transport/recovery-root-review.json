@@ -1,0 +1,38 @@
+{
+  "scope": "Root independent integrated-source/archive review; no recovery runtime or physical acceptance",
+  "source_files_verified": [
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteConnection.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteStatement.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviders.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/ConnectionPool.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultReset.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/RecoveryKeyAdmission.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusion.kt",
+    "core/vault/src/test/kotlin/app/skein/core/vault/db/RecoveryClosureTest.kt",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryKeyAdmissionTest.kt",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt",
+    "core/vault/src/test/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusionTest.kt"
+  ],
+  "worker_receipt_files_verified": 12,
+  "positive": {
+    "archive_sha256": "1291d7f53d5b1fbddbdb7dcb0313de2add9d5407e0669b1b2d6192710d0cef52",
+    "actual_xml": 136,
+    "passed": 1472,
+    "skipped": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  "negative": {
+    "archive_sha256": "9c9e9bc37bf7b9498cb0f854e47a4f14b20f82b7864ead511cedce5c31c2c557",
+    "actual_xml": 1,
+    "passed": 14,
+    "intended_latency_failures": 1
+  },
+  "source_review": "Production admission spans pending auth/live keys/live pools; uncertainty blocks recovery/reset. Prepared receipt cannot activate; IO outside revocation guard. V2 activation, legacy rewrap and real auth remain open."
+}
