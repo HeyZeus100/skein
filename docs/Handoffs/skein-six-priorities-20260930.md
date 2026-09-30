@@ -4,6 +4,8 @@ This continues the [earlier continuation](skein-orchestrator-continuation-202609
 
 ## Resumed recovery, context and transport work
 
+**Owner cost policy:** local checks are now the default; all hosted workflows are manual-only. No further hosted dispatch is authorized without an explicit owner request. The [local verification guide](../LOCAL_VERIFICATION.md) and [policy evidence](../ux/runs/2026-09-30-context-recovery-transport/manual-hosted-policy/) preserve the checks and distinguish unrun platform gates. Historical automatic-queue instructions below are superseded.
+
 Root resumed from published `8f084343cf2b67395d2d707b33f6ee578d801c89`, verified current `origin/main` and the `six_priorities_20260930` record, and assigned three isolated workers. Root remains the sole Beads/integration/build/CI owner; `/root/fold_transport` is now the sole physical runner. Older runner assignments below are historical.
 
 Application source `15941fd155b232f1433cd21d32472f6dc17b3109` passes combined local lint/check/build and instrumentation compilation: **5,586 passes, 86 unchanged skips**, plus **1,375 screenshot-suite passes, 80 unchanged skips and 552 unchanged images**. Independent review `79aea044` confirms all 86 expected host additions, no removals, exact skip reasons, unchanged APK manifest and seven native payloads. The [combined capsule](../ux/runs/2026-09-30-context-recovery-transport/combined15941fd15/) retains actual XML, hashes, logs and reviews. The previous encrypted-runtime acceptance remains `465dac627`: 300 cases. New source runtime and physical gates are pending at this publication checkpoint.

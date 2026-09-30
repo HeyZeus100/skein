@@ -1,0 +1,166 @@
+{
+  "reviewer": "/root/recovery",
+  "scope": "read-only independent YAML AST and documentation review; no build/workflow dispatch/device operation",
+  "base": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "all11_workflow_entrypoints": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/dco.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/dependency-review.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/emulator.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/foldable.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/nightly.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/reproducible-build.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/retrieval-diagnostic.yml",
+      "triggers": [
+        "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/retrieval-quality.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/synthetic-smoke.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/ux-screenshots.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    }
+  ],
+  "automatic_triggers": 0,
+  "in_repository_reusable_edges": [
+    {
+      "caller": ".github/workflows/retrieval-quality.yml",
+      "job": "quality",
+      "target": "./.github/workflows/retrieval-diagnostic.yml"
+    }
+  ],
+  "existing_permissions_action_pins_job_commands_artifact_policies_thresholds_preserved": true,
+  "allowed_manual_adaptations": [
+    "DCO required PR number wired to supported pinned action input",
+    "Dependency required base/head refs wired to supported pinned action inputs",
+    "Repro conditions always true under workflow_dispatch removed; two independent builds and tag-only regeneration retained",
+    "Fuzz placeholder name/message now explicitly manual; no harness acceptance claimed"
+  ],
+  "external_primary_input_contracts": [
+    {
+      "url": "https://raw.githubusercontent.com/cpanato/dco-check-action/5a8e740b20f923cfc576219c32a2112f2cf74220/action.yml",
+      "sha256": "a0fc921dfd54f3658aa6c61653c65db5d0a4b1031aa6dc11e849e36f100205e5",
+      "confirmed_inputs": [
+        "pull_request_number"
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/actions/dependency-review-action/a1d282b36b6f3519aa1f3fc636f609c47dddb294/action.yml",
+      "sha256": "582ebeb27ae108f3d8786b5f7b29ddebc5bee3a5446e7ef2b94a3ac984cf587b",
+      "confirmed_inputs": [
+        "base-ref",
+        "head-ref"
+      ]
+    }
+  ],
+  "billing_documentation_verified": "https://docs.github.com/en/billing/concepts/product-billing/github-actions",
+  "host_suite_observed": {
+    "tests": 58,
+    "result": "PASS",
+    "log_sha256": "1af109c40f0c038eda0fa92eb829e71ebf2438deec5b721e71d927e24b8fcd5f",
+    "reviewer_rerun": false
+  },
+  "sources": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "cae81ac919de34b211d480523e48bb5bcfca39aa8e62a42142a1d4579f4c0287"
+    },
+    {
+      "path": ".github/workflows/dco.yml",
+      "sha256": "738d755336d072f37ecd922cba47e80d1ec2dbe0feaa90afa558b870335f77da"
+    },
+    {
+      "path": ".github/workflows/dependency-review.yml",
+      "sha256": "8fc79258919842d89fa394861396f2543dbc0f9d88cbaf156bab700a100a24a0"
+    },
+    {
+      "path": ".github/workflows/emulator.yml",
+      "sha256": "c5a7b947818863bd1f7243ef240612ba6e7655aa92011fa7332061840aa92f6d"
+    },
+    {
+      "path": ".github/workflows/foldable.yml",
+      "sha256": "908651ceb07e0b1de95a81c636b11df6fd9b642760147a37cefd4e438b5f07d2"
+    },
+    {
+      "path": ".github/workflows/nightly.yml",
+      "sha256": "3a2d89684b13a06585afd7b0da091d0ed15adf80b223ad86a233c77ffb495512"
+    },
+    {
+      "path": ".github/workflows/reproducible-build.yml",
+      "sha256": "0d078f40cb1498682743d92735155969d1f3c2beb33535fc4b4009372fea2cfc"
+    },
+    {
+      "path": ".github/workflows/retrieval-diagnostic.yml",
+      "sha256": "b262682cc91e9efdea9240311baca22b215b8507b482502a42b28e5a4079b7c2"
+    },
+    {
+      "path": ".github/workflows/retrieval-quality.yml",
+      "sha256": "bcab77bd29df2c676364ad17525e29208e0c7c7ab9f1424bff667cbb9889ee22"
+    },
+    {
+      "path": ".github/workflows/synthetic-smoke.yml",
+      "sha256": "5707d91f44ce8f54fe38be69a620df8fdd39395a61626fdb41d101c524888788"
+    },
+    {
+      "path": ".github/workflows/ux-screenshots.yml",
+      "sha256": "72b983a55db4c894b8083038a35a4ba365db36b1503a58779b726d127ee67ad7"
+    },
+    {
+      "path": "docs/LOCAL_VERIFICATION.md",
+      "sha256": "c465ea7b5fdd97d385f7d4dedb9841dc6a3f8f1bcdfd6db833d8ac0253997451"
+    }
+  ],
+  "documentation": "Local checks, cached tasks, unrun Linux/independent reproducibility and physical acceptance boundaries are accurately distinguished. Published trigger change does not erase historical storage charges.",
+  "note": "Tag-only SQLCipher condition remains refs/tags/v; documentation can name v* release tags explicitly for clarity.",
+  "verdict": "PASS for publication; no hosted execution or runtime acceptance claimed"
+}

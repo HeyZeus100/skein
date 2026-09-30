@@ -1,0 +1,25 @@
+{
+  "owner_decision": "Local checks; manual hosted CI (Recommended)",
+  "scope": "remove automatic hosted execution; preserve check commands/thresholds/permissions/action pins",
+  "workflow_hashes": {
+    ".github/workflows/ci.yml": "cae81ac919de34b211d480523e48bb5bcfca39aa8e62a42142a1d4579f4c0287",
+    ".github/workflows/dco.yml": "738d755336d072f37ecd922cba47e80d1ec2dbe0feaa90afa558b870335f77da",
+    ".github/workflows/dependency-review.yml": "8fc79258919842d89fa394861396f2543dbc0f9d88cbaf156bab700a100a24a0",
+    ".github/workflows/emulator.yml": "c5a7b947818863bd1f7243ef240612ba6e7655aa92011fa7332061840aa92f6d",
+    ".github/workflows/foldable.yml": "908651ceb07e0b1de95a81c636b11df6fd9b642760147a37cefd4e438b5f07d2",
+    ".github/workflows/nightly.yml": "3a2d89684b13a06585afd7b0da091d0ed15adf80b223ad86a233c77ffb495512",
+    ".github/workflows/reproducible-build.yml": "0d078f40cb1498682743d92735155969d1f3c2beb33535fc4b4009372fea2cfc",
+    ".github/workflows/retrieval-diagnostic.yml": "b262682cc91e9efdea9240311baca22b215b8507b482502a42b28e5a4079b7c2",
+    ".github/workflows/retrieval-quality.yml": "bcab77bd29df2c676364ad17525e29208e0c7c7ab9f1424bff667cbb9889ee22",
+    ".github/workflows/synthetic-smoke.yml": "5707d91f44ce8f54fe38be69a620df8fdd39395a61626fdb41d101c524888788",
+    ".github/workflows/ux-screenshots.yml": "72b983a55db4c894b8083038a35a4ba365db36b1503a58779b726d127ee67ad7"
+  },
+  "documentation_sha256": "cdec9d66d44e874baa428e337253eee8cb2871d6b431112ac864260eb8cb9f2b",
+  "host_tests": 58,
+  "hosted_runs_started_for_validation": 0,
+  "limitations": [
+    "Manual PR-specific inputs validated against pinned action declarations; actual hosted execution deliberately not performed.",
+    "Independent reproducibility, Linux-only and exact emulator gates remain separate and open when unrun.",
+    "Historical artifacts retained; no purchases or self-hosted runner configured."
+  ]
+}

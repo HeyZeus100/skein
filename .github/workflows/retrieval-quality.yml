@@ -2,24 +2,9 @@ name: Retrieval relevance quality
 
 # Replays of the frozen validation set are regressions, never fresh holdouts.
 # Missing production vectors remain an independent INELIGIBLE hybrid boundary.
+# Hosted runner time is opt-in. See docs/LOCAL_VERIFICATION.md.
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - "core/rag/**"
-      - "core/vault/**"
-      - "core/model/**"
-      - "app/**"
-      - "embedder-service/**"
-      - "native/sqlite/**"
-      - "gradle/**"
-      - "build.gradle.kts"
-      - "settings.gradle.kts"
-      - "testing/**"
-      - "tools/eval/**"
-      - ".github/workflows/retrieval-*.yml"
-  schedule:
-    - cron: "0 8 * * *"
 
 permissions:
   contents: read

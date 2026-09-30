@@ -1,8 +1,13 @@
 name: DCO Check
 
+# Hosted runner time is opt-in. See docs/LOCAL_VERIFICATION.md.
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pull_request_number:
+        description: Pull request number to check
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -22,3 +27,4 @@ jobs:
         uses: cpanato/dco-check-action@5a8e740b20f923cfc576219c32a2112f2cf74220 # v0.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          pull_request_number: ${{ inputs.pull_request_number }}

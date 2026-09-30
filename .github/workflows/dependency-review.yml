@@ -3,8 +3,18 @@ name: Dependency review
 # Flags newly introduced dependencies with known vulnerabilities or
 # disallowed licenses on PRs, complementing the foss license allowlist
 # guard (E1.I7) which only covers the runtime classpath.
+# Hosted runner time is opt-in. See docs/LOCAL_VERIFICATION.md.
 on:
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: Base commit or ref for dependency comparison
+        required: true
+        type: string
+      head_ref:
+        description: Head commit or ref for dependency comparison
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -20,3 +30,6 @@ jobs:
 
       - name: Dependency review
         uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          base-ref: ${{ inputs.base_ref }}
+          head-ref: ${{ inputs.head_ref }}

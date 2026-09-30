@@ -1,0 +1,75 @@
+{
+  "policy": "owner selected local checks and manual hosted only",
+  "workflow_entry_points": [
+    {
+      "workflow": ".github/workflows/ci.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/dco.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/dependency-review.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/emulator.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/foldable.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/nightly.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/reproducible-build.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/retrieval-diagnostic.yml",
+      "triggers": [
+        "workflow_call",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/retrieval-quality.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/synthetic-smoke.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "workflow": ".github/workflows/ux-screenshots.yml",
+      "triggers": [
+        "workflow_dispatch"
+      ]
+    }
+  ],
+  "automatic_events": 0,
+  "DCO_and_dependency_manual_inputs_wired": true,
+  "hosted_validation": "not dispatched; no hosted acceptance claimed"
+}

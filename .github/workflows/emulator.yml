@@ -1,6 +1,6 @@
 name: Emulator instrumented tests
 
-# E1.I3: on-demand + nightly instrumented lane. Deliberately NOT run on every
+# E1.I3: on-demand instrumented lane. Deliberately NOT run on every
 # push/PR — booting an emulator is slow and this proves device-level behavior
 # (native library loading, SQLite stack) rather than gating every commit.
 #
@@ -8,11 +8,9 @@ name: Emulator instrumented tests
 # arm64-v8a native libs for the `foss` flavor (see productFlavors), so a
 # foss build has no x86_64 .so to load on this emulator. `dev` ships both
 # arm64-v8a and x86_64 abiFilters.
+# Hosted runner time is opt-in. See docs/LOCAL_VERIFICATION.md.
 on:
   workflow_dispatch:
-  schedule:
-    # 06:00 UTC nightly.
-    - cron: "0 6 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

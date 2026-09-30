@@ -33,28 +33,17 @@ name: Reproducible build check
 # docs/REPRODUCIBLE_BUILDS.md; the toolchain itself is pinned in
 # reproducible-builds.yml at the repo root.
 #
-# Triggers: the acceptance criterion is "sha256 equal on 3 consecutive main
-# commits", so the double build runs on every push to `main` as well as on
-# release tags. Pull requests run ONLY the fast `self-tests` job (see its
-# `if:`) -- two 90-minute runners per PR would be absurd, but a PR that bumps
-# AGP without updating reproducible-builds.yml should fail at review time,
-# not three merges later.
+# Manual dispatch preserves the independent-runner comparison. Select a release
+# tag explicitly to also run tag-only SQLCipher regeneration. Unrun consecutive
+# commit or release gates stay open; a local build is not that remote evidence.
+# Hosted runner time is opt-in. See docs/LOCAL_VERIFICATION.md.
 on:
-  push:
-    branches: [main]
-    tags:
-      - "v*"
-  pull_request:
   workflow_dispatch:
 
-# On main and tags: queue rather than cancel. The acceptance criterion is
-# "sha256 equal on 3 consecutive main commits", which a cancel-in-progress
-# policy would quietly make unobservable -- a superseded commit would have no
-# result at all. On pull requests only the fast self-tests job runs, so
-# cancelling a superseded push there costs nothing.
+# Explicit verification runs queue rather than cancel one another.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -165,7 +154,6 @@ jobs:
   native-determinism:
     name: libskein_llama.so is a function of its sources
     needs: self-tests
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     # Two cold native builds. Each one compiles llama.cpp + ggml and ~1100
     # Vulkan shader variants from scratch (no build cache, `.cxx` wiped).
@@ -242,10 +230,7 @@ jobs:
   build:
     name: Build ${{ matrix.id }} (unsigned foss release)
     needs: self-tests
-    # Not on pull requests: two 90-minute runners per PR is not a sane cost
-    # for a check whose failures are almost always introduced on main by a
-    # toolchain bump, which `self-tests` already catches on the PR.
-    if: github.event_name != 'pull_request'
+    # This independent two-runner matrix is deliberately an explicit manual cost.
     runs-on: ubuntu-latest
     # E1.I4 (skein-ca2): each build compiles llama.cpp + ggml and ~1100
     # Vulkan shader variants on top of the OpenSSL/SQLCipher build from E1.I5.

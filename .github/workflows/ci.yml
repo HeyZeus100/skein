@@ -1,8 +1,8 @@
 name: CI
 
 # E1.I3: unit tests, ktlint, Android lint, guard tasks, and a foss/debug
-# assemble on every push to main and every PR. Emulator instrumented tests
-# live in emulator.yml (dispatch + nightly only — see that file for why).
+# assemble on explicit hosted dispatch. Emulator instrumented tests
+# live in emulator.yml (manual dispatch only).
 # DCO sign-off is checked separately by dco.yml (E8.I1 / skein-1jm).
 #
 # E1.I12: every ./gradlew invocation below already enforces dependency
@@ -12,10 +12,9 @@ name: CI
 # NOT pass --dependency-verification=strict: it would add no enforcement
 # beyond the file-driven default and would add friction to Dependabot
 # version-bump PRs (see docs/VERIFICATION.md, "Why CI stays at default").
+# Hosted runner time is opt-in. See docs/LOCAL_VERIFICATION.md.
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
