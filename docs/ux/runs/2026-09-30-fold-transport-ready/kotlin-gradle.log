@@ -1,0 +1,410 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :app:ktlintCheck :app:compileDevDebugAndroidTestKotlin
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin FROM-CACHE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors
+> Task :build-logic:guards:processResources
+> Task :build-logic:guards:classes
+> Task :build-logic:guards:jar
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:loadKtlintReporters FROM-CACHE
+> Task :app:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:model:compileKotlin FROM-CACHE
+> Task :app:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :app:ktlintDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :app:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :app:ktlintDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :app:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :app:ktlintFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverKotlinScripts FROM-CACHE
+> Task :app:ktlintKotlinScriptCheck FROM-CACHE
+> Task :app:runKtlintCheckOverMainSourceSet FROM-CACHE
+> Task :app:ktlintMainSourceSetCheck FROM-CACHE
+> Task :app:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :app:ktlintReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :app:ktlintTestDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestSourceSet FROM-CACHE
+> Task :app:ktlintTestSourceSetCheck FROM-CACHE
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources
+> Task :core:model:classes
+> Task :core:model:jar
+> Task :testing-fakes:compileKotlin FROM-CACHE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar
+> Task :testing:compileKotlin FROM-CACHE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:processResources
+> Task :testing:classes
+> Task :testing:jar
+> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:verify:compileKotlin FROM-CACHE
+> Task :core:verify:compileJava NO-SOURCE
+> Task :core:verify:processResources NO-SOURCE
+> Task :core:verify:classes UP-TO-DATE
+> Task :core:verify:jar
+> Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:navigation:compileKotlin FROM-CACHE
+> Task :core:navigation:compileJava NO-SOURCE
+> Task :core:navigation:processResources NO-SOURCE
+> Task :core:navigation:classes UP-TO-DATE
+> Task :core:navigation:jar
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:markdown:compileKotlin FROM-CACHE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:generateDevDebugBuildConfig FROM-CACHE
+> Task :app:generateDevDebugResources FROM-CACHE
+> Task :app:packageDevDebugResources FROM-CACHE
+> Task :embedder-service:preBuild UP-TO-DATE
+> Task :embedder-service:preDebugBuild UP-TO-DATE
+> Task :embedder-service:processDebugNavigationResources FROM-CACHE
+> Task :inference-service:preBuild UP-TO-DATE
+> Task :inference-service:preDevDebugBuild UP-TO-DATE
+> Task :inference-service:processDevDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:export:preBuild UP-TO-DATE
+> Task :core:export:preDebugBuild UP-TO-DATE
+> Task :core:export:processDebugNavigationResources FROM-CACHE
+> Task :core:inference:preBuild UP-TO-DATE
+> Task :core:inference:preDebugBuild UP-TO-DATE
+> Task :core:inference:processDebugNavigationResources FROM-CACHE
+> Task :core:ipc:preBuild UP-TO-DATE
+> Task :core:ipc:preDebugBuild UP-TO-DATE
+> Task :core:ipc:processDebugNavigationResources FROM-CACHE
+> Task :core:rag:preBuild UP-TO-DATE
+> Task :core:rag:preDebugBuild UP-TO-DATE
+> Task :core:rag:processDebugNavigationResources FROM-CACHE
+> Task :core:security:preBuild UP-TO-DATE
+> Task :core:security:preDebugBuild UP-TO-DATE
+> Task :core:security:processDebugNavigationResources FROM-CACHE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:processDevDebugNavigationResources FROM-CACHE
+> Task :feature:chat:preBuild UP-TO-DATE
+> Task :feature:chat:preDebugBuild UP-TO-DATE
+> Task :feature:chat:processDebugNavigationResources FROM-CACHE
+> Task :feature:editor:preBuild UP-TO-DATE
+> Task :feature:editor:preDebugBuild UP-TO-DATE
+> Task :feature:editor:processDebugNavigationResources FROM-CACHE
+> Task :feature:graph:preBuild UP-TO-DATE
+> Task :feature:graph:preDebugBuild UP-TO-DATE
+> Task :feature:graph:processDebugNavigationResources FROM-CACHE
+> Task :feature:models:preBuild UP-TO-DATE
+> Task :feature:models:preDebugBuild UP-TO-DATE
+> Task :feature:models:processDebugNavigationResources FROM-CACHE
+> Task :feature:settings:preBuild UP-TO-DATE
+> Task :feature:settings:preDebugBuild UP-TO-DATE
+> Task :feature:settings:processDebugNavigationResources FROM-CACHE
+> Task :feature:shell:preBuild UP-TO-DATE
+> Task :feature:shell:preDebugBuild UP-TO-DATE
+> Task :feature:shell:processDebugNavigationResources FROM-CACHE
+> Task :feature:timeline:preBuild UP-TO-DATE
+> Task :feature:timeline:preDebugBuild UP-TO-DATE
+> Task :feature:timeline:processDebugNavigationResources FROM-CACHE
+> Task :app:processDevDebugNavigationResources FROM-CACHE
+> Task :app:parseDevDebugLocalResources FROM-CACHE
+> Task :app:generateDevDebugRFile FROM-CACHE
+> Task :embedder-service:generateDebugResources FROM-CACHE
+> Task :embedder-service:packageDebugResources FROM-CACHE
+> Task :embedder-service:parseDebugLocalResources FROM-CACHE
+> Task :embedder-service:generateDebugRFile FROM-CACHE
+> Task :core:ipc:compileDebugAidl FROM-CACHE
+> Task :core:ipc:generateDebugResources FROM-CACHE
+> Task :core:ipc:packageDebugResources FROM-CACHE
+> Task :core:ipc:parseDebugLocalResources FROM-CACHE
+> Task :core:ipc:generateDebugRFile FROM-CACHE
+> Task :core:ipc:compileDebugKotlin FROM-CACHE
+> Task :core:ipc:javaPreCompileDebug FROM-CACHE
+> Task :app:runKtlintCheckOverAndroidTestSourceSet
+> Task :app:ktlintAndroidTestSourceSetCheck
+> Task :app:ktlintCheck
+> Task :embedder-service:javaPreCompileDebug FROM-CACHE
+> Task :inference-service:generateDevDebugBuildConfig FROM-CACHE
+> Task :inference-service:generateDevDebugResources FROM-CACHE
+> Task :inference-service:packageDevDebugResources FROM-CACHE
+> Task :inference-service:parseDevDebugLocalResources FROM-CACHE
+> Task :inference-service:generateDevDebugRFile FROM-CACHE
+> Task :inference-service:javaPreCompileDevDebug FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ipc:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:ipc:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :embedder-service:compileDebugKotlin FROM-CACHE
+> Task :embedder-service:compileDebugJavaWithJavac NO-SOURCE
+> Task :embedder-service:bundleLibCompileToJarDebug
+> Task :core:export:generateDebugResources FROM-CACHE
+> Task :inference-service:compileDevDebugKotlin FROM-CACHE
+> Task :core:export:packageDebugResources FROM-CACHE
+> Task :core:export:parseDebugLocalResources FROM-CACHE
+> Task :core:export:generateDebugRFile FROM-CACHE
+> Task :core:vault:preFossDebugBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugResources FROM-CACHE
+> Task :core:vault:packageFossDebugResources FROM-CACHE
+> Task :core:vault:processFossDebugNavigationResources FROM-CACHE
+> Task :core:vault:parseFossDebugLocalResources FROM-CACHE
+> Task :inference-service:compileDevDebugJavaWithJavac FROM-CACHE
+> Task :core:vault:generateFossDebugRFile FROM-CACHE
+> Task :inference-service:bundleLibCompileToJarDevDebug
+> Task :core:vault:javaPreCompileFossDebug FROM-CACHE
+> Task :core:export:javaPreCompileDebug FROM-CACHE
+> Task :core:inference:generateDebugResources FROM-CACHE
+> Task :core:inference:packageDebugResources FROM-CACHE
+> Task :core:inference:parseDebugLocalResources FROM-CACHE
+> Task :core:inference:generateDebugRFile FROM-CACHE
+> Task :core:inference:compileDebugKotlin FROM-CACHE
+> Task :core:inference:javaPreCompileDebug FROM-CACHE
+> Task :core:inference:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:inference:bundleLibCompileToJarDebug
+> Task :core:rag:generateDebugResources FROM-CACHE
+> Task :core:rag:packageDebugResources FROM-CACHE
+> Task :core:rag:parseDebugLocalResources FROM-CACHE
+> Task :core:rag:generateDebugRFile FROM-CACHE
+> Task :core:security:generateDebugResources FROM-CACHE
+> Task :core:security:packageDebugResources FROM-CACHE
+> Task :core:security:parseDebugLocalResources FROM-CACHE
+> Task :core:security:generateDebugRFile FROM-CACHE
+> Task :core:vault:compileFossDebugKotlin FROM-CACHE
+> Task :core:vault:compileFossDebugJavaWithJavac NO-SOURCE
+> Task :core:security:compileDebugKotlin FROM-CACHE
+> Task :core:security:javaPreCompileDebug FROM-CACHE
+> Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:security:bundleLibCompileToJarDebug
+> Task :core:vault:bundleLibCompileToJarFossDebug
+> Task :core:export:compileDebugKotlin FROM-CACHE
+> Task :core:export:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:export:bundleLibCompileToJarDebug
+> Task :core:rag:javaPreCompileDebug FROM-CACHE
+> Task :core:vault:generateDevDebugResources FROM-CACHE
+> Task :core:vault:packageDevDebugResources FROM-CACHE
+> Task :core:vault:parseDevDebugLocalResources FROM-CACHE
+> Task :core:rag:compileDebugKotlin FROM-CACHE
+> Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:generateDevDebugRFile FROM-CACHE
+> Task :core:rag:bundleLibCompileToJarDebug
+> Task :core:vault:javaPreCompileDevDebug FROM-CACHE
+> Task :feature:chat:generateDebugResources FROM-CACHE
+> Task :feature:chat:packageDebugResources FROM-CACHE
+> Task :feature:chat:parseDebugLocalResources FROM-CACHE
+> Task :feature:chat:generateDebugRFile FROM-CACHE
+> Task :feature:editor:generateDebugResources FROM-CACHE
+> Task :feature:editor:packageDebugResources FROM-CACHE
+> Task :feature:editor:parseDebugLocalResources FROM-CACHE
+> Task :feature:editor:generateDebugRFile FROM-CACHE
+> Task :feature:shell:generateDebugResources FROM-CACHE
+> Task :feature:shell:packageDebugResources FROM-CACHE
+> Task :feature:shell:parseDebugLocalResources FROM-CACHE
+> Task :feature:shell:generateDebugRFile FROM-CACHE
+> Task :core:vault:compileDevDebugKotlin FROM-CACHE
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibCompileToJarDevDebug
+> Task :feature:shell:compileDebugKotlin FROM-CACHE
+> Task :feature:shell:javaPreCompileDebug FROM-CACHE
+> Task :feature:shell:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:timeline:generateDebugResources FROM-CACHE
+> Task :feature:timeline:packageDebugResources FROM-CACHE
+> Task :feature:timeline:parseDebugLocalResources FROM-CACHE
+> Task :feature:timeline:generateDebugRFile FROM-CACHE
+> Task :feature:shell:bundleLibCompileToJarDebug
+> Task :feature:timeline:javaPreCompileDebug FROM-CACHE
+> Task :feature:editor:javaPreCompileDebug FROM-CACHE
+> Task :feature:chat:javaPreCompileDebug FROM-CACHE
+> Task :feature:graph:generateDebugResources FROM-CACHE
+> Task :feature:graph:packageDebugResources FROM-CACHE
+> Task :feature:graph:parseDebugLocalResources FROM-CACHE
+> Task :feature:graph:generateDebugRFile FROM-CACHE
+> Task :feature:timeline:compileDebugKotlin FROM-CACHE
+> Task :feature:timeline:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:timeline:bundleLibCompileToJarDebug
+> Task :feature:graph:compileDebugKotlin FROM-CACHE
+> Task :feature:graph:javaPreCompileDebug FROM-CACHE
+> Task :feature:graph:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:graph:bundleLibCompileToJarDebug
+> Task :feature:models:generateDebugResources FROM-CACHE
+> Task :feature:models:packageDebugResources FROM-CACHE
+> Task :feature:models:parseDebugLocalResources FROM-CACHE
+> Task :feature:models:generateDebugRFile FROM-CACHE
+> Task :feature:models:compileDebugKotlin FROM-CACHE
+> Task :feature:models:javaPreCompileDebug FROM-CACHE
+> Task :feature:models:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:editor:compileDebugKotlin FROM-CACHE
+> Task :feature:editor:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:models:bundleLibCompileToJarDebug
+> Task :feature:settings:generateDebugResources FROM-CACHE
+> Task :feature:settings:packageDebugResources FROM-CACHE
+> Task :feature:settings:parseDebugLocalResources FROM-CACHE
+> Task :feature:editor:bundleLibCompileToJarDebug
+> Task :feature:settings:generateDebugRFile FROM-CACHE
+> Task :feature:settings:compileDebugKotlin FROM-CACHE
+> Task :feature:settings:javaPreCompileDebug FROM-CACHE
+> Task :feature:settings:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:settings:bundleLibCompileToJarDebug
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :embedder-service:writeDebugAarMetadata
+> Task :inference-service:writeDevDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:export:writeDebugAarMetadata
+> Task :core:inference:writeDebugAarMetadata
+> Task :core:ipc:writeDebugAarMetadata
+> Task :core:rag:writeDebugAarMetadata
+> Task :core:security:writeDebugAarMetadata
+> Task :core:vault:writeDevDebugAarMetadata
+> Task :feature:chat:writeDebugAarMetadata
+> Task :feature:chat:compileDebugKotlin FROM-CACHE
+> Task :feature:chat:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:editor:writeDebugAarMetadata
+> Task :feature:graph:writeDebugAarMetadata
+> Task :feature:models:writeDebugAarMetadata
+> Task :feature:settings:writeDebugAarMetadata
+> Task :feature:shell:writeDebugAarMetadata
+> Task :feature:timeline:writeDebugAarMetadata
+> Task :feature:chat:bundleLibCompileToJarDebug
+> Task :app:checkDevDebugAarMetadata
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:compileDevDebugKotlin FROM-CACHE
+> Task :app:mergeDevDebugResources FROM-CACHE
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug FROM-CACHE
+> Task :embedder-service:extractDeepLinksDebug FROM-CACHE
+> Task :embedder-service:processDebugManifest FROM-CACHE
+> Task :inference-service:extractDeepLinksDevDebug FROM-CACHE
+> Task :inference-service:processDevDebugManifest FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:export:extractDeepLinksDebug FROM-CACHE
+> Task :core:export:processDebugManifest FROM-CACHE
+> Task :core:inference:extractDeepLinksDebug FROM-CACHE
+> Task :core:inference:processDebugManifest FROM-CACHE
+> Task :core:ipc:extractDeepLinksDebug FROM-CACHE
+> Task :core:ipc:processDebugManifest FROM-CACHE
+> Task :core:rag:extractDeepLinksDebug FROM-CACHE
+> Task :core:rag:processDebugManifest FROM-CACHE
+> Task :core:security:extractDeepLinksDebug FROM-CACHE
+> Task :core:security:processDebugManifest FROM-CACHE
+> Task :core:vault:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:vault:processDevDebugManifest FROM-CACHE
+> Task :feature:chat:extractDeepLinksDebug FROM-CACHE
+> Task :feature:chat:processDebugManifest FROM-CACHE
+> Task :feature:editor:extractDeepLinksDebug FROM-CACHE
+> Task :feature:editor:processDebugManifest FROM-CACHE
+> Task :feature:graph:extractDeepLinksDebug FROM-CACHE
+> Task :feature:graph:processDebugManifest FROM-CACHE
+> Task :feature:models:extractDeepLinksDebug FROM-CACHE
+> Task :feature:models:processDebugManifest FROM-CACHE
+> Task :feature:settings:extractDeepLinksDebug FROM-CACHE
+> Task :feature:settings:processDebugManifest FROM-CACHE
+> Task :feature:shell:extractDeepLinksDebug FROM-CACHE
+> Task :feature:shell:processDebugManifest FROM-CACHE
+> Task :feature:timeline:extractDeepLinksDebug FROM-CACHE
+> Task :feature:timeline:processDebugManifest FROM-CACHE
+> Task :app:compileDevDebugJavaWithJavac FROM-CACHE
+> Task :embedder-service:mapDebugSourceSetPaths
+> Task :embedder-service:compileDebugLibraryResources FROM-CACHE
+> Task :inference-service:mapDevDebugSourceSetPaths
+> Task :inference-service:compileDevDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:export:mapDebugSourceSetPaths
+> Task :core:export:compileDebugLibraryResources FROM-CACHE
+> Task :core:inference:mapDebugSourceSetPaths
+> Task :core:inference:compileDebugLibraryResources FROM-CACHE
+> Task :core:ipc:mapDebugSourceSetPaths
+> Task :core:ipc:compileDebugLibraryResources FROM-CACHE
+> Task :core:rag:mapDebugSourceSetPaths
+> Task :core:rag:compileDebugLibraryResources FROM-CACHE
+> Task :core:security:mapDebugSourceSetPaths
+> Task :core:security:compileDebugLibraryResources FROM-CACHE
+> Task :core:vault:mapDevDebugSourceSetPaths
+> Task :core:vault:compileDevDebugLibraryResources FROM-CACHE
+> Task :feature:chat:mapDebugSourceSetPaths
+> Task :feature:chat:compileDebugLibraryResources FROM-CACHE
+> Task :feature:editor:mapDebugSourceSetPaths
+> Task :feature:editor:compileDebugLibraryResources FROM-CACHE
+> Task :feature:graph:mapDebugSourceSetPaths
+> Task :feature:graph:compileDebugLibraryResources FROM-CACHE
+> Task :feature:models:mapDebugSourceSetPaths
+> Task :feature:models:compileDebugLibraryResources FROM-CACHE
+> Task :feature:settings:mapDebugSourceSetPaths
+> Task :feature:settings:compileDebugLibraryResources FROM-CACHE
+> Task :feature:shell:mapDebugSourceSetPaths
+> Task :feature:shell:compileDebugLibraryResources FROM-CACHE
+> Task :feature:timeline:mapDebugSourceSetPaths
+> Task :app:processDevDebugMainManifest FROM-CACHE
+> Task :feature:timeline:compileDebugLibraryResources FROM-CACHE
+> Task :app:preDevDebugAndroidTestBuild SKIPPED
+> Task :app:processDevDebugManifest FROM-CACHE
+> Task :app:processDevDebugManifestForPackage FROM-CACHE
+> Task :app:mergeDevDebugAndroidTestManifest
+> Task :app:processDevDebugResources FROM-CACHE
+> Task :app:processDevDebugAndroidTestManifest
+> Task :app:generateDevDebugAndroidTestBuildConfig FROM-CACHE
+> Task :app:generateDevDebugAndroidTestResources FROM-CACHE
+> Task :app:packageDevDebugAndroidTestResources FROM-CACHE
+> Task :app:processDevDebugAndroidTestNavigationResources FROM-CACHE
+> Task :app:parseDevDebugAndroidTestLocalResources FROM-CACHE
+> Task :app:generateDevDebugAndroidTestRFile FROM-CACHE
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :app:compileDevDebugAndroidTestKotlin
+
+BUILD SUCCESSFUL in 14s
+276 actionable tasks: 69 executed, 207 from cache
+Configuration cache entry stored.

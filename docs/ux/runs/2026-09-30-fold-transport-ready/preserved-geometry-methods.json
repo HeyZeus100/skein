@@ -1,0 +1,67 @@
+{
+  "original_source": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "candidate_source": "b501699b4",
+  "checks": [
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "method": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+      "sha256": "fb7ebfaeebc9942c859dc3c86d7c3e97d1f20e7c233e1671a3476cde29e6a2cf",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "method": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+      "sha256": "83979421bf6bd4e1232cd85b33315fd0bac3d373356d97829ee70494a543d013",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "method": "recordGeometry",
+      "sha256": "87341c2e3a6e6a1bab75b7955562e59f6587fdfe11abd1c78a308d580a88b58e",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "method": "assertGate",
+      "sha256": "73d64cdbaa15c9be09136a0a999a847da7b458b70ee8697cdb339c1388c67f75",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "method": "requestState",
+      "sha256": "c775765496d87ee1142104233609ae5fd6ab8d43b3bbaa9cddc63dc04325dedb",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "method": "rotate",
+      "sha256": "fc8b5892a0ac5e469af8cd6e187abbf2e4660276c7d6fe7cf5bff7fa491c9564",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "method": "currentWindow",
+      "sha256": "1b2a2f84e713535adde8df836409a3fd2abdf0dce3f93ab92e768101c67d532a",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "method": "beginChange",
+      "sha256": "ffee34056a0c600de8e89d47ff6ea41252819fc9edee5e052fb0061a293a6080",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "method": "await",
+      "sha256": "83a827be40ac5fd948a2c587375b2de3b516edbd589c6832e2c850c7f5880141",
+      "original_equal": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "method": "shell",
+      "sha256": "3dea232b2d3bfecb612780a38494234d4135ac651f39653904d134573ee95a79",
+      "original_equal": true
+    }
+  ],
+  "interpretation": "Unchanged test journeys, geometry assertions and geometry/shell timeouts; compilation/runtime still separate."
+}

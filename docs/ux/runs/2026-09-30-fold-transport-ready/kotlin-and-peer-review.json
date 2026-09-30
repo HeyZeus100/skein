@@ -1,0 +1,141 @@
+{
+  "source": "b501699b438e841e703b7c9f7951381973de46b3",
+  "dirty_before_and_after": false,
+  "command": "JAVA_HOME=/opt/homebrew/Cellar/openjdk@17/17.0.20.1/libexec/openjdk.jdk/Contents/Home ./gradlew --no-daemon --max-workers=2 :app:ktlintCheck :app:compileDevDebugAndroidTestKotlin -Pskein.foldableTests=true",
+  "returncode": 0,
+  "build_seconds": 14,
+  "tasks": {
+    "actionable": 276,
+    "executed": 69,
+    "from_cache": 207
+  },
+  "fresh_relevant_tasks": [
+    ":app:runKtlintCheckOverAndroidTestSourceSet",
+    ":app:ktlintAndroidTestSourceSetCheck",
+    ":app:compileDevDebugAndroidTestKotlin"
+  ],
+  "root_host_tests": {
+    "actual_log": "root-fixed-host-tests.log",
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "seconds": 1.876
+  },
+  "source_files": {
+    ".github/workflows/foldable.yml": {
+      "bytes": 6839,
+      "sha256": "908651ceb07e0b1de95a81c636b11df6fd9b642760147a37cefd4e438b5f07d2"
+    },
+    "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt": {
+      "bytes": 10788,
+      "sha256": "d326a10936a3a610a7d8bd79084535a8a4c77fd4db076a63b9edeaf6a9bcaa64"
+    },
+    "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt": {
+      "bytes": 6783,
+      "sha256": "b76848b13b525c9bb3f76479db843ed531a77c9e797ae47631bfb4410cf16e45"
+    },
+    "tools/ci/foldable-console-bridge.py": {
+      "bytes": 13053,
+      "sha256": "97e84bd6e27234ffcf9eade2d9d46e75be02740ae629bae10904ed560622c7a0"
+    },
+    "tools/ci/run-foldable-emulator.sh": {
+      "bytes": 13582,
+      "sha256": "dfce72adf1aaed1a4e04a817e0842d6f6ed63e740633c659066b8941c1baee0b"
+    },
+    "tools/ci/test_foldable_console.py": {
+      "bytes": 20068,
+      "sha256": "fbee22977fe58db3bd711e2226316a9ad9fb4b75362711fcb648284240a49286"
+    },
+    "tools/ci/test_foldable_workflow.py": {
+      "bytes": 18055,
+      "sha256": "e3d1f37aff93ebcbd197119c704ee6a38ff159f1640792aea8d678d179e6371a"
+    },
+    "tools/ci/test_verify_foldable.py": {
+      "bytes": 17932,
+      "sha256": "dc1e8478371e122779bbd985fe7a75ec1eefb2338108bd06f6ecd325913e33a4"
+    },
+    "tools/ci/verify-foldable.py": {
+      "bytes": 23848,
+      "sha256": "4ec5964baabc98fb45b6b74c5b686ec4aec502e6db9f0123dc2febcd85d939fb"
+    }
+  },
+  "compiled_and_report_files": {
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/ActivityWindowGeometry$Companion.class": {
+      "bytes": 2169,
+      "sha256": "39b8b06deac196847583ca91b988b5c8caa8b4c19a933f4241142828f012ad94"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/ActivityWindowGeometry.class": {
+      "bytes": 4446,
+      "sha256": "d2be8a25476cbb50d7b0573a874c8e833f04ffd5425e7c561af62b2c2096e475"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/FoldableDeviceControl$Companion.class": {
+      "bytes": 1543,
+      "sha256": "be06e99c86171f30cca674c7c746dc896817707099efaa6f7f0a54b25c24dca6"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/FoldableDeviceControl$requestState$lines$1.class": {
+      "bytes": 1703,
+      "sha256": "da47dd9d028a92211a4eed802d82966b0a521eb4fe0e57c8ee15ad00be40afc0"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/FoldableDeviceControl$requestState$lines$2.class": {
+      "bytes": 1707,
+      "sha256": "401b50a01a49386cd0d6c7fffcac106f1afbdc5051b81fde4e0c5814234f4b4c"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/FoldableDeviceControl.class": {
+      "bytes": 25472,
+      "sha256": "dd3c093d250790760e2337765b4de83bed1c907f9d53343d3329bfcbbeedc7e2"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/MainActivityFoldableGateTest$device$1.class": {
+      "bytes": 1404,
+      "sha256": "1e06d6d1a095da246c53bbb99ccc1267d55c31b775672b99d5fefb27d1b11a0e"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/MainActivityFoldableGateTest$suppressPermissionPrompt$1.class": {
+      "bytes": 3517,
+      "sha256": "e5bf157d97c336138b8f8597b9e6aa289eeb8b76381c60937500ecfb4f5561ab"
+    },
+    "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/foldable/MainActivityFoldableGateTest.class": {
+      "bytes": 15490,
+      "sha256": "ecfad6c5271dd55601765eabf0865a1a06d96aed5344cab0be0398d114492456"
+    },
+    "app/build/reports/ktlint/ktlintAndroidTestSourceSetCheck/ktlintAndroidTestSourceSetCheck.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/build/reports/ktlint/ktlintKotlinScriptCheck/ktlintKotlinScriptCheck.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/build/reports/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app/build/reports/ktlint/ktlintTestSourceSetCheck/ktlintTestSourceSetCheck.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "limits": [
+    "Compilation only; no instrumentation runtime executed.",
+    "No emulator launched or CI dispatched by worker.",
+    "No new candidate installed on physical Fold.",
+    "Root owns removal of granted build.lock."
+  ],
+  "evidence_files": {
+    "kotlin-gradle.log": {
+      "bytes": 21749,
+      "sha256": "d914bd38c4689c51242054a7d968ce5749ee76da0352f0f890c6aeb04cbd4552"
+    },
+    "root-fixed-host-tests.log": {
+      "bytes": 8213,
+      "sha256": "a77b60fe2b3285b848c159c2a3b9cd5c8fb7639ca1d41fcdfe2276fc5f74748f"
+    },
+    "preserved-geometry-methods.json": {
+      "bytes": 2813,
+      "sha256": "b70cd70be719a6a75cfa2ae1fee430d5a52ba6ce220ee348efe37e3fbed9bbdf"
+    },
+    "kotlin-compiled-evidence.zip": {
+      "bytes": 29625,
+      "sha256": "cbcaed741965cc071eed5bc728fb0f2d45608b59657635adf638c2f316bc05c1"
+    }
+  }
+}
