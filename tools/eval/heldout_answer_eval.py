@@ -100,8 +100,9 @@ def score(cases, case_hash, freeze_hash, manifest, outputs, reviews):
     report["structural_report_complete"] = report.pop("quality_gate_eligible")
     grades = base.keyed(reviews)
     ok = [o for o in outputs if o["status"] == "ok"]
-    report["human_review_complete"] = bool(ok) and all(
+    report["successful_outputs_human_reviewed"] = bool(ok) and all(
         grades.get((o["case_id"], o["seed"]), {}).get("reviewer_type") == "human" for o in ok)
+    report["human_review_complete"] = report["structural_report_complete"] and report["successful_outputs_human_reviewed"]
     report["reviewer_types"] = dict(Counter(r["reviewer_type"] for r in reviews))
     report["quality_gate_status"] = "NOT_DECIDED_BY_THIS_TOOL"
     report["case_set_sha256"] = case_hash

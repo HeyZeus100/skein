@@ -103,9 +103,23 @@ class HeldoutAnswerEvaluationTest(unittest.TestCase):
         report = self.score([self.row()], [self.grade()])
         self.assertEqual({"ai": 1}, report["reviewer_types"])
         self.assertFalse(report["human_review_complete"])
-        self.assertTrue(self.score([self.row()], [self.grade("human")])["human_review_complete"])
+        partial = self.score([self.row()], [self.grade("human")])
+        self.assertTrue(partial["successful_outputs_human_reviewed"])
+        self.assertFalse(partial["human_review_complete"])
+        self.assertEqual(239, partial["counts"]["missing"])
         with self.assertRaisesRegex(ValueError, "declare human or AI"):
             self.score([self.row()], [self.grade(None)])
+
+    def test_complete_human_review_requires_complete_records_and_valid_sources(self):
+        outputs = [self.row(c, seed, "timeout") for c in self.cases for seed in self.manifest["seeds"]]
+        outputs[0] = self.row()
+        report = self.score(outputs, [self.grade("human")])
+        self.assertTrue(report["structural_report_complete"])
+        self.assertTrue(report["human_review_complete"])
+        outputs[0]["citations"] = [dict(doc_id="unprovided", revision_hash="a" * 64)]
+        invalid = self.score(outputs, [self.grade("human")])
+        self.assertTrue(invalid["successful_outputs_human_reviewed"])
+        self.assertFalse(invalid["human_review_complete"])
 
     def test_changed_provenance_duplicate_rows_and_inconsistent_grade_fail(self):
         for change in ({"heldout_freeze_sha256": "e" * 64}, {"fixture_commit": "short"}, {"engine_path": "fake"}):
