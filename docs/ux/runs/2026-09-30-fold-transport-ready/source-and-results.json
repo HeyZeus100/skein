@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "base_source": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "attribution": "source files hashed as attributed pre-commit candidate; runtime not executed",
+  "files": {
+    ".github/workflows/foldable.yml": {
+      "bytes": 6839,
+      "sha256": "908651ceb07e0b1de95a81c636b11df6fd9b642760147a37cefd4e438b5f07d2"
+    },
+    "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt": {
+      "bytes": 10788,
+      "sha256": "d326a10936a3a610a7d8bd79084535a8a4c77fd4db076a63b9edeaf6a9bcaa64"
+    },
+    "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt": {
+      "bytes": 6783,
+      "sha256": "b76848b13b525c9bb3f76479db843ed531a77c9e797ae47631bfb4410cf16e45"
+    },
+    "tools/ci/foldable-console-bridge.py": {
+      "bytes": 13053,
+      "sha256": "97e84bd6e27234ffcf9eade2d9d46e75be02740ae629bae10904ed560622c7a0"
+    },
+    "tools/ci/run-foldable-emulator.sh": {
+      "bytes": 13582,
+      "sha256": "dfce72adf1aaed1a4e04a817e0842d6f6ed63e740633c659066b8941c1baee0b"
+    },
+    "tools/ci/test_foldable_console.py": {
+      "bytes": 18892,
+      "sha256": "a68fb0800157bc9c43dfe8b739fe87ff58c62bd98e087713a3316d6e3f10aae2"
+    },
+    "tools/ci/test_foldable_workflow.py": {
+      "bytes": 18055,
+      "sha256": "e3d1f37aff93ebcbd197119c704ee6a38ff159f1640792aea8d678d179e6371a"
+    },
+    "tools/ci/test_verify_foldable.py": {
+      "bytes": 17932,
+      "sha256": "dc1e8478371e122779bbd985fe7a75ec1eefb2338108bd06f6ecd325913e33a4"
+    },
+    "tools/ci/verify-foldable.py": {
+      "bytes": 23848,
+      "sha256": "4ec5964baabc98fb45b6b74c5b686ec4aec502e6db9f0123dc2febcd85d939fb"
+    }
+  },
+  "host_tests": {
+    "actual_log": "third-host-tests.log",
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "earlier_attempt": "first-host-tests.log retains42pass/1harness fixture-offset failure; corrected targeted indices without weakening protocol conditions"
+  },
+  "syntax": {
+    "command": "bash -n tools/ci/run-foldable-emulator.sh",
+    "returncode": 0
+  },
+  "whitespace": {
+    "command": "git diff --check",
+    "returncode": 0
+  },
+  "negative_control": {
+    "scope": "real subprocess stdin isolation with fake adb only; does not prove original emulator timeout cause",
+    "parent_stdin": "open PIPE intentionally retained until child exits",
+    "original_source": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+    "results": [
+      {
+        "variant": "old",
+        "source_sha256": "4259a869f1132b83b6c35ddd88fdec0caa8c686e59892b8a50855778c526b269",
+        "returncode": 0,
+        "result": {
+          "outcome": "timeout",
+          "timeout": 0.5,
+          "poisoned": true
+        }
+      },
+      {
+        "variant": "fixed",
+        "source_sha256": "97e84bd6e27234ffcf9eade2d9d46e75be02740ae629bae10904ed560622c7a0",
+        "returncode": 0,
+        "result": {
+          "outcome": "completed",
+          "stdout": "EOF received\n",
+          "returncode": 0
+        }
+      }
+    ]
+  },
+  "original_failure": {
+    "run": 36708565565,
+    "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+    "actual_small_archive_sha256": "0d358ca9f1ce898e9df1f22dd5a21f3ab7b24de5d480ee2d06327341d5633475",
+    "actual_xml_sha256": "2e942a5a79b92488b8c53b835a1d4c26f15aa420497195b410b594584be565a7",
+    "tests": 2,
+    "failures": 2,
+    "successful_exchanges": 0,
+    "controller_log_sha256": "d7f45307d456f06acccf41c6a3ef1120d870a1ac75840c5ade0ebd9f4c10a1a4",
+    "controller_events_sha256": "7c32d2f47c0a57a46356620a6a9364004e95915394c6ac72cec8be0ced124cbe",
+    "inspection": "actual archive XML and controller/final-request/final-ACK JSON bytes inspected; original failure retained unchanged; causal link to inherited stdin is NOT established"
+  },
+  "physical_preflight": {
+    "at": "2026-09-30T16:51:56.607802+00:00",
+    "target_connected": false,
+    "adb_commands": 1,
+    "device_shell_commands": 0,
+    "device_mutations": 0,
+    "lease": "own atomic device.lock acquired and released",
+    "owner_unlock": "unverified because target absent",
+    "installed_source": "historical verified e62f94785; not changed"
+  },
+  "remaining_gates": [
+    "root Kotlin lint and instrumentation compilation",
+    "actual nonce-bound emulator readiness exchange",
+    "original six posture exchanges and five Activity geometry samples",
+    "exact Pixel9ProFold profile",
+    "physical Fold acceptance; held absent; no install authority implied"
+  ],
+  "thresholds": "original10-second ADB limit,90-second ACK limit,15-second geometry limit,600dp boundaries and2test identities unchanged; synthetic stdin control alone uses0.5seconds",
+  "evidence_files": {
+    "first-host-tests.log": {
+      "bytes": 8986,
+      "sha256": "e8d851e04a67034a6bec5945c2659b2374fff4ff1dd8117a36146e7f8fb3aaae"
+    },
+    "second-host-tests.log": {
+      "bytes": 8213,
+      "sha256": "f810fbf8cc9110c9fe69a89e7a9072d4ff28b80a0f8fc29b96133bd1ac234c49"
+    },
+    "stdin-negative-control.zip": {
+      "bytes": 10233,
+      "sha256": "762b6703d6486d223796ff4122386163370858638e14af7bc25cc4d61cd04480"
+    },
+    "third-host-tests.log": {
+      "bytes": 8213,
+      "sha256": "943e25c5967dd0c1b187b6f10a219f990319771bd731427dd5fca6b1d10ec09f"
+    }
+  }
+}

@@ -254,6 +254,7 @@ if test "$controller_result" -ne 0; then result=1; fi
 adb_bounded logcat -d -v threadtime > build/foldable-evidence/logcat.txt
 adb_bounded exec-out run-as app.skein cat files/foldable-gate-metrics.jsonl > build/foldable-evidence/window-geometry.jsonl 2> build/foldable-evidence/window-geometry-error.txt
 adb_bounded exec-out run-as app.skein cat files/foldable-device-states.txt > build/foldable-evidence/runtime-device-states.txt 2> build/foldable-evidence/runtime-device-states-error.txt
+adb_bounded exec-out run-as app.skein cat files/foldable-console-ready.json > build/foldable-evidence/console-ready.json 2> build/foldable-evidence/console-ready-error.txt
 adb_bounded exec-out run-as app.skein cat files/foldable-console-request.json > build/foldable-evidence/console-final-request.json 2> build/foldable-evidence/console-final-request-error.txt
 adb_bounded exec-out run-as app.skein cat files/foldable-console-ack.json > build/foldable-evidence/console-final-ack.json 2> build/foldable-evidence/console-final-ack-error.txt
 cat build/foldable-evidence/gradle.log

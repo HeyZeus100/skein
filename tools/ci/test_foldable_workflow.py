@@ -18,6 +18,21 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class FoldableWorkflowContractTest(unittest.TestCase):
+    def test_apks_are_built_before_polling_and_readiness_precedes_activity_launch(self):
+        workflow = yaml.safe_load((ROOT / ".github/workflows/foldable.yml").read_text())
+        steps = workflow["jobs"]["foldable"]["steps"]
+        names = [step.get("name") for step in steps]
+        build = names.index("Build foldable APKs before controller polling")
+        self.assertLess(build, names.index("Start owned virtual display for Qt emulator"))
+        self.assertEqual("./gradlew --max-workers=2 :app:assembleDevDebug :app:assembleDevDebugAndroidTest -Pskein.foldableTests=true",
+                         steps[build]["run"])
+        source = (ROOT / "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt").read_text()
+        before = source.split("@Before", 1)[1].split("@After", 1)[0]
+        self.assertIn("device.requireTransportReady()", before)
+        self.assertNotIn("launchActivity()", before)
+        helper = (ROOT / "tools/ci/run-foldable-emulator.sh").read_text()
+        self.assertIn("files/foldable-console-ready.json", helper)
+
     def test_linux_emulator_library_is_installed_before_the_version_probe(self):
         workflow = yaml.safe_load((ROOT / ".github/workflows/foldable.yml").read_text())
         steps = workflow["jobs"]["foldable"]["steps"]

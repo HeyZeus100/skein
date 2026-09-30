@@ -166,7 +166,23 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
         if any(event["event"] not in {"started", "request", "console", "ack", "stopped"} for event in events):
             raise ValueError("controller recorded failure or fallback cleanup")
         # Accept only chronological request -> one command -> one/more identical ACKs.
-        cursor = 1
+        ready_request, ready_ack = events[1:3]
+        ready_fields = {key: ready_request[key] for key in ("run_id", "sequence", "nonce", "action")}
+        if (ready_request["event"] != "request" or ready_fields["sequence"] != 0 or
+                ready_fields["action"] != "ready" or not re.fullmatch(r"[0-9a-f]{32}", ready_fields["nonce"])):
+            raise ValueError("missing nonce-bound readiness request before posture")
+        if ready_ack != {"event": "ack", **ready_fields, "status": "ok"}:
+            raise ValueError("missing matching readiness ACK")
+        ready_path = run_path.with_name("console-ready.json")
+        if json.loads(ready_path.read_text()) != {**ready_fields, "status": "ok"}:
+            raise ValueError("instrumentation did not consume the matching readiness ACK")
+        result["artifacts"][str(ready_path.relative_to(repository))] = sha256(ready_path)
+        result["transport_readiness"] = {**ready_fields, "instrumentation_consumed_ack": True}
+        cursor = 3
+        while cursor < len(events) and events[cursor]["event"] == "ack":
+            if events[cursor] != ready_ack:
+                raise ValueError("changed cached readiness acknowledgment")
+            cursor += 1
         for sequence in range(1, 7):
             action = "fold" if sequence % 2 else "unfold"
             for kind in ("request", "console", "ack"):
@@ -180,11 +196,11 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
                 cursor += 1
         if cursor != len(events) - 1:
             raise ValueError("unexpected extra console events")
-        requests = [event for event in events if event["event"] == "request"]
+        requests = [event for event in events if event["event"] == "request" and event["action"] != "ready"]
         # Both journeys and their @After flat cleanup produce six absolute posture requests.
         if len(requests) != 6 or [request["sequence"] for request in requests] != list(range(1, 7)):
             raise ValueError("missing, duplicate or out-of-order posture requests")
-        if len({request["nonce"] for request in requests}) != 6:
+        if len({request["nonce"] for request in [ready_request, *requests]}) != 7:
             raise ValueError("reused request nonce")
         for request in requests:
             if request["action"] not in {"fold", "unfold"} or not re.fullmatch(r"[0-9a-f]{32}", request["nonce"]):
@@ -201,11 +217,80 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
                     raise ValueError("mismatched or failed acknowledgment")
         if sum(event["event"] == "console" for event in events) != 6:
             raise ValueError("unexpected console mutation")
-        if any(event["sequence"] not in range(1, 7) for event in events if event["event"] == "ack"):
+        if any(event["sequence"] not in range(0, 7) for event in events if event["event"] == "ack"):
             raise ValueError("unexpected acknowledgment sequence")
         if requests[-1]["action"] != "unfold":
             raise ValueError("last posture request was not flat cleanup")
         result["console_requests"] = requests
+        command_path = run_path.with_name("console-commands.jsonl")
+        commands = [json.loads(line) for line in command_path.read_text().splitlines() if line.strip()]
+        result["artifacts"][str(command_path.relative_to(repository))] = sha256(command_path)
+        if not commands or len(commands) % 2:
+            raise ValueError("missing or partial bounded command transcript")
+        last_time = -1
+        console_actions = []
+        readiness_read = False
+        readiness_write = False
+        posture_phase = False
+        request_read = ["shell", "-n", "-T", "run-as", "app.skein", "head", "-c", "1025",
+                        "files/foldable-console-request.json"]
+        display_reads = [["shell", "wm", "folded-area"], ["shell", "cmd", "device_state", "print-state"],
+                         ["shell", "dumpsys", "display"]]
+        for index in range(0, len(commands), 2):
+            started, finished = commands[index:index + 2]
+            fields = ("command_sequence", "run_id", "serial", "args", "phase", "timeout_seconds", "stdin_mode")
+            if (started["event"] != "command_started" or finished["event"] != "command_finished" or
+                    any(started[key] != finished[key] for key in fields)):
+                raise ValueError("unmatched, failed or timed-out command receipt")
+            if (started["command_sequence"] != index // 2 + 1 or started["run_id"] != run_id or
+                    started["serial"] != events[0]["serial"] or started["phase"] not in {"readiness", "posture"}):
+                raise ValueError("command receipt identity or phase mismatch")
+            times = (started["monotonic_ns"], finished["monotonic_ns"])
+            if any(type(value) is not int for value in times) or not last_time <= times[0] <= times[1]:
+                raise ValueError("command chronology invalid")
+            last_time = times[1]
+            args = started["args"]
+            if not isinstance(args, list) or not args or not all(isinstance(arg, str) for arg in args):
+                raise ValueError("command arguments malformed")
+            writer = args == ["shell", "run-as", "app.skein", "sh", "-c",
+                              "'cat > files/foldable-console-ack.json.tmp && mv -f files/foldable-console-ack.json.tmp files/foldable-console-ack.json'"]
+            allowed = writer or args == request_read or args in display_reads or args in (
+                ["shell", "getprop", "ro.kernel.qemu"], ["emu", "avd", "name"], ["emu", "fold"], ["emu", "unfold"])
+            if not allowed:
+                raise ValueError("unreviewed command in console transcript")
+            if started["phase"] == "posture":
+                if not readiness_read or not readiness_write:
+                    raise ValueError("posture phase lacks a completed readiness read and ACK write")
+                posture_phase = True
+            elif posture_phase:
+                raise ValueError("command phase regressed after readiness")
+            elif args == request_read and finished["returncode"] == 0:
+                readiness_read = True
+            elif writer and finished["returncode"] == 0:
+                if not readiness_read:
+                    raise ValueError("readiness ACK preceded its request read")
+                readiness_write = True
+            if started["stdin_mode"] != ("payload" if writer else "devnull"):
+                raise ValueError("unexpected inherited stdin or input payload")
+            if started["timeout_seconds"] != (5 if args in display_reads else 10):
+                raise ValueError("changed command timeout")
+            if any(not re.fullmatch(r"[0-9a-f]{64}", finished[key]) for key in ("stdout_sha256", "stderr_sha256")):
+                raise ValueError("command output hashes invalid")
+            if finished["returncode"] != 0:
+                absent_hashes = {hashlib.sha256(message.encode()).hexdigest() for message in (
+                    "run-as: unknown package: app.skein\n",
+                    "head: files/foldable-console-request.json: No such file or directory\n")}
+                if (finished["returncode"] != 1 or args != request_read or
+                        finished["stdout_sha256"] != hashlib.sha256(b"").hexdigest() or
+                        finished["stderr_sha256"] not in absent_hashes):
+                    raise ValueError("failed command beyond the permitted not-yet-published request")
+            if args in (["emu", "fold"], ["emu", "unfold"]):
+                if started["phase"] != "posture" or finished["returncode"] != 0:
+                    raise ValueError("posture command before readiness or unsuccessful")
+                console_actions.append(args[1])
+        if console_actions != [request["action"] for request in requests]:
+            raise ValueError("command transcript differs from original six posture exchanges")
+        result["bounded_adb_commands"] = len(commands) // 2
     except (OSError, ValueError, KeyError, TypeError, IndexError) as error:
         result["errors"].append(f"missing or invalid console protocol evidence: {error}")
     diagnostics = run_path.with_name("display-diagnostics.jsonl")

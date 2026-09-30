@@ -43,18 +43,38 @@ class FoldableEvidenceReviewTest(unittest.TestCase):
         run_id = "a" * 32
         geometry.with_name("console-run-id.txt").write_text(run_id + "\n")
         self.events = [{"event": "started", "run_id": run_id, "serial": "emulator-5554", "avd": "skein_foldable_gate"}]
+        ready = {"run_id": run_id, "sequence": 0, "nonce": "0" * 32, "action": "ready"}
+        self.events += [{"event": "request", **ready}, {"event": "ack", **ready, "status": "ok"}]
+        self.ready_path = geometry.with_name("console-ready.json")
+        self.ready_path.write_text(json.dumps({**ready, "status": "ok"}))
         for sequence, action in enumerate(("fold", "unfold", "fold", "unfold", "fold", "unfold"), 1):
             request = {"run_id": run_id, "sequence": sequence, "nonce": f"{sequence:032x}", "action": action}
             self.events += [{"event": "request", **request},
                             {"event": "console", "run_id": run_id, "sequence": sequence, "action": action,
                              "returncode": 0, "stdout": "OK\n", "stderr": ""},
                             {"event": "ack", **request, "status": "ok"}]
+        self.command_path = geometry.with_name("console-commands.jsonl")
+        commands = []
+        command_fixture = [
+            (["shell", "-n", "-T", "run-as", "app.skein", "head", "-c", "1025", "files/foldable-console-request.json"],
+             "readiness", "devnull"),
+            (["shell", "run-as", "app.skein", "sh", "-c",
+              "'cat > files/foldable-console-ack.json.tmp && mv -f files/foldable-console-ack.json.tmp files/foldable-console-ack.json'"],
+             "readiness", "payload"),
+            *((["emu", action], "posture", "devnull") for action in ("fold", "unfold", "fold", "unfold", "fold", "unfold"))]
+        for sequence, (args, phase, stdin_mode) in enumerate(command_fixture, 1):
+            base = {"command_sequence": sequence, "run_id": run_id, "serial": "emulator-5554",
+                    "args": args, "phase": phase, "timeout_seconds": 10, "stdin_mode": stdin_mode}
+            commands.extend([{**base, "event": "command_started", "monotonic_ns": sequence * 100},
+                             {**base, "event": "command_finished", "monotonic_ns": sequence * 100 + 1,
+                              "returncode": 0, "stdout_sha256": "1" * 64, "stderr_sha256": "2" * 64}])
+        self.command_path.write_text("\n".join(json.dumps(row) for row in commands))
         self.events.append({"event": "stopped", "run_id": run_id})
         self.events_path = geometry.with_name("console-events.jsonl")
         self.events_path.write_text("\n".join(json.dumps(row) for row in self.events))
         self.diagnostics = geometry.with_name("display-diagnostics.jsonl")
         samples = []
-        for request in (event for event in self.events if event["event"] == "request"):
+        for request in (event for event in self.events if event["event"] == "request" and event["action"] != "ready"):
             samples.append({**{key: request[key] for key in ("run_id", "sequence", "nonce", "action")},
                             "schema_version": 1, "phase": "console_ok_before_ack",
                             "started_monotonic_ns": request["sequence"] * 100,
@@ -84,12 +104,42 @@ class FoldableEvidenceReviewTest(unittest.TestCase):
             avd_config_sha256=hashlib.sha256(self.config.read_bytes()).hexdigest(), image_sysdir=image_dir + "/",
             system_image_payloads=payloads, files=[dict(path=path, bytes=1, sha256="1" * 64) for path in paths])))
 
+    def test_command_receipts_reject_timeout_missing_phase_order_and_inherited_input(self):
+        self.write_cases(self.cases)
+        original = [json.loads(line) for line in self.command_path.read_text().splitlines()]
+        for index, key, value in ((1, "event", "command_timeout"), (0, "stdin_mode", "inherited"),
+                                  (0, "monotonic_ns", True), (1, "monotonic_ns", 0),
+                                  (0, "run_id", "f" * 32), (0, "phase", "posture")):
+            with self.subTest(key=key):
+                rows = [dict(row) for row in original]
+                rows[index][key] = value
+                self.command_path.write_text("\n".join(json.dumps(row) for row in rows))
+                self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
+        self.command_path.unlink()
+        self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
+
+    def test_readiness_requires_instrumentation_consumption_before_original_posture_cases(self):
+        self.write_cases(self.cases)
+        original = self.ready_path.read_text()
+        for key, value in (("nonce", "f" * 32), ("run_id", "f" * 32), ("sequence", 1),
+                           ("status", "error"), ("action", "fold")):
+            ready = json.loads(original)
+            ready[key] = value
+            self.ready_path.write_text(json.dumps(ready))
+            self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
+        self.ready_path.write_text(original)
+        self.events_path.write_text("\n".join(json.dumps(row) for row in [self.events[0], *self.events[3:]]))
+        self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
+        self.events_path.write_text("\n".join(json.dumps(row) for row in self.events))
+        self.ready_path.unlink()
+        self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
+
     def test_counts_actual_cases_and_hashes_source_bound_artifacts(self):
         self.write_cases(self.cases)
         result = reviewer.review(self.repo, self.sha)
         self.assertTrue(result["passed"])
         self.assertEqual(2, len(result["cases"]))
-        self.assertEqual(9, len(result["artifacts"]))
+        self.assertEqual(11, len(result["artifacts"]))
         self.assertTrue(all(len(value) == 64 for value in result["artifacts"].values()))
 
     def test_sdk_image_receipts_cannot_be_missing_metadata_only_or_bound_to_another_config(self):
@@ -179,15 +229,15 @@ class FoldableEvidenceReviewTest(unittest.TestCase):
 
     def test_failed_mismatched_duplicate_or_unstopped_console_cannot_pass(self):
         self.write_cases(self.cases)
-        for index, key, value in ((3, "nonce", "f" * 32), (3, "status", "error"),
-                                  (2, "returncode", 1), (1, "run_id", "f" * 32),
+        for index, key, value in ((5, "nonce", "f" * 32), (5, "status", "error"),
+                                  (4, "returncode", 1), (3, "run_id", "f" * 32),
                                   (-1, "event", "fatal"), (0, "avd", "wrong_avd")):
             with self.subTest(index=index, key=key):
                 rows = [dict(row) for row in self.events]
                 rows[index][key] = value
                 self.events_path.write_text("\n".join(json.dumps(row) for row in rows))
                 self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
-        self.events_path.write_text("\n".join(json.dumps(row) for row in self.events[:-1] + self.events[2:3] + self.events[-1:]))
+        self.events_path.write_text("\n".join(json.dumps(row) for row in self.events[:-1] + self.events[4:5] + self.events[-1:]))
         self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
         self.events_path.unlink()
         self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
@@ -211,11 +261,11 @@ class FoldableEvidenceReviewTest(unittest.TestCase):
     def test_ack_before_console_or_non_alternating_posture_cannot_pass(self):
         self.write_cases(self.cases)
         rows = [dict(row) for row in self.events]
-        rows[2], rows[3] = rows[3], rows[2]
+        rows[4], rows[5] = rows[5], rows[4]
         self.events_path.write_text("\n".join(json.dumps(row) for row in rows))
         self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
         rows = [dict(row) for row in self.events]
-        for row in rows[4:7]:
+        for row in rows[6:9]:
             row["action"] = "fold"
         self.events_path.write_text("\n".join(json.dumps(row) for row in rows))
         self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])

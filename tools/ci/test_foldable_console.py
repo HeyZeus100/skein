@@ -53,7 +53,7 @@ class FakeAdb:
                       bridge.DISPLAY_READS[1]: "1\n",
                       bridge.DISPLAY_READS[2]: "DISPLAY MANAGER (dumpsys display)\n"}[tuple(args)]
         elif args in (["exec-out", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST],
-                       ["shell", "-T", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST]):
+                       ["shell", "-n", "-T", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST]):
             if self.read_timeout:
                 raise subprocess.TimeoutExpired(argv, 10)
             if args[0] == "exec-out":
@@ -76,9 +76,80 @@ class ConsoleProtocolTest(unittest.TestCase):
         self.adb = FakeAdb()
         self.host = bridge.Bridge("emulator-5554", RUN, self.path, run=self.adb,
                                   environment={"GITHUB_ACTIONS": "true"})
+        self.host.handle(self.request(0, "ready", "0" * 32))
+        self.adb.calls.clear()
+        self.adb.ack = None
 
     def request(self, sequence=1, action="fold", nonce="b" * 32):
         return {"run_id": RUN, "sequence": sequence, "nonce": nonce, "action": action}
+
+    def test_readiness_ack_is_nonce_bound_and_precedes_all_posture_mutations(self):
+        host = bridge.Bridge("emulator-5554", RUN, self.path, run=self.adb,
+                             environment={"GITHUB_ACTIONS": "true"})
+        with self.assertRaisesRegex(bridge.ProtocolError, "readiness ACK required"):
+            host.handle(self.request())
+        self.assertEqual([], self.adb.calls)
+        ready = self.request(0, "ready", "e" * 32)
+        host.handle(ready)
+        self.assertEqual({**ready, "status": "ok"}, self.adb.ack)
+        self.assertEqual([], self.adb.mutations())
+        host.handle(dict(ready))
+        host.handle(self.request())
+        self.assertEqual([["emu", "fold"]], self.adb.mutations())
+        with self.assertRaises(bridge.ProtocolError):
+            host.handle(ready)
+
+    def test_readiness_sequence_cannot_be_used_to_relabel_a_posture(self):
+        for request in (self.request(1, "ready"), self.request(0, "fold"), self.request(0, "unfold")):
+            with self.assertRaises(bridge.ProtocolError):
+                bridge.decode_request(json.dumps(request), RUN)
+        self.assertEqual(self.request(0, "ready"), bridge.decode_request(json.dumps(self.request(0, "ready")), RUN))
+
+    def test_command_receipts_keep_exact_timeout_poll_phase_and_no_inherited_stdin(self):
+        self.adb.read_timeout = True
+        with self.assertRaises(subprocess.TimeoutExpired):
+            self.host.read_request()
+        events = [json.loads(line) for line in (self.path / "console-commands.jsonl").read_text().splitlines()]
+        started, failed = events[-2:]
+        self.assertEqual("command_started", started["event"])
+        self.assertEqual("command_timeout", failed["event"])
+        self.assertEqual(started["command_sequence"], failed["command_sequence"])
+        self.assertEqual("posture", started["phase"])
+        self.assertEqual(["shell", "-n", "-T", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST], started["args"])
+        self.assertEqual(10, started["timeout_seconds"])
+        self.assertLessEqual(started["monotonic_ns"], failed["monotonic_ns"])
+        self.assertEqual(subprocess.DEVNULL, self.adb.calls[-1][1]["stdin"])
+        self.assertNotIn("input", self.adb.calls[-1][1])
+        self.assertTrue(self.host.poisoned)
+
+    def test_no_input_adb_child_cannot_wait_for_an_inherited_open_stdin_pipe(self):
+        # Real process test of the stdin mechanism, not a real adb/emulator acceptance claim.
+        # A fake adb consumes stdin until EOF; the parent intentionally keeps its pipe open.
+        fake = self.path / "adb"
+        fake.write_text("#!/usr/bin/env python3\nimport sys\nsys.stdin.read()\nprint('EOF received')\n")
+        fake.chmod(0o755)
+        runner = self.path / "runner.py"
+        runner.write_text(f"""import importlib.util, pathlib
+spec = importlib.util.spec_from_file_location('bridge', {str(Path(bridge.__file__).resolve())!r})
+m = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(m)
+host = m.Bridge('emulator-5554', {'a' * 32!r}, pathlib.Path({str(self.path)!r}), environment={{'GITHUB_ACTIONS': 'true'}})
+print(host.adb('shell', '-n', '-T', 'true', timeout=0.5).stdout, flush=True)
+""")
+        process = subprocess.Popen([sys.executable, str(runner)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, text=True,
+                                   env={**os.environ, "PATH": str(self.path) + os.pathsep + os.environ["PATH"]})
+        try:
+            process.wait(timeout=3)
+            self.assertEqual(0, process.returncode, process.stderr.read())
+            self.assertEqual("EOF received\n\n", process.stdout.read())
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait()
+            process.stdin.close()
+            process.stdout.close()
+            process.stderr.close()
 
     def test_guards_reject_physical_serial_ci_and_invalid_run_before_any_command(self):
         for serial, run, env in (("R5physical", RUN, {"GITHUB_ACTIONS": "true"}),
@@ -117,7 +188,7 @@ class ConsoleProtocolTest(unittest.TestCase):
         self.assertEqual([["emu", "fold"]], self.adb.mutations())
         self.assertEqual({**request, "status": "ok"}, self.adb.ack)
         events = [json.loads(line) for line in (self.path / "console-events.jsonl").read_text().splitlines()]
-        self.assertEqual(2, sum(event["event"] == "ack" for event in events))
+        self.assertEqual(2, sum(event["event"] == "ack" and event["sequence"] == 1 for event in events))
 
     def test_changed_old_out_of_order_or_reused_nonce_cannot_mutate(self):
         self.host.handle(self.request())

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Disposable CI emulator console transport. Never discovers or addresses physical devices."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -15,7 +16,7 @@ ACK = "files/foldable-console-ack.json"
 LIMIT = 1024
 TOKEN = re.compile(r"[0-9a-f]{32}")
 KEYS = {"run_id", "sequence", "nonce", "action"}
-ACTIONS = {"fold", "unfold"}
+ACTIONS = {"ready", "fold", "unfold"}
 DISPLAY_READS = (("shell", "wm", "folded-area"),
                  ("shell", "cmd", "device_state", "print-state"),
                  ("shell", "dumpsys", "display"))
@@ -43,10 +44,12 @@ def decode_request(raw, run_id):
         raise ProtocolError("request keys differ from protocol")
     if request["run_id"] != run_id or not isinstance(request["nonce"], str) or not TOKEN.fullmatch(request["nonce"]):
         raise ProtocolError("stale run or invalid nonce")
-    if type(request["sequence"]) is not int or not 1 <= request["sequence"] <= 100:
+    if type(request["sequence"]) is not int or not 0 <= request["sequence"] <= 100:
         raise ProtocolError("invalid sequence")
     if not isinstance(request["action"], str) or request["action"] not in ACTIONS:
         raise ProtocolError("unknown action")
+    if (request["action"] == "ready") != (request["sequence"] == 0):
+        raise ProtocolError("readiness must precede posture sequence")
     return request
 
 
@@ -60,6 +63,8 @@ class Bridge:
         if not TOKEN.fullmatch(run_id):
             raise ProtocolError("invalid run ID")
         self.serial, self.run_id, self.evidence, self.run = serial, run_id, evidence, run
+        self.transport_ready = False
+        self.command_sequence = 0
         self.last_request = None
         self.last_ack = None
         self.seen_nonces = set()
@@ -77,13 +82,29 @@ class Bridge:
             output.write(json.dumps({"event": kind, "run_id": self.run_id, **fields}, sort_keys=True) + "\n")
 
     def adb(self, *args, input=None, timeout=10):
-        # All calls are explicitly serial-targeted, bounded, and shell=False.
+        # Close inherited stdin for every read/console command. Only the ACK writer accepts input.
+        # Command receipts identify readiness/posture phase and the exact timed-out poll.
+        self.command_sequence += 1
+        receipt = dict(command_sequence=self.command_sequence, run_id=self.run_id, serial=self.serial, args=list(args),
+                       phase="posture" if self.transport_ready else "readiness",
+                       timeout_seconds=timeout, stdin_mode="payload" if input is not None else "devnull")
+        def record(event, **fields):
+            with (self.evidence / "console-commands.jsonl").open("a") as output:
+                output.write(json.dumps(dict(receipt, event=event, monotonic_ns=time.monotonic_ns(), **fields),
+                                        sort_keys=True) + "\n")
+        record("command_started")
         try:
-            return self.run(["adb", "-s", self.serial, *args], input=input, text=True,
-                            capture_output=True, timeout=timeout, check=False)
+            options = {"input": input} if input is not None else {"stdin": subprocess.DEVNULL}
+            result = self.run(["adb", "-s", self.serial, *args], **options, text=True,
+                              capture_output=True, timeout=timeout, check=False)
+            record("command_finished", returncode=result.returncode,
+                   stdout_sha256=hashlib.sha256(result.stdout.encode()).hexdigest(),
+                   stderr_sha256=hashlib.sha256(result.stderr.encode()).hexdigest())
+            return result
         except subprocess.TimeoutExpired:
             self.timed_out = True
             self.poisoned = True
+            record("command_timeout")
             raise
 
     def checked(self, *args, input=None):
@@ -104,7 +125,7 @@ class Bridge:
     def read_request(self):
         # Raw shell-v2 preserves the remote status and separates stderr. exec-out does neither.
         # Explicit -T also fails closed when the device does not support the shell protocol.
-        result = self.adb("shell", "-T", "run-as", PACKAGE, "head", "-c", str(LIMIT + 1), REQUEST)
+        result = self.adb("shell", "-n", "-T", "run-as", PACKAGE, "head", "-c", str(LIMIT + 1), REQUEST)
         if result.returncode:
             # The task builds/installs APKs before instrumentation creates the fixed private file.
             unavailable = {
@@ -153,7 +174,9 @@ class Bridge:
             # Cached reply only; an exact replay never re-runs the console command.
             self.write_ack(self.last_ack)
             return
-        expected = 1 if self.last_request is None else self.last_request["sequence"] + 1
+        if request["action"] != "ready" and not self.transport_ready:
+            raise ProtocolError("nonce-bound readiness ACK required before posture")
+        expected = 0 if self.last_request is None else self.last_request["sequence"] + 1
         if request["sequence"] != expected or request["nonce"] in self.seen_nonces:
             raise ProtocolError("stale, changed, out-of-order or reused-nonce request")
         self.last_request = request
@@ -161,6 +184,11 @@ class Bridge:
         self.event("request", **request)
         try:
             self.guard()
+            if request["action"] == "ready":
+                self.last_ack = {**request, "status": "ok"}
+                self.write_ack(self.last_ack)
+                self.transport_ready = True
+                return
             self.last_attempt, self.last_succeeded = request["action"], False
             result = self.adb("emu", request["action"])
             self.event("console", sequence=request["sequence"], action=request["action"],

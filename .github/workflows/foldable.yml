@@ -93,6 +93,8 @@ jobs:
         run: ./gradlew --max-workers=2 --no-configuration-cache -I tools/ci/resolve-foldable-dependencies.gradle :app:resolveFoldableRuntime -Pskein.foldableTests=true
       - name: Explicit Kotlin lint
         run: ./gradlew --max-workers=2 :app:ktlintCheck -Pskein.foldableTests=true
+      - name: Build foldable APKs before controller polling
+        run: ./gradlew --max-workers=2 :app:assembleDevDebug :app:assembleDevDebugAndroidTest -Pskein.foldableTests=true
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules

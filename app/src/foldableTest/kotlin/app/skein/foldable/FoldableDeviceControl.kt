@@ -39,6 +39,13 @@ internal class FoldableDeviceControl(
         }
     }
 
+    fun requireTransportReady() {
+        requireEmulator()
+        if (transportReady) return
+        console("ready")
+        transportReady = true
+    }
+
     fun closed() = requestState("CLOSED") { it.configuration.screenWidthDp < 600 && it.widthDp < 600 }
 
     fun flat() = requestState("OPENED") { it.configuration.screenWidthDp >= 600 && it.widthDp >= 600 }
@@ -100,10 +107,11 @@ internal class FoldableDeviceControl(
     private fun console(action: String) {
         requireEmulator()
         check(consoleHealthy) { "Failed console requests cannot be retried" }
-        check(action == "fold" || action == "unfold")
+        check(action == "ready" || action == "fold" || action == "unfold")
+        check(action == "ready" || transportReady) { "Transport readiness must precede posture" }
         val runId = InstrumentationRegistry.getArguments().getString("skein.foldable.runId")
         check(runId != null && Regex("[0-9a-f]{32}").matches(runId)) { "Missing fresh host run ID" }
-        val sequence = requestSequence.incrementAndGet()
+        val sequence = if (action == "ready") 0 else requestSequence.incrementAndGet()
         val nonce = UUID.randomUUID().toString().replace("-", "")
         val request =
             JSONObject()
@@ -138,6 +146,10 @@ internal class FoldableDeviceControl(
                         ack.getString("action") == action,
                 ) { "Mismatched console acknowledgment" }
                 check(ack.getString("status") == "ok") { "Host console request failed: $ack" }
+                if (action == "ready") {
+                    // Written only after the instrumentation consumer verified the nonce-bound ACK.
+                    File(directory, "foldable-console-ready.json").writeText(ack.toString())
+                }
                 true
             }
         } catch (error: Exception) {
@@ -217,6 +229,7 @@ internal class FoldableDeviceControl(
 
     private companion object {
         val requestSequence = AtomicInteger()
+        var transportReady = false
     }
 }
 

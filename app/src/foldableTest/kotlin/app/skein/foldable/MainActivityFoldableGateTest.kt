@@ -42,7 +42,7 @@ class MainActivityFoldableGateTest {
 
     @Before
     fun suppressPermissionPrompt() {
-        device.requireEmulator()
+        device.requireTransportReady()
         runBlocking {
             SecurityPrefs(ApplicationProvider.getApplicationContext()).setPostNotificationsAsked(true)
         }
