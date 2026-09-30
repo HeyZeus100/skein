@@ -34,10 +34,17 @@ android {
     namespace = "app.skein.inference.service"
     compileSdk = 37
 
+    sourceSets {
+        getByName("test") {
+            kotlin.directories.add("src/syntheticBenchmarkFixtures/kotlin")
+        }
+    }
+
     if (providers.gradleProperty("skein.syntheticBenchmark").orNull == "true") {
         sourceSets {
             getByName("androidTest") {
                 kotlin.directories.add("src/syntheticBenchmark/kotlin")
+                kotlin.directories.add("src/syntheticBenchmarkFixtures/kotlin")
             }
         }
     }

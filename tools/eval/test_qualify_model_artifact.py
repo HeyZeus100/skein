@@ -54,6 +54,7 @@ class QualificationTest(unittest.TestCase):
         self.assertEqual({"id": 1, "text": "<eos>", "type": 3},
                          report["declared_token_ids"]["tokenizer.ggml.eos_token_id"])
         self.assertIn("<|im_start|>", report["requested_controls_absent"])
+        self.assertEqual(["<eos>", "<start_of_turn>"], report["requested_controls_in_template"])
         self.assertIn("native_eog", report["unmeasured"])
         self.assertIn("answer_quality", report["unmeasured"])
 

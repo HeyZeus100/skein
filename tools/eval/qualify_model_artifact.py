@@ -142,6 +142,8 @@ def metadata_report(data, controls=DEFAULT_CONTROLS):
         "declared_token_ids": declared,
         "control_entries": control_entries,
         "requested_controls_absent": sorted(selected - {entry["text"] for entry in control_entries}),
+        # Raw occurrence is only a prerequisite; native rendering and literal isolation still need testing.
+        "requested_controls_in_template": sorted(text for text in selected if text.encode("utf-8") in template),
     }
 
 

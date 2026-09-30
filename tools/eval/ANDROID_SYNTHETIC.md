@@ -12,7 +12,8 @@ This harness has two separate paths:
   library test app, which has no vault access. It compares complete native token
   ID sequences produced by production segmented tokenization against the native
   full-template reference for fixed benign synthetic conversations, and checks
-  literal ChatML control-token isolation. This is not a generation quality score.
+  literal control-token isolation. ChatML remains the default; other explicitly
+  qualified controls require the optional manifest below. This is not a generation quality score.
 
 Neither class is included in an ordinary test APK. Build with
 `-Pskein.syntheticBenchmark=true` and invoke the exact class explicitly. The
@@ -48,8 +49,52 @@ It verifies the full local hash and reports bounded tokenizer/template metadata,
 declared end-token IDs and vocabulary types. It does not load the model or prove
 native EOG, template compatibility or answer quality. See the
 [2026-09-29 readiness audit](../../docs/Handoffs/skein-inference-model-readiness-20260929.md)
-for outstanding Qwen/Gemma evaluation requests and the current ChatML-only parity
-test limitation.
+for outstanding Qwen/Gemma evaluation requests. Earlier ChatML-only runs and
+their failures remain unchanged evidence.
+
+### Explicit native parity controls
+
+`prepare_native_parity.py` prepares a bounded metadata-only control manifest from
+an existing local GGUF. It requires the actual full file hash and size; a model
+name, upstream declaration, download URL or header digest cannot qualify it.
+It does not acquire a model, invoke ADB, load a runtime or generate text.
+
+```sh
+python3 tools/eval/prepare_native_parity.py \
+  --model /absolute/public/model.gguf --expected-sha256 FULL_SHA256 \
+  --expected-size EXACT_BYTES --profile gemma4-e4b \
+  --output /absolute/new-native-controls.json
+```
+
+Profiles are limited to `chatml` (declared llama/qwen2 architecture) and
+`gemma4-e4b` (declared gemma4 architecture and a Gemma 4 E4B model name). The
+embedded template must contain the profile's two controls and the actual token
+table must give each a unique CONTROL token ID. The manifest binds the full
+artifact, exact template, raw tokenizer metadata, vocabulary bounds and declared
+EOS. Gemma 4's `<|turn>` and `<turn|>` spellings follow Google's
+[Gemma 4 prompt format](https://ai.google.dev/gemma/docs/core/prompt-formatting-gemma4);
+older Gemma spellings are refused for this profile. Metadata names and markers
+are prerequisites, not proof of runtime/template compatibility. Unsupported or
+ambiguous control sets fail; there is no fallback or inferred architecture.
+
+For a separately authorized native run, stage this manifest only under the
+inference test package's dedicated `files/synthetic-benchmark/input/` directory.
+Add both `synthetic_control_manifest` (absolute dedicated path) and
+`synthetic_control_manifest_sha256` (full manifest digest) to the exact native
+instrumentation invocation below. The file is limited to 16 KiB. The fixture
+checks its model binding and live native metadata, requires the literal control's
+exact singleton ID, and requires native EOG classification for the turn-end and
+declared EOS IDs. Returned IDs/classifications are retained before the final
+parity assertion. The tokenizer digest is a host receipt bound through the full
+model hash, not an independent native traversal of the GGUF token table.
+
+With no manifest arguments, the existing ChatML five-case smoke and diagnostic
+EOG report stay unchanged. An explicit manifest changes only test assertions;
+it cannot configure production templates, tokenization, stop policy or defaults.
+It does not measure generated stopping behavior. No actual Gemma 4 E4B artifact
+or runtime has been accepted by this harness change; its new host fixtures are
+synthetic metadata only. Artifact/runtime acceptance and blinded answer-quality
+evaluation remain separate gates. Fresh40 remains consumed regression evidence.
 
 Export inputs with `answer_eval.py export`; gold judgments remain on the host.
 Use `answer_eval.py validate` to obtain `case_set_sha256`. Verify the public model's

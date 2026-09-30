@@ -1,0 +1,3152 @@
+{
+  "bead": "skein-gg11.30.1",
+  "baseline": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "scope": "bounded opt-in test harness implementation; synthetic metadata only",
+  "xml_files": 32,
+  "unit": {
+    "tests": 554,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_unit_case_occurrences": 12,
+  "python_host_tests": 113,
+  "python_result": "PASS",
+  "lint": "PASS",
+  "instrumentation_kotlin_compilation": {
+    "dev": "PASS fresh",
+    "foss": "PASS fresh"
+  },
+  "raw_archive_sha256": "3512033f6a7c981db9af970657f9caf875e3847fe62cbed333c7921d5d5dc1ff",
+  "raw_archive_size": 56194,
+  "attempts": [
+    {
+      "id": "preflight",
+      "result": "shell glob refused unquoted test_*.py before launch; corrected quoting"
+    },
+    {
+      "id": "host-01",
+      "result": "112 PASS before manifest-bound negative case"
+    },
+    {
+      "id": "build-01",
+      "result": "FAIL test-source accessor AGP cast, corrected test-only sourceSets wiring"
+    },
+    {
+      "id": "format-01",
+      "result": "FAIL residual ktlint while applying formatting"
+    },
+    {
+      "id": "format-02",
+      "result": "PASS"
+    },
+    {
+      "id": "build-02",
+      "result": "PASS final lint, units, opt-in test compilation"
+    },
+    {
+      "id": "host-02",
+      "result": "113 PASS final"
+    }
+  ],
+  "unmeasured": [
+    "actual E4B artifact identity",
+    "native load/template token parity/EOG classification",
+    "generated stopping behavior",
+    "answer quality",
+    "runtime integration",
+    "physical installation/acceptance"
+  ],
+  "xml": [
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ChatTemplateBoundaryTest.xml",
+      "sha256": "98828c76cf4449e1a451854aa79959799ac251a258cf2a063ac0a9259b643724",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.ChatTemplateBoundaryTest",
+          "name": "a literal delimiter in the message cannot become template scaffolding",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplateBoundaryTest",
+          "name": "a literal role name does not move the content boundary into the role header",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ChatTemplatingTest.xml",
+      "sha256": "2ea7b1517aaca678faf4a51fb2db2473fe62d1358fbd089ba93fa64ba62ae63b",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "trimmed content refuses instead of generating a raw text continuation",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "placeholder looking user text remains ordinary content",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "reordered message contents refuse",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "content dependent scaffold changes refuse even with every placeholder present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "whole sequence adds BOS once even with empty spans",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "all empty messages keep only actual scaffolding",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "literal delimiter and role text cannot add control tokens",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "scaffold ranges use UTF8 bytes after supplementary and multibyte content",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "malformed Unicode is rejected before native tokenization",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "dropped content refuses before tokenization",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "non-template native failures propagate without being reclassified",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "token ids come from one complete sequence",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "assistant prefix is included only when requested",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "repeated message content stays in the correct turns",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "missing template refuses without inventing a ChatML fallback",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "duplicated content refuses even when both copies would reconstruct the same text",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "empty system content stays empty in the probe",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "model render and verified segments preserve Unicode and whitespace exactly",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.GgufFileTypeTest.xml",
+      "sha256": "5fd2dbb1ae76b95961f5418632106413117e7b7e666900b1bf7ba2a5c2fd6229",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anUnquantisedModelRendersAsItsFloatFormat",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anEmptyValueRendersAsNothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "aValueThatIsNotANumberRendersAsNothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anOrdinalLlamaCppHasRemovedIsNotClaimedAsAFormat",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "aKnownOrdinalRendersAsItsQuantisationName",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "surroundingWhitespaceDoesNotHideTheOrdinal",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "theLastOrdinalThisBuildKnowsStillRenders",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anOrdinalFromANewerLlamaCppIsReportedRatherThanDropped",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceEngineStateTest.xml",
+      "sha256": "8699cb13961b4bed7d19531fa2485f23c04c2e7e1e6a087c32871ae09b0da87c",
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a file llama cpp will not load reports INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unlocking twice with the same epoch still admits",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload reports unloaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a lock mid-generation cancels the in-flight request",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mismatched companion refuses with COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking twice with nothing in flight is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service closes the descriptors it refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection never logs what it read",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a hash mismatch refuses with HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "the engine is handed a descriptor, never a path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport forwards the native device list",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a load for the wrong epoch is refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "lock during measurement cannot publish a prepared prompt",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection renders the file type as a quantisation name",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an end-of-generation token stops with EOS",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a lock mid-generation frees the context through the zeroing path, after this turn's own KV clear",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports that a chat template is present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a hash mismatch leaves the engine unloaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection does not free the loaded context",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a native cancellation during decode ends with onDone CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection never creates a context",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport with nothing loaded reports the compile-time part only",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection during a generation is refused with BUSY",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "queued generation after unload never touches a freed native handle",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a template with unverifiable content boundaries fails before decode",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an allocation failure during an inspection reports OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a companion hash mismatch refuses with COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "actual native capacity controls exact fit and one token overflow before decode",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "measurement refuses stale epoch and closes spilled descriptors",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking during inspection verification cancels before native loading",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service stays unloaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload before any load is harmless",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unsupported template fails once before decode and never streams degraded text",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load reports the context length",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation streams at least one token batch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load carries no captured log lines",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspect for the wrong epoch is refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a native OOM during load maps to OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused inspection leaves a loaded model loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an OOM during decode reports OOM and unloads",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "the first of two concurrent generates still completes",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection has no context length when the file declares none",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a stop string stops with STOP_STRING",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a stale locked push cannot terminate a newer authorized process",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a size mismatch refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload during context creation securely frees late context and model",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "onSessionLocked frees the context through the zeroing path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection leaves the loaded model's handles alone",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mismatched main file refuses with HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation clears the KV cache exactly once",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of an unknown role refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation reports the tokens it produced",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused render releases the generation slot for the next valid request",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the tokenizer the file declares",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a second load unloads the first",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unknown role refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection closes every descriptor it received",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection has no parameter count when the file declares none",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport with a loaded model passes its handles and the gpuLayers it was loaded with",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection leaves a loaded model loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "lock deadline terminates independently of a parked native loader",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generate arriving while a lock push is still unwinding is refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the architecture the file declares",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a failed context creation leaks no model handle",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a failing load carries its redacted log lines in the local diagnostic",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unlocked service admits load",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a second concurrent generate is refused with BUSY",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload during inspection cancels its native token and frees late model",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the context length the architecture declares",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation closes every attachment descriptor",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "generation and another measurement are busy during exact measurement",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking during native load cannot publish READY or allocate a context",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a warm swap frees the old context securely",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service closes the descriptors an inspect was refused with",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused inspection never logs a digest",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection frees the model it loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a captured line containing a path is redacted before it is attached",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a different expected model refuses measurement and generation before native work",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load reports ready",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the embedding width llama cpp computes",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection loads the model from a descriptor, never a path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation clears the KV cache before it decodes anything",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a load closes every descriptor it received",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports vision metadata",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports a missing chat template without refusing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "negative and overflowing answer reservations refuse before prefill",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a lock mid-generation refuses the next generate with SESSION_LOCKED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a template llama cpp cannot apply is reported, not refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cancelled operation cannot inherit authorization from a newer unlock",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "oversized spilled content is refused rather than silently shortened",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unlocked service inspects",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a hash mismatch never reaches the engine",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation that hits the token ceiling stops with LENGTH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused inspection closes every descriptor it received",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load reports the model digest",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mismatched main file never reaches the engine",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mis-sized file refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection refused as BUSY still closes its descriptors",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports that the chat template applies",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "generate on a locked session reports SESSION_LOCKED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a failing inspect carries its redacted log lines in the local diagnostic",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an overlapping inspection is BUSY and closes received descriptors",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking revokes admission",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service refuses backendReport",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "measurement and generation share formatted ids for empty system unicode and role markers",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport passes 0 handles when nothing is loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation delivers exactly one terminal callback",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service refuses load",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport with nothing loaded still reports compiled CPU features",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a stop string is never streamed to the client",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unexpected context failure releases model pins and operation admission",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "onSessionLocked unloads the model",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service refuses inspect",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused backendReport claims no devices or features",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload releases every native handle",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "generate before load reports NOT_LOADED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a second generation clears the first generation's cache",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "valid multibyte spill at byte bound is intact but malformed and premature EOF refuse",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports a parameter count a file does declare",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+      "sha256": "19c982a73bbea86c81f7f3cd2a762ad6b6b08a8d1a0bc7263a44a8539df66788",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerLifecycleTest",
+          "name": "decode OOM on the real worker securely cleans up and permits the next load",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerResultTest.xml",
+      "sha256": "7ee5a1cb8349e5fa6b41a222b96c0437af3c5a22fb40f6130b62fae9bc860978",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerResultTest",
+          "name": "interrupted wait preserves the native exception itself and restores the flag",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerResultTest",
+          "name": "interruption cannot finish the caller while native work still owns resources",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerResultTest",
+          "name": "an error is unwrapped without changing its identity",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.IsolatedSessionGateTest.xml",
+      "sha256": "c97c072e2a36561413050ecf50bef0d1db32f4db658edaa0ad90b57ad0431900",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "locking signals cancellation for the locking epoch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a different epoch is refused while another is authorized",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a later unlock re-authorizes after a lock",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a late older unlock cannot replace a newer authorized epoch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a stale onLocked for an older epoch does not revoke the current one",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked has already revoked by the time the release runs",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocking has already revoked by the time cancellation runs",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "an unlocked epoch is admitted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a late unlock cannot resurrect a revoked epoch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked releases request state",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "the old epoch stays refused after re-authorization",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "unlocking twice with the same epoch is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a fresh gate refuses with SESSION_LOCKED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a cold service can dispose a late binding without authorizing it",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a fresh gate refuses even the NONE epoch a stale client might send",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "locking revokes authorization immediately",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "unlocking twice does not resurrect an epoch a lock revoked in between",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked without a preceding onLocking still revokes and releases",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "publication and lock revocation have one ordered boundary",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a stale onLocking for an older epoch does not revoke the current one",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a fresh gate admits nothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "an old locked push cannot release a newer locking epoch",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.LlamaLogRedactorTest.xml",
+      "sha256": "b22b683e1bbd5e0ba28a7358149c4cb8edfa484dd4ce2967a1671d98936ce7e9",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_returns_non_sensitive_warn_messages_unchanged",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_handles_a_marker_with_no_separating_space",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_redacts_and_returns_warn_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_returns_the_message_unchanged_when_no_marker_is_present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_drops_info_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_handles_a_marker_with_no_trailing_content",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_does_not_treat_a_single_slash_as_a_path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_redacts_and_returns_error_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_a_path_even_with_no_marker_present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_drops_debug_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_content_after_a_single_prompt_marker",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_handles_multiple_markers_in_one_message",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_preserves_a_prefix_before_the_first_marker",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_content_after_a_single_text_marker",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_a_filesystem_path_with_a_placeholder",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "sha256": "1ee91c7a76c02df12c08db64219c24e4f034f22980dad33e9ff7a1733dd8f90c",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.LlamaNativeSurfaceTest",
+          "name": "generatedHelpersAreNotNative",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.NativeBackendReportTest.xml",
+      "sha256": "b78f37db97ea8b78db0661b860313b0985911d88fbcc7af6c68df708cdb3dab1",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "empty cpu_features parses to an empty list",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "negative-one sentinels become null",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "context fields present when a context exists",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses multiple devices in order",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses a single CPU device",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses a compile-time-only report",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses an unallowlisted device name as other",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.PinnedTemplateReferenceTest.xml",
+      "sha256": "49635cbba0b91aa42570b304d399aa8ab60d5df0253fcec441c5126d43b66f07",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.PinnedTemplateReferenceTest",
+          "name": "verified layouts agree with pinned upstream renders or refuse unsupported transformations",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ServiceErrorMappingTest.xml",
+      "sha256": "6365ed4dc719489bb7625be8dd7bf7d5dcee8e1898d12ca6b56013dfcb8b16f5",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "InUse maps to MODEL_IN_USE",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a decode failure maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "the message for a refusal never contains a digest",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a native cancellation maps to CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "Cancelled with no role still maps to CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "the message for a refusal is the log-safe summary",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an unknown native code maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a main-file sha256 mismatch maps to HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an uncovered file maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a companion post-mmap mismatch maps to COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an invalid argument maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a size mismatch maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a main-file post-mmap mismatch maps to HASH_MISMATCH_POST_MMAP",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "every native error code is mapped",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "out of memory maps to OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a missing file maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "unavailable embeddings map to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an invalid model maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an io failure maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a malformed manifest maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "Cancelled maps to CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an unsupported template maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a companion sha256 mismatch maps to COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a tokenize failure maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a full context maps to OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an already-imported refusal maps to MODEL_IN_USE",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a missing companion maps to INVALID_MODEL",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.StopStringMatcherTest.xml",
+      "sha256": "9aae5dd23aa485b761e101a8aa3ad547b6e24ed673a0bf1562ca2a2b4c3cd8d6",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "matching is case sensitive",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "mayBeMidMatch is false when nothing is pending",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "retractChars counts only the part of the marker already emitted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a partial match is not a match",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a partial match does not wedge a later real match",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "mayBeMidMatch is true while a prefix is pending",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a stop string split across three chunks matches",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "an empty stop string is ignored rather than matching everything",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a marker arriving whole in one chunk retracts none of the earlier output",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "no stop strings never matches",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "the match reports every marker character already emitted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "the retained tail never grows past the longest stop string",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a longer stop string still matches when it completes first",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a stop string arriving whole matches",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "the first of several stop strings to complete wins",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "sha256": "754fc59ede245b4630c741722e25d476273bd908d463b29be963c00ff3535fb9",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "explicit_synthetic_contract_accepts_matching_identity",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "explicit_chatml_profile_remains_usable_with_declared_turn_end_eos",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "native_singleton_id_and_eog_must_match_metadata_receipt",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "changed_model_size_template_or_metadata_is_rejected",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "unrecognized_profiles_legacy_spellings_and_unbounded_controls_are_rejected",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "matching_template_digest_alone_cannot_qualify_legacy_template",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.TokenBatcherTest.xml",
+      "sha256": "6ea21a4c9a7e60ca22cd153a9449d47fdcf47047b30fde5e2c9656ae75086bbe",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "nineteen milliseconds do not flush",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "sixteen tokens flush",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the next delivered batch reports everything dropped before it",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the dropped counter resets once reported",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a delivered batch reports zero dropped when nothing was shed",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "flush is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the flushed batch carries every piece in order",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "flush sends whatever is buffered",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a batch is dropped when the client is at the in-flight ceiling",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "one under the ceiling still delivers",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "dropped pieces are counted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a single token does not flush immediately",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "fifteen tokens do not flush on count",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "twenty milliseconds flush a partial batch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "flush on an empty buffer sends nothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a batch over the byte ceiling flushes early",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the flushed batch carries every id in order",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.Utf8BufferTest.xml",
+      "sha256": "3add7ca7e59c3bdaf40109ecbfc1051b947673bfeae0696ca6abc8e14536e9d8",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a three-byte character split across two pieces emits nothing on the first",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a three-byte character split one byte at a time survives",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "mixed scripts across arbitrary splits reassemble exactly",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "flush emits a replacement for a truncated tail at end of stream",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a complete character followed by a fragment emits only the complete one",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a pending fragment never exceeds three bytes",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a three-byte character split across two pieces completes on the second",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "flush is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "an invalid lead byte does not wedge the buffer",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "flush emits nothing when the buffer is empty",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "ascii passes straight through",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a four-byte emoji split across three pieces survives",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "an empty piece emits nothing",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ChatTemplateBoundaryTest.xml",
+      "sha256": "86d5950c553512d79fe2609252d65ca68bcba3d954edeea2c86ecefd8a36a5e5",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.ChatTemplateBoundaryTest",
+          "name": "a literal delimiter in the message cannot become template scaffolding",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplateBoundaryTest",
+          "name": "a literal role name does not move the content boundary into the role header",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ChatTemplatingTest.xml",
+      "sha256": "f99a9bda5b8b18802728e2a3a11c872e17ee471d1cbca6f9ae41f81315bd5a74",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "trimmed content refuses instead of generating a raw text continuation",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "placeholder looking user text remains ordinary content",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "reordered message contents refuse",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "content dependent scaffold changes refuse even with every placeholder present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "whole sequence adds BOS once even with empty spans",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "all empty messages keep only actual scaffolding",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "literal delimiter and role text cannot add control tokens",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "scaffold ranges use UTF8 bytes after supplementary and multibyte content",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "malformed Unicode is rejected before native tokenization",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "dropped content refuses before tokenization",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "non-template native failures propagate without being reclassified",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "token ids come from one complete sequence",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "assistant prefix is included only when requested",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "repeated message content stays in the correct turns",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "missing template refuses without inventing a ChatML fallback",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "duplicated content refuses even when both copies would reconstruct the same text",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "empty system content stays empty in the probe",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ChatTemplatingTest",
+          "name": "model render and verified segments preserve Unicode and whitespace exactly",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.GgufFileTypeTest.xml",
+      "sha256": "8719778f1c9c4e06aab0fb5fdbd9f5e4e0197c2024b0d22ea69c087f6a47f7be",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anUnquantisedModelRendersAsItsFloatFormat",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anEmptyValueRendersAsNothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "aValueThatIsNotANumberRendersAsNothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anOrdinalLlamaCppHasRemovedIsNotClaimedAsAFormat",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "aKnownOrdinalRendersAsItsQuantisationName",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "surroundingWhitespaceDoesNotHideTheOrdinal",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "theLastOrdinalThisBuildKnowsStillRenders",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.GgufFileTypeTest",
+          "name": "anOrdinalFromANewerLlamaCppIsReportedRatherThanDropped",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceEngineStateTest.xml",
+      "sha256": "bbb8e03004d3edc244758363382b79b99a42f4f12b5c60688b823017ef27501d",
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a file llama cpp will not load reports INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unlocking twice with the same epoch still admits",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload reports unloaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a lock mid-generation cancels the in-flight request",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mismatched companion refuses with COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking twice with nothing in flight is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service closes the descriptors it refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection never logs what it read",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a hash mismatch refuses with HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "the engine is handed a descriptor, never a path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport forwards the native device list",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a load for the wrong epoch is refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "lock during measurement cannot publish a prepared prompt",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection renders the file type as a quantisation name",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an end-of-generation token stops with EOS",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a lock mid-generation frees the context through the zeroing path, after this turn's own KV clear",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports that a chat template is present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a hash mismatch leaves the engine unloaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection does not free the loaded context",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a native cancellation during decode ends with onDone CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection never creates a context",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport with nothing loaded reports the compile-time part only",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection during a generation is refused with BUSY",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "queued generation after unload never touches a freed native handle",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a template with unverifiable content boundaries fails before decode",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an allocation failure during an inspection reports OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a companion hash mismatch refuses with COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "actual native capacity controls exact fit and one token overflow before decode",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "measurement refuses stale epoch and closes spilled descriptors",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking during inspection verification cancels before native loading",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service stays unloaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload before any load is harmless",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unsupported template fails once before decode and never streams degraded text",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load reports the context length",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation streams at least one token batch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load carries no captured log lines",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspect for the wrong epoch is refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a native OOM during load maps to OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused inspection leaves a loaded model loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an OOM during decode reports OOM and unloads",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "the first of two concurrent generates still completes",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection has no context length when the file declares none",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a stop string stops with STOP_STRING",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a stale locked push cannot terminate a newer authorized process",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a size mismatch refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload during context creation securely frees late context and model",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "onSessionLocked frees the context through the zeroing path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection leaves the loaded model's handles alone",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mismatched main file refuses with HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation clears the KV cache exactly once",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of an unknown role refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation reports the tokens it produced",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused render releases the generation slot for the next valid request",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the tokenizer the file declares",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a second load unloads the first",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unknown role refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection closes every descriptor it received",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection has no parameter count when the file declares none",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport with a loaded model passes its handles and the gpuLayers it was loaded with",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection leaves a loaded model loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "lock deadline terminates independently of a parked native loader",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generate arriving while a lock push is still unwinding is refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the architecture the file declares",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a failed context creation leaks no model handle",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a failing load carries its redacted log lines in the local diagnostic",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unlocked service admits load",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a second concurrent generate is refused with BUSY",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload during inspection cancels its native token and frees late model",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the context length the architecture declares",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation closes every attachment descriptor",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "generation and another measurement are busy during exact measurement",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking during native load cannot publish READY or allocate a context",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a warm swap frees the old context securely",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service closes the descriptors an inspect was refused with",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused inspection never logs a digest",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection frees the model it loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a captured line containing a path is redacted before it is attached",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a different expected model refuses measurement and generation before native work",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load reports ready",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports the embedding width llama cpp computes",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection loads the model from a descriptor, never a path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation clears the KV cache before it decodes anything",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a load closes every descriptor it received",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports vision metadata",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports a missing chat template without refusing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "negative and overflowing answer reservations refuse before prefill",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a lock mid-generation refuses the next generate with SESSION_LOCKED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a template llama cpp cannot apply is reported, not refused",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cancelled operation cannot inherit authorization from a newer unlock",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "oversized spilled content is refused rather than silently shortened",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an unlocked service inspects",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a hash mismatch never reaches the engine",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation that hits the token ceiling stops with LENGTH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused inspection closes every descriptor it received",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a successful load reports the model digest",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mismatched main file never reaches the engine",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection of a mis-sized file refuses with INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection refused as BUSY still closes its descriptors",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports that the chat template applies",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "generate on a locked session reports SESSION_LOCKED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a failing inspect carries its redacted log lines in the local diagnostic",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an overlapping inspection is BUSY and closes received descriptors",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "locking revokes admission",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service refuses backendReport",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "measurement and generation share formatted ids for empty system unicode and role markers",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport passes 0 handles when nothing is loaded",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a generation delivers exactly one terminal callback",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service refuses load",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "backendReport with nothing loaded still reports compiled CPU features",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a stop string is never streamed to the client",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unexpected context failure releases model pins and operation admission",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "onSessionLocked unloads the model",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a cold service refuses inspect",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a refused backendReport claims no devices or features",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "unload releases every native handle",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "generate before load reports NOT_LOADED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "a second generation clears the first generation's cache",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "valid multibyte spill at byte bound is intact but malformed and premature EOF refuse",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceEngineStateTest",
+          "name": "an inspection reports a parameter count a file does declare",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+      "sha256": "eef1943cd91e4ba6b28df359ff9a5582b9031eb66e7b6acbf8b88d1d383929ce",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerLifecycleTest",
+          "name": "decode OOM on the real worker securely cleans up and permits the next load",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerResultTest.xml",
+      "sha256": "46c8cd73e64b20362a620c1044edac060ec1a753b735f4f1722dba17ee2dde08",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerResultTest",
+          "name": "interrupted wait preserves the native exception itself and restores the flag",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerResultTest",
+          "name": "interruption cannot finish the caller while native work still owns resources",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceWorkerResultTest",
+          "name": "an error is unwrapped without changing its identity",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.IsolatedSessionGateTest.xml",
+      "sha256": "272b354aae75c1db08baea47b1a834d06e077f78a5255aa9503935ca3b9a6eb5",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "locking signals cancellation for the locking epoch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a different epoch is refused while another is authorized",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a later unlock re-authorizes after a lock",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a late older unlock cannot replace a newer authorized epoch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a stale onLocked for an older epoch does not revoke the current one",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked has already revoked by the time the release runs",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocking has already revoked by the time cancellation runs",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "an unlocked epoch is admitted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a late unlock cannot resurrect a revoked epoch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked releases request state",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "the old epoch stays refused after re-authorization",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "unlocking twice with the same epoch is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a fresh gate refuses with SESSION_LOCKED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a cold service can dispose a late binding without authorizing it",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a fresh gate refuses even the NONE epoch a stale client might send",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "locking revokes authorization immediately",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "unlocking twice does not resurrect an epoch a lock revoked in between",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "onLocked without a preceding onLocking still revokes and releases",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "publication and lock revocation have one ordered boundary",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a stale onLocking for an older epoch does not revoke the current one",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "a fresh gate admits nothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.IsolatedSessionGateTest",
+          "name": "an old locked push cannot release a newer locking epoch",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.LlamaLogRedactorTest.xml",
+      "sha256": "8b70bfc69abbd4c8be2b3e94703f52b346401973f921fccd98337ab141caec5d",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_returns_non_sensitive_warn_messages_unchanged",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_handles_a_marker_with_no_separating_space",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_redacts_and_returns_warn_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_returns_the_message_unchanged_when_no_marker_is_present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_drops_info_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_handles_a_marker_with_no_trailing_content",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_does_not_treat_a_single_slash_as_a_path",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_redacts_and_returns_error_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_a_path_even_with_no_marker_present",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "forward_drops_debug_level_messages",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_content_after_a_single_prompt_marker",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_handles_multiple_markers_in_one_message",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_preserves_a_prefix_before_the_first_marker",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_content_after_a_single_text_marker",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaLogRedactorTest",
+          "name": "redact_replaces_a_filesystem_path_with_a_placeholder",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "sha256": "c0f46aa67704939c544571d8c1e5ba3f1140e05c5a176623d3f547960468f767",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.LlamaNativeSurfaceTest",
+          "name": "generatedHelpersAreNotNative",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.NativeBackendReportTest.xml",
+      "sha256": "c31acd5c02c864fdd917f97edb747d3f5900a6862f0a8de27f9dc039f75155c6",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "empty cpu_features parses to an empty list",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "negative-one sentinels become null",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "context fields present when a context exists",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses multiple devices in order",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses a single CPU device",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses a compile-time-only report",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.NativeBackendReportTest",
+          "name": "parses an unallowlisted device name as other",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.PinnedTemplateReferenceTest.xml",
+      "sha256": "a82dce35f52536e73408b1612607d167e1c3983261c4a5f917c1769863fd3cf1",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.PinnedTemplateReferenceTest",
+          "name": "verified layouts agree with pinned upstream renders or refuse unsupported transformations",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ServiceErrorMappingTest.xml",
+      "sha256": "a979c03f51d55a8fb2a1b449653e4863c8c833d2949131011afe9cd8def8a18e",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "InUse maps to MODEL_IN_USE",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a decode failure maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "the message for a refusal never contains a digest",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a native cancellation maps to CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "Cancelled with no role still maps to CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "the message for a refusal is the log-safe summary",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an unknown native code maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a main-file sha256 mismatch maps to HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an uncovered file maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a companion post-mmap mismatch maps to COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an invalid argument maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a size mismatch maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a main-file post-mmap mismatch maps to HASH_MISMATCH_POST_MMAP",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "every native error code is mapped",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "out of memory maps to OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a missing file maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "unavailable embeddings map to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an invalid model maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an io failure maps to INTERNAL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a malformed manifest maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "Cancelled maps to CANCELLED",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an unsupported template maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a companion sha256 mismatch maps to COMPANION_HASH_MISMATCH",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a tokenize failure maps to INVALID_MODEL",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a full context maps to OOM",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "an already-imported refusal maps to MODEL_IN_USE",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.ServiceErrorMappingTest",
+          "name": "a missing companion maps to INVALID_MODEL",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.StopStringMatcherTest.xml",
+      "sha256": "39a23ccf165930c93b4d25d5eee4776ecee6a5b500fa9ef21f90b411cb7151e1",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "matching is case sensitive",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "mayBeMidMatch is false when nothing is pending",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "retractChars counts only the part of the marker already emitted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a partial match is not a match",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a partial match does not wedge a later real match",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "mayBeMidMatch is true while a prefix is pending",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a stop string split across three chunks matches",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "an empty stop string is ignored rather than matching everything",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a marker arriving whole in one chunk retracts none of the earlier output",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "no stop strings never matches",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "the match reports every marker character already emitted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "the retained tail never grows past the longest stop string",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a longer stop string still matches when it completes first",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "a stop string arriving whole matches",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.StopStringMatcherTest",
+          "name": "the first of several stop strings to complete wins",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "sha256": "d2668bc5eacd6653ddfb4a51e5b1bdc16e33d13a8cbededbd84e5ce28344e754",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "explicit_synthetic_contract_accepts_matching_identity",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "explicit_chatml_profile_remains_usable_with_declared_turn_end_eos",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "native_singleton_id_and_eog_must_match_metadata_receipt",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "changed_model_size_template_or_metadata_is_rejected",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "unrecognized_profiles_legacy_spellings_and_unbounded_controls_are_rejected",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.SyntheticParityControlsTest",
+          "name": "matching_template_digest_alone_cannot_qualify_legacy_template",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.TokenBatcherTest.xml",
+      "sha256": "b46ee6700c1eb272063f06e22930f9093d43a4bba227b914fee184816f9d18ed",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "nineteen milliseconds do not flush",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "sixteen tokens flush",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the next delivered batch reports everything dropped before it",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the dropped counter resets once reported",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a delivered batch reports zero dropped when nothing was shed",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "flush is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the flushed batch carries every piece in order",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "flush sends whatever is buffered",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a batch is dropped when the client is at the in-flight ceiling",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "one under the ceiling still delivers",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "dropped pieces are counted",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a single token does not flush immediately",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "fifteen tokens do not flush on count",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "twenty milliseconds flush a partial batch",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "flush on an empty buffer sends nothing",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "a batch over the byte ceiling flushes early",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.TokenBatcherTest",
+          "name": "the flushed batch carries every id in order",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.Utf8BufferTest.xml",
+      "sha256": "e1688f4b9e3bf08cadac09c32b3152d5424f41780f120147d8ca24d9d3f5394f",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a three-byte character split across two pieces emits nothing on the first",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a three-byte character split one byte at a time survives",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "mixed scripts across arbitrary splits reassemble exactly",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "flush emits a replacement for a truncated tail at end of stream",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a complete character followed by a fragment emits only the complete one",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a pending fragment never exceeds three bytes",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a three-byte character split across two pieces completes on the second",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "flush is idempotent",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "an invalid lead byte does not wedge the buffer",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "flush emits nothing when the buffer is empty",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "ascii passes straight through",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "a four-byte emoji split across three pieces survives",
+          "result": "pass"
+        },
+        {
+          "classname": "app.skein.inference.service.Utf8BufferTest",
+          "name": "an empty piece emits nothing",
+          "result": "pass"
+        }
+      ]
+    }
+  ]
+}

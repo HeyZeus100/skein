@@ -1,0 +1,42 @@
+{
+  "scope": "test-only parity harness; no production native/API/default changes",
+  "baseline": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "files": [
+    {
+      "path": "inference-service/build.gradle.kts",
+      "sha256": "58d5240e8e737df438386f7dbaf84afcc8470aecb7e8e2a835b2e1d273d585bb"
+    },
+    {
+      "path": "inference-service/src/syntheticBenchmark/kotlin/app/skein/inference/service/SyntheticTemplateParityTest.kt",
+      "sha256": "27586a2b6a6adf2a99db61b74b9b99fd195ef35db31e95e703f7f8997f1f889b"
+    },
+    {
+      "path": "inference-service/src/syntheticBenchmarkFixtures/kotlin/app/skein/inference/service/SyntheticParityControls.kt",
+      "sha256": "cf0834738b896c4081d6a4b095d9e2cf850e31f61e242ecb7c21636b9b7c1acb"
+    },
+    {
+      "path": "inference-service/src/test/kotlin/app/skein/inference/service/SyntheticParityControlsTest.kt",
+      "sha256": "3fe6ed8ae070902460aad122c38516f7511e1de10a4f04b60c77946d01b3d0f7"
+    },
+    {
+      "path": "tools/eval/ANDROID_SYNTHETIC.md",
+      "sha256": "5cfc5792e5fa8bf260bafe59271740aae2c5e4ac9b5b643ae9478a61af9e91f2"
+    },
+    {
+      "path": "tools/eval/prepare_native_parity.py",
+      "sha256": "5b8cc1fea140f2e7683d4055d7665b7eec553a7ab738ff6a132e1cf6294e2ae6"
+    },
+    {
+      "path": "tools/eval/qualify_model_artifact.py",
+      "sha256": "c47da16372435f6fab8b25ebe0d6ab0dc1d570ef1a39836c3db2ce5da2917b0c"
+    },
+    {
+      "path": "tools/eval/test_prepare_native_parity.py",
+      "sha256": "252450bd68ffcb9a52eb048061e02beaa343bfa6b4af13e0d3d3ed7e1ec52c8b"
+    },
+    {
+      "path": "tools/eval/test_qualify_model_artifact.py",
+      "sha256": "4e81acdfb557d9aa0a4b1292496520cabf85bfecc59286f44521c9a0adba1c7d"
+    }
+  ]
+}
