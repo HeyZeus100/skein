@@ -1,0 +1,217 @@
+{
+  "note_fixture": {
+    "title": "Skein DELETE CHECK 023002 NOTE",
+    "body": "Fictional disposable note for Delete acceptance. No existing project records are included.",
+    "note_id": "56d0e612-bab1-4982-8531-8383cd744d41",
+    "created_xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-created-20260930T023031495110Z.private.xml",
+    "title_sha256": "22296d851d91f1f1c8f04f68e8143103a81456b7ac699ae64c9513787e1d554d",
+    "body_sha256": "93cba2726418727efe3791e271ff7dcc6e95630070077855d0bfe8aca0f5ac23"
+  },
+  "note_list_row_cancel": {
+    "title_exact": true,
+    "body_exact": true,
+    "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-after-dialog-Cancel-20260930T023122693474Z.private.xml"
+  },
+  "note_header_cancel": {
+    "title_exact": true,
+    "body_exact": true,
+    "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-after-dialog-Cancel-20260930T023204138841Z.private.xml"
+  },
+  "note_delete": {
+    "fixture_absent": true,
+    "editor_route_removed": true,
+    "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-after-dialog-Delete-20260930T023226782335Z.private.xml"
+  },
+  "chat_fixture": {
+    "title": "Skein DELETE CHECK 023002 CHAT",
+    "prompt": "Skein DELETE CHECK 023002 CHAT. Explain in detail the differences between purchase orders and invoices with twenty short fictional examples.",
+    "prompt_sha256": "54a602e4f7dc44e6efb8a99a6e040c82e1c85a7946050269db2a70e155d67c90",
+    "send_count": 1,
+    "created_xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-state-20260930T023409914432Z.private.xml"
+  },
+  "chat_list_row_cancel": {
+    "prompt_exact": true,
+    "title_exact": true,
+    "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-after-dialog-Cancel-20260930T023623600466Z.private.xml",
+    "assistant_saved": false
+  },
+  "chat_header_cancel": {
+    "prompt_exact": true,
+    "title_exact": true,
+    "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-after-dialog-Cancel-20260930T023708992062Z.private.xml",
+    "assistant_saved": false
+  },
+  "chat_delete": {
+    "fixture_absent": true,
+    "saved_chat_route_removed": true,
+    "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-after-dialog-Delete-20260930T023731332900Z.private.xml",
+    "returned_composer_count": 1,
+    "returned_composer_empty": [
+      true
+    ],
+    "returned_composer_sha256": [
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "draft_edits_after_delete": 0
+  },
+  "active_delete_ancestor_review": {
+    "actual_xml_sha256": "8d4d2f67bbc50056393d36019b0cb51157e9aa9216f975d34091e225f19c6d75",
+    "actual_xml_path": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-delete-menu-20260930T023413892593Z.private.xml",
+    "label_itself_enabled": true,
+    "owning_clickable_control_enabled": false,
+    "ancestor_chain": [
+      {
+        "class": "android.widget.TextView",
+        "text": "Delete\u2026",
+        "enabled": "true",
+        "clickable": "false",
+        "bounds": "[1622,374][1746,424]"
+      },
+      {
+        "class": "android.view.View",
+        "text": "",
+        "enabled": "false",
+        "clickable": "true",
+        "bounds": "[1522,368][2068,467]"
+      },
+      {
+        "class": "android.widget.ScrollView",
+        "text": "",
+        "enabled": "true",
+        "clickable": "false",
+        "bounds": "[1522,368][2068,467]"
+      },
+      {
+        "class": "android.view.View",
+        "text": "",
+        "enabled": "true",
+        "clickable": "false",
+        "bounds": "[1522,351][2068,484]"
+      },
+      {
+        "class": "android.view.View",
+        "text": "",
+        "enabled": "true",
+        "clickable": "false",
+        "bounds": "[1522,351][2068,484]"
+      },
+      {
+        "class": "android.view.View",
+        "text": "",
+        "enabled": "true",
+        "clickable": "false",
+        "bounds": "[1522,351][2068,484]"
+      },
+      {
+        "class": "android.view.ViewGroup",
+        "text": "",
+        "enabled": "true",
+        "clickable": "false",
+        "bounds": "[1522,351][2068,484]"
+      }
+    ],
+    "effective_delete_disabled": true,
+    "reason_visible": true,
+    "actual_answering_observed": true,
+    "normal_stop_seconds": 21.013,
+    "initial_leaf_only_detector_false_is_preserved": true,
+    "explanation": "Compose text leaf retains enabled=true; actual clickable menu-item ancestor is enabled=false. No disabled activation attempted."
+  },
+  "post_stop_observation": {
+    "observed_error_text": [
+      "No answer was saved.",
+      "Try again"
+    ],
+    "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-stopped-before-row-20260930T023517874064Z.private.xml",
+    "not_retried": true
+  },
+  "workspace_checks": {
+    "scope": "normal visible lists, owning route removal, other workspace landing/composer/Knowledge retained; no app restart or hidden retained-stack proof",
+    "observations": [
+      {
+        "workspace": "primary",
+        "destination": "Chat",
+        "fixture_marker_absent": true,
+        "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/primary-chat-after-delete-20260930T023823961379Z.private.xml",
+        "at": "2026-09-30T02:38:23.962144+00:00",
+        "visible_existing_chat_list_exact": true,
+        "list_fingerprint": {
+          "text_count": 31,
+          "text_sequence_sha256": "f4a10ec9ff362f759386c23140e29e1b0b92a978fb6eb255775de04ba562ef36"
+        }
+      },
+      {
+        "workspace": "secondary",
+        "destination": "Chat",
+        "fixture_marker_absent": true,
+        "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023832225184Z.private.xml",
+        "at": "2026-09-30T02:38:32.226383+00:00",
+        "baseline_fields_equal": {
+          "skein_workspace_secondary": true,
+          "app.skein.feature.chat.Composer": true,
+          "new_chat_knowledge_toggle": true
+        },
+        "landing_route_retained": true,
+        "model_status": [
+          {
+            "text": "",
+            "content-desc": "Model unavailable",
+            "checked": "false",
+            "enabled": "true"
+          }
+        ],
+        "visible_existing_chat_list_exact": true
+      },
+      {
+        "workspace": "secondary",
+        "destination": "Knowledge",
+        "fixture_marker_absent": true,
+        "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Knowledge-20260930T023840622458Z.private.xml",
+        "at": "2026-09-30T02:38:40.623073+00:00",
+        "visible_existing_knowledge_list_exact": true,
+        "list_fingerprint": {
+          "text_count": 25,
+          "text_sequence_sha256": "e1f333b1b8f3ec5d6be47c2c2f992b17b31b31e414ad2aea25a563a01652277c"
+        }
+      },
+      {
+        "workspace": "secondary",
+        "destination": "Chat_after_navigation",
+        "fixture_marker_absent": true,
+        "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Chat-20260930T023849097732Z.private.xml",
+        "at": "2026-09-30T02:38:49.099246+00:00"
+      },
+      {
+        "workspace": "primary",
+        "destination": "Knowledge",
+        "fixture_marker_absent": true,
+        "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Knowledge-20260930T023905871471Z.private.xml",
+        "at": "2026-09-30T02:39:05.872391+00:00",
+        "visible_existing_knowledge_list_exact": true
+      },
+      {
+        "workspace": "primary",
+        "destination": "Chat_after_navigation",
+        "fixture_marker_absent": true,
+        "xml": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Chat-20260930T023914022990Z.private.xml",
+        "at": "2026-09-30T02:39:14.023382+00:00",
+        "visible_existing_chat_list_exact": true
+      }
+    ],
+    "device_left": "idle primary Chat landing",
+    "ui_edits_after_deletes": 0,
+    "owner_draft_edits": 0,
+    "fresh_new_chat_used_before_prompt": true,
+    "simultaneous_duplicate_routes_created": false
+  },
+  "current_installed_apk_hash": {
+    "at": "2026-09-30T02:40:26.039373+00:00",
+    "scope": "read-only current installed app code hash; no app-private data read",
+    "current_apk_sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+    "matches_prior_copied_installed_apk": true,
+    "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "install_attempts_this_resume": 0,
+    "device_ui_mutations": 0,
+    "initial_path_validator_rejected_legitimate_tilde_before_hash_attempt": true
+  }
+}

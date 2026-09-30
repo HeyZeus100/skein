@@ -1,0 +1,61 @@
+{
+  "application_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+  "artifacts": [
+    {
+      "published_file": "note-list-row-confirmation.xml",
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "bytes": 5706,
+      "original_private_artifact": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-before-dialog-Cancel-20260930T023118153856Z.private.xml",
+      "byte_equal_original": true,
+      "privacy_review": "Only synthetic disposable title or generic Delete UI; no owner text, document IDs, model paths or device identifiers."
+    },
+    {
+      "published_file": "note-header-cancel-confirmation.xml",
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "bytes": 5706,
+      "original_private_artifact": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-before-dialog-Cancel-20260930T023159558713Z.private.xml",
+      "byte_equal_original": true,
+      "privacy_review": "Only synthetic disposable title or generic Delete UI; no owner text, document IDs, model paths or device identifiers."
+    },
+    {
+      "published_file": "note-header-delete-confirmation.xml",
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "bytes": 5706,
+      "original_private_artifact": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-before-dialog-Delete-20260930T023221940990Z.private.xml",
+      "byte_equal_original": true,
+      "privacy_review": "Only synthetic disposable title or generic Delete UI; no owner text, document IDs, model paths or device identifiers."
+    },
+    {
+      "published_file": "chat-list-row-confirmation.xml",
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "bytes": 5714,
+      "original_private_artifact": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-before-dialog-Cancel-20260930T023618960913Z.private.xml",
+      "byte_equal_original": true,
+      "privacy_review": "Only synthetic disposable title or generic Delete UI; no owner text, document IDs, model paths or device identifiers."
+    },
+    {
+      "published_file": "chat-header-cancel-confirmation.xml",
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "bytes": 5714,
+      "original_private_artifact": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-before-dialog-Cancel-20260930T023704317711Z.private.xml",
+      "byte_equal_original": true,
+      "privacy_review": "Only synthetic disposable title or generic Delete UI; no owner text, document IDs, model paths or device identifiers."
+    },
+    {
+      "published_file": "chat-header-delete-confirmation.xml",
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "bytes": 5714,
+      "original_private_artifact": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-before-dialog-Delete-20260930T023726605465Z.private.xml",
+      "byte_equal_original": true,
+      "privacy_review": "Only synthetic disposable title or generic Delete UI; no owner text, document IDs, model paths or device identifiers."
+    },
+    {
+      "published_file": "chat-active-delete-disabled.xml",
+      "sha256": "8d4d2f67bbc50056393d36019b0cb51157e9aa9216f975d34091e225f19c6d75",
+      "bytes": 2898,
+      "original_private_artifact": "build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-delete-menu-20260930T023413892593Z.private.xml",
+      "byte_equal_original": true,
+      "privacy_review": "Only synthetic disposable title or generic Delete UI; no owner text, document IDs, model paths or device identifiers."
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "issue": "skein-57m1",
+  "status": "BOUNDED_PHYSICAL_DELETE_ACCEPTANCE_PASS",
+  "application_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+  "apk_sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+  "observed_utc": "2026-09-30T02:29:02Z/2026-09-30T02:40:30Z",
+  "fixture_marker": "Skein DELETE CHECK 023002",
+  "fixtures_created": {
+    "independent_notes": 1,
+    "chats": 1
+  },
+  "fixtures_deleted": {
+    "independent_notes": 1,
+    "chats": 1
+  },
+  "authentication": {
+    "owner_ready_reply": "Unlocked and idle",
+    "normal_owner_unlock": true,
+    "bypass": false,
+    "direct_usb": true
+  },
+  "gates": {
+    "note_list_row_cancel": "PASS_EXACT_TITLE_AND_BODY_RETAINED",
+    "note_open_header_cancel": "PASS_EXACT_TITLE_AND_BODY_RETAINED",
+    "note_open_header_confirm": "PASS_OWNING_EDITOR_ROUTE_AND_LIST_ROW_REMOVED",
+    "chat_list_row_cancel": "PASS_EXACT_TITLE_AND_USER_PROMPT_RETAINED",
+    "chat_current_header_cancel": "PASS_EXACT_TITLE_AND_USER_PROMPT_RETAINED",
+    "chat_current_header_confirm": "PASS_CURRENT_SAVED_CHAT_ROUTE_AND_LIST_ROW_REMOVED",
+    "active_answer_delete": "PASS_UI_ANSWERING_AND_DISABLED_CLICKABLE_ANCESTOR",
+    "normal_stop": "PASS_ONCE_AT_21.013_SECONDS",
+    "other_workspace": "PASS_LANDING_COMPOSER_KNOWLEDGE_BASELINE_PRESERVED",
+    "normal_lists_no_resurrection": "PASS_BOTH_WORKSPACE_OWNERS_AFTER_NAVIGATION"
+  },
+  "chat": {
+    "send_count": 1,
+    "retry_count": 0,
+    "explicit_new_chat": true,
+    "empty_composer_before_input": true,
+    "knowledge_off_for_fixture_only": true,
+    "ui_loading_seconds": 4.327,
+    "ui_answering_seconds": 9.859,
+    "stop_count": 1,
+    "stop_seconds": 21.013,
+    "assistant_text_saved": false,
+    "post_stop_error": "No answer was saved.",
+    "post_stop_model_status": "Model unavailable",
+    "native_generation_proven": false,
+    "fresh_model_identity_proven": false
+  },
+  "preservation": {
+    "install_attempts": 0,
+    "imports": 0,
+    "model_default_changes": 0,
+    "device_settings_changes": 0,
+    "owner_content_mutations": 0,
+    "preexisting_composer_edits": 0,
+    "root_draft_edits": 0,
+    "original_nine_link_draft_reselected_or_rehashed": false,
+    "existing_visible_chat_list_text_count": 31,
+    "existing_visible_chat_list_hash": "f4a10ec9ff362f759386c23140e29e1b0b92a978fb6eb255775de04ba562ef36",
+    "existing_visible_knowledge_list_text_count": 25,
+    "existing_visible_knowledge_list_hash": "e1f333b1b8f3ec5d6be47c2c2f992b17b31b31e414ad2aea25a563a01652277c"
+  },
+  "runner": {
+    "owner": "/root/fold_acceptance",
+    "device_left": "idle primary Chat landing",
+    "lease_released_at": "2026-09-30T02:40:30Z",
+    "lease_archive": "device.lock.released-fold-acceptance-20260930T024030Z",
+    "no_remaining_device_loop": true
+  },
+  "limits": [
+    "The active gate is actual UI Answering, Stop and disabled Delete; no native token-generation, model identity or answer-quality claim.",
+    "Stop occurred before visible assistant text; prompt-only chat and No answer was saved are preserved observations, not a diagnosed runtime failure.",
+    "Normal visible lists and owning route removal only; no app restart or simultaneous duplicate-owner/hidden retained-stack proof.",
+    "The other workspace landing, empty composer and Knowledge state matched; shared model status changed after the stopped fixture.",
+    "Existing owner content and original nine-link draft were not edited; that old draft was not reselected or hash-verified in this run.",
+    "Files/extracted-note deletion, broad New-chat/Fold/AL-16, retrieval/embedding, rendered citations, runtime/model and formal M0 gates remain open."
+  ],
+  "preserved_observation_errors": [
+    "Initial leaf-only disabled detector returned false; unchanged original result retained. Actual clickable parent in original XML is enabled=false.",
+    "Initial current-package-path validator omitted legitimate tilde characters and stopped before hashing; corrected host validator then read the installed APK hash successfully."
+  ]
+}

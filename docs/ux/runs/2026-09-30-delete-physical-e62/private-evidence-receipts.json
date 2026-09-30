@@ -1,0 +1,776 @@
+{
+  "worktree": "fold-acceptance-resume-20260930",
+  "scope": "Original local private hierarchy/screenshots and action/derived JSON; hashes only. Published popup XML is separately privacy-reviewed.",
+  "artifacts": [
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/prior-evidence-hash-review.json",
+      "bytes": 2742,
+      "sha256": "a7e3577d966b07d06dc60afcc1f633356c9ed02930313639b635b93522b426e1"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/owner-ready.json",
+      "bytes": 173,
+      "sha256": "6b8a03aea59211192dc452d736e1724ff73de7c698d222acb93a6197fece3cdb"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/initial-auth-guard.json",
+      "bytes": 622,
+      "sha256": "188e2e66e29bfdc04d994f6b420fb031b52946d601bec5e98a18c082b51ea043"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/secondary-baseline.json",
+      "bytes": 889,
+      "sha256": "b7b3866ebe1561f853dacb3b2ba0d9893802df6cf92a57cfe8cc76bfa35923a0"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-fixture.json",
+      "bytes": 573,
+      "sha256": "259ffc3f3d3c3d324d8a454656be0760783836448fb2f668cdb1755e222ecc31"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-row-cancel-retention.json",
+      "bytes": 249,
+      "sha256": "2e4a4606616395c1e3ab06a4ccffd09da037b36ce9f1dde53796d7e8f1f226bb"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-header-cancel-retention.json",
+      "bytes": 249,
+      "sha256": "2fc24a5ca066a11fc01e1278268a1d46485ed124bdd159717d0a0e9a9af9860f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-delete-absence.json",
+      "bytes": 262,
+      "sha256": "491ea81f64f5a8afcab70ec143358300d69ea082ba34001082be9024eace0cca"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-fresh-empty.json",
+      "bytes": 254,
+      "sha256": "d95ccdb676f87c9684e629edee60d0ead9bcbe86c8e5bced14483cce60e99207"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-send.json",
+      "bytes": 282,
+      "sha256": "4db9af8f28dbcf5a3fae51ea2efb42ff74696f7a337da8ac0b26eb745c84b642"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-fixture.json",
+      "bytes": 512,
+      "sha256": "afa43cf3176e23ad197b15a4f250fa32d91fc51f3a8bf5bbb16555c2145301ec"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-row-cancel-retention.json",
+      "bytes": 279,
+      "sha256": "4f4840d3d7735847124edc882285fa47dfa4f6a591372a2df8a2037b0e74d6ca"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-header-cancel-retention.json",
+      "bytes": 279,
+      "sha256": "677bce96c35dd0f3fb779c60b1ace2f52ee29a5373b1bf9faeeb789907cfc483"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-delete-absence.json",
+      "bytes": 484,
+      "sha256": "f27f7aa060cd74a09ad25ae52e10e60c815394cb3a7a21a31a2ac7062a136751"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-delete-review.json",
+      "bytes": 1351,
+      "sha256": "ad986e4bb1196dd648de7cc2e462fe88c49cff4edfa64b4999cf6d9e5cc20675"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-delete-ancestor-review.json",
+      "bytes": 1891,
+      "sha256": "2f76c652958fbccb359b460654478991a9129b13673f1fb9cb07ac93db65b03b"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-post-stop-error.json",
+      "bytes": 233,
+      "sha256": "1a4d9fb7cdfd3c66a6f24c2d8f8dab32d0ea7f453ff07e84a873df07eb95b3f0"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/workspace-no-resurrection-review.json",
+      "bytes": 3528,
+      "sha256": "651e40875e3e3c64d60674865148430b8b01b0200da8484852667766c91f064e"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/current-package-path-read.json",
+      "bytes": 251,
+      "sha256": "4b66b2289dc339ab5c3140ce1ea60b6db78b7b2cb1dd90246285d7e953574c4e"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/current-installed-apk-hash.json",
+      "bytes": 472,
+      "sha256": "2224e59dca77b895acf07dac39f91f7c9c9cec07eca6fc7693ee8b77509edaf0"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/ui-before-ancestor-guard.py",
+      "bytes": 7004,
+      "sha256": "dd6dcbd45dea94af399725654967ca79f0a468dd659cb9fc0185731b59c3b7c6"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/ui.py",
+      "bytes": 7386,
+      "sha256": "6d3fb2cb27412b5ab68b16f549ef5c9571afc9bc4ec3cbdfeaa29814e8f27837"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/run_chat.py",
+      "bytes": 3422,
+      "sha256": "47390318c35b1f599c9808ca174f7002ea4b61d050f24c802080ce2a52c28f5a"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/verify_workspace.py",
+      "bytes": 3716,
+      "sha256": "3205b4e0d8c575f363e013fcba4d7dfc37fe709bbbbb1f2bb308ea6777229170"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-back-20260930T022910089901Z.private.xml",
+      "bytes": 55143,
+      "sha256": "8f253f8c6cd85213e5585f80b707f0890fdcf01c1e4259c9a8bd621b3ca63ae7"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-back-20260930T023028173047Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-back-20260930T023324879773Z.private.xml",
+      "bytes": 54922,
+      "sha256": "a4eda150b80a88516c91fbd367ac4007cda912f0865035d1a91603d7109a2c58"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-back-20260930T023420089452Z.private.xml",
+      "bytes": 47259,
+      "sha256": "7f74a4598279de3bd2217591f568439cf47d829686991eb524ea405be052e015"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T022925944311Z.private.xml",
+      "bytes": 55146,
+      "sha256": "93856bfd242f0b36870337a82eccb603e7dc021ae7e5e0c9b3f7e9e0c8a178ff"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T022945429172Z.private.xml",
+      "bytes": 55143,
+      "sha256": "8f253f8c6cd85213e5585f80b707f0890fdcf01c1e4259c9a8bd621b3ca63ae7"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T022953403041Z.private.xml",
+      "bytes": 60972,
+      "sha256": "fb8724e6dc296f80e9ed9ba60cabb2db9a0a30c9cc8c583cc9c5fb8acd9bb86f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023051370150Z.private.xml",
+      "bytes": 2504,
+      "sha256": "82c398009a390410e0c21c74ed1fca1af5efa11c0558d34812ebe3f42a22d1d5"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023058286351Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023130132102Z.private.xml",
+      "bytes": 5310,
+      "sha256": "88ea819513380db42305b7f49e8b2ff88bb37bfb2ce392531ad2c4751676203d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023137145191Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023211707198Z.private.xml",
+      "bytes": 5310,
+      "sha256": "88ea819513380db42305b7f49e8b2ff88bb37bfb2ce392531ad2c4751676203d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023218886432Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023254675874Z.private.xml",
+      "bytes": 47595,
+      "sha256": "58adfe9d17f2e2564277ee3b5955b73326636547f44dc2288ac6286d2d54ed28"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023305897013Z.private.xml",
+      "bytes": 47602,
+      "sha256": "663061407e4c660b6ac94807f7b53fc44e4ba2727e19b3cd7cbcc0547e415ae1"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023607453179Z.private.xml",
+      "bytes": 2504,
+      "sha256": "8c6b13cf0bb972ef54ed216c735a170dc7c8538460f9058064031633f0b2f85a"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023614434516Z.private.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023631291683Z.private.xml",
+      "bytes": 2518,
+      "sha256": "0d50151b0a5b66114a2e1afa095077e5283494503f11957318fa6922ade0901c"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023638335551Z.private.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023716527388Z.private.xml",
+      "bytes": 2518,
+      "sha256": "0d50151b0a5b66114a2e1afa095077e5283494503f11957318fa6922ade0901c"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023723570017Z.private.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023832225184Z.private.xml",
+      "bytes": 55148,
+      "sha256": "4f644246655381aad68353b395175358b32c6823f848cf3bcd1f8e16eeba1370"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-click-20260930T023857548175Z.private.xml",
+      "bytes": 55145,
+      "sha256": "3cb21bdec24b816443fdbadba5affa4d3c277d7cdaea8b9d029d26e6ffbf8645"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Chat-20260930T023849097732Z.private.xml",
+      "bytes": 55148,
+      "sha256": "4f644246655381aad68353b395175358b32c6823f848cf3bcd1f8e16eeba1370"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Chat-20260930T023914022990Z.private.xml",
+      "bytes": 55145,
+      "sha256": "3cb21bdec24b816443fdbadba5affa4d3c277d7cdaea8b9d029d26e6ffbf8645"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Knowledge-20260930T023840622458Z.private.xml",
+      "bytes": 56950,
+      "sha256": "e053ebba35051c5e2b665c8c9ef0b4c71d04a9bb6b8cee533aafd84f3e2e8bf8"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-rail-Knowledge-20260930T023905871471Z.private.xml",
+      "bytes": 56947,
+      "sha256": "7fb024256e159a1ca6b8d5775ae6069bba2f6766e26cba2ecd92c0edb14052f5"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-type-20260930T023012918931Z.private.xml",
+      "bytes": 60985,
+      "sha256": "72dd230a371a3224936ce9308435ab93801b25a1f086cf60041d391a44c17dd0"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-type-20260930T023023588404Z.private.xml",
+      "bytes": 61142,
+      "sha256": "2667d55ae205323a5219824515e9019b33a902149ce72fe9bc0eb2b03b949998"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/after-type-20260930T023320398701Z.private.xml",
+      "bytes": 47729,
+      "sha256": "69a73868e341ad939469d94856786bc6e470c0dfbcf42b3b8d122b4de607641f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T022921246563Z.private.xml",
+      "bytes": 55143,
+      "sha256": "8f253f8c6cd85213e5585f80b707f0890fdcf01c1e4259c9a8bd621b3ca63ae7"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T022940697895Z.private.xml",
+      "bytes": 55146,
+      "sha256": "93856bfd242f0b36870337a82eccb603e7dc021ae7e5e0c9b3f7e9e0c8a178ff"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T022949114511Z.private.xml",
+      "bytes": 55143,
+      "sha256": "8f253f8c6cd85213e5585f80b707f0890fdcf01c1e4259c9a8bd621b3ca63ae7"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023047255625Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023054243030Z.private.xml",
+      "bytes": 2504,
+      "sha256": "82c398009a390410e0c21c74ed1fca1af5efa11c0558d34812ebe3f42a22d1d5"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023126174003Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023133076091Z.private.xml",
+      "bytes": 5310,
+      "sha256": "88ea819513380db42305b7f49e8b2ff88bb37bfb2ce392531ad2c4751676203d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023207612985Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023214715157Z.private.xml",
+      "bytes": 5310,
+      "sha256": "88ea819513380db42305b7f49e8b2ff88bb37bfb2ce392531ad2c4751676203d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023250348019Z.private.xml",
+      "bytes": 56947,
+      "sha256": "7fb024256e159a1ca6b8d5775ae6069bba2f6766e26cba2ecd92c0edb14052f5"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023301450392Z.private.xml",
+      "bytes": 47595,
+      "sha256": "58adfe9d17f2e2564277ee3b5955b73326636547f44dc2288ac6286d2d54ed28"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023603462120Z.private.xml",
+      "bytes": 48329,
+      "sha256": "a9edc260c20f3ab584ded5ff5d20f84265c46f28ad33872f4ea10b89a6577884"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023610424452Z.private.xml",
+      "bytes": 2504,
+      "sha256": "8c6b13cf0bb972ef54ed216c735a170dc7c8538460f9058064031633f0b2f85a"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023627145957Z.private.xml",
+      "bytes": 48329,
+      "sha256": "a9edc260c20f3ab584ded5ff5d20f84265c46f28ad33872f4ea10b89a6577884"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023634253181Z.private.xml",
+      "bytes": 2518,
+      "sha256": "0d50151b0a5b66114a2e1afa095077e5283494503f11957318fa6922ade0901c"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023712578073Z.private.xml",
+      "bytes": 48329,
+      "sha256": "a9edc260c20f3ab584ded5ff5d20f84265c46f28ad33872f4ea10b89a6577884"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023719512823Z.private.xml",
+      "bytes": 2518,
+      "sha256": "0d50151b0a5b66114a2e1afa095077e5283494503f11957318fa6922ade0901c"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023827556845Z.private.xml",
+      "bytes": 55145,
+      "sha256": "3cb21bdec24b816443fdbadba5affa4d3c277d7cdaea8b9d029d26e6ffbf8645"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-click-20260930T023852773625Z.private.xml",
+      "bytes": 55148,
+      "sha256": "4f644246655381aad68353b395175358b32c6823f848cf3bcd1f8e16eeba1370"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-rail-Chat-20260930T023844404351Z.private.xml",
+      "bytes": 56950,
+      "sha256": "e053ebba35051c5e2b665c8c9ef0b4c71d04a9bb6b8cee533aafd84f3e2e8bf8"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-rail-Chat-20260930T023909410976Z.private.xml",
+      "bytes": 56947,
+      "sha256": "7fb024256e159a1ca6b8d5775ae6069bba2f6766e26cba2ecd92c0edb14052f5"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-rail-Knowledge-20260930T023835846979Z.private.xml",
+      "bytes": 55148,
+      "sha256": "4f644246655381aad68353b395175358b32c6823f848cf3bcd1f8e16eeba1370"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-rail-Knowledge-20260930T023901221422Z.private.xml",
+      "bytes": 55145,
+      "sha256": "3cb21bdec24b816443fdbadba5affa4d3c277d7cdaea8b9d029d26e6ffbf8645"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-type-20260930T023005875560Z.private.xml",
+      "bytes": 60972,
+      "sha256": "fb8724e6dc296f80e9ed9ba60cabb2db9a0a30c9cc8c583cc9c5fb8acd9bb86f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-type-20260930T023016485480Z.private.xml",
+      "bytes": 60985,
+      "sha256": "72dd230a371a3224936ce9308435ab93801b25a1f086cf60041d391a44c17dd0"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/before-type-20260930T023312783742Z.private.xml",
+      "bytes": 47602,
+      "sha256": "663061407e4c660b6ac94807f7b53fc44e4ba2727e19b3cd7cbcc0547e415ae1"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-delete-menu-20260930T023413892593Z.private.xml",
+      "bytes": 2898,
+      "sha256": "8d4d2f67bbc50056393d36019b0cb51157e9aa9216f975d34091e225f19c6d75"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-state-20260930T023404382660Z.private.xml",
+      "bytes": 47257,
+      "sha256": "8e018120e6f6012ca9714e861fb54f7098e8b5dd694386781df75963c6309d57"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-state-20260930T023409914432Z.private.xml",
+      "bytes": 47259,
+      "sha256": "7f74a4598279de3bd2217591f568439cf47d829686991eb524ea405be052e015"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-after-dialog-Cancel-20260930T023623600466Z.private.xml",
+      "bytes": 48329,
+      "sha256": "a9edc260c20f3ab584ded5ff5d20f84265c46f28ad33872f4ea10b89a6577884"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-after-dialog-Cancel-20260930T023708992062Z.private.xml",
+      "bytes": 48329,
+      "sha256": "a9edc260c20f3ab584ded5ff5d20f84265c46f28ad33872f4ea10b89a6577884"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-after-dialog-Delete-20260930T023731332900Z.private.xml",
+      "bytes": 56640,
+      "sha256": "188f30567c5717903a2f9d5e09e739135d30d5b5395278912a252000cbffbafc"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-after-normal-stop-20260930T023424626678Z.private.xml",
+      "bytes": 48329,
+      "sha256": "a9edc260c20f3ab584ded5ff5d20f84265c46f28ad33872f4ea10b89a6577884"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-before-dialog-Cancel-20260930T023618960913Z.private.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-before-dialog-Cancel-20260930T023704317711Z.private.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-before-dialog-Delete-20260930T023726605465Z.private.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-header-confirmation-20260930T023641350165Z.private.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-immediately-before-send-20260930T023400055233Z.private.xml",
+      "bytes": 54922,
+      "sha256": "a4eda150b80a88516c91fbd367ac4007cda912f0865035d1a91603d7109a2c58"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-stopped-before-row-20260930T023517874064Z.private.xml",
+      "bytes": 48329,
+      "sha256": "a9edc260c20f3ab584ded5ff5d20f84265c46f28ad33872f4ea10b89a6577884"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/fresh-chat-knowledge-off-20260930T023309360663Z.private.xml",
+      "bytes": 47602,
+      "sha256": "663061407e4c660b6ac94807f7b53fc44e4ba2727e19b3cd7cbcc0547e415ae1"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/fresh-chat-ready-20260930T023328387803Z.private.xml",
+      "bytes": 54922,
+      "sha256": "a4eda150b80a88516c91fbd367ac4007cda912f0865035d1a91603d7109a2c58"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/fresh-explicit-chat-20260930T023258084538Z.private.xml",
+      "bytes": 47595,
+      "sha256": "58adfe9d17f2e2564277ee3b5955b73326636547f44dc2288ac6286d2d54ed28"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-after-dialog-Cancel-20260930T023122693474Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-after-dialog-Cancel-20260930T023204138841Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-after-dialog-Delete-20260930T023226782335Z.private.xml",
+      "bytes": 58442,
+      "sha256": "5a8e22deb6b67400acf62ec153792428cef174f79bc75af8f9df258b1bda7545"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-before-dialog-Cancel-20260930T023118153856Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-before-dialog-Cancel-20260930T023159558713Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-before-dialog-Delete-20260930T023221940990Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-created-20260930T023031495110Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-header-confirmation-20260930T023140178731Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-row-before-20260930T023043567242Z.private.xml",
+      "bytes": 61142,
+      "sha256": "6dfb65bc17f1c54f3b1dc9b401bb9293354f923b7886149ec4be62d2828fe6cd"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-row-confirmation-20260930T023101271217Z.private.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/owner-ready-first-20260930T022902123931Z.private.xml",
+      "bytes": 2504,
+      "sha256": "8c6b13cf0bb972ef54ed216c735a170dc7c8538460f9058064031633f0b2f85a"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/primary-chat-after-delete-20260930T023823961379Z.private.xml",
+      "bytes": 55145,
+      "sha256": "3cb21bdec24b816443fdbadba5affa4d3c277d7cdaea8b9d029d26e6ffbf8645"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/secondary-baseline-20260930T022937048686Z.private.xml",
+      "bytes": 55146,
+      "sha256": "93856bfd242f0b36870337a82eccb603e7dc021ae7e5e0c9b3f7e9e0c8a178ff"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-active-delete-disabled-20260930T023415552583Z.private.png",
+      "bytes": 239397,
+      "sha256": "f267ee71c3fcb7866114baf1cab13426801936ef4c39dbc1fd859ab384fa4742"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/chat-row-confirmation-20260930T023615934139Z.private.png",
+      "bytes": 233895,
+      "sha256": "6999c9d79b067302c99697360748afd29646809e60da558438597e0916d34d92"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/note-row-confirmation-20260930T023115110351Z.private.png",
+      "bytes": 250350,
+      "sha256": "cefe3d63fc8e4e180613dcc0372ecc66564f01fca78b096785ace33654f41385"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T022906578024Z.json",
+      "bytes": 23,
+      "sha256": "fb237b5e9b0fa59033dc8b8eab09e311398cb67b64e1cb384920c03a35b53642"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T022922380776Z.json",
+      "bytes": 178,
+      "sha256": "a46e6b8a166a715ce32816d10d4846756039439af5136164878b75f0e0912c9f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T022941842467Z.json",
+      "bytes": 178,
+      "sha256": "a46e6b8a166a715ce32816d10d4846756039439af5136164878b75f0e0912c9f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T022950228486Z.json",
+      "bytes": 153,
+      "sha256": "00130b259d60f6bf5ff2a9b15b335f4311c602b17365a9e384fa3722b6aee660"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023006998406Z.json",
+      "bytes": 199,
+      "sha256": "92e30920f282689537aec606d60820e56dcf89e6e01d4dfe31f567f9a90296ee"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023009414340Z.json",
+      "bytes": 229,
+      "sha256": "10ad15136d935897bcd16bd3068c63668c27604bdad079c02f764c363745c984"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023017580724Z.json",
+      "bytes": 189,
+      "sha256": "5dd388bdfbdbfc9c719ef47f71b2a8843ce533ea2ad61c518d359745c73c6e34"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023020167497Z.json",
+      "bytes": 279,
+      "sha256": "47696b56cfb15faf7be6c9a9e14ecafa524d1733af13d848da4e31afda2f78ab"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023024630919Z.json",
+      "bytes": 23,
+      "sha256": "fb237b5e9b0fa59033dc8b8eab09e311398cb67b64e1cb384920c03a35b53642"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023048339071Z.json",
+      "bytes": 202,
+      "sha256": "f2823c5b787f961edaf3fee6517f16e2f72dee73806f73254b9b51608eb2544c"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023055298949Z.json",
+      "bytes": 152,
+      "sha256": "1f02bb21eda312751ecfc313468ea643095a434d1939d5ac5eb3ce0e0383923d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023119297846Z.json",
+      "bytes": 156,
+      "sha256": "c75ac0d17119732c66709768c9c98579cba6720f1ae3cd9ecda773048a1ca101"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023127234673Z.json",
+      "bytes": 154,
+      "sha256": "1a2fd92d8c1afa3381e853cd7a93c1d4fb8c195c928d70a78dbaa0d2294b912d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023134177013Z.json",
+      "bytes": 154,
+      "sha256": "b989df55972cdce3a4ae96165557118c9daff329ed464e508b5906d0c40dffb3"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023200696084Z.json",
+      "bytes": 156,
+      "sha256": "c75ac0d17119732c66709768c9c98579cba6720f1ae3cd9ecda773048a1ca101"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023208644658Z.json",
+      "bytes": 154,
+      "sha256": "1a2fd92d8c1afa3381e853cd7a93c1d4fb8c195c928d70a78dbaa0d2294b912d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023215830415Z.json",
+      "bytes": 154,
+      "sha256": "b989df55972cdce3a4ae96165557118c9daff329ed464e508b5906d0c40dffb3"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023223103983Z.json",
+      "bytes": 156,
+      "sha256": "5b572e5b8e7233c21fed4dcee92d0a87771f6d733c0128c9c92c77557f6658fa"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023251479992Z.json",
+      "bytes": 151,
+      "sha256": "b039a1e468a9c637305190377a087a7bbfdbbb8ff34a23739a613802620f5573"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023302500796Z.json",
+      "bytes": 179,
+      "sha256": "8cf49639bbf2a66f38033ed2253b30e2d70220a6acc7a8a1d15a2d685b622624"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023313823288Z.json",
+      "bytes": 186,
+      "sha256": "c742bb321a8b1360b699a9c591e9f93ca7f47e27f7312315f6a34cf120aa45ad"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023317003365Z.json",
+      "bytes": 324,
+      "sha256": "e7841c2d2751c2b397c5763adc906a4a506d134cc65252f22f352f2a23fc60b4"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023321408142Z.json",
+      "bytes": 23,
+      "sha256": "fb237b5e9b0fa59033dc8b8eab09e311398cb67b64e1cb384920c03a35b53642"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023401110640Z.json",
+      "bytes": 189,
+      "sha256": "bb174e197d3dad1f0b679541c9b04a6b2ebe57b2ec45b4bb832667207ea63c9d"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023410859115Z.json",
+      "bytes": 176,
+      "sha256": "3401860a45e659ba3acf1c3ecef6bb6e7269b137064f73d1f37d6e55128446ff"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023416498782Z.json",
+      "bytes": 23,
+      "sha256": "fb237b5e9b0fa59033dc8b8eab09e311398cb67b64e1cb384920c03a35b53642"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023421070105Z.json",
+      "bytes": 191,
+      "sha256": "14cebe13ed6315e7a3b04af0edf68700d694bda58d9587920cdfb5fdeb5fad33"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023604563144Z.json",
+      "bytes": 152,
+      "sha256": "85318019ba8d33a5a4a89028780c0ef83588e706c0ae73406bf508a5ff528745"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023611479258Z.json",
+      "bytes": 152,
+      "sha256": "8f4684a757c641db736b0d1677cb14f055d5d0938e80cdeffbb6a68ff961316c"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023620089047Z.json",
+      "bytes": 156,
+      "sha256": "decbb57803e44a50e31470a3a40dd337ff5ee275ae6f7e1f51d08a7374acd150"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023628277404Z.json",
+      "bytes": 154,
+      "sha256": "b23569a19b1ef808f14e4c563f316156bd0f7f3cd1f233c9cf1b23e80ff82afc"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023635370149Z.json",
+      "bytes": 154,
+      "sha256": "dc80ed4bb5338de4c9a360f263da28b0d5f538b5fb11503bb732e57ff6aabb5b"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023705435057Z.json",
+      "bytes": 156,
+      "sha256": "decbb57803e44a50e31470a3a40dd337ff5ee275ae6f7e1f51d08a7374acd150"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023713688694Z.json",
+      "bytes": 154,
+      "sha256": "b23569a19b1ef808f14e4c563f316156bd0f7f3cd1f233c9cf1b23e80ff82afc"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023720644455Z.json",
+      "bytes": 154,
+      "sha256": "dc80ed4bb5338de4c9a360f263da28b0d5f538b5fb11503bb732e57ff6aabb5b"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023727699301Z.json",
+      "bytes": 156,
+      "sha256": "d9b2ce01e428924e5a785bdf945611205bdb38ee7e093d79b5fd72b409fdd0ed"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023828696881Z.json",
+      "bytes": 178,
+      "sha256": "a46e6b8a166a715ce32816d10d4846756039439af5136164878b75f0e0912c9f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023836955788Z.json",
+      "bytes": 151,
+      "sha256": "e9a953f8335f64481e46ddd870b4964eac2ae596f9fff9918681328efb2a7daa"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023845473168Z.json",
+      "bytes": 151,
+      "sha256": "93dc0fff16f0b1953f29272d61332ceaff9fa5e0d1ffde9848457bfaa74435e6"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023853950307Z.json",
+      "bytes": 178,
+      "sha256": "a46e6b8a166a715ce32816d10d4846756039439af5136164878b75f0e0912c9f"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023902361487Z.json",
+      "bytes": 151,
+      "sha256": "e9a953f8335f64481e46ddd870b4964eac2ae596f9fff9918681328efb2a7daa"
+    },
+    {
+      "private_artifact": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/build/agent-logs/fold/delete-acceptance-e62-resume-20260930/action-20260930T023910554191Z.json",
+      "bytes": 151,
+      "sha256": "93dc0fff16f0b1953f29272d61332ceaff9fa5e0d1ffde9848457bfaa74435e6"
+    }
+  ]
+}
