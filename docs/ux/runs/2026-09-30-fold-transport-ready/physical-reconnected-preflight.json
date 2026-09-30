@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "scope": "read-only physical preflight after owner explicitly reported connected and unlocked; no new candidate installation or feature acceptance",
+  "started": "2026-09-30T17:09:59.236144+00:00",
+  "finished": "2026-09-30T17:10:04.655462+00:00",
+  "connected": true,
+  "normal_owner_unlock_observed": true,
+  "credential_storage_available": true,
+  "command_counts": {
+    "total": 7,
+    "inventory": 1,
+    "unlock_state_reads": 3,
+    "package_reads": 2,
+    "actual_apk_copy": 1,
+    "device_mutations": 0,
+    "ui_input_authentication": 0,
+    "install_import_reset": 0
+  },
+  "installed_apk_count": 1,
+  "installed_apks": [
+    {
+      "file": "installed-0.apk",
+      "bytes": 128085735,
+      "sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+      "matches_historical_e62": true
+    }
+  ],
+  "source_attribution": "Actual read APK bytes exactly match historical verified e62f94785ef8e696d8ee59745fd299fe1f83cc4a receipt; this does not attest new application checkpoint465dac or transport candidateb501.",
+  "lease": "Runner acquired own atomic device.lock and released only its matching owner record; no lease retained.",
+  "privacy": "Raw state/package dumps and APK remain private ignored evidence; only counts, outcomes and byte receipts published. No owner content was opened.",
+  "private_file_receipts": {
+    "credential-storage-state.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "credential-storage-state.stdout": {
+      "bytes": 5,
+      "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+    },
+    "current-user.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current-user.stdout": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "devices.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "devices.stdout": {
+      "bytes": 136,
+      "sha256": "c9c42f808adae1610d80ad255f54d131e7f9cef777edb36f96900bd1faeaf23c"
+    },
+    "installed-0.apk": {
+      "bytes": 128085735,
+      "sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4"
+    },
+    "package-path.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "package-path.stdout": {
+      "bytes": 89,
+      "sha256": "f07c975ac10cb159a04f3f06a0325ae7c0089a45387fab37e04da8a8a7e42da6"
+    },
+    "package.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "package.stdout": {
+      "bytes": 10820,
+      "sha256": "4b297f91f4db416b9400ac3057286423127294187ae775ae2682671db0811d22"
+    },
+    "private-record.json": {
+      "bytes": 3385,
+      "sha256": "666b607e91d2d3721bcbc94ccfba10da5e6738cc28e9fd1332fd067c95ba9efe"
+    },
+    "pull-0.stderr": {
+      "bytes": 146,
+      "sha256": "391b37bac3185a7afd3ce5257ebeef34c8c2c047fdbb6734848ba950f45d543f"
+    },
+    "pull-0.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "window-policy.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "window-policy.stdout": {
+      "bytes": 2626,
+      "sha256": "4b8c96f8228bebf197ab539364b3ee1ebe852fbd95e1d33e9fde3026ae8ae627"
+    }
+  },
+  "physical_acceptance": "No new feature acceptance. Further physical actions await coordinator scope; no candidate installation authorized by preflight."
+}
