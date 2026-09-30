@@ -3,8 +3,8 @@
 #
 # Modelled on check 1 of tools/ci/jni-symbols.sh (the llama.cpp JNI surface
 # gate): `nm -D libskein_sqlite_jni.so | grep Java_` must list EXACTLY the
-# `external fun`s declared on `SkeinSQLiteNativeImpl` in
-# core/vault/.../SkeinSQLiteNative.kt. Not "at least": a Java_ symbol with no
+# `external fun`s declared on the two explicitly permitted classes
+# `SkeinSQLiteNativeImpl` and `RecoveryProofNative`. Not "at least": a Java_ symbol with no
 # `external fun` is dead exported surface, and an `external fun` with no
 # matching Java_ symbol is an UnsatisfiedLinkError that only a device run
 # would otherwise find (exactly the failure mode in skein-8ryv, where the C
@@ -28,8 +28,11 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-kotlin_src="${repo_root}/core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteNative.kt"
-jni_prefix="Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_"
+kotlin_sources=(
+  "${repo_root}/core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteNative.kt"
+  "${repo_root}/core/vault/src/main/kotlin/app/skein/core/vault/db/RecoveryProofNative.kt"
+)
+jni_classes=(SkeinSQLiteNativeImpl RecoveryProofNative)
 
 fail=0
 
@@ -73,28 +76,28 @@ if ! command -v "${nm_bin}" >/dev/null 2>&1 && [[ ! -x "${nm_bin}" ]]; then
 fi
 
 # --------------------------------------------------------------------------
-# The declared surface: `external fun <name>` on SkeinSQLiteNativeImpl in
-# SkeinSQLiteNative.kt.
+# Exact declared surface from the two explicitly permitted native classes.
 # --------------------------------------------------------------------------
-if [[ ! -f "${kotlin_src}" ]]; then
-  err "missing ${kotlin_src}"
-  exit 1
-fi
-
-declared="$(
-  grep -oE '^[[:space:]]*external override fun [A-Za-z][A-Za-z0-9]*' "${kotlin_src}" |
-    sed -E 's/^[[:space:]]*external override fun //' | LC_ALL=C sort -u
-)"
-if [[ -z "${declared}" ]]; then
-  err 'SkeinSQLiteNative.kt declares no "external fun" -- did the file move?'
-  exit 1
-fi
-declared_count="$(printf '%s\n' "${declared}" | wc -l | tr -d ' ')"
-note "SkeinSQLiteNative.kt declares ${declared_count} external fun(s) on SkeinSQLiteNativeImpl"
-
-# JNI mangling: `_` in a Kotlin identifier becomes `_1`. The surface is
-# camelCase by convention, so this is belt and braces rather than load-bearing.
-mangle() { printf '%s' "${1//_/_1}"; }
+expected=""
+for i in "${!kotlin_sources[@]}"; do
+  kotlin_src="${kotlin_sources[$i]}"
+  if [[ ! -f "${kotlin_src}" ]]; then
+    err "missing ${kotlin_src}"
+    exit 1
+  fi
+  declared="$(
+    grep -oE '^[[:space:]]*external (override )?fun [A-Za-z][A-Za-z0-9_]*' "${kotlin_src}" |
+      sed -E 's/^[[:space:]]*external (override )?fun //' | LC_ALL=C sort -u
+  )"
+  if [[ -z "${declared}" ]]; then
+    err "${jni_classes[$i]} declares no external fun"
+    exit 1
+  fi
+  while IFS= read -r name; do
+    expected+="Java_app_skein_core_vault_db_${jni_classes[$i]}_${name//_/_1}"$'\n'
+  done <<<"${declared}"
+done
+expected="$(printf '%s' "${expected}" | LC_ALL=C sort -u)"
 
 # --------------------------------------------------------------------------
 # Check, per .so.
@@ -126,20 +129,18 @@ for so in "${sos[@]}"; do
   # comparing.
   exported="$(
     printf '%s\n' "${raw}" | awk '{print $NF}' | sed -E 's/@@?[A-Za-z0-9_.]+$//' |
-      grep -E "^${jni_prefix}" | sed -E "s/^${jni_prefix}//" | LC_ALL=C sort -u
+      grep -E "^Java_" | LC_ALL=C sort -u
   )" || true
-
-  expected="$(while IFS= read -r name; do mangle "${name}"; printf '\n'; done <<<"${declared}" | LC_ALL=C sort -u)"
 
   missing="$(LC_ALL=C comm -23 <(printf '%s\n' "${expected}") <(printf '%s\n' "${exported}"))"
   extra="$(LC_ALL=C comm -13 <(printf '%s\n' "${expected}") <(printf '%s\n' "${exported}"))"
 
   if [[ -n "${missing}" ]]; then
-    err "${short}: declared on SkeinSQLiteNativeImpl but NOT exported (UnsatisfiedLinkError on device):"
+    err "${short}: declared on a permitted native class but NOT exported (UnsatisfiedLinkError on device):"
     printf '  %s\n' ${missing} >&2
   fi
   if [[ -n "${extra}" ]]; then
-    err "${short}: exported by the .so but NOT declared on SkeinSQLiteNativeImpl:"
+    err "${short}: exported by the .so but NOT declared on either permitted native class:"
     printf '  %s\n' ${extra} >&2
   fi
   if [[ -z "${missing}" && -z "${extra}" ]]; then

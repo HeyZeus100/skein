@@ -645,6 +645,7 @@ set_target_properties(skein_sqlite PROPERTIES
 # -----------------------------------------------------------------------------
 add_library(skein_sqlite_jni SHARED
   "${SKEIN_SQLITE_ROOT}/androidx-jni/skein_jni.c"
+  "${SKEIN_SQLITE_ROOT}/androidx-jni/skein_recovery_proof_jni.c"
 )
 
 target_include_directories(skein_sqlite_jni PRIVATE
