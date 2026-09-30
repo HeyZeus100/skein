@@ -1,0 +1,30 @@
+{
+  "unit": {
+    "counts": {
+      "passed": 5586,
+      "skipped": 86
+    },
+    "verified_files": 566,
+    "result_types": {},
+    "summary_json_count": 0
+  },
+  "screenshots": {
+    "counts": {
+      "passed": 1375,
+      "skipped": 80
+    },
+    "verified_files": 720,
+    "result_types": {
+      "unchanged": 552
+    },
+    "summary_json_count": 8
+  },
+  "source": "15941fd155b232f1433cd21d32472f6dc17b3109",
+  "limitations": [
+    "Host lint/unit/build/instrumentation compilation only; no actual recovery auth or runtime acceptance.",
+    "New contextual scripted integration3cases have not run yet.",
+    "Fresh40 consumed regression fixtures/evaluator and gold images unchanged; new production source is intentionally distinct from original frozen measurement.",
+    "No device install or physical acceptance."
+  ],
+  "review_preparation_error": "Initial root parsing attempt treated eight results-summary.json files as per-image records and raised KeyError(type); no result was accepted or changed. Corrected parser rehashes every manifest file and counts per-image /results/ records only."
+}
