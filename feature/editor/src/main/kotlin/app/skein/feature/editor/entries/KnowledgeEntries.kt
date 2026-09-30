@@ -32,6 +32,8 @@ import app.skein.core.designsystem.components.SkeinStatus
 import app.skein.core.designsystem.components.SkeinStatusKind
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSpacing
+import app.skein.core.model.DocId
+import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.IndexStore
 import app.skein.core.model.Persona
@@ -49,6 +51,7 @@ import app.skein.core.navigation.TransientKind
 import app.skein.core.navigation.contentKey
 import app.skein.feature.editor.backlinks.BacklinksDrawer
 import app.skein.feature.editor.backlinks.rememberBacklinksState
+import app.skein.feature.editor.notetab.NoteDeletionRegistry
 import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.shell.host.EntryAction
 import app.skein.feature.shell.host.EntryDocument
@@ -71,6 +74,9 @@ import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 import java.time.Duration
 import java.time.ZoneId
 
@@ -82,6 +88,8 @@ class KnowledgeEntryDeps(
     val clock: () -> Long = System::currentTimeMillis,
     val zone: ZoneId = ZoneId.systemDefault(),
     val preparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
+    val onDelete: ((DocId) -> Unit)? = null,
+    val noteDeletions: NoteDeletionRegistry? = null,
 )
 
 /** Counts from the current ingest pass, supplied by the app; a notification never sets this state. */
@@ -187,7 +195,7 @@ fun SourceEntry(
  * The Knowledge list: the timeline's list pieces over notes, files and AI
  * outputs. A row opens its item by kind, replacing the detail (§8.3 rule 3).
  * ⌕ opens the shell's search overlay (the retired command bar's search).
- * ponytail: no inline search field, row menu or selected row yet (KNOWLEDGE_UX_SPEC.md
+ * ponytail: no inline search field or selected row yet (KNOWLEDGE_UX_SPEC.md
  * §3–§4, Wave 6). Filter selection lives only in the entry's lock-cleared T3 owner, never a Bundle.
  */
 @Composable
@@ -222,6 +230,14 @@ private fun KnowledgeList(
         TimelineScreen(
             state = state,
             onEntryClick = { shell.open(it) },
+            menuActions = { document ->
+                val onDelete = deps.onDelete
+                if (onDelete != null && document.canDeleteIndependentNote()) {
+                    listOf(SkeinAction("Delete…", SkeinIcons.Delete, destructive = true) { onDelete(document.id) })
+                } else {
+                    emptyList()
+                }
+            },
             modifier = Modifier.weight(1f),
             zone = deps.zone,
             now = deps.clock,
@@ -278,12 +294,12 @@ private fun NoteRoute(
     val repository =
         if (draft) remember(deps.repository, rawId) { DraftNoteRepository(deps.repository, rawId) } else deps.repository
     // A draft is never gone: with no row it is an empty draft (OBJECT_LIFECYCLE_SPEC.md §3.5).
-    val document = if (draft) null else rememberEntryDocument(deps.repository, rawId)
-    if (document is EntryDocument.Gone) {
+    val document = rememberEntryDocument(deps.repository, rawId)
+    if (!draft && document is EntryDocument.Gone && deps.noteDeletions?.isDeleting(rawId) != true) {
         shell.GoneEntry(rawId, "This note was deleted.", goneTo, goneLabel(goneTo))
         return
     }
-    if (document == EntryDocument.Loading) return
+    if (!draft && document == EntryDocument.Loading) return
     val scope = rememberCoroutineScope()
     var writer by remember { mutableStateOf<DisposableHandle?>(null) }
     val onePane = LocalSkeinWindowLayout.current.maxPanes == 1
@@ -300,6 +316,11 @@ private fun NoteRoute(
             writer = null
         },
         navigationIcon = if (hasNav) ({ shell.EntryNavButton(key) }) else null,
+        noteDeletions = deps.noteDeletions,
+        onDelete =
+            deps.onDelete
+                ?.takeIf { (document as? EntryDocument.Present)?.document?.canDeleteIndependentNote() == true }
+                ?.let { request -> { request(rawId) } },
     )
 }
 
@@ -353,3 +374,10 @@ internal fun goneLabel(goneTo: Destination?) = if (goneTo == null) "Back" else "
 
 /** Inside the lock's shared observer window (UnlockManager's 500 ms). */
 private val LOCK_FLUSH: Duration = Duration.ofMillis(400)
+
+/** File/extracted-note deletion remains gated on its atomic lifecycle contract (LC-09). */
+fun Document.canDeleteIndependentNote(): Boolean {
+    if (kind != DocumentKind.NOTE && kind != DocumentKind.AIOUT) return false
+    val source = frontmatter["source"]
+    return source == null || source == JsonNull || (source as? JsonPrimitive)?.contentOrNull?.isBlank() == true
+}

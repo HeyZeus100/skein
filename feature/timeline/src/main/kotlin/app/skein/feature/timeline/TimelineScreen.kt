@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.Persona
@@ -72,6 +73,7 @@ public fun TimelineScreen(
     zone: ZoneId = ZoneId.systemDefault(),
     now: () -> Long = System::currentTimeMillis,
     bottomContentPadding: Dp = 0.dp,
+    menuActions: (Document) -> List<SkeinAction> = { emptyList() },
 ) {
     val entries by state.entries.collectAsState()
     val window by state.window.collectAsState()
@@ -105,6 +107,7 @@ public fun TimelineScreen(
                     hasMore = hasMore,
                     onLoadMore = state::loadMore,
                     onEntryClick = onEntryClick,
+                    menuActions = menuActions,
                     personaNames = personaNames,
                     zone = zone,
                     nowMillis = now(),
@@ -145,6 +148,7 @@ private fun EntryList(
     hasMore: Boolean,
     onLoadMore: () -> Unit,
     onEntryClick: (Document) -> Unit,
+    menuActions: (Document) -> List<SkeinAction>,
     personaNames: Map<String, String>,
     zone: ZoneId,
     nowMillis: Long,
@@ -187,6 +191,7 @@ private fun EntryList(
                     personaName = document.personaId?.let { personaNames[it] ?: it },
                     relativeTime = relativeTime(document.updatedAt, nowMillis, zone, locale),
                     onClick = { onEntryClick(document) },
+                    menuActions = menuActions(document),
                 )
             }
         }

@@ -33,6 +33,8 @@ import app.skein.feature.editor.share.ShareIntents
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -67,6 +69,37 @@ public class NoteTabState(
     public val onOpenDocument: (DocId, String) -> Unit = { _, _ -> },
     private val autosaveDebounce: Duration = Duration.ofMillis(500),
 ) {
+    private val writeMutex = Mutex()
+
+    @Volatile
+    private var deletionBlocked = false
+
+    private var lastSavedTitle = ""
+
+    /** Stops title writes and editor saves synchronously, including later dispose/lock flushes. */
+    internal fun pauseForDeletion() {
+        deletionBlocked = true
+        editorState.pauseForDeletion()
+    }
+
+    internal suspend fun awaitDeletionIdle() {
+        editorState.awaitDeletionIdle()
+        writeMutex.withLock { }
+    }
+
+    internal fun resumeAfterDeletionFailure() {
+        deletionBlocked = false
+        editorState.resumeAfterDeletionFailure()
+    }
+
+    internal suspend fun flushAfterDeletionFailure() {
+        try {
+            saveTitle()
+        } finally {
+            flush()
+        }
+    }
+
     /** Current title — seeded from the loaded document, then editable via [onTitleChange]. */
     public var title: String by mutableStateOf("")
         private set
@@ -130,10 +163,18 @@ public class NoteTabState(
      * uncaught throw here crashes the app. The last accepted title stays.
      */
     public fun onTitleChange(newTitle: String) {
+        if (deletionBlocked) return
         title = newTitle
-        scope.launch {
+        scope.launch { saveTitle() }
+    }
+
+    private suspend fun saveTitle() {
+        writeMutex.withLock {
+            if (deletionBlocked || title == lastSavedTitle) return@withLock
+            val pending = title
             try {
-                vaultRepository.renameDocument(docId, newTitle)
+                vaultRepository.renameDocument(docId, pending)
+                lastSavedTitle = pending
             } catch (_: IllegalArgumentException) {
                 // Not a valid name (yet); keep the stored one.
             } catch (_: NoSuchElementException) {
@@ -211,6 +252,7 @@ public class NoteTabState(
             return
         }
         title = document.title
+        lastSavedTitle = document.title
         editorState =
             EditorState(
                 initial = TextFieldValue(Frontmatter.render(document.frontmatter, document.bodyMd.orEmpty())),
@@ -219,6 +261,7 @@ public class NoteTabState(
                 autosaveDebounce = autosaveDebounce,
                 autosaveScope = scope,
             )
+        if (deletionBlocked) editorState.pauseForDeletion()
         loading = false
     }
 
@@ -234,19 +277,22 @@ public class NoteTabState(
      * the pre-`E7.I3` single body write.
      */
     private suspend fun saveEditorValue(value: TextFieldValue) {
-        val (frontmatter, body) = Frontmatter.parse(value.text)
-        if (frontmatter.isNotEmpty()) {
-            val pinned: JsonObject =
-                buildJsonObject {
-                    frontmatter.forEach { (key, element) -> if (key != FrontmatterKeys.ID) put(key, element) }
-                    put(FrontmatterKeys.ID, JsonPrimitive(docId))
-                }
-            vaultRepository.updateFrontmatter(docId, pinned)
+        writeMutex.withLock {
+            if (deletionBlocked) return@withLock
+            val (frontmatter, body) = Frontmatter.parse(value.text)
+            if (frontmatter.isNotEmpty()) {
+                val pinned: JsonObject =
+                    buildJsonObject {
+                        frontmatter.forEach { (key, element) -> if (key != FrontmatterKeys.ID) put(key, element) }
+                        put(FrontmatterKeys.ID, JsonPrimitive(docId))
+                    }
+                vaultRepository.updateFrontmatter(docId, pinned)
+            }
+            // Body only: a save that re-sent [title] would revert a rename made
+            // elsewhere (OBJECT_LIFECYCLE_SPEC.md N7). A chat or attachment body is
+            // not writable; that throw lands in `EditorState`'s save error state.
+            vaultRepository.replaceBody(docId, body)
         }
-        // Body only: a save that re-sent [title] would revert a rename made
-        // elsewhere (OBJECT_LIFECYCLE_SPEC.md N7). A chat or attachment body is
-        // not writable; that throw lands in `EditorState`'s save error state.
-        vaultRepository.replaceBody(docId, body)
     }
 
     /**

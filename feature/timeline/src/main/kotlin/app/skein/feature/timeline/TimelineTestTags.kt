@@ -30,6 +30,8 @@ public object TimelineTestTags {
 
     public fun tagChip(tag: String): String = "timeline_tag_chip_$tag"
 
+    public fun entryMenu(docId: String): String = "timeline_menu_$docId"
+
     public fun entryRow(docId: String): String = ENTRY_ROW_PREFIX + docId
 
     public fun dayHeader(day: LocalDate): String = DAY_HEADER_PREFIX + day.toEpochDay()

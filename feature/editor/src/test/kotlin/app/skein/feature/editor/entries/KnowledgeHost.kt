@@ -8,11 +8,13 @@ import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import app.skein.core.model.DocId
 import app.skein.core.model.VaultRepository
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.destination
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockManager
+import app.skein.feature.editor.notetab.NoteDeletionRegistry
 import app.skein.feature.shell.host.PlaceholderEntry
 import app.skein.feature.shell.host.SkeinShellHost
 import app.skein.feature.shell.host.SkeinShellState
@@ -49,6 +51,8 @@ internal fun KnowledgeHost(
     clock: () -> Long = System::currentTimeMillis,
     zone: ZoneId = ZoneOffset.UTC,
     preparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
+    onDelete: ((DocId) -> Unit)? = null,
+    noteDeletions: NoteDeletionRegistry? = null,
 ) {
     val content =
         @Composable {
@@ -56,13 +60,15 @@ internal fun KnowledgeHost(
             val shell = rememberSkeinShellState(manager)
             onShell(shell)
             val deps =
-                remember(vault, preparation) {
+                remember(vault, preparation, onDelete, noteDeletions) {
                     KnowledgeEntryDeps(
                         vault,
                         InMemoryIndexStore(),
                         clock = clock,
                         zone = zone,
                         preparation = preparation,
+                        onDelete = onDelete,
+                        noteDeletions = noteDeletions,
                     )
                 }
             SkeinShellHost(

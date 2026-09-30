@@ -35,6 +35,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -50,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -58,6 +60,7 @@ import app.skein.core.designsystem.components.SkeinDropdownMenu
 import app.skein.core.designsystem.components.SkeinNotice
 import app.skein.core.designsystem.components.rememberSkeinMenuAnchor
 import app.skein.core.designsystem.components.skeinMenuAnchor
+import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.LocalSkeinEditorColors
 import app.skein.core.designsystem.theme.LocalSkeinTokens
 import app.skein.core.designsystem.theme.rememberSkeinMarkdownStyle
@@ -119,6 +122,8 @@ public fun NoteTab(
     markdownStyle: MarkdownStyle = rememberSkeinMarkdownStyle(),
     unlockState: StateFlow<UnlockState>? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
+    onDelete: (() -> Unit)? = null,
+    noteDeletions: NoteDeletionRegistry? = null,
 ) {
     val scope = rememberCoroutineScope()
     val state =
@@ -132,10 +137,12 @@ public fun NoteTab(
             )
         }
 
-    DisposableEffect(state) {
+    DisposableEffect(state, noteDeletions) {
+        val deletionRegistration = noteDeletions?.register(state)
         registerFlush(state::flush)
         onDispose {
             unregisterFlush()
+            deletionRegistration?.dispose()
             // UX-P0-11: `scope` dies with this composition (tab close, note →
             // chat, lock, fold) and takes the debounce and any in-flight write
             // with it, so the last edits are flushed on a scope that outlives it.
@@ -205,6 +212,7 @@ public fun NoteTab(
             onTitleChange = state::onTitleChange,
             onOpenGraph = { onOpenGraph(docId) },
             shareMenuEnabled = unlocked,
+            onDelete = onDelete,
             onShareAsText = {
                 context.startActivity(ShareIntents.chooser(state.shareAsTextIntent(), title = state.title))
             },
@@ -290,6 +298,7 @@ private fun NoteTabHeader(
     onShareAsText: () -> Unit,
     onSaveAs: (SaveAsFormat) -> Unit,
     onExportPdf: () -> Unit,
+    onDelete: (() -> Unit)?,
 ) {
     val glyphs = LocalSkeinTokens.current.glyphs
     Surface(color = MaterialTheme.colorScheme.surface) {
@@ -310,6 +319,7 @@ private fun NoteTabHeader(
                 onShareAsText = onShareAsText,
                 onSaveAs = onSaveAs,
                 onExportPdf = onExportPdf,
+                onDelete = onDelete,
             )
             // Restrained glyph set (spec §8.1): the ✦ glyph rendered as
             // plain Text inside the IconButton rather than a Material
@@ -341,6 +351,7 @@ private fun ShareMenuButton(
     onShareAsText: () -> Unit,
     onSaveAs: (SaveAsFormat) -> Unit,
     onExportPdf: () -> Unit,
+    onDelete: (() -> Unit)?,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val menuAnchor = rememberSkeinMenuAnchor()
@@ -348,14 +359,21 @@ private fun ShareMenuButton(
         IconButton(
             onClick = { expanded = true },
             enabled = enabled,
-            modifier = Modifier.size(40.dp).testTag(NoteTabTestTags.SHARE_BUTTON),
+            modifier =
+                Modifier
+                    .size(if (onDelete == null) 40.dp else 48.dp)
+                    .testTag(if (onDelete == null) NoteTabTestTags.SHARE_BUTTON else NoteTabTestTags.ACTIONS_BUTTON),
         ) {
             // Local glyph, not from `LocalSkeinTokens.Glyphs` — that registry
             // lives in `:feature:shell`, off-limits to this bead (another
             // agent is editing shell/app concurrently). "↗" reads as
             // "send/export out" without pulling in a Material icon asset,
             // matching the restrained-glyph convention above.
-            Text(text = "↗", style = MaterialTheme.typography.titleMedium)
+            if (onDelete == null) {
+                Text(text = "↗", style = MaterialTheme.typography.titleMedium)
+            } else {
+                Icon(painterResource(SkeinIcons.More), contentDescription = "Note actions")
+            }
         }
         SkeinDropdownMenu(expanded = expanded, onDismissRequest = {
             expanded = false
@@ -392,6 +410,20 @@ private fun ShareMenuButton(
                 },
                 modifier = Modifier.testTag(NoteTabTestTags.SHARE_MENU_EXPORT_PDF),
             )
+            if (onDelete != null) {
+                HorizontalDivider()
+                DropdownMenuItem(
+                    text = { Text("Delete…", color = MaterialTheme.colorScheme.error) },
+                    leadingIcon = {
+                        Icon(painterResource(SkeinIcons.Delete), null, tint = MaterialTheme.colorScheme.error)
+                    },
+                    onClick = {
+                        expanded = false
+                        onDelete()
+                    },
+                    modifier = Modifier.testTag(NoteTabTestTags.DELETE_ACTION),
+                )
+            }
         }
     }
 }
@@ -404,6 +436,8 @@ public object NoteTabTestTags {
     public const val LOADING: String = "app.skein.feature.editor.notetab.NoteTab.loading"
     public const val ERROR: String = "app.skein.feature.editor.notetab.NoteTab.error"
     public const val LINK_NOTICE: String = "app.skein.feature.editor.notetab.NoteTab.linkNotice"
+    public const val ACTIONS_BUTTON: String = "app.skein.feature.editor.notetab.NoteTab.actionsButton"
+    public const val DELETE_ACTION: String = "app.skein.feature.editor.notetab.NoteTab.deleteAction"
     public const val SHARE_BUTTON: String = "app.skein.feature.editor.notetab.NoteTab.shareButton"
     public const val SHARE_MENU_TEXT: String = "app.skein.feature.editor.notetab.NoteTab.shareMenu.text"
     public const val SHARE_MENU_SAVE_MARKDOWN: String =

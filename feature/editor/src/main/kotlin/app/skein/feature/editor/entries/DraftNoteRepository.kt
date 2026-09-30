@@ -26,8 +26,28 @@ internal class DraftNoteRepository(
 ) : VaultRepository by vault {
     private val creating = Mutex()
 
-    override suspend fun getDocument(id: DocId): Document? =
-        vault.getDocument(id) ?: if (id == draftId) empty() else null
+    @Volatile
+    private var persisted = false
+
+    override suspend fun getDocument(id: DocId): Document? {
+        val document = vault.getDocument(id)
+        if (id != draftId) return document
+        if (document != null) persisted = true
+        return document ?: if (persisted) null else empty()
+    }
+
+    private suspend fun storedDraft(): Document? {
+        val document = vault.getDocument(draftId)
+        if (document != null) persisted = true
+        if (document == null && persisted) throw NoSuchElementException("Note was deleted")
+        return document
+    }
+
+    private suspend fun createDraft(
+        title: String,
+        body: String,
+    ): Document =
+        vault.createDocument(NewDocument(DocumentKind.NOTE, title, body, id = draftId)).also { persisted = true }
 
     // The editor saves a title through renameDocument and a body through
     // replaceBody (skein-cash LC-05); either one's first non-blank write creates the row.
@@ -39,10 +59,10 @@ internal class DraftNoteRepository(
         if (id != draftId) return vault.renameDocument(id, title, ifTitleIs)
         return creating.withLock {
             when {
-                vault.getDocument(id) != null -> vault.renameDocument(id, title, ifTitleIs)
+                storedDraft() != null -> vault.renameDocument(id, title, ifTitleIs)
                 !ifTitleIs.isNullOrEmpty() -> null
                 title.isBlank() -> empty()
-                else -> vault.createDocument(NewDocument(DocumentKind.NOTE, title, "", id = id))
+                else -> createDraft(title, "")
             }
         }
     }
@@ -54,9 +74,9 @@ internal class DraftNoteRepository(
         if (id != draftId) return vault.replaceBody(id, bodyMd)
         return creating.withLock {
             when {
-                vault.getDocument(id) != null -> vault.replaceBody(id, bodyMd)
+                storedDraft() != null -> vault.replaceBody(id, bodyMd)
                 bodyMd.isBlank() -> empty()
-                else -> vault.createDocument(NewDocument(DocumentKind.NOTE, "", bodyMd, id = id))
+                else -> createDraft("", bodyMd)
             }
         }
     }
@@ -65,7 +85,7 @@ internal class DraftNoteRepository(
         id: DocId,
         frontmatter: JsonObject,
     ): Document {
-        if (id == draftId) creating.withLock { if (vault.getDocument(id) == null) return empty() }
+        if (id == draftId) creating.withLock { if (storedDraft() == null) return empty() }
         return vault.updateFrontmatter(id, frontmatter)
     }
 

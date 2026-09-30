@@ -138,6 +138,23 @@ public class EditorState(
     /** Guards [onSave] so a debounced save and a forced [flush] never overlap. */
     private val saveMutex = Mutex()
 
+    @Volatile
+    private var deletionBlocked = false
+
+    /** Stop admitting edits and saves before the coordinator starts deleting. */
+    internal fun pauseForDeletion() {
+        deletionBlocked = true
+    }
+
+    /** Drain a write already admitted before [pauseForDeletion]. */
+    internal suspend fun awaitDeletionIdle() {
+        saveMutex.withLock { }
+    }
+
+    internal fun resumeAfterDeletionFailure() {
+        deletionBlocked = false
+    }
+
     /** Text most recently handed to [onSave] successfully. */
     private var lastSavedText: String = initial.text
 
@@ -156,6 +173,7 @@ public class EditorState(
      * autosave to snapshot the raw Markdown on debounce.
      */
     public fun onValueChange(newValue: TextFieldValue) {
+        if (deletionBlocked) return
         val guard = ProtectedIdGuard.guard(previous = value.text, next = newValue.text)
         val guarded =
             if (guard.rejected) {
@@ -227,6 +245,7 @@ public class EditorState(
      * the caller knows content may still be pending.
      */
     public suspend fun flush(deadline: Duration = Duration.ofSeconds(2)): Boolean {
+        if (deletionBlocked) return true
         val current = value
         if (current.text == lastSavedText && autosaveStatusState.value != AutosaveStatus.SAVING) {
             return true
@@ -242,10 +261,14 @@ public class EditorState(
     /** Runs [onSave] for [pending], updating [autosaveStatus]/[autosaveError]. Serialized by [saveMutex]. */
     private suspend fun performSave(pending: TextFieldValue): Boolean =
         saveMutex.withLock {
+            if (deletionBlocked) return@withLock true
             if (pending.text == lastSavedText) return@withLock true
             autosaveStatusState.value = AutosaveStatus.SAVING
             try {
                 onSave(pending)
+                // A suspended NoteTab writer may have skipped this save. Keep the
+                // dirty buffer for an explicit rollback flush, never acknowledge it.
+                if (deletionBlocked) return@withLock true
                 lastSavedText = pending.text
                 autosaveErrorState.value = null
                 autosaveStatusState.value = AutosaveStatus.SAVED
