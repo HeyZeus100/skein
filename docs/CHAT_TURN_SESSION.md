@@ -43,11 +43,19 @@ inside an already executing suspended/blocking call cannot be forcibly erased; c
 and repository quiescence remain cooperative. The lock path never waits for that call's
 structured children or extends an idle-lock policy.
 
-`markDeleting(chatId)` freezes/removes a queued or active turn and suppresses its partial
-write. Current history entries still hide Delete (LC-22); there is no production chat-delete
-UI call in this baseline. That eventual delete flow must mark the pending deletion before
-waiting/stopping/deleting, and dispose the consumed draft entry. The repository already
-cascades durable chat drafts and messages. This change does not add a delete dialog.
+Chat history and the stored chat header expose Delete through the shared confirmation
+coordinator. `tryBeginDelete(chatId)` atomically reserves an idle chat against send/retry
+admission; queued, preparing, generating and finalizing turns refuse deletion (LC-22, L10).
+The user must Stop an active answer first. A failed transaction releases that reservation.
+The repository's synchronous postcommit hook calls `finishDelete` and
+`SessionDraftStore.discardCommitted`: retained turn/draft flows are scrubbed before
+repository signals publish, including when cancellation races the return from COMMIT.
+Both workspace stacks are then pruned. The repository cascades durable drafts and messages.
+Deleting a source also filters live retained context offers; quotes already saved inside
+other conversations remain and the confirmation discloses them. Independent notes use
+the same coordinator with a session editor registry that pauses and drains autosave;
+rollback resumes pending edits, and committed deletion blocks late editor registration.
+File-backed extracted notes and attachments remain outside this deletion UI (LC-09).
 
 The focused tests cover durable FIFO admission, navigation/recreation, owner/model/history
 snapshots, atomic first send, blank recovery, Stop/lock idempotence, pending-delete

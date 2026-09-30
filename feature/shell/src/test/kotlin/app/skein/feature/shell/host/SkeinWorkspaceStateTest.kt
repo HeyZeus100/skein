@@ -6,7 +6,9 @@ import app.skein.core.navigation.Destination
 import app.skein.core.navigation.GraphKey
 import app.skein.core.navigation.KnowledgeHomeKey
 import app.skein.core.navigation.NewChatKey
+import app.skein.core.navigation.NewNoteKey
 import app.skein.core.navigation.NoteKey
+import app.skein.core.navigation.ObjectKind
 import app.skein.core.navigation.SkeinNavigationState
 import app.skein.core.vault.session.UnlockManager
 import org.junit.Assert.assertEquals
@@ -193,5 +195,39 @@ class SkeinWorkspaceStateTest {
         assertFalse(workspace.splitRequested)
         assertEquals(SkeinNavigationState.initial(), workspace.primary.nav)
         assertEquals(SkeinNavigationState.initial(), workspace.secondary.nav)
+    }
+
+    @Test
+    fun `committed deletion prunes both workspaces without selecting another object`() {
+        val workspace = SkeinWorkspaceState(shell("primary"), shell("secondary"))
+        workspace.primary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        workspace.primary.navigate { follow(it, ConnectionsKey(NOTE_B)) }
+        workspace.secondary.navigate { goTo(it, GraphKey(NOTE_B)) }
+        workspace.secondary.navigate { goTo(it, ChatKey(CHAT_A)) }
+        workspace.activate(WorkspacePane.SECONDARY)
+        val otherChat = workspace.secondary.nav.currentStack
+        listOf(workspace.primary, workspace.secondary).forEach { it.pruneDocument(NOTE_B.value) }
+        assertEquals(listOf(KnowledgeHomeKey), workspace.primary.nav.stack(Destination.KNOWLEDGE))
+        assertEquals(listOf(GraphKey()), workspace.secondary.nav.stack(Destination.GRAPH))
+        assertEquals(otherChat, workspace.secondary.nav.currentStack)
+        assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
+    }
+
+    @Test
+    fun `deleted saved new note is pruned while matching new chat draft stays`() {
+        val owner = shell("primary")
+        owner.navigate { goTo(it, NewChatKey(NOTE_B)) }
+        owner.navigate { goTo(it, NewNoteKey(NOTE_B)) }
+        owner.pruneDocument(NOTE_B.value)
+        assertEquals(listOf(KnowledgeHomeKey), owner.nav.stack(Destination.KNOWLEDGE))
+        assertTrue(owner.nav.stack(Destination.CHAT).contains(NewChatKey(NOTE_B)))
+    }
+
+    @Test
+    fun `deletion removes imported raw ids without coercing them into saved uuid routes`() {
+        val owner = shell("primary")
+        owner.navigate { openDocument(it, "fixture-imported-note", ObjectKind.NOTE) }
+        owner.pruneDocument("fixture-imported-note")
+        assertEquals(listOf(KnowledgeHomeKey), owner.nav.stack(Destination.KNOWLEDGE))
     }
 }

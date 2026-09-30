@@ -119,6 +119,7 @@ fun SkeinShellHost(
     now: () -> Long = System::currentTimeMillis,
     onNavigationReady: () -> Unit = {},
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2(),
+    overlay: @Composable () -> Unit = {},
     entryContent: @Composable (SkeinKey) -> Unit = { PlaceholderEntry(it) },
 ) {
     val resolver by rememberUpdatedState(resolveKinds)
@@ -309,6 +310,7 @@ fun SkeinShellHost(
                     }
                 }
             }
+            overlay()
         }
     }
 }

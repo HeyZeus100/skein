@@ -56,6 +56,7 @@ import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.host.WorkspacePane
 import app.skein.feature.shell.host.rememberSkeinWorkspaceState
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
+import app.skein.shell.DocumentDeleteNotices
 import app.skein.shell.NavShell
 import app.skein.shell.NotificationDeepLinks
 import app.skein.system.AppearancePrefs
@@ -294,6 +295,7 @@ class MainActivity : FragmentActivity() {
             // skein-xtov.24.7 (AL-08) / .24.23 (AL-09c): the NavDisplay shell. Its state sits above the gate
             // (spec §8.8), so a lock keeps the user's place; a vault reset clears it (M4e).
             val workspace = rememberSkeinWorkspaceState(vault.unlockManager)
+            val deletionNotices = remember(workspace) { DocumentDeleteNotices() }
             val navShell = workspace.primary
             // skein-xtov.24.20 (UT-14, `UX_TEST_PLAN.md` §2.6): the Compose
             // root, so `tools/ux/fold-watch.sh`'s `uiautomator dump` can find
@@ -387,6 +389,7 @@ class MainActivity : FragmentActivity() {
                                         navigationReady = true
                                     },
                                     knowledgePreparation = knowledgePreparation,
+                                    deletionNotices = deletionNotices,
                                 )
                             }
                         }

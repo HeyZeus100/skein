@@ -232,13 +232,18 @@ class Navigator(
     fun prune(
         state: SkeinNavigationState,
         id: String,
+        includeSavedNoteDraft: Boolean = false,
     ): SkeinNavigationState {
         val target = SkeinId.parse(id)
-        val deleted = { x: SkeinId, _: IdRole -> x == target }
+        val deleted = { x: SkeinId, role: IdRole -> role != IdRole.DRAFT && x == target }
         val stacks =
             state.stacks.mapValues { (_, stack) ->
                 stack.mapNotNull { key ->
-                    if (key is TransientKey) key.takeUnless { state.rawIdOf(it) == id } else key.surviving(deleted)
+                    when {
+                        key is TransientKey -> key.takeUnless { state.rawIdOf(it) == id }
+                        includeSavedNoteDraft && key is NewNoteKey && key.draftId == target -> null
+                        else -> key.surviving(deleted)
+                    }
                 }
             }
         return normalised(state.topLevel, stacks, state.space.takeUnless { it == target }, state.transientIds)

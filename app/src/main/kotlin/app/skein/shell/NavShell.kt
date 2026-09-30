@@ -74,11 +74,21 @@ internal fun NavShell(
     modifier: Modifier = Modifier,
     onNavigationReady: () -> Unit = {},
     knowledgePreparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
+    deletionNotices: DocumentDeleteNotices = remember { DocumentDeleteNotices() },
 ) {
     val active = workspace.activeShell
+    val deletions = rememberDocumentDeletion(session, listOf(workspace.primary, workspace.secondary), deletionNotices)
     val modelRevision = remember(session.models) { mutableIntStateOf(0) }
     // History items capture their shell in onOpen, even when both panes have the same selection.
-    val history = key(active) { rememberChatHistory(session.repository, active) }
+    val history =
+        key(active) {
+            rememberChatHistory(
+                session.repository,
+                active,
+                onDelete = deletions.coordinator::request,
+                turns = session.models?.turns,
+            )
+        }
     SkeinWorkspaceHost(
         workspace = workspace,
         history = history,
@@ -95,6 +105,7 @@ internal fun NavShell(
                 if (paneShell === workspace.primary) onNavigationReady()
             },
             knowledgePreparation = knowledgePreparation,
+            deletionServices = deletions,
         )
     }
 }
@@ -115,20 +126,31 @@ internal fun NavShell(
     onNavigationReady: () -> Unit = {},
     knowledgePreparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
     modelRevision: MutableIntState = remember(session.models) { mutableIntStateOf(0) },
+    deletionServices: DocumentDeletionServices? = null,
 ) {
+    val deletions =
+        deletionServices ?: rememberDocumentDeletion(session, listOf(shell), remember { DocumentDeleteNotices() })
     val personas = session.personaService
     val knowledge =
-        remember(session, knowledgePreparation) {
+        remember(session, knowledgePreparation, deletions) {
             KnowledgeEntryDeps(
                 session.repository,
                 session.indexStore,
                 personas.observeAll(),
                 preparation = knowledgePreparation,
+                onDelete = deletions.coordinator::request,
+                noteDeletions = deletions.notes,
             )
         }
     val handoff = remember(session, shell) { ChatHandoff() }
     val defaultSpaceId by produceState<String?>(null, personas) { value = personas.default().id }
-    val history = rememberChatHistory(session.repository, shell)
+    val history =
+        rememberChatHistory(
+            session.repository,
+            shell,
+            onDelete = deletions.coordinator::request,
+            turns = session.models?.turns,
+        )
     val models = session.models
     val modelVersion = modelRevision.intValue
     // App-owned imports and unlock adoption can finish while Chat remains visible.
@@ -156,6 +178,7 @@ internal fun NavShell(
             drafts = models?.drafts,
             defaultSpaceId = defaultSpaceId,
             modelStatus = modelStatus,
+            onDelete = deletions.coordinator::request,
         )
     val graph = remember(session) { GraphEntryDeps(session.repository, session.indexStore) }
     val modelsDeps = rememberModelsEntryDeps(models, shell, modelVersion) { modelRevision.intValue++ }
@@ -173,6 +196,7 @@ internal fun NavShell(
         history = history,
         spaces = rememberSpaces(personas, shell),
         search = remember(session) { vaultSearch(session.repository) },
+        overlay = { DocumentDeleteUi(deletions.coordinator) },
         detailPlaceholder = { destination ->
             when (destination) {
                 Destination.CHAT -> ChatDetailPlaceholder(shell, chat)

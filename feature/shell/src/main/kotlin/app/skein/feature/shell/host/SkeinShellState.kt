@@ -27,6 +27,7 @@ import app.skein.core.navigation.ObjectKind
 import app.skein.core.navigation.SkeinId
 import app.skein.core.navigation.SkeinNavCodec
 import app.skein.core.navigation.SkeinNavigationState
+import app.skein.core.navigation.contentKey
 import app.skein.core.vault.session.UnlockManager
 
 /**
@@ -150,6 +151,23 @@ class SkeinShellState internal constructor(
     /** Applies one [Navigator] transition; a null result (Back not consumed) changes nothing. */
     fun navigate(transition: Navigator.(SkeinNavigationState) -> SkeinNavigationState?) {
         navigator.transition(nav)?.let { if (navigationGuard?.invoke(it) != false) nav = it }
+    }
+
+    /** Committed deletion bypasses the other workspace's selection guard and clears every removed holder. */
+    fun pruneDocument(id: String) {
+        val before = nav
+        // New-note editors retain their draft key after saving. Only a confirmed stored object
+        // reaches this method; unsaved drafts and every NewChat composer stay untouched.
+        val after = navigator.prune(before, id, includeSavedNoteDraft = true)
+        nav = after
+        for (destination in Destination.entries) {
+            val surviving = after.stack(destination).mapTo(HashSet()) { it.contentKey }
+            before.stack(destination).filter { it.contentKey !in surviving }.forEach {
+                stores.clear(destination, it.contentKey)
+                entryState[destination]?.removeState(it.contentKey)
+            }
+        }
+        if (before != after) sheets.collapseAll()
     }
 
     /** The lock's hook: transient entries close and their raw ids leave memory; sheets fall back to the peek. */
