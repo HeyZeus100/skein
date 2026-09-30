@@ -35,6 +35,7 @@ import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.core.model.DocId
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.FileLifecycle
 import app.skein.core.model.IndexStore
 import app.skein.core.model.Persona
 import app.skein.core.model.VaultRepository
@@ -232,7 +233,7 @@ private fun KnowledgeList(
             onEntryClick = { shell.open(it) },
             menuActions = { document ->
                 val onDelete = deps.onDelete
-                if (onDelete != null && document.canDeleteIndependentNote()) {
+                if (onDelete != null && document.canRequestKnowledgeDelete(deps.repository)) {
                     listOf(SkeinAction("Delete…", SkeinIcons.Delete, destructive = true) { onDelete(document.id) })
                 } else {
                     emptyList()
@@ -319,8 +320,11 @@ private fun NoteRoute(
         noteDeletions = deps.noteDeletions,
         onDelete =
             deps.onDelete
-                ?.takeIf { (document as? EntryDocument.Present)?.document?.canDeleteIndependentNote() == true }
-                ?.let { request -> { request(rawId) } },
+                ?.takeIf {
+                    (document as? EntryDocument.Present)?.document?.canRequestKnowledgeDelete(
+                        repository,
+                    ) == true
+                }?.let { request -> { request(rawId) } },
     )
 }
 
@@ -381,3 +385,8 @@ fun Document.canDeleteIndependentNote(): Boolean {
     val source = frontmatter["source"]
     return source == null || source == JsonNull || (source as? JsonPrimitive)?.contentOrNull?.isBlank() == true
 }
+
+/** File-backed notes share the attachment's atomic confirmation; arbitrary AIOUT sources do not. */
+internal fun Document.canRequestKnowledgeDelete(repository: VaultRepository): Boolean =
+    canDeleteIndependentNote() ||
+        (repository is FileLifecycle && (kind == DocumentKind.ATTACHMENT || kind == DocumentKind.NOTE))

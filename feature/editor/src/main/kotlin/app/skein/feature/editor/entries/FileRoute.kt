@@ -24,6 +24,7 @@ import app.skein.core.designsystem.theme.SkeinSize
 import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.FileLifecycle
 import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
@@ -45,6 +46,7 @@ import kotlinx.serialization.json.longOrNull
 object FileRouteTestTags {
     const val ROOT = "knowledge_entry_file"
     const val TEXT = "knowledge_entry_file_text"
+    const val DELETE_MENU = "knowledge_entry_file_delete_menu"
 }
 
 /**
@@ -73,6 +75,9 @@ internal fun FileRoute(
     Column(Modifier.fillMaxSize().testTag(FileRouteTestTags.ROOT)) {
         shell.EntryTopBar(key, document.title.ifBlank { "Untitled file" }) {
             EntryAction(SkeinIcons.Link, "Connections") { shell.showConnections(rawId, onePane) }
+            if (document.kind == DocumentKind.ATTACHMENT && deps.repository is FileLifecycle) {
+                deps.onDelete?.let { request -> FileDeleteMenu { request(document.id) } }
+            }
         }
         Column(
             Modifier

@@ -116,6 +116,9 @@ class DeviceVaultOpener(
                         attachments = FileAttachmentStore(attachmentsDir, masterKey = ::keyCopy),
                         readers = repositoryReaders,
                     )
+                // Recover only unreferenced ciphertext before this session can admit imports or indexing.
+                // Live/shared attachment references and in-flight prior-session writes remain protected.
+                repository.sweepOrphanAttachments()
                 val indexStore = IndexStoreImpl(indexConnection)
                 val personaService = PersonaServiceImpl(personaConnection)
                 // skein-whg8: the ask-path composition root, built only when

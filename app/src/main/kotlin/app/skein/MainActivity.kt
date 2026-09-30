@@ -52,6 +52,7 @@ import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.entries.KnowledgePreparation
 import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.auth.BiometricUnlockScreen
+import app.skein.feature.shell.auth.VaultFactorRecoveryScreen
 import app.skein.feature.shell.auth.VaultResetScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.host.WorkspacePane
@@ -68,6 +69,7 @@ import app.skein.vault.VaultServices
 import app.skein.vault.VaultSession
 import app.skein.vault.gateOpenFailure
 import app.skein.vault.gatePhase
+import app.skein.vault.isFactorRecoveryActive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -475,7 +477,7 @@ object VaultGateTestTags {
  *  - session present → [unlockedContent];
  *  - `Unlocked` but no session → [OpeningVault] (runs `bringUp`; covers an
  *    Activity recreated mid-open and lets a failed open be retried);
- *  - recovery pending → [RecoveryRequiredNotice];
+ *  - known invalidated factor → explicit surviving-factor recovery;
  *  - probe outstanding → a blank surface ([ProbingVault]);
  *  - not initialised → [VaultSetupScreen]; a provisioned or refused-as-
  *    already-initialised setup flips the probe result to `true`;
@@ -499,7 +501,8 @@ private fun VaultGate(
 ) {
     val unlockState by vault.unlockManager.state.collectAsState()
     val session by vault.session.collectAsState()
-    var recoveryRequired by remember { mutableStateOf(false) }
+    val recoveryFactor by vault.unlockManager.recoveryFactor.collectAsState()
+    val recoveryRequired = isFactorRecoveryActive(unlockState, recoveryFactor)
     var provisioned by remember { mutableStateOf<Boolean?>(null) }
     // Reset remains an explicit choice followed by both confirmation steps.
     // Missing-key and unreadable-envelope paths carry distinct explanations.
@@ -513,7 +516,15 @@ private fun VaultGate(
         GatePhase.Opening ->
             SkeinTheme(mode = themeMode) { EdgeToEdgeSurface { m -> OpeningVault(vault.bootstrap, modifier = m) } }
         GatePhase.RecoveryRequired ->
-            SkeinTheme(mode = themeMode) { EdgeToEdgeSurface { m -> RecoveryRequiredNotice(modifier = m) } }
+            SkeinTheme(mode = themeMode) {
+                EdgeToEdgeSurface { m ->
+                    VaultFactorRecoveryScreen(
+                        unlockManager = vault.unlockManager,
+                        onUnlocked = { onUnlocked() },
+                        modifier = m.testTag(VaultGateTestTags.RECOVERY_REQUIRED),
+                    )
+                }
+            }
         GatePhase.Probing ->
             SkeinTheme(mode = themeMode) { EdgeToEdgeSurface { m -> ProbingVault(modifier = m) } }
         GatePhase.Setup ->
@@ -554,7 +565,7 @@ private fun VaultGate(
                         BiometricUnlockScreen(
                             unlockManager = vault.unlockManager,
                             onUnlocked = { onUnlocked() },
-                            onRecoveryRequired = { recoveryRequired = true },
+                            onRecoveryRequired = {}, // The manager state/factor drive recovery routing.
                             onNotInitialised = { provisioned = false },
                             onResetRequested = {
                                 missingKeyFactor = null
@@ -633,19 +644,6 @@ private fun OpeningVault(
                 }
             }
         }
-    }
-}
-
-/** `KeyPermanentlyInvalidated` surfaced; the rewrap UI (`E3.I5`+) is not wired in this bring-up. */
-@Composable
-private fun RecoveryRequiredNotice(modifier: Modifier = Modifier) {
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        Text(
-            text = "Skein can't verify your fingerprint or face anymore, and can't recover this automatically.",
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = GATE_GUTTER).testTag(VaultGateTestTags.RECOVERY_REQUIRED),
-        )
     }
 }
 

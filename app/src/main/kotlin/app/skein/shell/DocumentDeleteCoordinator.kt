@@ -4,6 +4,10 @@ import app.skein.core.model.DocId
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.EdgeKind
+import app.skein.core.model.FileDeletionReceipt
+import app.skein.core.model.FileDeletionTarget
+import app.skein.core.model.FileDeletionTargetChangedException
+import app.skein.core.model.FileLifecycle
 import app.skein.core.model.IndexStore
 import app.skein.core.model.VaultRepository
 import app.skein.feature.editor.entries.canDeleteIndependentNote
@@ -32,11 +36,18 @@ internal data class DocumentDeletePrompt(
     val title: String,
     val kind: DocumentKind,
     val consequence: String,
+    val file: FileDeletionTarget? = null,
 ) {
     val heading: String
         get() {
             val label = title.replace(Regex("\\s+"), " ").trim()
-            if (label.isEmpty()) return "Delete this ${if (kind == DocumentKind.CHAT) "chat" else "note"}?"
+            val noun =
+                when (kind) {
+                    DocumentKind.CHAT -> "chat"
+                    DocumentKind.ATTACHMENT -> "file"
+                    else -> "note"
+                }
+            if (label.isEmpty()) return "Delete this $noun?"
             val shortened = if (label.length > 60) label.take(59) + "…" else label
             return "Delete \"$shortened\"?"
         }
@@ -90,7 +101,15 @@ internal class DocumentDeleteCoordinator(
                 } else if (document.kind == DocumentKind.CHAT || document.canDeleteIndependentNote()) {
                     _prompt.value = buildPrompt(document)
                 } else {
-                    announce("File deletion isn't available yet.")
+                    val file = (repository as? FileLifecycle)?.resolveFileDeletion(id)
+                    if (file != null && file.sourceDependents.isNotEmpty()) {
+                        // Delete reservations cannot safely resume surviving editors after a metadata change yet.
+                        announce("This file is used by another saved item and can't be deleted yet.")
+                    } else if (file != null) {
+                        _prompt.value = buildPrompt(file.attachment, file)
+                    } else {
+                        announce("This file can't be deleted here.")
+                    }
                 }
             } catch (e: CancellationException) {
                 throw e
@@ -112,6 +131,11 @@ internal class DocumentDeleteCoordinator(
         _prompt.value = null
         busy = true
         scope.launch {
+            val file = target.file
+            if (file != null) {
+                confirmFile(target, file)
+                return@launch
+            }
             val committed = AtomicBoolean(false)
             var pending: PendingDocumentDelete? = null
             try {
@@ -176,6 +200,61 @@ internal class DocumentDeleteCoordinator(
         }
     }
 
+    private suspend fun confirmFile(
+        target: DocumentDeletePrompt,
+        file: FileDeletionTarget,
+    ) {
+        val reservations = mutableListOf<PendingDocumentDelete>()
+        val committed = AtomicBoolean(false)
+        var receipt: FileDeletionReceipt? = null
+        try {
+            check(file.sourceDependents.isEmpty()) { "Surviving file dependents require a reload reservation" }
+            val lifecycle = repository as? FileLifecycle ?: error("File deletion unavailable")
+            // Reserve every editor before awaiting any of them. No SQLite writer lock is held here.
+            for (document in listOf(file.attachment) + file.extractedNotes) {
+                val pending = reserve(document) ?: error("File writer unavailable")
+                reservations += pending
+            }
+            reservations.forEach { it.awaitIdle() }
+            repository.transaction {
+                receipt = lifecycle.deleteFile(file)
+                repository.afterTransactionCommit {
+                    committed.set(true)
+                    reservations.forEach { it.commit() }
+                }
+            }
+        } catch (e: CancellationException) {
+            if (!committed.get()) notices.interrupted()
+            throw e
+        } catch (_: FileDeletionTargetChangedException) {
+            announce("This file changed. Open it and try again.")
+        } catch (_: Exception) {
+            if (!committed.get()) announce("Couldn't delete \"${target.title.take(60)}\". Try again.")
+        } finally {
+            withContext(NonCancellable) {
+                if (committed.get()) {
+                    file.documentIds.forEach(prune)
+                    announce(
+                        if (receipt?.attachmentCleanupPending != false) {
+                            "File and extracted text deleted. File cleanup will retry when you unlock."
+                        } else {
+                            "File and extracted text deleted."
+                        },
+                    )
+                } else {
+                    for (pending in reservations.asReversed()) {
+                        try {
+                            withTimeoutOrNull(2_000) { pending.rollback() }
+                        } catch (_: Exception) {
+                            // A lock may have closed this session; never retry against a new one.
+                        }
+                    }
+                }
+            }
+            busy = false
+        }
+    }
+
     fun dismissMessage(message: DocumentDeleteMessage) {
         _message.compareAndSet(message, null)
     }
@@ -184,8 +263,16 @@ internal class DocumentDeleteCoordinator(
         _message.value = DocumentDeleteMessage(text, ++sequence)
     }
 
-    private suspend fun buildPrompt(document: Document): DocumentDeletePrompt {
-        val noun = if (document.kind == DocumentKind.CHAT) "conversation" else "note"
+    private suspend fun buildPrompt(
+        document: Document,
+        file: FileDeletionTarget? = null,
+    ): DocumentDeletePrompt {
+        val noun =
+            when {
+                file != null -> "file and its text"
+                document.kind == DocumentKind.CHAT -> "conversation"
+                else -> "note"
+            }
         val lines = mutableListOf("This permanently removes the $noun from Skein.")
         if (document.kind == DocumentKind.CHAT &&
             index
@@ -195,8 +282,11 @@ internal class DocumentDeleteCoordinator(
         ) {
             lines += "Notes and files it used stay in Knowledge."
         }
+        val removedIds = file?.documentIds ?: setOf(document.id)
+        val linkingIds = mutableSetOf<DocId>()
+        for (id in removedIds) linkingIds += index.edgesTo(id, EdgeKind.WIKILINK).map { it.srcId }
         val linkingNotes =
-            index.edgesTo(document.id, EdgeKind.WIKILINK).map { it.srcId }.distinct().count { id ->
+            linkingIds.filterNot { it in removedIds }.count { id ->
                 repository.getDocument(id)?.kind in setOf(DocumentKind.NOTE, DocumentKind.AIOUT)
             }
         if (linkingNotes > 0) {
@@ -207,7 +297,12 @@ internal class DocumentDeleteCoordinator(
                     "$linkingNotes notes link to it. Those links will show as missing."
                 }
         }
-        val quotingChats = repository.countChatsCiting(document.id)
+        val quotingChats =
+            if (file == null) {
+                repository.countChatsCiting(document.id)
+            } else {
+                (repository as FileLifecycle).countChatsCitingFile(file)
+            }
         if (quotingChats > 0) {
             lines +=
                 if (quotingChats == 1) {
@@ -216,6 +311,6 @@ internal class DocumentDeleteCoordinator(
                     "It was quoted in $quotingChats chats. Those quotes stay."
                 }
         }
-        return DocumentDeletePrompt(document.id, document.title, document.kind, lines.joinToString("\n\n"))
+        return DocumentDeletePrompt(document.id, document.title, document.kind, lines.joinToString("\n\n"), file)
     }
 }

@@ -10,6 +10,7 @@
 package app.skein.vault
 
 import app.skein.core.model.SkeinLog
+import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockState
 
 /** What `MainActivity`'s vault gate shows. */
@@ -22,7 +23,7 @@ sealed class GatePhase {
     /** Unlocked but not yet brought up: run `VaultBootstrap.bringUp`. */
     object Opening : GatePhase()
 
-    /** A Layer-0 key was permanently invalidated; the rewrap UI is not wired yet. */
+    /** A Layer-0 key was invalidated; offer an explicitly known surviving factor. */
     object RecoveryRequired : GatePhase()
 
     /** `VaultKeyProvider.isInitialised()` has not answered yet: show nothing actionable. */
@@ -51,7 +52,7 @@ fun gatePhase(
     when {
         session != null -> GatePhase.Open(session)
         unlockState is UnlockState.Unlocked -> GatePhase.Opening
-        recoveryRequired -> GatePhase.RecoveryRequired
+        recoveryRequired || unlockState is UnlockState.RecoveryRequired -> GatePhase.RecoveryRequired
         provisioned == null -> GatePhase.Probing
         !provisioned -> GatePhase.Setup
         else -> GatePhase.Unlock
@@ -90,3 +91,9 @@ fun gateOpenFailure(result: BringUpResult): String? =
             result.reason
         }
     }
+
+/** Keep the same prompt composition mounted throughout its surviving-factor authentication. */
+internal fun isFactorRecoveryActive(
+    state: UnlockState,
+    failedFactor: VaultKeyProvider.Factor?,
+): Boolean = state is UnlockState.RecoveryRequired || (state is UnlockState.Unlocking && failedFactor != null)
