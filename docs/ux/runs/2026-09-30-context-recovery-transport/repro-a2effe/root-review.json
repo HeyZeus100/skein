@@ -1,0 +1,214 @@
+{
+  "run": 36751785141,
+  "source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "artifacts": [
+    {
+      "name": "rb-build-a",
+      "bytes": 101089940,
+      "sha256": "340da9529cb0a65e2ff5542e74ea974af09944bbb2e1e6754a988655a956ba86",
+      "members": [
+        {
+          "path": "SHA256SUMS-a.txt",
+          "bytes": 96,
+          "sha256": "fd040b671351127a85c0bc7d48af275b3f5a6ebb204a3f74f440bdbd6d4b01e7"
+        },
+        {
+          "path": "context-a.txt",
+          "bytes": 363,
+          "sha256": "721b37202c330bad9e9e00b37a4187cfb65862fb65f764d1f6337ddc1bda4121"
+        },
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "bytes": 101089067,
+          "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0",
+          "native_payloads": [
+            {
+              "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+              "bytes": 10096,
+              "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+            },
+            {
+              "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+              "bytes": 7784,
+              "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+            },
+            {
+              "path": "lib/arm64-v8a/libonnxruntime.so",
+              "bytes": 27985944,
+              "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+            },
+            {
+              "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+              "bytes": 83208,
+              "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+            },
+            {
+              "path": "lib/arm64-v8a/libskein_llama.so",
+              "bytes": 25314032,
+              "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+            },
+            {
+              "path": "lib/arm64-v8a/libskein_sqlite.so",
+              "bytes": 6249008,
+              "sha256": "8a07b41579d72bbf36543e48f0016855fd1f1b5723a5b9d50d340cf4cab62cb7"
+            },
+            {
+              "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+              "bytes": 22304,
+              "sha256": "7e9bcb2377cc19c35de3625665c4a4f9eaaf647c842c20c6d5091fc2cd8a2767"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "so-determinism",
+      "bytes": 50711050,
+      "sha256": "ed29d8bb86575385182665a6d1b87f9622c6b726e2c5cfa2f925e82a00384b88",
+      "members": [
+        {
+          "path": "SHA256SUMS.txt",
+          "bytes": 852,
+          "sha256": "3fcbc15ca2c39de0a54107f335972b53d887176457629f34de9a79c0fcc38e65"
+        },
+        {
+          "path": "run.IJOZyffu/SHA256SUMS.txt",
+          "bytes": 501,
+          "sha256": "d0cae06845bc9c9c68419edd4e05426b99bd02f1f373607bf9b59f62038f4ac4"
+        },
+        {
+          "path": "run.IJOZyffu/build-1.log",
+          "bytes": 40178,
+          "sha256": "82ab704e94f6ce0dc43b093cb9371b289b4e0e59621bf8d58a2a035a7315ecaf"
+        },
+        {
+          "path": "run.IJOZyffu/build-2.log",
+          "bytes": 38595,
+          "sha256": "39c03839f8e5b0d985a92c48eec990d5b4ae039cbaea7e989600797411c30520"
+        },
+        {
+          "path": "run.IJOZyffu/context.txt",
+          "bytes": 552,
+          "sha256": "c525efa7151f43cb81f7c1060bae113ec8f4549ae74ca9257ad7bb27961523f8"
+        },
+        {
+          "path": "run.IJOZyffu/libskein_llama.1.2aefda01.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "run.IJOZyffu/libskein_llama.2.2aefda01.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "run.IJOZyffu/result.txt",
+          "bytes": 14,
+          "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04"
+        },
+        {
+          "path": "run.log",
+          "bytes": 777,
+          "sha256": "36214f8183463cf49bc39f986e654688d9ad952faef227a038301f4dcfe8f61b"
+        },
+        {
+          "path": "workflow-context.txt",
+          "bytes": 85,
+          "sha256": "1f6240df0ee547d666ae66c7581bf0f644724d0ee8d0bcf9d8d98de1dca8eb1d"
+        }
+      ]
+    },
+    {
+      "name": "rb-build-b",
+      "bytes": 101089954,
+      "sha256": "9fcfd59b8806a1a8b05d766ffb9841b5c9616883ceac74cd6c672f01d3820422",
+      "members": [
+        {
+          "path": "SHA256SUMS-b.txt",
+          "bytes": 96,
+          "sha256": "fd040b671351127a85c0bc7d48af275b3f5a6ebb204a3f74f440bdbd6d4b01e7"
+        },
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "bytes": 101089067,
+          "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0",
+          "native_payloads": [
+            {
+              "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+              "bytes": 10096,
+              "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+            },
+            {
+              "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+              "bytes": 7784,
+              "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+            },
+            {
+              "path": "lib/arm64-v8a/libonnxruntime.so",
+              "bytes": 27985944,
+              "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+            },
+            {
+              "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+              "bytes": 83208,
+              "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+            },
+            {
+              "path": "lib/arm64-v8a/libskein_llama.so",
+              "bytes": 25314032,
+              "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+            },
+            {
+              "path": "lib/arm64-v8a/libskein_sqlite.so",
+              "bytes": 6249008,
+              "sha256": "8a07b41579d72bbf36543e48f0016855fd1f1b5723a5b9d50d340cf4cab62cb7"
+            },
+            {
+              "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+              "bytes": 22304,
+              "sha256": "7e9bcb2377cc19c35de3625665c4a4f9eaaf647c842c20c6d5091fc2cd8a2767"
+            }
+          ]
+        },
+        {
+          "path": "context-b.txt",
+          "bytes": 377,
+          "sha256": "cced0ad52e749ba411a15cf21c5cc44ee63e9de3f629dd3d79f9c49d004e9e72"
+        }
+      ]
+    }
+  ],
+  "apk_pair": [
+    {
+      "artifact": "rb-build-a",
+      "path": "app-foss-release-unsigned.apk",
+      "bytes": 101089067,
+      "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0"
+    },
+    {
+      "artifact": "rb-build-b",
+      "path": "app-foss-release-unsigned.apk",
+      "bytes": 101089067,
+      "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0"
+    }
+  ],
+  "cold_native_pair": [
+    {
+      "path": "run.IJOZyffu/libskein_llama.1.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "path": "run.IJOZyffu/libskein_llama.2.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    }
+  ],
+  "conclusion": "PASS actual APK and cold-native bytepair equality",
+  "limits": [
+    "Prior hosted run before owner manual-only CI policy.",
+    "No installed-device attestation or new-source runtime acceptance.",
+    "Tag-only SQLCipher regeneration was skipped; no acceptance implied.",
+    "All interrupted download prefixes preserved separately."
+  ]
+}

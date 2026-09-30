@@ -1,0 +1,50 @@
+{
+  "retained_original_attempts": [
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe/rb-build-a.zip",
+      "bytes": 7569408,
+      "sha256": "fb946abc37d889e3454b061fe016b2346a36c6cb130b44b8decba65fedef8e86"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-attempt2/rb-build-a.zip",
+      "bytes": 73809920,
+      "sha256": "4a2d93bd7f7c86a7193236a7b56c7b86718ce607db5e3312aa1d2b2fbc048088"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged/rb-build-a-range-attempts.json",
+      "bytes": 468,
+      "sha256": "024e29acd5107601323ced3beef49b0970948edf69974935ef3fb1fdd9c27004"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged/rb-build-a.partial",
+      "bytes": 73809920,
+      "sha256": "4a2d93bd7f7c86a7193236a7b56c7b86718ce607db5e3312aa1d2b2fbc048088"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-ca/rb-build-a-range-attempts.json",
+      "bytes": 163,
+      "sha256": "47773fe0832bf621e02b9964a6f8bbd87c3364e798766895f3823fb105605f52"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-ca/rb-build-a.zip",
+      "bytes": 101089940,
+      "sha256": "340da9529cb0a65e2ff5542e74ea974af09944bbb2e1e6754a988655a956ba86"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-ca/rb-build-b-range-attempts.json",
+      "bytes": 638,
+      "sha256": "be409a5d687f4b6716c55ef74072c4afa8b672eeabda25bbfd05b8d038fa5110"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-ca/rb-build-b.partial",
+      "bytes": 41943040,
+      "sha256": "cf0a095cb6aed1a0d2cab13967597b2ca501b75cd7b1713259507b6c00949120"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-ca/so-determinism-range-attempts.json",
+      "bytes": 329,
+      "sha256": "1e460cd79c49b43a1a10f55b965385d25dada68ca236f5c898985e0438431168"
+    }
+  ],
+  "note": "Incomplete archives are original retrieval failures, not accepted artifact bytes. Final accepted archives are separate and fully digest checked."
+}

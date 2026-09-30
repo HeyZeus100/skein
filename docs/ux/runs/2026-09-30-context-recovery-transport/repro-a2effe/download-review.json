@@ -1,0 +1,76 @@
+{
+  "run": 36751785141,
+  "source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11116075322,
+      "name": "rb-build-a",
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-final/rb-build-a.zip",
+      "bytes": 101089940,
+      "sha256": "340da9529cb0a65e2ff5542e74ea974af09944bbb2e1e6754a988655a956ba86",
+      "api_digest": "sha256:340da9529cb0a65e2ff5542e74ea974af09944bbb2e1e6754a988655a956ba86",
+      "range_attempts": []
+    },
+    {
+      "id": 11115705548,
+      "name": "so-determinism",
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-final/so-determinism.zip",
+      "bytes": 50711050,
+      "sha256": "ed29d8bb86575385182665a6d1b87f9622c6b726e2c5cfa2f925e82a00384b88",
+      "api_digest": "sha256:ed29d8bb86575385182665a6d1b87f9622c6b726e2c5cfa2f925e82a00384b88",
+      "range_attempts": []
+    },
+    {
+      "id": 11115496133,
+      "name": "rb-build-b",
+      "path": "build/agent-logs/resume-context-20260930/remote/repro-a2effe-ranged-final/rb-build-b.zip",
+      "bytes": 101089954,
+      "sha256": "9fcfd59b8806a1a8b05d766ffb9841b5c9616883ceac74cd6c672f01d3820422",
+      "api_digest": "sha256:9fcfd59b8806a1a8b05d766ffb9841b5c9616883ceac74cd6c672f01d3820422",
+      "range_attempts": [
+        {
+          "artifact": "rb-build-b",
+          "start": 46137344,
+          "end": 48234495,
+          "attempt": 1,
+          "error_type": "TimeoutError",
+          "http_status": null
+        },
+        {
+          "artifact": "rb-build-b",
+          "start": 46137344,
+          "end": 48234495,
+          "attempt": 2,
+          "error_type": "TimeoutError",
+          "http_status": null
+        },
+        {
+          "artifact": "rb-build-b",
+          "start": 52428800,
+          "end": 54525951,
+          "attempt": 1,
+          "error_type": "URLError",
+          "http_status": null
+        },
+        {
+          "artifact": "rb-build-b",
+          "start": 75497472,
+          "end": 77594623,
+          "attempt": 1,
+          "error_type": "TimeoutError",
+          "http_status": null
+        },
+        {
+          "artifact": "rb-build-b",
+          "start": 81788928,
+          "end": 83886079,
+          "attempt": 1,
+          "error_type": "TimeoutError",
+          "http_status": null
+        }
+      ]
+    }
+  ],
+  "original_failed_downloads": "All previous directories retained untouched; ranges resume a copied prefix; each final full archive matches API digest"
+}
