@@ -27,6 +27,8 @@ object ShellTestTags {
     /** Re-presents the biometric prompt after a cancellation/error. */
     const val BIOMETRIC_UNLOCK_RETRY_BUTTON = "biometric_unlock_retry_button"
 
+    const val BIOMETRIC_UNLOCK_CREDENTIAL_BUTTON = "biometric_unlock_credential_button"
+
     /**
      * skein-v3wb: shown ONLY alongside [BIOMETRIC_UNLOCK_MESSAGE] for a
      * corrupt/unreadable key envelope — never for a cancellation or any

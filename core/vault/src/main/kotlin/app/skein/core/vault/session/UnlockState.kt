@@ -8,10 +8,9 @@
 //
 // The `Locked → Unlocking → Unlocked → Locking → Locked` cycle mirrors
 // `LOCK_POLICY_INDEXING.md` §5.1's `SessionPhase` enum. `RecoveryRequired` is
-// the terminal state entered when a Layer-0 alias reports
-// `KeyPermanentlyInvalidatedException`; the caller escapes it only through
-// [UnlockManager.recoverAndRewrap] (or [UnlockManager.lock] with a
-// `RECOVERY_REQUIRED` reason, which drops back to `Locked`).
+// the state entered when a Layer-0 alias reports invalidation. An explicit
+// [UnlockManager.unlockSurvivingFactor] can recover access without rewriting
+// keys; [UnlockManager.recoverAndRewrap] is a separate replacement operation.
 
 package app.skein.core.vault.session
 
@@ -50,8 +49,9 @@ public sealed class UnlockState {
 
     /**
      * A Layer-0 alias reported `KeyPermanentlyInvalidatedException`.
-     * The only forward path is [UnlockManager.recoverAndRewrap]; the only
-     * backward path is [UnlockManager.lock] with `LockReason.USER_REQUESTED`.
+     * A known failed factor permits explicit [UnlockManager.unlockSurvivingFactor]
+     * without replacing keys. [UnlockManager.recoverAndRewrap] is separate.
+     * An explicit [UnlockManager.lock] returns to Locked.
      */
     public object RecoveryRequired : UnlockState()
 }

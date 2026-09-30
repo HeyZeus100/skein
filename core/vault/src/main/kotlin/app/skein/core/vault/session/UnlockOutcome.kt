@@ -24,14 +24,15 @@ public sealed class UnlockOutcome {
 
     /**
      * Layer-0 alias reported `KeyPermanentlyInvalidatedException`. State is
-     * left in [UnlockState.RecoveryRequired]; caller routes to
-     * [UnlockManager.recoverAndRewrap] with the surviving factor.
+     * left in [UnlockState.RecoveryRequired]; an explicit
+     * [UnlockManager.unlockSurvivingFactor] can recover access without writes.
+     * [UnlockManager.recoverAndRewrap] is a separate replacement operation.
      */
     public data class KeyPermanentlyInvalidated(
         public val factor: VaultKeyProvider.Factor,
     ) : UnlockOutcome()
 
-    /** The requested device key is absent. Remains Locked; never implies first-run setup. */
+    /** The device key is absent. Remains Locked, or RecoveryRequired during recovery; never implies setup. */
     public data class KeyMaterialGone(
         public val factor: VaultKeyProvider.Factor,
     ) : UnlockOutcome()

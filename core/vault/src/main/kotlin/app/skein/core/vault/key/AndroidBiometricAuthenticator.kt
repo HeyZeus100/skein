@@ -23,11 +23,29 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.concurrent.Executor
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.crypto.Cipher
 import kotlin.coroutines.resume
 
 internal class AndroidBiometricAuthenticator(
     private val context: Context,
+    private val createPrompt: (
+        FragmentActivity,
+        Executor,
+        BiometricPrompt.AuthenticationCallback,
+    ) -> AuthenticationPrompt =
+        { activity, executor, callback ->
+            val prompt = BiometricPrompt(activity, executor, callback)
+            object : AuthenticationPrompt {
+                override fun authenticate(
+                    info: BiometricPrompt.PromptInfo,
+                    crypto: BiometricPrompt.CryptoObject,
+                ) = prompt.authenticate(info, crypto)
+
+                override fun cancelAuthentication() = prompt.cancelAuthentication()
+            }
+        },
 ) : BiometricAuthenticator {
     override fun canAuthenticate(factor: VaultKeyProvider.Factor): CanAuthenticate {
         val authenticators =
@@ -54,14 +72,21 @@ internal class AndroidBiometricAuthenticator(
         suspendCancellableCoroutine { cont ->
             val derivedPrompt = promptInfoForFactor(prompt, factor)
             val executor = ContextCompat.getMainExecutor(context)
+            val completed = AtomicBoolean(false)
+
+            fun finish(result: AuthResult) {
+                if (completed.compareAndSet(false, true)) cont.resume(result)
+            }
             val callback =
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         val authorized = result.cryptoObject?.cipher
                         if (authorized == null) {
-                            cont.resume(AuthResult.Error(-1, "no cipher on success"))
+                            finish(AuthResult.Error(-1, "no cipher on success"))
+                        } else if (authorized !== cipher) {
+                            finish(AuthResult.Error(-1, "unexpected cipher on success"))
                         } else {
-                            cont.resume(AuthResult.Success(authorized))
+                            finish(AuthResult.Success(authorized))
                         }
                     }
 
@@ -77,7 +102,7 @@ internal class AndroidBiometricAuthenticator(
                                 -> AuthResult.UserCancelled
                                 else -> AuthResult.Error(errorCode, errString.toString())
                             }
-                        cont.resume(res)
+                        finish(res)
                     }
 
                     override fun onAuthenticationFailed() {
@@ -86,9 +111,25 @@ internal class AndroidBiometricAuthenticator(
                         // finger" event, not a terminal state.
                     }
                 }
-            val bp = BiometricPrompt(activity, executor, callback)
-            bp.authenticate(derivedPrompt, BiometricPrompt.CryptoObject(cipher))
+            val bp = createPrompt(activity, executor, callback)
+            cont.invokeOnCancellation {
+                completed.set(true)
+                // Android prompt methods run on the host's main executor;
+                // a lock/cancellation can arrive from a different thread.
+                executor.execute { bp.cancelAuthentication() }
+            }
+            if (cont.isActive) bp.authenticate(derivedPrompt, BiometricPrompt.CryptoObject(cipher))
         }
+}
+
+/** Narrow platform seam for cancellation/late-callback tests without a device prompt. */
+internal interface AuthenticationPrompt {
+    fun authenticate(
+        info: BiometricPrompt.PromptInfo,
+        crypto: BiometricPrompt.CryptoObject,
+    )
+
+    fun cancelAuthentication()
 }
 
 /**

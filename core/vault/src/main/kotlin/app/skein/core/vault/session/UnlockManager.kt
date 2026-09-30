@@ -65,18 +65,25 @@ import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.key.VaultKeyProvider
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.DisposableHandle
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.time.Clock
 import java.time.Duration
@@ -125,6 +132,11 @@ public class UnlockManager
         private val _state = MutableStateFlow<UnlockState>(UnlockState.Locked)
         public val state: StateFlow<UnlockState> = _state.asStateFlow()
 
+        private val _recoveryFactor = MutableStateFlow<VaultKeyProvider.Factor?>(null)
+
+        /** Known invalidated factor, retained only in this manager's session memory. */
+        public val recoveryFactor: StateFlow<VaultKeyProvider.Factor?> = _recoveryFactor.asStateFlow()
+
         private val _authorizationToken = MutableStateFlow<AuthorizationToken?>(null)
         public val authorizationToken: StateFlow<AuthorizationToken?> = _authorizationToken.asStateFlow()
 
@@ -144,6 +156,14 @@ public class UnlockManager
         // mutex is intentionally unsynchronised — StateFlow itself is safe;
         // the mutex protects against interleaved *transitions*.
         private val transitionMutex = Mutex()
+
+        // A lock request must invalidate authentication before waiting for the
+        // transition mutex held by that authentication. This short guard also
+        // makes the request and successful token publication mutually exclusive.
+        private val authenticationGuard = Any()
+        private var lockRequestGeneration = 0L
+        private var completedLockGeneration = 0L
+        private var pendingAuthentication: Job? = null
 
         // Independent, monotonic — bumped once per successful unlock or
         // successful rewrap, and once per lock. Used to mint the
@@ -214,59 +234,139 @@ public class UnlockManager
         internal suspend fun unlockWith(
             factor: VaultKeyProvider.Factor,
             auth: suspend () -> UnlockResult,
-        ): UnlockOutcome =
-            transitionMutex.withLock {
+        ): UnlockOutcome = unlockWithFactor(factor, recovering = false) { auth() }
+
+        /**
+         * Explicitly authenticates the other factor after a known invalidation.
+         * This recovers access only: no alias or envelope is changed. Failed or
+         * cancelled attempts retain RecoveryRequired and the original factor.
+         */
+        public suspend fun unlockSurvivingFactor(
+            activity: FragmentActivity,
+            prompt: BiometricPrompt.PromptInfo,
+        ): UnlockOutcome = unlockSurvivingFactorWith { factor -> keyProvider.unlock(activity, prompt, factor) }
+
+        internal suspend fun unlockSurvivingFactorWith(
+            auth: suspend (VaultKeyProvider.Factor) -> UnlockResult,
+        ): UnlockOutcome = unlockWithFactor(null, recovering = true, auth)
+
+        private suspend fun unlockWithFactor(
+            requestedFactor: VaultKeyProvider.Factor?,
+            recovering: Boolean,
+            auth: suspend (VaultKeyProvider.Factor) -> UnlockResult,
+        ): UnlockOutcome {
+            val requestGeneration =
+                synchronized(authenticationGuard) {
+                    if (completedLockGeneration != lockRequestGeneration) return UnlockOutcome.UserCancelled
+                    lockRequestGeneration
+                }
+            return transitionMutex.withLock {
+                if (synchronized(authenticationGuard) {
+                        requestGeneration != lockRequestGeneration || completedLockGeneration != lockRequestGeneration
+                    }
+                ) {
+                    return@withLock UnlockOutcome.UserCancelled
+                }
                 val cur = _state.value
                 when (cur) {
                     is UnlockState.Unlocked -> return@withLock UnlockOutcome.Coalesced(UnlockOutcome.Success(cur.token))
-                    is UnlockState.Locking, is UnlockState.RecoveryRequired ->
-                        return@withLock UnlockOutcome.IllegalTransition(cur)
+                    is UnlockState.Locking -> return@withLock UnlockOutcome.IllegalTransition(cur)
+                    is UnlockState.RecoveryRequired ->
+                        if (!recovering || _recoveryFactor.value == null) {
+                            return@withLock UnlockOutcome.IllegalTransition(cur)
+                        }
                     is UnlockState.Unlocking -> {
                         // Cannot occur: we hold the transition mutex, and no
                         // other transition sets Unlocking without releasing.
                         // Treat as an illegal state to surface bugs early.
                         return@withLock UnlockOutcome.IllegalTransition(cur)
                     }
-                    UnlockState.Locked -> Unit // fall through
+                    UnlockState.Locked -> if (recovering) return@withLock UnlockOutcome.IllegalTransition(cur)
                 }
+                val factor =
+                    if (recovering) {
+                        when (checkNotNull(_recoveryFactor.value)) {
+                            VaultKeyProvider.Factor.BIOMETRIC -> VaultKeyProvider.Factor.DEVICE_CREDENTIAL
+                            VaultKeyProvider.Factor.DEVICE_CREDENTIAL -> VaultKeyProvider.Factor.BIOMETRIC
+                        }
+                    } else {
+                        checkNotNull(requestedFactor)
+                    }
+                val retryState = if (recovering) UnlockState.RecoveryRequired else UnlockState.Locked
                 _state.value = UnlockState.Unlocking
                 val result: UnlockResult =
                     try {
-                        auth()
+                        coroutineScope {
+                            val pending = async(start = CoroutineStart.LAZY) { auth(factor) }
+                            val invalidated =
+                                synchronized(authenticationGuard) {
+                                    pendingAuthentication = pending
+                                    requestGeneration != lockRequestGeneration ||
+                                        completedLockGeneration != lockRequestGeneration
+                                }
+                            try {
+                                if (invalidated) pending.cancel()
+                                pending.await()
+                            } finally {
+                                synchronized(authenticationGuard) {
+                                    if (pendingAuthentication === pending) pendingAuthentication = null
+                                }
+                            }
+                        }.also { currentCoroutineContext().ensureActive() }
                     } catch (ce: CancellationException) {
-                        _state.value = UnlockState.Locked
+                        discardPendingUnlock(retryState)
+                        if (currentCoroutineContext().isActive &&
+                            synchronized(authenticationGuard) { requestGeneration != lockRequestGeneration }
+                        ) {
+                            return@withLock UnlockOutcome.UserCancelled
+                        }
                         throw ce
                     } catch (t: Throwable) {
-                        _state.value = UnlockState.Locked
+                        discardPendingUnlock(retryState)
                         return@withLock UnlockOutcome.Failed(
                             "unlock threw ${t.javaClass.simpleName}",
                         )
                     }
                 when (result) {
                     is UnlockResult.Success -> {
-                        val now = clock.millis()
-                        lastActivityMillis = now
-                        _authorizationToken.value = result.token
-                        _state.value = UnlockState.Unlocked(now, result.token)
+                        val callerIsActive = currentCoroutineContext().isActive
+                        val accepted =
+                            synchronized(authenticationGuard) {
+                                if (requestGeneration != lockRequestGeneration || !callerIsActive) {
+                                    false
+                                } else {
+                                    val now = clock.millis()
+                                    lastActivityMillis = now
+                                    _authorizationToken.value = result.token
+                                    _recoveryFactor.value = null
+                                    _state.value = UnlockState.Unlocked(now, result.token)
+                                    true
+                                }
+                            }
+                        if (!accepted) {
+                            discardPendingUnlock(retryState)
+                            return@withLock UnlockOutcome.UserCancelled
+                        }
                         notifyOnUnlocked(result.token.epoch)
                         UnlockOutcome.Success(result.token)
                     }
                     is UnlockResult.KeyPermanentlyInvalidated -> {
+                        if (!recovering) _recoveryFactor.value = result.factor
                         _state.value = UnlockState.RecoveryRequired
                         UnlockOutcome.KeyPermanentlyInvalidated(result.factor)
                     }
                     is UnlockResult.KeyMaterialGone -> {
-                        _state.value = UnlockState.Locked
+                        _state.value = retryState
                         _authorizationToken.value = null
                         logMissingKey("unlock", result.factor)
                         UnlockOutcome.KeyMaterialGone(result.factor)
                     }
                     UnlockResult.UserCancelled -> {
-                        _state.value = UnlockState.Locked
+                        _state.value = retryState
                         UnlockOutcome.UserCancelled
                     }
                     UnlockResult.NotInitialised -> {
-                        _state.value = UnlockState.Locked
+                        _state.value = retryState
                         UnlockOutcome.NotInitialised
                     }
                     // skein-9psb: NOT a failure — the caller (`BiometricUnlockScreen`)
@@ -274,17 +374,36 @@ public class UnlockManager
                     // never a reason string — there is none here) so a
                     // device log explains a future occurrence of this race.
                     UnlockResult.DeviceLocked -> {
-                        _state.value = UnlockState.Locked
+                        _state.value = retryState
                         SkeinLog.w(TAG, "unlock outcome: kind=DeviceLocked")
                         UnlockOutcome.DeviceLocked
                     }
                     is UnlockResult.Failed -> {
-                        _state.value = UnlockState.Locked
+                        _state.value = retryState
                         SkeinLog.w(TAG, "unlock outcome: kind=Failed")
                         UnlockOutcome.Failed(result.reason)
                     }
                 }
             }
+        }
+
+        private fun discardPendingUnlock(retryState: UnlockState) {
+            // Authentication may have unwrapped just before cancellation. No
+            // session was published, but any provider-owned bytes must be zeroed.
+            _authorizationToken.value = null
+            keyProvider.lock()
+            _state.value = retryState
+        }
+
+        private fun invalidatePendingAuthentication(): Long {
+            val (generation, pending) =
+                synchronized(authenticationGuard) {
+                    lockRequestGeneration++
+                    lockRequestGeneration to pendingAuthentication
+                }
+            pending?.cancel()
+            return generation
+        }
 
         // ---- lock --------------------------------------------------------
 
@@ -297,11 +416,12 @@ public class UnlockManager
          * Tests should prefer [lockAndAwait] for deterministic ordering.
          */
         public fun lock(reason: LockReason) {
+            val generation = invalidatePendingAuthentication()
             val s = scope
             if (s != null) {
-                s.launch { lockAndAwait(reason) }
+                s.launch(start = CoroutineStart.UNDISPATCHED) { completeRequestedLock(reason, generation) }
             } else {
-                runBlocking { lockAndAwait(reason) }
+                runBlocking { completeRequestedLock(reason, generation) }
             }
         }
 
@@ -310,10 +430,27 @@ public class UnlockManager
          * `suspend` context (e.g. shutdown-hook wrappers, integration tests).
          */
         public suspend fun lockAndAwait(reason: LockReason) {
-            transitionMutex.withLock { doLockLocked(reason) }
+            val generation = invalidatePendingAuthentication()
+            completeRequestedLock(reason, generation)
+        }
+
+        private suspend fun completeRequestedLock(
+            reason: LockReason,
+            generation: Long,
+        ) {
+            // A requested lock must finish even if its requesting UI disappears.
+            withContext(NonCancellable) {
+                transitionMutex.withLock {
+                    doLockLocked(reason)
+                    synchronized(authenticationGuard) {
+                        completedLockGeneration = maxOf(completedLockGeneration, generation)
+                    }
+                }
+            }
         }
 
         private suspend fun doLockLocked(reason: LockReason) {
+            if (reason != LockReason.KEY_INVALIDATED) _recoveryFactor.value = null
             val cur = _state.value
             when (cur) {
                 is UnlockState.Locked, is UnlockState.Locking -> return
@@ -322,7 +459,7 @@ public class UnlockManager
                     // observers to notify (they saw `onLocked` when we
                     // originally entered RECOVERY_REQUIRED, if applicable).
                     _authorizationToken.value = null
-                    _state.value = UnlockState.Locked
+                    if (reason != LockReason.KEY_INVALIDATED) _state.value = UnlockState.Locked
                     return
                 }
                 is UnlockState.Unlocked, is UnlockState.Unlocking -> Unit
@@ -416,6 +553,7 @@ public class UnlockManager
                         lastActivityMillis = now
                         val minted = AuthorizationToken(recoveryEpoch.incrementAndGet())
                         _authorizationToken.value = minted
+                        _recoveryFactor.value = null
                         _state.value = UnlockState.Unlocked(now, minted)
                         notifyOnUnlocked(minted.epoch)
                         RecoveryOutcome.Success(minted, result.newKeyVersion)

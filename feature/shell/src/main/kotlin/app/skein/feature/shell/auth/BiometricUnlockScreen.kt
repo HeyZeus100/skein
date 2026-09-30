@@ -14,14 +14,13 @@
 //    `BiometricPrompt.authenticate(prompt, cryptoObject)`.
 //
 // So this composable's job is narrower than "wire up a CryptoObject": it
-// builds the `BiometricPrompt.PromptInfo` (BIOMETRIC_STRONG only — no
-// device-credential fallback, matching the plan's "spec says biometric-gated"
-// note for `E3.I4`), drives `UnlockManager.unlock(activity, promptInfo,
-// Factor.BIOMETRIC)`, and renders the observable `UnlockOutcome`. No
-// CryptoObject/Cipher type appears in this file, and `VaultKeyProvider` /
-// `UnlockManager` are unmodified — see the read-first verification in the
-// bd issue for why (their current contracts, not the stale plan-doc/bd
-// description text that predates them, already do this internally).
+// builds a biometric `PromptInfo`, drives `UnlockManager.unlock`, and
+// renders the observable `UnlockOutcome`. The user can explicitly choose
+// the credential factor after biometric cancellation/failure or confirmed
+// loss of the biometric key. The authenticator derives the credential-only
+// CryptoObject prompt; this screen never broadens the authenticator mask. No
+// CryptoObject/Cipher type appears in this file. The existing key-provider
+// contract supplies either factor without changing aliases or the envelope.
 //
 // Zeroization / no-key-material discipline (bd non-negotiable): the
 // `AuthorizationToken` from `UnlockOutcome.Success` is forwarded to
@@ -71,7 +70,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,12 +86,11 @@ import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockOutcome
+import app.skein.core.vault.session.UnlockState
 import app.skein.feature.shell.testing.ShellTestTags
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 /**
  * Presents a `BiometricPrompt` (via [UnlockManager.unlock]) and routes on
@@ -116,7 +114,8 @@ import kotlinx.coroutines.launch
  *    other failure shows the generic retry text with no reset affordance.
  *  - [UnlockOutcome.KeyMaterialGone] preserves the vault and explains the
  *    missing factor, without assuming that the other factor is unavailable.
- *    Only an explicit tap invokes [onKeyMaterialGoneResetRequested], when supplied.
+ *    A missing biometric key offers an explicit credential attempt. Only an
+ *    explicit reset tap invokes [onKeyMaterialGoneResetRequested], when supplied.
  *  - [UnlockOutcome.DeviceLocked] (skein-9psb) is NOT a failure: it means
  *    `Cipher.init` on the Layer-0 alias raced the keyguard's own unlock
  *    signal. The screen shows [BiometricUnlockUiState.WaitingForUnlock] (no
@@ -163,7 +162,9 @@ public fun BiometricUnlockScreen(
 ) {
     val context = LocalContext.current
     val hostActivity = remember(context) { context.findFragmentActivity() }
-    val scope = rememberCoroutineScope()
+    val currentOnUnlocked by rememberUpdatedState(onUnlocked)
+    val currentOnRecoveryRequired by rememberUpdatedState(onRecoveryRequired)
+    val currentOnNotInitialised by rememberUpdatedState(onNotInitialised)
 
     val effectiveIsDeviceLocked =
         remember(context, isDeviceLocked) {
@@ -177,60 +178,56 @@ public fun BiometricUnlockScreen(
                 .setTitle(biometricPromptTitle)
                 .setSubtitle(biometricPromptSubtitle)
                 .setNegativeButtonText(biometricPromptNegativeButton)
-                // BIOMETRIC_STRONG only: the plan's E3.I4 note is explicit
-                // that there is no device-credential fallback here — this
-                // screen is the *biometric* unlock path. DEVICE_CREDENTIAL
-                // is a distinct `VaultKeyProvider.Factor` with its own
-                // (separate, out-of-scope-here) recovery UI.
+                // The core authenticator narrows this caller prompt to the
+                // selected factor. Do not combine biometric and credential
+                // authenticators for a key bound to one of them.
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
                 .build()
         }
 
-    var uiState: BiometricUnlockUiState by remember {
+    var attempt by remember(unlockManager, hostActivity) {
+        mutableStateOf(UnlockPromptAttempt(VaultKeyProvider.Factor.BIOMETRIC, 0))
+    }
+    var uiState: BiometricUnlockUiState by remember(unlockManager, hostActivity) {
         mutableStateOf(
             when {
                 hostActivity == null -> BiometricUnlockUiState.Retry(NO_HOST_ACTIVITY_MESSAGE)
                 !isReadyToPresent(hostActivity, effectiveIsDeviceLocked) -> BiometricUnlockUiState.WaitingForUnlock
-                else -> BiometricUnlockUiState.Prompting
+                else -> BiometricUnlockUiState.Prompting(VaultKeyProvider.Factor.BIOMETRIC)
             },
         )
     }
 
-    fun presentPrompt() {
-        val activity = hostActivity ?: return
-        uiState = BiometricUnlockUiState.Prompting
-        scope.launch {
-            val outcome = unlockManager.unlock(activity, promptInfo, VaultKeyProvider.Factor.BIOMETRIC)
-            handleOutcome(
-                outcome = outcome,
-                onUnlocked = onUnlocked,
-                onRecoveryRequired = onRecoveryRequired,
-                onNotInitialised = onNotInitialised,
-                onRetry = { message -> uiState = BiometricUnlockUiState.Retry(message) },
-                onEnvelopeUnreadable = { message -> uiState = BiometricUnlockUiState.EnvelopeUnreadableRetry(message) },
-                onDeviceLocked = {
-                    // skein-9psb: NOT a failure — wait quietly, then retry
-                    // the exact same prompt once the device reports unlocked.
-                    uiState = BiometricUnlockUiState.WaitingForUnlock
-                    scope.launch {
-                        deviceUnlockWakeSignals(context, activity).first { !effectiveIsDeviceLocked() }
-                        presentPrompt()
-                    }
-                },
-                onKeyMaterialGone = { factor ->
-                    uiState = BiometricUnlockUiState.KeyMaterialGone(factor)
-                },
-            )
-        }
+    fun presentPrompt(factor: VaultKeyProvider.Factor = attempt.factor) {
+        if (hostActivity == null || unlockManager.state.value != UnlockState.Locked) return
+        if (uiState is BiometricUnlockUiState.Prompting || uiState is BiometricUnlockUiState.WaitingForUnlock) return
+        // Set the state synchronously: two taps before recomposition cannot
+        // schedule two attempts. The effect owns the entire prompt lifetime.
+        uiState = BiometricUnlockUiState.Prompting(factor)
+        attempt = UnlockPromptAttempt(factor, attempt.sequence + 1)
     }
 
-    LaunchedEffect(unlockManager, hostActivity) {
+    LaunchedEffect(unlockManager, hostActivity, attempt) {
         val activity = hostActivity ?: return@LaunchedEffect
-        if (!isReadyToPresent(activity, effectiveIsDeviceLocked)) {
-            uiState = BiometricUnlockUiState.WaitingForUnlock
-            deviceUnlockWakeSignals(context, activity).first { isReadyToPresent(activity, effectiveIsDeviceLocked) }
-        }
-        presentPrompt()
+        val requestedFactor = attempt.factor
+        val outcome =
+            awaitUnlockPromptOutcome(
+                context = context,
+                activity = activity,
+                isDeviceLocked = effectiveIsDeviceLocked,
+                onWaiting = { uiState = BiometricUnlockUiState.WaitingForUnlock },
+                onPrompting = { uiState = BiometricUnlockUiState.Prompting(requestedFactor) },
+                authenticate = { unlockManager.unlock(activity, promptInfo, requestedFactor) },
+            )
+        handleOutcome(
+            outcome = outcome,
+            onUnlocked = currentOnUnlocked,
+            onRecoveryRequired = currentOnRecoveryRequired,
+            onNotInitialised = currentOnNotInitialised,
+            onRetry = { message -> uiState = BiometricUnlockUiState.Retry(message) },
+            onEnvelopeUnreadable = { message -> uiState = BiometricUnlockUiState.EnvelopeUnreadableRetry(message) },
+            onKeyMaterialGone = { factor -> uiState = BiometricUnlockUiState.KeyMaterialGone(factor) },
+        )
     }
 
     Box(
@@ -247,7 +244,12 @@ public fun BiometricUnlockScreen(
                         modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_PROGRESS),
                     )
                     Text(
-                        text = "Waiting for biometric authentication…",
+                        text =
+                            when (state.factor) {
+                                VaultKeyProvider.Factor.BIOMETRIC -> "Waiting for biometric authentication…"
+                                VaultKeyProvider.Factor.DEVICE_CREDENTIAL ->
+                                    "Waiting for device-credential authentication…"
+                            },
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
@@ -284,10 +286,18 @@ public fun BiometricUnlockScreen(
                         modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE),
                     )
                     Button(
-                        onClick = ::presentPrompt,
+                        onClick = { presentPrompt() },
                         modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_RETRY_BUTTON),
                     ) {
                         Text("Try again")
+                    }
+                    if (hostActivity != null && attempt.factor == VaultKeyProvider.Factor.BIOMETRIC) {
+                        OutlinedButton(
+                            onClick = { presentPrompt(VaultKeyProvider.Factor.DEVICE_CREDENTIAL) },
+                            modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_CREDENTIAL_BUTTON),
+                        ) {
+                            Text("Use PIN, pattern, or password")
+                        }
                     }
                 }
 
@@ -307,6 +317,14 @@ public fun BiometricUnlockScreen(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE),
                     )
+                    if (hostActivity != null && state.factor == VaultKeyProvider.Factor.BIOMETRIC) {
+                        Button(
+                            onClick = { presentPrompt(VaultKeyProvider.Factor.DEVICE_CREDENTIAL) },
+                            modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_CREDENTIAL_BUTTON),
+                        ) {
+                            Text("Use PIN, pattern, or password")
+                        }
+                    }
                     // Absence of one factor does not establish that all
                     // recovery is impossible. Keep the vault intact unless
                     // the owner explicitly enters the existing two-step reset.
@@ -333,7 +351,7 @@ public fun BiometricUnlockScreen(
                         modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE),
                     )
                     Button(
-                        onClick = ::presentPrompt,
+                        onClick = { presentPrompt() },
                         modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_RETRY_BUTTON),
                     ) {
                         Text("Try again")
@@ -357,7 +375,9 @@ public fun BiometricUnlockScreen(
 /** UI-visible phase of [BiometricUnlockScreen]. Carries no key material. */
 private sealed class BiometricUnlockUiState {
     /** A `BiometricPrompt` is on screen (or the crypto unwrap is running). */
-    object Prompting : BiometricUnlockUiState()
+    data class Prompting(
+        val factor: VaultKeyProvider.Factor,
+    ) : BiometricUnlockUiState()
 
     /**
      * skein-9psb: the auto-present gate is shut (device locked / host not
@@ -387,6 +407,11 @@ private sealed class BiometricUnlockUiState {
         val message: String,
     ) : BiometricUnlockUiState()
 }
+
+private data class UnlockPromptAttempt(
+    val factor: VaultKeyProvider.Factor,
+    val sequence: Long,
+)
 
 /**
  * Maps an [UnlockOutcome] to the UI-facing effects, unwrapping
@@ -519,7 +544,7 @@ internal fun deviceUnlockWakeSignals(
     }
 
 /** skein-9psb: the real, production [KeyguardManager]-backed check behind [BiometricUnlockScreen]'s `isDeviceLocked`. */
-private fun Context.isDeviceLockedNow(): Boolean =
+internal fun Context.isDeviceLockedNow(): Boolean =
     ContextCompat.getSystemService(this, KeyguardManager::class.java)?.isDeviceLocked ?: false
 
 private val SPACING = 12.dp
