@@ -79,6 +79,13 @@ class SyntheticParityControlsTest {
     }
 
     @Test
+    fun native_turn_start_must_be_classified_as_non_eog() {
+        assertThrows(IllegalArgumentException::class.java) {
+            contract.verifyNativeControl(contract.literal, intArrayOf(2), { true }, false)
+        }
+    }
+
+    @Test
     fun matching_template_digest_alone_cannot_qualify_legacy_template() {
         val old = "<start_of_turn>{{ content }}<end_of_turn>"
         val value = contract.copy(templateSha256 = SyntheticParityControls.sha256(old.toByteArray()))

@@ -70,10 +70,10 @@ internal data class SyntheticParityControls(
         control: Control,
         ids: IntArray,
         isEog: (Int) -> Boolean,
-        requireEog: Boolean,
+        expectedEog: Boolean,
     ) {
         require(ids.contentEquals(intArrayOf(control.id))) { "native control ID mismatch" }
-        if (requireEog) require(isEog(control.id)) { "native EOG classification failed" }
+        require(isEog(control.id) == expectedEog) { "native EOG classification failed" }
     }
 
     companion object {
