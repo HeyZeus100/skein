@@ -161,7 +161,7 @@ bundle or an immutable snapshot against later writes. The future adapter must
 consume the same verified mappings/descriptors under the immutable model-store
 contract. It may not discover sidecars by reopening owner paths.
 
-Production activation, actual Nomic/tokenizer outputs, GLiNER spans, optional
+Production activation, Android Nomic/tokenizer outputs, GLiNER spans, optional
 reranker behavior, memory/thermal measurements, real Binder spill/lock tests,
 backend module integration, and production reindexing remain unmet gates.
 No arithmetic test, test-only injected backend, host timing, or passed IPC test
@@ -227,6 +227,45 @@ FLOAT `last_hidden_state` shaped `[batch, sequence, 768]`. There are 1,566 nodes
 The separately verified pooling config selects mean-token pooling. Inspection
 receipt `graph-inspection.json` SHA-256 is
 `8ae888690527f977b5b05f365118b1a317f909aebcbb4f6bf22f8b024242058e`.
-These are parsed schema facts. No ORT session, remote model code, inference,
-latency/memory benchmark, or Android acceptance was executed. The reference
-export, GGUF comparison, fresh held-out evaluation, and human decision remain open.
+These are parsed schema facts. Qualification itself did not execute an ORT session
+or remote model code. The subsequent bounded host precheck is recorded below; the
+reference export, GGUF comparison, fresh held-out evaluation, and human decision
+remain open.
+
+
+## Bounded host functional precheck
+
+The coordinator subsequently granted one serialized host runtime slot. The pinned
+ONNX int8 bytes loaded in cached JVM ORT 1.27.0 on macOS; exact existing Skein
+tokenizer classes supplied IDs, masks and types. One CPU thread and batch size one
+executed 128 frozen inputs twice, plus three opposite-prefix probes twice: 262
+calls over 131 distinct input/role pairs. All 786 paired raw-stage comparisons
+were byte-identical across IDs, hidden states, pooled vectors, layer-normalized
+vectors, normalized 256-dimensional vectors, and canonical int8 vectors. All
+floats were finite; final L2 norms ranged from 0.99999994 to 1.00000006. Each
+opposite-prefix probe changed both IDs and vectors.
+
+Mean-token pooling, full 768-dimensional layer normalization with epsilon 1e-5,
+truncation to 256 dimensions and L2 normalization followed the pinned model card.
+The scratch Java implementation is provisional: independent reference numerical
+parity is unmeasured. Existing tokenizer/quantizer classes were compiled unchanged;
+no remote model code executed and no owner model store was used.
+
+Load time was 154.95 ms. Descriptive session-run times over mixed 6–512-token
+inputs were median 9.32 ms, nearest-rank p95 13.46 ms and maximum 241.71 ms. The
+whole process took 5.70 seconds and macOS reported maximum resident bytes
+1,043,677,184. Those measurements include JVM/native allocations and raw-output
+retention; they are neither a warmed benchmark matrix nor Android PSS, Fold
+latency, thermal acceptance or an approved backend choice. No semantic quality
+metric or held-out policy result was produced in this precheck.
+
+All 1,572 raw-stage files remain in the scratch experiment directory. The
+independently checked `functional-attempt-1-review.json` has SHA-256
+`c4189a665349388fa3101aff688a3b771d03395fab86a199113b4f1e2153c84f`;
+its 1,583-record `functional-attempt-1-artifacts.json` manifest has SHA-256
+`5a72c37eca02792d5e32bbd20d0c5a3d92ade3834306f430cf3f7da3fecdb98a`.
+The manifest also pins the runner, frozen inputs, runtime classpath receipts,
+configuration, rows, exact invocation and successful exit receipt. This is
+functional progress only; reference parity, semantic development metrics, the
+controlled timing matrix, Android service/device acceptance and human backend
+approval remain open.
