@@ -93,6 +93,26 @@ the next lock checkpoints it, or old flash blocks.
 The emulator lane checks the claim with `MigratorInstrumentedTest`'s
 migration-010 cases.
 
+### Device lock changes and missing keys
+
+Removing the device's secure screen lock can permanently invalidate the
+authentication-bound keys used to open Skein. Re-enabling a PIN does not
+restore those keys. Android documents this behavior for
+[keys that require user authentication](https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.Builder#setUserAuthenticationRequired(boolean)).
+
+Skein now distinguishes an absent device key from a failed authentication or
+a temporarily unavailable keystore. The message identifies the affected
+factor; one missing key does not prove that every recovery option is lost.
+This diagnosis does not delete files, replace keys, or start setup. Reset is
+an explicit, permanent deletion of vault content behind two confirmation
+steps; imported model files are retained.
+
+Keep a passphrase-protected recovery export separately. It contains recovery
+key material, not a backup of the notes or attachments. Recovery over an
+existing envelope after device-key loss is **not yet supported by the UI**;
+do not reset an existing vault in order to try that recovery. The remaining
+recovery and credential-fallback work is tracked by `skein-gg11.29`.
+
 ## 2. What Skein does NOT collect
 
 None of the following exist in Skein, in any form, opt-in or otherwise:

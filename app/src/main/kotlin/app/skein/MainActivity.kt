@@ -47,6 +47,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.vault.key.PassphraseKeyExport
+import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.entries.KnowledgePreparation
 import app.skein.feature.settings.rememberSettingsViewModel
@@ -500,10 +501,10 @@ private fun VaultGate(
     val session by vault.session.collectAsState()
     var recoveryRequired by remember { mutableStateOf(false) }
     var provisioned by remember { mutableStateOf<Boolean?>(null) }
-    // skein-v3wb: local to the gate — reachable ONLY via
-    // BiometricUnlockScreen's corrupt/unreadable-envelope affordance
-    // (onResetRequested below), never a `GatePhase` of its own.
+    // Reset remains an explicit choice followed by both confirmation steps.
+    // Missing-key and unreadable-envelope paths carry distinct explanations.
     var resetRequested by remember { mutableStateOf(false) }
+    var missingKeyFactor by remember { mutableStateOf<VaultKeyProvider.Factor?>(null) }
     LaunchedEffect(vault) {
         provisioned = withContext(Dispatchers.IO) { vault.keyProvider.isInitialised() }
     }
@@ -541,11 +542,13 @@ private fun VaultGate(
                                 // directly avoids a redundant file probe —
                                 // the same pattern onNotInitialised uses.
                                 resetRequested = false
+                                missingKeyFactor = null
                                 provisioned = false
                                 onVaultReset()
                             },
                             onDismiss = { resetRequested = false },
                             modifier = m,
+                            explanation = missingKeyFactor?.let(::missingKeyResetExplanation),
                         )
                     } else {
                         BiometricUnlockScreen(
@@ -553,13 +556,31 @@ private fun VaultGate(
                             onUnlocked = { onUnlocked() },
                             onRecoveryRequired = { recoveryRequired = true },
                             onNotInitialised = { provisioned = false },
-                            onResetRequested = { resetRequested = true },
+                            onResetRequested = {
+                                missingKeyFactor = null
+                                resetRequested = true
+                            },
+                            onKeyMaterialGoneResetRequested = { factor ->
+                                missingKeyFactor = factor
+                                resetRequested = true
+                            },
                             modifier = m,
                         )
                     }
                 }
             }
     }
+}
+
+private fun missingKeyResetExplanation(factor: VaultKeyProvider.Factor): String {
+    val unavailable =
+        when (factor) {
+            VaultKeyProvider.Factor.BIOMETRIC -> "fingerprint or face"
+            VaultKeyProvider.Factor.DEVICE_CREDENTIAL -> "device credential"
+        }
+    return "Skein's $unavailable key is unavailable. This does not mean every recovery option is lost. " +
+        "Resetting permanently deletes your notes, chats, attachments, and keys from this device. " +
+        "Imported models are kept. To continue, type RESET below."
 }
 
 /** The envelope probe is a sub-millisecond file read; a bare surface avoids a spinner flash. */
