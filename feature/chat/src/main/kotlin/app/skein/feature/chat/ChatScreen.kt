@@ -63,6 +63,8 @@ public const val MODEL_CHANGED_BANNER_TEXT: String = "The model changed before t
  * @param onOpenSource a citation tap: opens the cited document.
  * @param topBar the NavDisplay shell entry's own bar; the context inspector is
  *   an entry of its own (skein-xtov.24.8).
+ * @param presentation optional entry-owned projection. Its session entry store clears it on lock or pop;
+ *   this screen must not dispose it when an adaptive scene merely stops presenting the entry.
  * @param initialMessage sent once, when this screen's state is first created:
  *   the landing's first message, handed over when its chat was just created.
  */
@@ -90,10 +92,11 @@ public fun ChatScreen(
     composerState: DraftComposerState? = null,
     tabletopHinge: DpRect? = null,
     modelStatus: ChatModelStatus = ChatModelStatus.Unavailable,
+    presentation: ChatViewModel? = null,
 ) {
     val scope = rememberCoroutineScope()
     val viewModel =
-        remember(docId, vaultRepository, sendPipeline, onOpenSource, turnController) {
+        presentation ?: remember(docId, vaultRepository, sendPipeline, onOpenSource, turnController) {
             ChatViewModel(
                 chatDocId = docId,
                 vaultRepository = vaultRepository,
@@ -105,7 +108,9 @@ public fun ChatScreen(
             )
         }
 
-    DisposableEffect(viewModel) { onDispose(viewModel::dispose) }
+    DisposableEffect(viewModel, presentation) {
+        onDispose { if (presentation == null) viewModel.dispose() }
+    }
 
     LaunchedEffect(viewModel) { initialMessage?.let(viewModel::send) }
 

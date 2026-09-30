@@ -100,6 +100,7 @@ dependencies {
 
     // 📎 attach: SAF `OpenDocument` via `rememberLauncherForActivityResult`.
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     debugImplementation(libs.compose.ui.tooling)
 

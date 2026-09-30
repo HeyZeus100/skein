@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.designsystem.components.SkeinContextChip
 import app.skein.core.designsystem.components.SkeinNotice
@@ -207,7 +209,18 @@ private fun ChatRoute(
                 }
             }
         }
-    val first = remember(rawId) { if (deps.turns == null) deps.handoff.take(rawId) else null }
+    val presentation =
+        viewModel(key = "chat.presentation") {
+            ChatEntryPresentation(
+                rawId,
+                repository,
+                pipeline,
+                deps.importService,
+                deps.turns,
+                if (deps.turns == null) deps.handoff.take(rawId) else null,
+            )
+        }
+    SideEffect { presentation.openSource = sources }
     val composer = deps.drafts?.let { rememberDraftComposerState(it, ChatDraftKey.Existing(rawId)) }
     val onePane = LocalSkeinWindowLayout.current.maxPanes == 1
     val phone = LocalSkeinWindowLayout.current.navMode() == NavMode.PHONE
@@ -220,7 +233,7 @@ private fun ChatRoute(
         onOpenSource = sources,
         wikilinkSuggest = { query -> repository.searchTitles(query).map { Suggestion(it.title) } },
         importService = deps.importService,
-        initialMessage = first,
+        presentation = presentation.model,
         turnController = deps.turns,
         composerState = composer,
         modelStatus = deps.modelStatus,
