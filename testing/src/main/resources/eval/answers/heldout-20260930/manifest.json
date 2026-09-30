@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "status": "frozen",
+  "synthetic": true,
+  "purpose": "separately authored held-out diagnostic answer evaluation; not a blind external benchmark",
+  "source_baseline": "0e56b433ff9db9323123c8afd9c33dc58fab5e8e",
+  "file": "cases.json",
+  "sha256": "b0b83e5f5f25d35b4c8d2f6ae0c0e5a4029f5ef27904413eb4e531977f7a2026",
+  "cases": 80,
+  "categories": {
+    "supported": 16,
+    "missing": 8,
+    "distractor": 8,
+    "conflict": 6,
+    "follow_up": 8,
+    "injection": 6,
+    "spaces": 6,
+    "reasoning": 8,
+    "general": 14
+  },
+  "authorship": {
+    "individually_authored": true,
+    "author_role": "AI fixture author",
+    "candidate_outputs_seen": false,
+    "owner_content_used": false
+  },
+  "independent_gold_review": {
+    "status": "approved",
+    "reviewer_role": "independent AI agent /root/readiness_audit",
+    "reviewed_case_sha256": "b0b83e5f5f25d35b4c8d2f6ae0c0e5a4029f5ef27904413eb4e531977f7a2026",
+    "review_receipt_sha256": "7acc8b9bd30d4b16b83cb2d14b0b15941e88d03c41bab3d1a9137ed0e2900dbe",
+    "review_date": "2026-09-30",
+    "findings": "All 80 cases and 93 synthetic source bodies read; 93 body hashes and 70 exact UTF-8 spans verified; no substantive gold blocker.",
+    "human_output_grading_satisfied": false
+  },
+  "preserved_files": {
+    "testing/src/main/resources/eval/answers/manifest.json": "65598c9b06c97fbe0534361e57d626a4cbd6560826dfd49cf651f21da43333b9",
+    "testing/src/main/resources/eval/answers/development.json": "ae9b6ea542f7d632d2349b467a948a76477d620becd6c812e9d7a6d54087d1ea",
+    "testing/src/main/resources/eval/answers/reserved.json": "aaf2e8bcbed756164e731db5749b2849dea55df301254e9fdc32ba96533d76b3",
+    "tools/eval/generate_answer_fixture.py": "968a90ca866a64c64003eb33f67ae1759e49b837d9661b7347229d84798fc2cb",
+    "tools/eval/answer_eval.py": "a36fee3768caa193e8c48fc017b71b505a032f65f4c891d2b5283367c9d16047",
+    "tools/eval/retrieval-policy-freeze.json": "67f5e98f5c5af25c0a2573c3d9694c0774abe24dccb2ae2caa3caa69e993554f"
+  },
+  "limitations": [
+    "supplied evidence only; production retrieval/context/lifecycle not executed",
+    "human grading and model/default/runtime/physical gates remain open",
+    "freeze before candidate output; post-freeze gold corrections require a new version"
+  ]
+}
