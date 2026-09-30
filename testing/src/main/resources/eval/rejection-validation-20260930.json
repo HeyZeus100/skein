@@ -1,0 +1,1021 @@
+{
+  "schema_version": 1,
+  "fixture_protocol_version": 2,
+  "split": "independent_validation_20260930",
+  "authorship": {
+    "author_role": "independent fixture lane",
+    "candidate_outputs_seen": false,
+    "purpose": "frozen diagnostic validation, never production calibration or threshold tuning",
+    "synthetic_only": true,
+    "baseline_source": "b2beaf6607ce5ccd96d3862e92892a7ed033800b"
+  },
+  "execution_contract": {
+    "required_query_count": 40,
+    "all_gold_spans_required": true,
+    "unsupported_cases": "emit UNEXECUTED with case id and missing capability; retain in total denominator",
+    "oracle_resolutions": "never feed expected_resolution.query as production retrieval input; optional separately named oracle-control run is not candidate success",
+    "revision_replay": "create each previous_revisions body in order, then update to body_md under same doc id before indexing; assert current anchors and retain historical revisions",
+    "conversation_context": "pass raw query and supplied history through real application context resolution; source pins identify prior grounded material but do not change current Space authorization",
+    "absence": "nonempty top-k list is not a pass; require empty selected evidence",
+    "conflict": "all grade-3 spans from all competing sources are required",
+    "preservation": "do not edit earlier fixtures, golds, thresholds or original run evidence"
+  },
+  "documents": [
+    {
+      "id": "019b0930-0000-7000-8000-000000000001",
+      "title": "Oriole instrument loan",
+      "body_md": "# Oriole instrument loan\n\nThe Oriole Arts Trust lends a bass clarinet to Mira Chen for the touring exhibition. Mira must return the instrument by 16:30 on 14 November 2027. The hard case stays with the instrument. The courier's name has not been entered.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000002",
+      "title": "Ceramic kiln cooldown card",
+      "body_md": "# Cooldown card\n\nAfter the firing cycle ends, leave the ceramic kiln shut for 63 minutes. Open the lid only when the display is below 70 degrees Celsius. The 63-minute wait does not override the temperature limit.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000003",
+      "title": "Copperline platform trial",
+      "body_md": "# Copperline platform trial\n\nThe portable ramp for the Copperline platform trial is stored in locker R-8. Two attendants carry it to the platform. The trial starts after the freight departure; this card does not specify a clock time.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000004",
+      "title": "Salvage tag legend",
+      "body_md": "# Salvage tags\n\nA violet tag means the crate is awaiting inspection. A silver tag means the crate is cleared for reuse. Neither tag records the crate's owner.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000005",
+      "title": "Rowan exhibit humidity",
+      "body_md": "# Rowan exhibit\n\nKeep the display-case humidity between 44 and 48 percent. The target is 46 percent. Record the value at opening and closing. This instruction gives no room-temperature target.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000006",
+      "title": "Studio desk allocation",
+      "body_md": "# Studio desk allocation\n\n| Day | Desk | Assigned editor |\n| --- | --- | --- |\n| Monday | 2 | Noor Patel |\n| Tuesday | 2 | Jules Moreno |\n| Tuesday | 5 | Sera Okafor |\n\nThe allocation covers editing desks, not parking spaces.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000007",
+      "title": "Nocturne projector reset",
+      "body_md": "# Nocturne projector\n\nIf the status light turns amber, wait twenty seconds and press Resume once. Do not perform a factory reset for an amber light. A factory reset is reserved for the separate handover procedure.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000008",
+      "title": "São Bento plaque proof",
+      "body_md": "# São Bento plaque\n\nÉlodie Costa approves the São Bento plaque's final accent marks. Deliver the printed proof to tray B-14, not to the engraving bench. The supplier is identified only as vendor SB; no postal address is recorded.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000009",
+      "title": "Kestrel shuttle — operations copy",
+      "body_md": "# Kestrel shuttle\n\nOperations copy, entered 6 May: the Kestrel shuttle leaves from Bay 4 at 08:10. This note does not resolve the conflicting visitor-desk copy.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000010",
+      "title": "Kestrel shuttle — visitor-desk copy",
+      "body_md": "# Kestrel shuttle\n\nVisitor-desk copy, entered 6 May: the Kestrel shuttle leaves from Bay 7 at 08:40. This note does not resolve the conflicting operations copy.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000011",
+      "title": "Mosaic room reservation — draft",
+      "body_md": "# Mosaic room reservation\n\nDraft dated 2 June: the Mosaic room reservation is for 12 June, with access through the east entrance. This draft is awaiting approval.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000012",
+      "title": "Mosaic room reservation — approved",
+      "body_md": "# Mosaic room reservation\n\nApproved on 4 June: the Mosaic room reservation is for 15 June, with access through the west entrance. This approval replaces the 2 June draft's date and entrance.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000013",
+      "title": "Juniper tool checkout",
+      "body_md": "# Juniper tool checkout\n\nIna Sol is the current Juniper tool custodian. Return the key to drawer D-2. The handover note records no reason for the custodian change.\n",
+      "persona_id": "default",
+      "previous_revisions": [
+        {
+          "body_md": "# Juniper tool checkout\n\nRafi Bell is the Juniper tool custodian. Return the key to drawer A-3.\n",
+          "fixture_revision": "previous-1"
+        }
+      ]
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000014",
+      "title": "Wren booth booking",
+      "body_md": "# Wren booth booking\n\nThe Wren booth setup is now Friday 19 September at 10:00. The current note contains no booking-fee amount; ask the venue for a fresh quote.\n",
+      "persona_id": "default",
+      "previous_revisions": [
+        {
+          "body_md": "# Wren booth booking\n\nThe Wren booth setup is Wednesday 17 September at 09:00. The provisional booking fee is 55 credits.\n",
+          "fixture_revision": "previous-1"
+        }
+      ]
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000015",
+      "title": "Beacon shipping desk",
+      "body_md": "# Beacon shipping desk\n\nWorkshop Space: Beacon collections happen on Tuesdays. Outgoing tubes go in locker 12. Niko signs the collection sheet.\n",
+      "persona_id": "work"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000016",
+      "title": "Beacon shipping desk",
+      "body_md": "# Beacon shipping desk\n\nArchive Space: Beacon collections happen on Thursdays. Outgoing tubes go in locker 30. Asha signs the collection sheet.\n",
+      "persona_id": "research"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000017",
+      "title": "Cobalt cabinet inventory",
+      "body_md": "# Cobalt cabinet\n\nWorkshop Space: the Cobalt cabinet holds six brass handles. Its access card is kept by Leena. No spare card is listed.\n",
+      "persona_id": "work"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000018",
+      "title": "Cobalt cabinet inventory",
+      "body_md": "# Cobalt cabinet\n\nArchive Space: the Cobalt cabinet holds nine ceramic handles. Its access card is kept by Tomas. No spare card is listed.\n",
+      "persona_id": "research"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000019",
+      "title": "Alder cart repairs",
+      "body_md": "# Alder cart repairs\n\nThe Alder cart needs two rubber wheels of 35 millimetres diameter. Keep the existing steel axle. The note does not specify a wheel supplier or a repair-completion date.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000020",
+      "title": "Marlin shelter materials",
+      "body_md": "# Marlin shelter materials\n\nUse twelve cedar slats for the Marlin shelter roof. Each slat is 90 centimetres long. The drawing gives no total roof weight.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000021",
+      "title": "Quartz prize purchase paperwork",
+      "body_md": "# Quartz prize paperwork\n\nLinden Guild issues purchase order PO-682 to Vale Workshops for twelve brass brackets. Vale Workshops sends invoice INV-517 to Linden Guild. Linden Guild pays Vale Workshops. The 840-credit budget is a spending cap, not the invoice total. No bank account or invoice due date is recorded here.\n",
+      "persona_id": "default"
+    },
+    {
+      "id": "019b0930-0000-7000-8000-000000000022",
+      "title": "Eider passage cleaning",
+      "body_md": "# Eider passage cleaning\n\nThe Eider passage is closed to visitors on cleaning mornings, but staff may use its north door. Cleaning is not scheduled on Sundays. Staff must leave the south door latched.\n",
+      "persona_id": "default"
+    }
+  ],
+  "queries": [
+    {
+      "id": "independent-20260930-01",
+      "category": "answerable_lexical",
+      "query": "Who lends the bass clarinet to Mira Chen?",
+      "persona_id": "default",
+      "answer": "Oriole Arts Trust",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000001",
+          "grade": 3,
+          "evidence": "The Oriole Arts Trust lends a bass clarinet to Mira Chen for the touring exhibition."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-02",
+      "category": "answerable_numeric_condition",
+      "query": "How long must the ceramic kiln remain shut after firing ends?",
+      "persona_id": "default",
+      "answer": "63 minutes, with opening also conditional on being below 70 degrees Celsius",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000002",
+          "grade": 3,
+          "evidence": "After the firing cycle ends, leave the ceramic kiln shut for 63 minutes. Open the lid only when the display is below 70 degrees Celsius."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-03",
+      "category": "answerable_paraphrase",
+      "query": "Where can attendants find the Copperline trial's movable boarding slope?",
+      "persona_id": "default",
+      "answer": "locker R-8",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000003",
+          "grade": 3,
+          "evidence": "The portable ramp for the Copperline platform trial is stored in locker R-8."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-04",
+      "category": "answerable_contrast",
+      "query": "Which salvage-tag color means a crate can be reused?",
+      "persona_id": "default",
+      "answer": "silver",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000004",
+          "grade": 3,
+          "evidence": "A silver tag means the crate is cleared for reuse."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-05",
+      "category": "answerable_numeric_range",
+      "query": "What humidity range is allowed in the Rowan display case?",
+      "persona_id": "default",
+      "answer": "44 to 48 percent",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000005",
+          "grade": 3,
+          "evidence": "Keep the display-case humidity between 44 and 48 percent."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-06",
+      "category": "answerable_table",
+      "query": "Who has editing desk 2 on Tuesday?",
+      "persona_id": "default",
+      "answer": "Jules Moreno",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000006",
+          "grade": 3,
+          "evidence": "| Tuesday | 2 | Jules Moreno |"
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-07",
+      "category": "answerable_negation",
+      "query": "Should an amber Nocturne projector light trigger a factory reset?",
+      "persona_id": "default",
+      "answer": "No; wait twenty seconds and press Resume once",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000007",
+          "grade": 3,
+          "evidence": "If the status light turns amber, wait twenty seconds and press Resume once. Do not perform a factory reset for an amber light."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-08",
+      "category": "answerable_unicode",
+      "query": "Who signs off the accents on the São Bento plaque?",
+      "persona_id": "default",
+      "answer": "Élodie Costa",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000008",
+          "grade": 3,
+          "evidence": "Élodie Costa approves the São Bento plaque's final accent marks."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-09",
+      "category": "absence_related_slot",
+      "query": "What is the name of Mira Chen's instrument courier?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "A named recipient is present, but the courier is explicitly unrecorded."
+    },
+    {
+      "id": "independent-20260930-10",
+      "category": "absence_related_slot",
+      "query": "Who manufactured the ceramic kiln?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Cooldown timing and temperature do not identify a manufacturer."
+    },
+    {
+      "id": "independent-20260930-11",
+      "category": "absence_related_slot",
+      "query": "At what clock time does the Copperline platform trial begin?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Only ordering after the freight departure is given."
+    },
+    {
+      "id": "independent-20260930-12",
+      "category": "absence_related_slot",
+      "query": "Who owns the violet-tagged salvage crate?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Tags explicitly do not record ownership."
+    },
+    {
+      "id": "independent-20260930-13",
+      "category": "absence_wrong_quantity",
+      "query": "What room temperature does the Rowan exhibit require?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Humidity percentages cannot answer a temperature question."
+    },
+    {
+      "id": "independent-20260930-14",
+      "category": "absence_related_slot",
+      "query": "Which parking space is assigned to Jules Moreno on Tuesday?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Editing-desk allocation is not parking allocation."
+    },
+    {
+      "id": "independent-20260930-15",
+      "category": "absence_related_slot",
+      "query": "What is vendor SB's postal address?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Vendor identifier is present, postal address absent."
+    },
+    {
+      "id": "independent-20260930-16",
+      "category": "absence_no_match",
+      "query": "Which permit number covers the Larkspur night market?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "No Larkspur market or permit appears in this corpus."
+    },
+    {
+      "id": "independent-20260930-17",
+      "category": "contradiction_unresolved",
+      "query": "Which departure time is recorded for the Kestrel shuttle?",
+      "persona_id": "default",
+      "answer": "The two unresolved copies conflict: operations says 08:10 and visitor desk says 08:40",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000009",
+          "grade": 3,
+          "evidence": "Operations copy, entered 6 May: the Kestrel shuttle leaves from Bay 4 at 08:10."
+        },
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000010",
+          "grade": 3,
+          "evidence": "Visitor-desk copy, entered 6 May: the Kestrel shuttle leaves from Bay 7 at 08:40."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Both same-day copies must be retrieved; choosing one as authoritative is unsupported."
+    },
+    {
+      "id": "independent-20260930-18",
+      "category": "contradiction_unresolved",
+      "query": "Which bay is the Kestrel shuttle supposed to depart from?",
+      "persona_id": "default",
+      "answer": "The unresolved copies disagree: operations says Bay 4 and visitor desk says Bay 7",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000009",
+          "grade": 3,
+          "evidence": "Operations copy, entered 6 May: the Kestrel shuttle leaves from Bay 4 at 08:10."
+        },
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000010",
+          "grade": 3,
+          "evidence": "Visitor-desk copy, entered 6 May: the Kestrel shuttle leaves from Bay 7 at 08:40."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Both contradictory sources are required, not the first retrieved span."
+    },
+    {
+      "id": "independent-20260930-19",
+      "category": "contradiction_explicit_supersession",
+      "query": "Which date and entrance does the approved Mosaic reservation use?",
+      "persona_id": "default",
+      "answer": "15 June and the west entrance",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000012",
+          "grade": 3,
+          "evidence": "Approved on 4 June: the Mosaic room reservation is for 15 June, with access through the west entrance. This approval replaces the 2 June draft's date and entrance."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-20",
+      "category": "absence_conflict_resolution",
+      "query": "Who decided which Kestrel shuttle copy is correct?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "No reconciliation or decision-maker is recorded; the source authors are not such a decision."
+    },
+    {
+      "id": "independent-20260930-21",
+      "category": "revision_current",
+      "query": "Who is the current Juniper tool custodian?",
+      "persona_id": "default",
+      "answer": "Ina Sol",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000013",
+          "grade": 3,
+          "evidence": "Ina Sol is the current Juniper tool custodian."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "revision_replay"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "Seed Rafi version, then update to Ina before ingest; current revision anchors only."
+    },
+    {
+      "id": "independent-20260930-22",
+      "category": "revision_current",
+      "query": "When is Wren booth setup now?",
+      "persona_id": "default",
+      "answer": "Friday 19 September at 10:00",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000014",
+          "grade": 3,
+          "evidence": "The Wren booth setup is now Friday 19 September at 10:00."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "revision_replay"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-23",
+      "category": "revision_absence",
+      "query": "Why did Rafi stop being the Juniper tool custodian?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "revision_replay"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "The former custodian is in history; the current note gives no reason."
+    },
+    {
+      "id": "independent-20260930-24",
+      "category": "revision_absence",
+      "query": "What is the current Wren booth booking fee?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "revision_replay"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "55 credits belongs only to the superseded revision and is not a current price."
+    },
+    {
+      "id": "independent-20260930-25",
+      "category": "space_answerable",
+      "query": "On which weekday are Beacon collections?",
+      "persona_id": "work",
+      "answer": "Tuesdays",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000015",
+          "grade": 3,
+          "evidence": "Workshop Space: Beacon collections happen on Tuesdays."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019b0930-0000-7000-8000-000000000016"
+      ],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-26",
+      "category": "space_answerable",
+      "query": "On which weekday are Beacon collections?",
+      "persona_id": "research",
+      "answer": "Thursdays",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000016",
+          "grade": 3,
+          "evidence": "Archive Space: Beacon collections happen on Thursdays."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019b0930-0000-7000-8000-000000000015"
+      ],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-27",
+      "category": "space_answerable",
+      "query": "Who keeps the Cobalt cabinet access card?",
+      "persona_id": "work",
+      "answer": "Leena",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000017",
+          "grade": 3,
+          "evidence": "Its access card is kept by Leena."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019b0930-0000-7000-8000-000000000018"
+      ],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-28",
+      "category": "space_answerable",
+      "query": "How many handles are in the Cobalt cabinet, and what are they made from?",
+      "persona_id": "research",
+      "answer": "nine ceramic handles",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000018",
+          "grade": 3,
+          "evidence": "Archive Space: the Cobalt cabinet holds nine ceramic handles."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019b0930-0000-7000-8000-000000000017"
+      ],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-29",
+      "category": "space_absence",
+      "query": "On which weekday are Beacon collections?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [
+        "019b0930-0000-7000-8000-000000000015",
+        "019b0930-0000-7000-8000-000000000016"
+      ],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "No default-Space Beacon collection evidence; other Spaces are not an All Spaces fallback."
+    },
+    {
+      "id": "independent-20260930-30",
+      "category": "space_absence",
+      "query": "Who keeps the Cobalt cabinet access card?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [
+        "019b0930-0000-7000-8000-000000000017",
+        "019b0930-0000-7000-8000-000000000018"
+      ],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "No default-Space Cobalt card evidence."
+    },
+    {
+      "id": "independent-20260930-31",
+      "category": "followup_answerable",
+      "query": "And where should the proof go?",
+      "persona_id": "default",
+      "answer": "tray B-14",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000008",
+          "grade": 3,
+          "evidence": "Deliver the printed proof to tray B-14, not to the engraving bench."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "conversation_context"
+      ],
+      "all_gold_spans_required": true,
+      "conversation": {
+        "turns": [
+          {
+            "role": "user",
+            "content": "Who approves the São Bento plaque accents?"
+          },
+          {
+            "role": "assistant",
+            "content": "Élodie Costa approves them.",
+            "source_pins": [
+              {
+                "doc_id": "019b0930-0000-7000-8000-000000000008",
+                "body_sha256": "1fcdb78c2704e7ed0e73e302d4d3f3bdeae6fee954801c720db2a8d08b424399",
+                "revision": "current",
+                "persona_id": "default"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_resolution": {
+        "query": "Where should the printed proof of the São Bento plaque be delivered?",
+        "use": "oracle_review_only_not_retrieval_input"
+      }
+    },
+    {
+      "id": "independent-20260930-32",
+      "category": "followup_answerable",
+      "query": "How long is each one?",
+      "persona_id": "default",
+      "answer": "90 centimetres",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000020",
+          "grade": 3,
+          "evidence": "Each slat is 90 centimetres long."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "conversation_context"
+      ],
+      "all_gold_spans_required": true,
+      "conversation": {
+        "turns": [
+          {
+            "role": "user",
+            "content": "What material and quantity does the Marlin shelter roof need?"
+          },
+          {
+            "role": "assistant",
+            "content": "Twelve cedar slats.",
+            "source_pins": [
+              {
+                "doc_id": "019b0930-0000-7000-8000-000000000020",
+                "body_sha256": "15d6f9f740fc34ddecdc2eb4448d3100c66ce03588c46941504ce1f056ea5b13",
+                "revision": "current",
+                "persona_id": "default"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_resolution": {
+        "query": "How long is each cedar slat for the Marlin shelter roof?",
+        "use": "oracle_review_only_not_retrieval_input"
+      }
+    },
+    {
+      "id": "independent-20260930-33",
+      "category": "followup_absence",
+      "query": "Which company sells those?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "conversation_context"
+      ],
+      "all_gold_spans_required": true,
+      "conversation": {
+        "turns": [
+          {
+            "role": "user",
+            "content": "What replacement wheels does the Alder cart need?"
+          },
+          {
+            "role": "assistant",
+            "content": "Two rubber wheels of 35 millimetres diameter.",
+            "source_pins": [
+              {
+                "doc_id": "019b0930-0000-7000-8000-000000000019",
+                "body_sha256": "ac6259cdff0678c82f3b9b7cc61816ecd2532a29967935e952d2fccf3e6cd8b6",
+                "revision": "current",
+                "persona_id": "default"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_resolution": {
+        "query": "Which company supplies the Alder cart's 35 millimetre rubber replacement wheels?",
+        "use": "oracle_review_only_not_retrieval_input"
+      },
+      "label_rationale": "Conversation establishes wheel referent, but the note lacks supplier information."
+    },
+    {
+      "id": "independent-20260930-34",
+      "category": "followup_assistant_only_absence",
+      "query": "When was that repair completed?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "conversation_context",
+        "assistant_claims_are_not_evidence"
+      ],
+      "all_gold_spans_required": true,
+      "conversation": {
+        "turns": [
+          {
+            "role": "user",
+            "content": "Tell me about the Alder cart."
+          },
+          {
+            "role": "assistant",
+            "content": "Its wheels were repaired on 22 April.",
+            "source_pins": []
+          }
+        ]
+      },
+      "expected_resolution": {
+        "query": "When was the Alder cart wheel repair completed?",
+        "use": "oracle_review_only_not_retrieval_input"
+      },
+      "label_rationale": "The prior assistant invented a completion date; the source explicitly lacks one."
+    },
+    {
+      "id": "independent-20260930-35",
+      "category": "followup_scope_switch_absence",
+      "query": "And which locker do the tubes go in here?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [
+        "019b0930-0000-7000-8000-000000000015",
+        "019b0930-0000-7000-8000-000000000016"
+      ],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "conversation_context",
+        "space_switch"
+      ],
+      "all_gold_spans_required": true,
+      "conversation": {
+        "prior_persona_id": "work",
+        "turns": [
+          {
+            "role": "user",
+            "content": "When are Beacon collections in Workshop Space?"
+          },
+          {
+            "role": "assistant",
+            "content": "Tuesdays.",
+            "source_pins": [
+              {
+                "doc_id": "019b0930-0000-7000-8000-000000000015",
+                "body_sha256": "596fede9f4c35f9ff5e9b0093d8d5d159d2ba226423b0040258e3e28cb1503ca",
+                "revision": "current",
+                "persona_id": "work"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_resolution": {
+        "query": "Which locker holds Beacon outgoing tubes in the current default Space?",
+        "use": "oracle_review_only_not_retrieval_input"
+      },
+      "label_rationale": "Current Space is default; old Workshop source pin must not authorize cross-Space retrieval."
+    },
+    {
+      "id": "independent-20260930-36",
+      "category": "followup_answerable",
+      "query": "Who sends the invoice back to the purchase-order issuer?",
+      "persona_id": "default",
+      "answer": "Vale Workshops sends it to Linden Guild",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000021",
+          "grade": 3,
+          "evidence": "Vale Workshops sends invoice INV-517 to Linden Guild."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes",
+        "conversation_context"
+      ],
+      "all_gold_spans_required": true,
+      "conversation": {
+        "turns": [
+          {
+            "role": "user",
+            "content": "Who issues purchase order PO-682?"
+          },
+          {
+            "role": "assistant",
+            "content": "Linden Guild issues it to Vale Workshops.",
+            "source_pins": [
+              {
+                "doc_id": "019b0930-0000-7000-8000-000000000021",
+                "body_sha256": "1cb52e024389e4999b5ba44817878023df361d7dd2b240c1465e75c97ac669f6",
+                "revision": "current",
+                "persona_id": "default"
+              }
+            ]
+          }
+        ]
+      },
+      "expected_resolution": {
+        "query": "Who sends invoice INV-517 to Linden Guild under purchase order PO-682?",
+        "use": "oracle_review_only_not_retrieval_input"
+      }
+    },
+    {
+      "id": "independent-20260930-37",
+      "category": "answerable_transaction_roles",
+      "query": "Who is the issuer of purchase order PO-682, and who receives it?",
+      "persona_id": "default",
+      "answer": "Linden Guild issues it to Vale Workshops",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000021",
+          "grade": 3,
+          "evidence": "Linden Guild issues purchase order PO-682 to Vale Workshops for twelve brass brackets."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-38",
+      "category": "answerable_conditional_exception",
+      "query": "May staff use the Eider passage on a cleaning morning?",
+      "persona_id": "default",
+      "answer": "Yes, through the north door; visitor closure does not exclude staff",
+      "relevant": [
+        {
+          "doc_id": "019b0930-0000-7000-8000-000000000022",
+          "grade": 3,
+          "evidence": "The Eider passage is closed to visitors on cleaning mornings, but staff may use its north door."
+        }
+      ],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true
+    },
+    {
+      "id": "independent-20260930-39",
+      "category": "absence_wrong_quantity",
+      "query": "What is the total amount of invoice INV-517?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "840 credits is explicitly a spending cap, not an invoice total."
+    },
+    {
+      "id": "independent-20260930-40",
+      "category": "absence_related_slot",
+      "query": "At what time does Eider passage cleaning start on Monday?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [],
+      "execution_requirements": [
+        "current_revision_anchored_notes"
+      ],
+      "all_gold_spans_required": true,
+      "label_rationale": "No start time is supplied, despite morning and weekday language."
+    }
+  ]
+}
