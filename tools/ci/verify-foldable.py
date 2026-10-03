@@ -26,8 +26,17 @@ def sha256(path):
 
 
 def review(repository, expected_sha, profile="pixel_9_pro_fold"):
+    # The public CI entry point remains Linux/x86_64-only. Local policy has a separate CLI.
+    return review_runtime(repository, expected_sha, profile, repository / "build/foldable-evidence",
+                          "skein_foldable_gate", "system-images/android-35/google_apis/x86_64",
+                          "emulator/qemu/linux-x86_64/qemu-system-x86_64", "foldable-gate")
+
+
+def review_runtime(repository, expected_sha, profile, evidence, avd_name, image_dir, qemu_path, lane, artifact_root=None):
+    """Shared unchanged cases, protocol and Activity thresholds; caller supplies explicit host policy."""
+    artifact_root = repository if artifact_root is None else artifact_root
     source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repository, text=True).strip()
-    result = {"schema_version": 1, "lane": "foldable-gate", "source_sha": source_sha,
+    result = {"schema_version": 1, "lane": lane, "source_sha": source_sha,
               "control_transport": "guarded host emulator-console fold/unfold and UiAutomation rotation; no physical sensor claim",
               "source_attestation": "host-declared checkout", "apk_attestation": "build outputs; not installed-package attestation",
               "expected_source_sha": expected_sha, "profile": profile, "cases": [], "artifacts": {}, "errors": []}
@@ -36,7 +45,7 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
         result["errors"].append("unsupported profile; exact catalog ID required")
     if source_sha != expected_sha:
         result["errors"].append("checkout source SHA differs from dispatched SHA")
-    config_path = repository / "build/foldable-evidence/avd-config.ini"
+    config_path = evidence / "avd-config.ini"
     try:
         config = dict(line.split("=", 1) for line in config_path.read_text().splitlines()
                       if "=" in line and not line.lstrip().startswith("#"))
@@ -51,10 +60,9 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
             result["errors"].append("generic compatibility profile has unexpected manufacturer")
     except (OSError, ValueError):
         result["errors"].append("missing or malformed actual AVD config")
-    sdk_path = repository / "build/foldable-evidence/sdk-runtime-receipts.json"
+    sdk_path = evidence / "sdk-runtime-receipts.json"
     try:
         sdk = json.loads(sdk_path.read_text())
-        image_dir = "system-images/android-35/google_apis/x86_64"
         if (type(sdk["schema_version"]) is not int or sdk["schema_version"] != 1 or
                 sdk["attribution"] != "host SDK files, not emulator process attestation or original failed image equality" or
                 sdk["avd_config_sha256"] != sha256(config_path) or
@@ -66,7 +74,7 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
         payloads = sdk["system_image_payloads"]
         required = {f"{image_dir}/{name}" for name in ("system.img", "vendor.img", "ramdisk.img")}
         metadata = {"emulator/source.properties", "emulator/emulator",
-                    "emulator/qemu/linux-x86_64/qemu-system-x86_64", f"{image_dir}/source.properties"}
+                    qemu_path, f"{image_dir}/source.properties"}
         if (len(paths) != len(files) or len(set(payloads)) != len(payloads) or
                 not required <= set(payloads) or not metadata <= paths or not set(payloads) <= paths or
                 not any(path.startswith(f"{image_dir}/kernel-ranchu") for path in payloads)):
@@ -82,7 +90,7 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
     except (OSError, ValueError, KeyError, TypeError):
         result["errors"].append("missing or malformed SDK/image payload receipts")
     seen = set()
-    for path in sorted((repository / "app/build/outputs/androidTest-results/connected").rglob("*.xml")):
+    for path in sorted((artifact_root / "app/build/outputs/androidTest-results/connected").rglob("*.xml")):
         result["artifacts"][str(path.relative_to(repository))] = sha256(path)
         try:
             root = ET.parse(path).getroot()
@@ -99,12 +107,12 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
     for identity in sorted(EXPECTED - seen):
         result["errors"].append(f"required testcase absent: {identity}")
     for directory in ("app/build/outputs/apk/dev/debug", "app/build/outputs/apk/androidTest/dev/debug"):
-        apks = sorted((repository / directory).glob("*.apk"))
+        apks = sorted((artifact_root / directory).glob("*.apk"))
         if len(apks) != 1:
             result["errors"].append(f"expected exactly one APK under {directory}, found {len(apks)}")
         for path in apks:
             result["artifacts"][str(path.relative_to(repository))] = sha256(path)
-    geometry_path = repository / "build/foldable-evidence/window-geometry.jsonl"
+    geometry_path = evidence / "window-geometry.jsonl"
     try:
         rows = [json.loads(line) for line in geometry_path.read_text().splitlines() if line.strip()]
         steps = {row["step"]: row for row in rows}
@@ -148,7 +156,7 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
     except (OSError, ValueError, KeyError, TypeError):
         result["errors"].append("missing or malformed runtime geometry JSONL")
     # The private-file bridge must complete; XML alone cannot mask a failed host controller.
-    run_path = repository / "build/foldable-evidence/console-run-id.txt"
+    run_path = evidence / "console-run-id.txt"
     events_path = run_path.with_name("console-events.jsonl")
     try:
         run_id = run_path.read_text().strip()
@@ -161,7 +169,7 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
             raise ValueError("controller event run mismatch")
         if events[0]["event"] != "started" or events[-1]["event"] != "stopped":
             raise ValueError("controller did not start and stop cleanly")
-        if events[0].get("avd") != "skein_foldable_gate" or not re.fullmatch(r"emulator-[0-9]+", events[0].get("serial", "")):
+        if events[0].get("avd") != avd_name or not re.fullmatch(r"emulator-[0-9]+", events[0].get("serial", "")):
             raise ValueError("controller target identity mismatch")
         if any(event["event"] not in {"started", "request", "console", "ack", "stopped"} for event in events):
             raise ValueError("controller recorded failure or fallback cleanup")

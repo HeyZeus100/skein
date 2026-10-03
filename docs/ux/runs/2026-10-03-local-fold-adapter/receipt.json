@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "bead": "skein-12pt.2.1.1",
+  "source_base": "705dc39fea5cec99519853b1592766f4a82fa409",
+  "scope": "Separate macOS ARM host adapter; unchanged CI public guard, original fold cases, counts and thresholds",
+  "implementation": "local adapter implemented and independently reviewed",
+  "host_python": {
+    "actual_tests": 67,
+    "original_regressions": 44,
+    "new_host_controls": 23,
+    "failed": 0,
+    "skipped": 0,
+    "raw_result": "host-attempt-04-result.json inside host-compile-evidence.zip"
+  },
+  "kotlin": {
+    "ktlintCheck": "PASS",
+    "compileDevDebugAndroidTestKotlin": "PASS executed",
+    "compileFossDebugAndroidTestKotlin": "PASS executed",
+    "gradle_exit": 0,
+    "elapsed_log_seconds": 15,
+    "tasks": {
+      "executed": 81,
+      "from_cache": 244
+    }
+  },
+  "original_negative": "host-attempt-01-wrapper-negative.json retains zsh reserved-variable error after61actualtests passed; no negative relabelled as acceptance",
+  "runtime": "UNRUN; nonce request/ACK, sixposture and fiveActivitygeometry remain open",
+  "first_runtime_profile_plan": "pixel_fold compatibility; exact Pixel9ProFold separate/unavailable in observed catalog",
+  "physical": "UNRUN; no current connection/unlock claim or actions",
+  "hosted_actions": 0,
+  "raw_private_evidence": "build/agent-logs/fold-local-20261003 retains process inventories; public files contain counts/hashes only",
+  "artifacts": {
+    "bounded-host-receipt.json": {
+      "bytes": 809,
+      "sha256": "80483bb9c7d87d4ab52aa4917a2c73ab5e389ba3954d4a21be2e243a57e5482f"
+    },
+    "host-attempt-04-source.json": {
+      "bytes": 1197,
+      "sha256": "aa91ebd1a5a56dd7f8397ecff31c88eefcf84c7205a0b4dbfa4b849a74d1a442"
+    },
+    "host-compile-evidence.zip": {
+      "bytes": 9591,
+      "sha256": "53efdb13f1184f8214cf3707661eb1dcb72c18c35840a05d95d288d615627d68"
+    },
+    "independent-source-review.json": {
+      "bytes": 12856,
+      "sha256": "fb3071f288d6932819f0dc718a74aa242951ac392110bb96bcb8b730e185be32"
+    }
+  }
+}

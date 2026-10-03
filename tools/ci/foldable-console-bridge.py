@@ -53,11 +53,9 @@ def decode_request(raw, run_id):
     return request
 
 
-class Bridge:
-    def __init__(self, serial, run_id, evidence, run=subprocess.run, environment=None, display_diagnostics=False):
-        self.environment = os.environ if environment is None else environment
-        if self.environment.get("GITHUB_ACTIONS") != "true":
-            raise ProtocolError("requires disposable GitHub Actions host")
+class ProtocolBridge:
+    def __init__(self, serial, run_id, evidence, run=subprocess.run, display_diagnostics=False, avd_name=AVD):
+        self.avd_name = avd_name
         if not re.fullmatch(r"emulator-[0-9]+", serial):
             raise ProtocolError("refusing non-emulator serial")
         if not TOKEN.fullmatch(run_id):
@@ -114,13 +112,7 @@ class Bridge:
         return result.stdout
 
     def guard(self):
-        if self.environment.get("GITHUB_ACTIONS") != "true":
-            raise ProtocolError("CI guard changed")
-        if self.checked("shell", "getprop", "ro.kernel.qemu").strip() != "1":
-            raise ProtocolError("qemu identity mismatch")
-        identity = self.checked("emu", "avd", "name").splitlines()
-        if identity != [AVD, "OK"]:
-            raise ProtocolError(f"AVD identity mismatch: {identity!r}")
+        raise ProtocolError("explicit host authority is required")
 
     def read_request(self):
         # Raw shell-v2 preserves the remote status and separates stderr. exec-out does neither.
@@ -230,7 +222,7 @@ class Bridge:
     def serve(self, stop, lifetime=4800):
         deadline = time.monotonic() + lifetime
         self.guard()
-        self.event("started", serial=self.serial, avd=AVD)
+        self.event("started", serial=self.serial, avd=self.avd_name)
         try:
             while not stop.exists():
                 if time.monotonic() >= deadline:
@@ -242,6 +234,24 @@ class Bridge:
             self.event("stopped")
         finally:
             self.cleanup()
+
+
+class Bridge(ProtocolBridge):
+    """The existing CI entry point retains its original admission guard."""
+    def __init__(self, serial, run_id, evidence, run=subprocess.run, environment=None, display_diagnostics=False):
+        self.environment = os.environ if environment is None else environment
+        if self.environment.get("GITHUB_ACTIONS") != "true":
+            raise ProtocolError("requires disposable GitHub Actions host")
+        super().__init__(serial, run_id, evidence, run=run, display_diagnostics=display_diagnostics)
+
+    def guard(self):
+        if self.environment.get("GITHUB_ACTIONS") != "true":
+            raise ProtocolError("CI guard changed")
+        if self.checked("shell", "getprop", "ro.kernel.qemu").strip() != "1":
+            raise ProtocolError("qemu identity mismatch")
+        identity = self.checked("emu", "avd", "name").splitlines()
+        if identity != [AVD, "OK"]:
+            raise ProtocolError(f"AVD identity mismatch: {identity!r}")
 
 
 def main():

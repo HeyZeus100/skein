@@ -30,11 +30,22 @@ internal class FoldableDeviceControl(
     private val committedState = Regex("Committed state: $stateDescription")
 
     fun requireEmulator() {
-        check(InstrumentationRegistry.getArguments().getString("skein.foldable.ci") == "true") {
-            "Device controls require the guarded disposable CI lane"
-        }
+        val arguments = InstrumentationRegistry.getArguments()
+        val ci = arguments.getString("skein.foldable.ci") == "true"
+        val local = arguments.getString("skein.foldable.localMacArm") == "true"
+        check(ci.xor(local)) { "Device controls require exactly one guarded disposable lane" }
+        val expectedAvd =
+            if (local) {
+                val runId = arguments.getString("skein.foldable.runId")
+                check(runId != null && Regex("[0-9a-f]{32}").matches(runId)) { "Missing fresh local run ID" }
+                check(shell("getprop ro.build.version.sdk").trim() == "35") { "Unexpected local emulator API" }
+                check(shell("getprop ro.product.cpu.abi").trim() == "arm64-v8a") { "Unexpected local emulator ABI" }
+                "skein_foldable_local_$runId"
+            } else {
+                "skein_foldable_gate"
+            }
         check(shell("getprop ro.kernel.qemu").trim() == "1") { "Refusing non-emulator device controls" }
-        check(shell("getprop ro.boot.qemu.avd_name").trim() == "skein_foldable_gate") {
+        check(shell("getprop ro.boot.qemu.avd_name").trim() == expectedAvd) {
             "Refusing unexpected emulator AVD"
         }
     }

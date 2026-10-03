@@ -1,0 +1,153 @@
+{
+  "reviewer": "/root/application_context",
+  "result": "PASS_BOUNDED_SOURCE_AND_HOST_CHECKS",
+  "source_base": "705dc39fea5cec99519853b1592766f4a82fa409",
+  "final_source": {
+    "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt": {
+      "bytes": 11489,
+      "sha256": "a61a095122c81b3e7b2bc437fca4d7d9ad0b3bb9249a1f67eb0d64d64588bc64"
+    },
+    "tools/ci/foldable-console-bridge.py": {
+      "bytes": 13513,
+      "sha256": "fd8f7e76e84e46d34a364374875e84b0d9ae97b939158f61aaf594b72015c6a5"
+    },
+    "tools/ci/verify-foldable.py": {
+      "bytes": 24309,
+      "sha256": "37644bf9a39f76ea15ea88020083d5708cce70fb3f4fb6b876c8829d4f91cbb8"
+    },
+    "tools/ci/foldable_local.py": {
+      "bytes": 17140,
+      "sha256": "d5bdfbad33af2ffba49948356505c63fe252397407eedb1adba6fa7e2521f311"
+    },
+    "tools/ci/run-foldable-local.py": {
+      "bytes": 20825,
+      "sha256": "c73aa8664a4695bf46e58cd78de013a392e27c6232b76c40bf5edd546f6e6767"
+    },
+    "tools/ci/test_foldable_local.py": {
+      "bytes": 13429,
+      "sha256": "d100227ba9bac349fd5567e118f605919262d9470d533d582631d05629464e31"
+    },
+    "tools/ci/test_verify_foldable_local.py": {
+      "bytes": 8664,
+      "sha256": "eabf133bb514c5a8ba39002342a9ea550932d518c96cc40520bca48d03d72c45"
+    },
+    "tools/ci/FOLDABLE_LOCAL.md": {
+      "bytes": 5159,
+      "sha256": "c6a2a7e50fa0bea479ead53b7942caea20af1afb4769156050fd9f7d27533e67"
+    }
+  },
+  "runtime_source_matches_compile_freeze": true,
+  "only_postcompile_change": "One Python untracked-source refusal regression, rerun in host04; Kotlin/runtime sources unchanged.",
+  "resolved_findings": {
+    "F1": "Exact existing tiny model pin/bytes required initial/prebuild/preruntime/final; custom fetch task explicitly excluded.",
+    "F2": "Successful Gradle client does not clear unproven status until new candidate PIDs disappear; reparenting remains live; bound expires with lease retained and no signals.",
+    "F3": "Actual executing runner/helper/protocol/reviewer paths and hashes bound to frozen repository; untracked source now refuses."
+  },
+  "other_reviewed_guards": [
+    "Native macOS ARM host only; no forged CI admission.",
+    "UUID disposable AVD with live child/process group/listener/lease checks before targeted commands; exclusive read-only inventory before Gradle discovery.",
+    "Exact30installed image payloads pinned to qualified API35GoogleAPIsARM64r9ext13.",
+    "Original CI entrypoint guards preserved; original two fold test identities, six posture exchanges, five Activity observations, nonce readiness separation,90sACK/15sgeometry and600dp assertions unchanged.",
+    "Timeout retains build lease; failed emulator cleanup/occupied ports retains device lease; signals only retained Popen child.",
+    "Separate local verifier requires fresh snapshot artifacts, command/source/model/SDK/cleanup receipts and fails closed."
+  ],
+  "host_tests": {
+    "count": 67,
+    "new": 23,
+    "prior": 44,
+    "outcome": "PASS",
+    "actual_log_sha256": "0ff5058c3b382d667629a64f56a6d88c54850f13719c550e9126126da7bc9220",
+    "static_identity_inventory": [
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_readiness_ack_is_nonce_bound_and_precedes_all_posture_mutations",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_readiness_sequence_cannot_be_used_to_relabel_a_posture",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_command_receipts_keep_exact_timeout_poll_phase_and_no_inherited_stdin",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_no_input_adb_child_cannot_wait_for_an_inherited_open_stdin_pipe",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_guards_reject_physical_serial_ci_and_invalid_run_before_any_command",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_wrong_qemu_or_avd_cannot_mutate_or_write_ack",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_json_rejects_stale_unknown_duplicate_oversized_and_wrong_shapes",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_exact_replay_only_replies_with_matched_cached_ack",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_changed_old_out_of_order_or_reused_nonce_cannot_mutate",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_display_reads_are_bound_to_one_exchange_and_replay_does_not_recapture",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_display_timeout_is_preserved_and_never_allows_another_posture_mutation",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_display_collection_refuses_prior_evidence",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_timeout_is_poisoned_error_ack_without_retry",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_fold_timeout_withholds_all_further_posture_mutations",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_request_read_timeout_after_fold_also_withholds_cleanup",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_console_ko_is_not_success",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_cleanup_unfold_is_only_after_owned_fold_and_is_guarded",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_stop_and_lifetime_are_bounded_and_recorded",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_shell_stop_escalates_and_reaps_a_stalled_owned_controller",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_uninstalled_package_and_missing_private_file_wait_without_parsing_diagnostics",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_exit_aware_read_keeps_real_errors_and_malformed_data_fatal",
+      "tools/ci/test_foldable_console.py:ConsoleProtocolTest.test_private_request_read_has_fixed_path_and_byte_limit",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_command_receipts_reject_timeout_missing_phase_order_and_inherited_input",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_readiness_requires_instrumentation_consumption_before_original_posture_cases",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_counts_actual_cases_and_hashes_source_bound_artifacts",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_sdk_image_receipts_cannot_be_missing_metadata_only_or_bound_to_another_config",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_display_diagnostics_cannot_be_missing_stale_partial_or_failed",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_empty_failure_skip_and_duplicate_cannot_pass",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_generic_profile_is_explicit_and_preserves_pixel_acceptance_gate",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_missing_hinge_or_wrong_actual_profile_cannot_pass",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_geometry_must_show_wider_inner_window_and_same_activity_per_journey",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_failed_mismatched_duplicate_or_unstopped_console_cannot_pass",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_non_activity_missing_or_contradictory_window_geometry_cannot_pass",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_ack_before_console_or_non_alternating_posture_cannot_pass",
+      "tools/ci/test_verify_foldable.py:FoldableEvidenceReviewTest.test_wrong_source_missing_case_and_malformed_xml_cannot_pass",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_apks_are_built_before_polling_and_readiness_precedes_activity_launch",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_linux_emulator_library_is_installed_before_the_version_probe",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_exact_and_compatibility_profiles_are_explicit_and_labelled",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_scoped_xvfb_is_started_before_emulator_and_always_cleaned",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_failed_display_owner_publication_terminates_only_the_owned_child",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_owned_display_cleanup_never_signals_a_reused_pid_and_bounds_escalation",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_sdk_receipts_hash_actual_image_and_kernel_bytes_and_refuse_missing_payloads",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_spaced_catalog_id_is_exact_and_missing_profile_never_falls_back",
+      "tools/ci/test_foldable_workflow.py:FoldableWorkflowContractTest.test_espresso_pin_and_test_only_network_manifest_are_verified",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_local_environment_cannot_impersonate_host_or_ci",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_run_identity_and_explicit_even_port",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_actual_adapter_modules_must_belong_to_selected_repository",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_discovery_refuses_physical_offline_other_emulator_and_missing_owned_target",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_owned_live_child_and_both_listener_groups_are_required",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_leases_are_atomic_and_cannot_release_changed_owner",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_generic_profile_requires_actual_hinge_and_exact_image",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_installed_image_pin_requires_all_original_bytes",
+      "tools/ci/test_foldable_local.py:LocalAdmissionTest.test_existing_test_model_refuses_missing_changed_or_repointed_bytes",
+      "tools/ci/test_foldable_local.py:LocalCleanupTest.test_untracked_source_refuses_frozen_checkout",
+      "tools/ci/test_foldable_local.py:LocalCleanupTest.test_unproven_gradle_retains_build_lease_even_when_emulator_stopped",
+      "tools/ci/test_foldable_local.py:LocalCleanupTest.test_surviving_port_owner_is_never_signalled_or_device_lease_released",
+      "tools/ci/test_foldable_local.py:LocalCleanupTest.test_successful_gradle_client_with_live_new_daemon_keeps_build_unproven",
+      "tools/ci/test_foldable_local.py:LocalProtocolTest.test_actual_authority_checked_before_every_targeted_command",
+      "tools/ci/test_foldable_local.py:LocalProtocolTest.test_wrong_run_avd_and_non_emulator_cannot_mutate",
+      "tools/ci/test_foldable_local.py:LocalProtocolTest.test_readiness_is_required_and_replay_never_repeats_posture_mutation",
+      "tools/ci/test_verify_foldable_local.py:LocalEvidenceTest.test_valid_synthetic_local_evidence_uses_same_cases_and_thresholds",
+      "tools/ci/test_verify_foldable_local.py:LocalEvidenceTest.test_wrong_avd_cannot_borrow_ci_or_another_local_run",
+      "tools/ci/test_verify_foldable_local.py:LocalEvidenceTest.test_readiness_alone_never_satisfies_posture_or_geometry",
+      "tools/ci/test_verify_foldable_local.py:LocalEvidenceTest.test_geometry_failure_stays_failure_after_transport_passes",
+      "tools/ci/test_verify_foldable_local.py:LocalEvidenceTest.test_source_cleanup_host_and_grant_failures_cannot_be_reported_passed",
+      "tools/ci/test_verify_foldable_local.py:LocalEvidenceTest.test_raw_command_sdk_source_and_lease_receipts_are_bound",
+      "tools/ci/test_verify_foldable_local.py:LocalEvidenceTest.test_original_ci_reviewer_never_admits_local_evidence"
+    ]
+  },
+  "prior_files_byte_unchanged": [
+    "tools/ci/test_foldable_console.py",
+    "tools/ci/test_verify_foldable.py",
+    "tools/ci/test_foldable_workflow.py",
+    "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+    "tools/models/test-model.lock"
+  ],
+  "isolated_compilation": {
+    "both_opt_in_android_test_variants": "EXECUTED_PASS",
+    "app_ktlint": "PASS",
+    "log_sha256": "71eb5970222c873450bb05d84ac759aea1f4985002dda343899f001b25aa8858",
+    "seconds_log": 15
+  },
+  "original_evidence": "host01 wrapper status-variable failure retained separately despite61test PASS; later receipts capture terminal process status. Initial peer snapshot/findings retained.",
+  "blocking_findings": [],
+  "open_acceptance": [
+    "Root combined source integration/freeze",
+    "Actual local transport nonce exchange and Activity geometry",
+    "Exact Pixel9ProFold profile acceptance",
+    "Installed-package readback",
+    "Physical Fold/unlocked content/IME/focus/privacy acceptance"
+  ],
+  "reviewer_actions": "Read-only source/log/hash audit; no reviewer build/test/device command or worker-tree edit"
+}

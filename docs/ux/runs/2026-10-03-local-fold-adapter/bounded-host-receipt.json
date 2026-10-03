@@ -1,0 +1,25 @@
+{
+  "host_tests": 67,
+  "host_exit": 0,
+  "kotlin_compile_exit": 0,
+  "runtime": "UNRUN",
+  "physical": "UNRUN",
+  "compiled_class_files": 14,
+  "source_manifest": {
+    "path": "host-attempt-04-source.json",
+    "sha256": "aa91ebd1a5a56dd7f8397ecff31c88eefcf84c7205a0b4dbfa4b849a74d1a442"
+  },
+  "evidence_archive": {
+    "path": "host-compile-evidence.zip",
+    "bytes": 9591,
+    "sha256": "53efdb13f1184f8214cf3707661eb1dcb72c18c35840a05d95d288d615627d68"
+  },
+  "lease_release": {
+    "matching_build_lease_released": true,
+    "token": "f663efcac1b84aa2a4b416e6c5a46a46",
+    "preexisting_gradle_process_count": 1,
+    "new_gradle_process_count": 0,
+    "private_process_inventory_sha256": "65f979cc3ce9d668b735b31ac2be015898f4df6f6cbadf00d423eb5792a20746",
+    "released_unix": 1791055677.906261
+  }
+}

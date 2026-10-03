@@ -1,0 +1,34 @@
+{
+  "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt": {
+    "bytes": 11489,
+    "sha256": "a61a095122c81b3e7b2bc437fca4d7d9ad0b3bb9249a1f67eb0d64d64588bc64"
+  },
+  "tools/ci/foldable-console-bridge.py": {
+    "bytes": 13513,
+    "sha256": "fd8f7e76e84e46d34a364374875e84b0d9ae97b939158f61aaf594b72015c6a5"
+  },
+  "tools/ci/verify-foldable.py": {
+    "bytes": 24309,
+    "sha256": "37644bf9a39f76ea15ea88020083d5708cce70fb3f4fb6b876c8829d4f91cbb8"
+  },
+  "tools/ci/foldable_local.py": {
+    "bytes": 17140,
+    "sha256": "d5bdfbad33af2ffba49948356505c63fe252397407eedb1adba6fa7e2521f311"
+  },
+  "tools/ci/run-foldable-local.py": {
+    "bytes": 20825,
+    "sha256": "c73aa8664a4695bf46e58cd78de013a392e27c6232b76c40bf5edd546f6e6767"
+  },
+  "tools/ci/test_foldable_local.py": {
+    "bytes": 13429,
+    "sha256": "d100227ba9bac349fd5567e118f605919262d9470d533d582631d05629464e31"
+  },
+  "tools/ci/test_verify_foldable_local.py": {
+    "bytes": 8664,
+    "sha256": "eabf133bb514c5a8ba39002342a9ea550932d518c96cc40520bca48d03d72c45"
+  },
+  "tools/ci/FOLDABLE_LOCAL.md": {
+    "bytes": 5159,
+    "sha256": "c6a2a7e50fa0bea479ead53b7942caea20af1afb4769156050fd9f7d27533e67"
+  }
+}
