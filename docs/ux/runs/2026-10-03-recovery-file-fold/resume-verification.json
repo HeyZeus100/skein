@@ -1,0 +1,65 @@
+{
+  "checked_at": "2026-10-03T19:03:55.203170+00:00",
+  "origin_main_live_fetched": "705dc39fea5cec99519853b1592766f4a82fa409",
+  "prior_tested_application": "534161291b5b392994a73eb098affc6d43893086",
+  "authoritative_coordination": "six_priorities_20260930 in /Users/andrewherrera/skein-session-coordination/20260929/coordinator.json",
+  "before_ownership": {
+    "build_lease_absent": true,
+    "device_lease_absent": true,
+    "prior_queues_empty": true,
+    "prior_agents_completed": true
+  },
+  "prior_actual_evidence": [
+    {
+      "path": "docs/ux/runs/2026-09-30-context-recovery-transport/combined534161291/unit-actual.zip",
+      "sha256": "223c3fca8f416bb0645da9c4fe98eacde0de7a1d3670f15f584bc98b306bdad5",
+      "xml": 569,
+      "counts": {
+        "passed": 5636,
+        "skipped": 86
+      }
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-context-recovery-transport/combined534161291/screenshots-actual.zip",
+      "sha256": "64d627a85078f9a24e951918a6c5306385c8966dd68d60bf00ad84d9a555aa3a",
+      "xml": 161,
+      "counts": {
+        "passed": 1397,
+        "skipped": 80
+      }
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-context-recovery-transport/local-ordinary-arm64/actual-xml.zip",
+      "sha256": "fdb81ef846d80bd71c73c96478915cd688d877ab073f528bd7b95c029302df59",
+      "xml": 3,
+      "counts": {
+        "passed": 303
+      }
+    }
+  ],
+  "prior_capsule_hashes": [
+    {
+      "capsule": "combined534161291",
+      "verified_files": 17
+    },
+    {
+      "capsule": "local-ordinary-arm64",
+      "verified_files": 9
+    }
+  ],
+  "preservation": {
+    "original_file_hashes_equal": 21,
+    "original_stash_equal": true,
+    "status_note": "Original recorded logos as a single untracked file; current compact porcelain groups logos/. All21 original path bytes and original stash match. Current full untracked status retained for before/after comparison.",
+    "private_current_baseline_sha256": "07d4f609ad2068bfefadb3ed22b76e980946e9e1254a308aab49adcec90e6576",
+    "all_old_worktrees_retained": true
+  },
+  "hosted_policy": "Local checks default; no hosted dispatch without explicit owner request.",
+  "physical": {
+    "runner": "/root/fold_transport only",
+    "last_verified_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "current_connection_and_normal_unlock": "not assumed; no hardware actions",
+    "new_installation": false
+  },
+  "scope": "Recovery reader/provider, encrypted AIOUT integration, separately attributed local ARM fold adapter. No model/default/security-boundary switch; no new Fresh40 or blind-quality attribution."
+}
