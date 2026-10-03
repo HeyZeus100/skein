@@ -1,0 +1,67 @@
+{
+  "source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "actual_passed": 310,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "prior303_preserved": true,
+  "added": [
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "actual_close_and_key_lock_after_commit_preserve_dirty_survivor_on_reopen_and_block_old_writer"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "dirty_survivor_is_durable_and_reload_preserves_selection_other_metadata_and_unrelated_drafts"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "extracted_note_added_after_preflush_is_not_silently_added_to_the_delete_target"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "preflush_write_fault_rolls_back_its_sql_transaction_and_refuses_deletion_without_losing_edits"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "reload_read_failure_keeps_old_writer_reserved_and_precommit_content_survives_reopen"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "source_edit_flushed_before_delete_is_revalidated_and_refuses_the_original_target"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "unqualified_chat_and_attachment_source_writers_still_refuse_a_delete_prompt"
+    ]
+  ],
+  "actual_xml": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml",
+      "bytes": 10926,
+      "sha256": "d817e482a4d3acc8c75161088726ebd7a6f6f1b4d433bb1733ae3d63ca63445d"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml",
+      "bytes": 42406,
+      "sha256": "0a9185febbb125676e235edd0ea78980fc5d46c809cbbec130da09f971db1c71"
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml",
+      "bytes": 6494,
+      "sha256": "0fd44b21a242780a657f6578dbdc894d38315ef311073fe6b33fa6690f734865"
+    }
+  ],
+  "retained_raw_archive_sha256": "aeb160a275f32adb99623b09615f844dac00857c2da48f3383d1e112c3dcf1c9",
+  "public_actual_xml_sha256": "4d9d07170df7a6fbf63619682ab13fe78f0f3d7ac46aef4648dba02356a48b32",
+  "original_result_sha256": "e334a933afc79231e16050fbf62bda70acda0bab5003fd5b224dc73dea712f1b",
+  "cleanup": "Emulator exited0, owned ports empty, matching build/device leases released",
+  "scope": "DEV encrypted runtime. New seven use synthetic key provider; no Android per-use authentication, FOSS runtime, installed-APK readback, fold geometry or physical acceptance."
+}

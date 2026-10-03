@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "source_sha": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "runner_sha256": "f33323d34b63613afcdc1247ad1b3edee4afcb04474c16ab38733138194cfd1c",
+  "actual_counts": {
+    "app": 48,
+    "core/vault": 223,
+    "inference-service": 39
+  },
+  "total": 310,
+  "failure": 0,
+  "error": 0,
+  "skipped": 0,
+  "identity_gate": "exact consumed303 plus seven named AIOUT cases; no duplicates",
+  "case_scope": "DEV ordinary instrumentation; new7 real encrypted service/database boundary with synthetic key provider",
+  "raw_xml": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml",
+      "bytes": 10926,
+      "sha256": "d817e482a4d3acc8c75161088726ebd7a6f6f1b4d433bb1733ae3d63ca63445d",
+      "cases": 48
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml",
+      "bytes": 42406,
+      "sha256": "0a9185febbb125676e235edd0ea78980fc5d46c809cbbec130da09f971db1c71",
+      "cases": 223
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml",
+      "bytes": 6494,
+      "sha256": "0fd44b21a242780a657f6578dbdc894d38315ef311073fe6b33fa6690f734865",
+      "cases": 39
+    }
+  ],
+  "result": {
+    "bytes": 63323,
+    "sha256": "e334a933afc79231e16050fbf62bda70acda0bab5003fd5b224dc73dea712f1b"
+  },
+  "raw_archive": {
+    "bytes": 677676,
+    "sha256": "aeb160a275f32adb99623b09615f844dac00857c2da48f3383d1e112c3dcf1c9"
+  },
+  "retained_apks": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 91271868,
+      "sha256": "4c4348a85eb143f0f89d94de7b53c3dbad3ed33065367b9b3a541f01055a6f16",
+      "attribution": "host APK output; FOSS outputs may pre-exist and are not executed by DEV lane; no installed readback"
+    },
+    {
+      "path": "app/build/outputs/apk/androidTest/foss/debug/app-foss-debug-androidTest.apk",
+      "bytes": 96529509,
+      "sha256": "0896f7bab8e1cc78eeaad41cb716e6f59d038943837723d4754eafd5fad2c67f",
+      "attribution": "host APK output; FOSS outputs may pre-exist and are not executed by DEV lane; no installed readback"
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 172388849,
+      "sha256": "18af0bc9a43583d35e380514d9875b7adcce46ae9e9d90ccf00b8ff36c381525",
+      "attribution": "host APK output; FOSS outputs may pre-exist and are not executed by DEV lane; no installed readback"
+    },
+    {
+      "path": "app/build/outputs/apk/foss/debug/app-foss-debug.apk",
+      "bytes": 128112723,
+      "sha256": "ddf069ad8e9443bc01ee3ae5b33132bed880e5c9fecd8ce27433799255505c38",
+      "attribution": "host APK output; FOSS outputs may pre-exist and are not executed by DEV lane; no installed readback"
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "bytes": 53702199,
+      "sha256": "1e2e791f39d71cc0830edf99b99315f7f21deb5eff02ab02a27c24d5220b7acf",
+      "attribution": "host APK output; FOSS outputs may pre-exist and are not executed by DEV lane; no installed readback"
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "bytes": 135746312,
+      "sha256": "90e9b3d846df890be34f0b8528b5cc92b4535eb300babfbea5283925867abf72",
+      "attribution": "host APK output; FOSS outputs may pre-exist and are not executed by DEV lane; no installed readback"
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/foss/debug/inference-service-foss-debug-androidTest.apk",
+      "bytes": 130304344,
+      "sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d",
+      "attribution": "host APK output; FOSS outputs may pre-exist and are not executed by DEV lane; no installed readback"
+    }
+  ],
+  "final_source_clean": true,
+  "final_models_unchanged": true,
+  "owner_avd_unchanged": true,
+  "matching_leases_released": [
+    "device.lock",
+    "build.lock"
+  ],
+  "emulator_exit": 0,
+  "remaining_owned_port_listeners": {
+    "5580": [],
+    "5581": []
+  },
+  "post_terminal_process_counts": {
+    "preexisting_gradle": 1,
+    "new_gradle": 0
+  },
+  "private_process_inventory_sha256": "225d4cbe0c4f0f96629283220c5ac7de77958ff6fe3d406094ceefcc70a14ab9",
+  "physical_actions": 0,
+  "installed_apk_readback": "NOT_MEASURED",
+  "FOSS_runtime": "NOT_RUN; any FOSS APKs in outputs are pre-existing",
+  "fold_runtime": "NOT_RUN; separate grant required",
+  "at_unix": 1791056663.270735
+}

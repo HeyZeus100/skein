@@ -1,0 +1,89 @@
+{
+  "files": [
+    {
+      "path": "apk-delta.json",
+      "bytes": 390,
+      "sha256": "5f75ada4e08a22a987ed2353231b03634c085905f0e29a422d10c0947df2381c"
+    },
+    {
+      "path": "apk-manifest-xmltree.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "apk-manifest-xmltree.log",
+      "bytes": 14080,
+      "sha256": "d87a5f5646c526c27f71b08683cd188af60c20b06e633f49c6526bdc20a1fc89"
+    },
+    {
+      "path": "apk-review.json",
+      "bytes": 1432,
+      "sha256": "7bfa784b395f77757d83337ecf4219986065797ac01cbe3385606427dcb5714f"
+    },
+    {
+      "path": "before.json",
+      "bytes": 212,
+      "sha256": "345a50f92cecd89c468aa9349f8a4be88cd749f95015d1b76362b2fe92b636b1"
+    },
+    {
+      "path": "bounded-host-receipt.json",
+      "bytes": 844,
+      "sha256": "fb649d235bba9d5459005125a51cc676e3485a888530f3e2e2d75b4710e17075"
+    },
+    {
+      "path": "combined.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "combined.log",
+      "bytes": 147385,
+      "sha256": "19be54f61faa3e88d981e096c6131c910bcae9faade896f1291fe108da98ab8e"
+    },
+    {
+      "path": "independent-review.json",
+      "bytes": 5263,
+      "sha256": "78035670b568b9d9e8a5d399af64c75419797d3b0c49ae40d2108f9d80a1d1a1"
+    },
+    {
+      "path": "manifest-audit.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "manifest-audit.log",
+      "bytes": 393,
+      "sha256": "00ecaa0e2c627a3abcaa7de8e1a602187d258dfa8cc63549b71bc183bd01b6fd"
+    },
+    {
+      "path": "prior-comparison.json",
+      "bytes": 17520,
+      "sha256": "bc915681cf6cd44ca7d519e177cbf5cee188c68068f1ad930e34c45a819c61d2"
+    },
+    {
+      "path": "protected-source-review.json",
+      "bytes": 460,
+      "sha256": "79d86f2b56ce5a1e11fd8e97a731ab091c9288f285382535673bb2fffb0ac198"
+    },
+    {
+      "path": "python-ci.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "python-ci.log",
+      "bytes": 14838,
+      "sha256": "b2c85bc65844733b17d85b08b7c4c5357536a6c8537d634492a34bcaac28cd74"
+    },
+    {
+      "path": "unit-actual.zip",
+      "bytes": 558273,
+      "sha256": "594c202a4218f23df54c5a8e81d4eba87a61624e684d0ad2068d6e564ef28cca"
+    },
+    {
+      "path": "unit-review.json",
+      "bytes": 1770794,
+      "sha256": "ef99c00f89bf920cc208ba4a32bc655891b359f4b53769fa3b8983b2f7285464"
+    }
+  ]
+}

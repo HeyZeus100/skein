@@ -1,0 +1,118 @@
+{
+  "reviewer": "/root/recovery",
+  "result": "PASS_BOUNDED_ORDINARY_RUNTIME",
+  "source_sha": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "controller_sha256": "f33323d34b63613afcdc1247ad1b3edee4afcb04474c16ab38733138194cfd1c",
+  "platform": "macOS/API35/google_apis/arm64-v8a owned disposable emulator",
+  "result_json_sha256": "e334a933afc79231e16050fbf62bda70acda0bab5003fd5b224dc73dea712f1b",
+  "raw_instrumentation_sha256": "aeb160a275f32adb99623b09615f844dac00857c2da48f3383d1e112c3dcf1c9",
+  "actual_xml_files": 3,
+  "actual_cases": 310,
+  "passes": 310,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "duplicate_identities": 0,
+  "module_passes": {
+    "app": 48,
+    "core/vault": 223,
+    "inference-service": 39
+  },
+  "prior303_all_preserved": true,
+  "exact_seven_added_aiout_cases": [
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "actual_close_and_key_lock_after_commit_preserve_dirty_survivor_on_reopen_and_block_old_writer"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "dirty_survivor_is_durable_and_reload_preserves_selection_other_metadata_and_unrelated_drafts"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "extracted_note_added_after_preflush_is_not_silently_added_to_the_delete_target"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "preflush_write_fault_rolls_back_its_sql_transaction_and_refuses_deletion_without_losing_edits"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "reload_read_failure_keeps_old_writer_reserved_and_precommit_content_survives_reopen"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "source_edit_flushed_before_delete_is_revalidated_and_refuses_the_original_target"
+    ],
+    [
+      "app",
+      "app.skein.shell.FileSourceDetachmentInstrumentedTest",
+      "unqualified_chat_and_attachment_source_writers_still_refuse_a_delete_prompt"
+    ]
+  ],
+  "preserved_bounded_groups": {
+    "FileLifecycleInstrumentedTest": 14,
+    "ExistingVaultKeyProofInstrumentedTest": 5,
+    "ContextualSendPathInstrumentedTest": 3
+  },
+  "connected_tasks_executed": [
+    "> Task :app:connectedDevDebugAndroidTest",
+    "> Task :core:vault:connectedDevDebugAndroidTest",
+    "> Task :inference-service:connectedDevDebugAndroidTest"
+  ],
+  "artifact_hash_review": {
+    "runtime_xml_and_manifest_all_match": true,
+    "all_command_stdout_stderr_records": 86,
+    "retained_host_apks": 7,
+    "sdk_image_files": 30,
+    "sdk_runtime_binaries": 3,
+    "both_test_model_files_and_embedded_apk_assets": true
+  },
+  "app_dev_apk": {
+    "sha256": "18af0bc9a43583d35e380514d9875b7adcce46ae9e9d90ccf00b8ff36c381525",
+    "native_entries": 14,
+    "internet_permission_absent": true,
+    "inference_and_embedder_isolated": true
+  },
+  "cleanup": {
+    "emulator_terminal_exit": 0,
+    "owned_port_listeners_absent_in_runner_and_independent_host_checks": true,
+    "runner_released_both_matching_leases": true,
+    "note": "Build/device queue may be reused after ordinary03 completion; no lease modification by reviewer"
+  },
+  "evidence_receipts": [
+    {
+      "file": "runtime-review.json",
+      "sha256": "f166d9cfa24357d419f043799fba4d3218f55943c22f67fee64f6c49640d52d5"
+    },
+    {
+      "file": "runtime-extra-review.json",
+      "sha256": "ab49de45ca1197bda7cecc90e290e86185b2aa4bf3ed55d08794730080f89ecf"
+    },
+    {
+      "file": "actual-apk-review.json",
+      "sha256": "2d7581cdba74c1046784605f8fc8c69bda2a57b812ff7ae9cfe87d90506f5479"
+    },
+    {
+      "file": "aiout-source-assertion-review.json",
+      "sha256": "ac06ddb3408a0555a03b71588e22a4c6f90acf14b80b8c44b1c73d40f738906b"
+    },
+    {
+      "file": "pin-review.json",
+      "sha256": "7c90706758831ce97f9f23ab718a859405e61bfd67e6c5eb416f0b7c4c55abc4"
+    }
+  ],
+  "limits": [
+    "Historical303 are consumed regression evidence, not blind validation.",
+    "Seven new AIOUT tests qualify the encrypted service/database boundary with a synthetic key provider.",
+    "Host APK bytes were retained and rehashed; FOSS outputs may pre-exist and were not executed in the DEV lane; installed bytes were not independently measured.",
+    "No new v2 recovery activation or Android per-use authentication acceptance.",
+    "No physical Fold or fold geometry acceptance."
+  ]
+}

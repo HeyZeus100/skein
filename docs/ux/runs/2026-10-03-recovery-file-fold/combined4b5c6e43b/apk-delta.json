@@ -1,0 +1,22 @@
+{
+  "changed_entries": [
+    {
+      "path": "classes13.dex",
+      "before_bytes": 262224,
+      "after_bytes": 262232
+    },
+    {
+      "path": "classes21.dex",
+      "before_bytes": 168216,
+      "after_bytes": 168080
+    },
+    {
+      "path": "classes5.dex",
+      "before_bytes": 873856,
+      "after_bytes": 881056
+    }
+  ],
+  "new_recovery_record_dex": [
+    "classes5.dex"
+  ]
+}

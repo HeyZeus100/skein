@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lane": "ordinary-instrumentation",
+  "modules": {
+    "app": {
+      "files": [
+        "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml"
+      ],
+      "tests": 48,
+      "passed": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    },
+    "core/vault": {
+      "files": [
+        "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml"
+      ],
+      "tests": 223,
+      "passed": 223,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    },
+    "inference-service": {
+      "files": [
+        "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20261003_03(AVD) - 15.xml"
+      ],
+      "tests": 39,
+      "passed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    }
+  },
+  "errors": [],
+  "passed": true
+}

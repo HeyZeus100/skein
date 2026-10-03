@@ -1,0 +1,44 @@
+{
+  "files": [
+    {
+      "path": "actual-xml.zip",
+      "bytes": 11385,
+      "sha256": "4d9d07170df7a6fbf63619682ab13fe78f0f3d7ac46aef4648dba02356a48b32"
+    },
+    {
+      "path": "bounded-runtime-receipt.json",
+      "bytes": 4727,
+      "sha256": "8b13c4a7658bede98a900eac72fb1a516522e397c03cb5dad850ff0248e7e554"
+    },
+    {
+      "path": "gradle.log",
+      "bytes": 33626,
+      "sha256": "e1454822bb4b427bfc0f3aee62ce8a8e041d675ab96d8c58db2a0f3e37650759"
+    },
+    {
+      "path": "independent-review.json",
+      "bytes": 4448,
+      "sha256": "4fdb6e001a186749e7edea6a1ba8490bda40f6049771b2d61f3a3d25d298644d"
+    },
+    {
+      "path": "instrumentation-review.json",
+      "bytes": 1067,
+      "sha256": "6b865f6283ea770a964b1640a72888f145eebbc94652c1b3531533c47f35f80d"
+    },
+    {
+      "path": "instrumentation-verification.json",
+      "bytes": 2420,
+      "sha256": "2b55abc7dc726e016c3df4cce53074df5e08f1097cce21a98faaa837a6a46694"
+    },
+    {
+      "path": "retained-runner.py",
+      "bytes": 25127,
+      "sha256": "f33323d34b63613afcdc1247ad1b3edee4afcb04474c16ab38733138194cfd1c"
+    },
+    {
+      "path": "root-review.json",
+      "bytes": 2822,
+      "sha256": "3aa8c39abeddacf96f8beed05fc57ffdd67d14312cafa1ccd5c021c419451490"
+    }
+  ]
+}

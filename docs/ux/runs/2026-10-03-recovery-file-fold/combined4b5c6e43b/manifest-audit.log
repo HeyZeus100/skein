@@ -1,0 +1,3 @@
+{"head": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a", "argv": ["bash", "tools/ci/manifest-audit.sh", "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/app/build/outputs/apk/foss/debug/app-foss-debug.apk"]}
+manifest-audit: auditing /Users/andrewherrera/skein-worktrees/ux-integration-20260929/app/build/outputs/apk/foss/debug/app-foss-debug.apk (variant: debug)
+manifest-audit: PASS

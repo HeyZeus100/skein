@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "path": "bounded-failed-preparation-receipt.json",
+      "bytes": 1984,
+      "sha256": "7a1a5fa597a7c318704d960fb6ddd65f491b8fbadd89610a51a30cf207cae6b6"
+    },
+    {
+      "path": "failed-preparation-safe-evidence.zip",
+      "bytes": 8139,
+      "sha256": "82db435cda8739221b78c09ea08288b1cd752114144ef728bd909945b1a399c6"
+    }
+  ]
+}

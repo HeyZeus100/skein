@@ -1,0 +1,21 @@
+{
+  "source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "actual_xml": 573,
+  "passes": 5686,
+  "unchanged_skips": 86,
+  "new_recovery_occurrences": 50,
+  "ci_tool_tests": 81,
+  "gradle_seconds": 145,
+  "gradle_tasks": {
+    "executed": 274,
+    "cache": 18,
+    "up_to_date": 1215
+  },
+  "manifest_audit": "PASS actual FOSS APK",
+  "native_payloads": "All7 byte-equal prior534161291",
+  "screenshots": "No new screenshot run: production UI layout unchanged; prior1397pass80skip552unchanged remains historical",
+  "runtime": "Separate; pending at time of host gate",
+  "physical": "Not installed; no hardware actions",
+  "lease": "Matching root build lease released after no new Gradle process remained; raw process inventories private",
+  "raw_log_whitespace": "Original raw logs kept byte-exact; authored source/JSON checked separately"
+}

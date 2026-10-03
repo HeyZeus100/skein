@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "source_sha": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "source_clean_all": true,
+  "run_id": "01eb00fbb795410c8c59494174c27c31",
+  "planned_profile": "pixel_fold compatibility; AVD not yet created",
+  "implementation_stage": "preparation failed after successful APK build",
+  "error": "FileExistsError(17, 'File exists')",
+  "source_diagnosis": "SDK/Gradle created private android-user directory for debug.keystore before runner mkdir; move strict private-home creation before all SDK/Gradle calls",
+  "directory_evidence": {
+    "new_avd_home_exists": true,
+    "new_avd_home_entries": 0,
+    "android_user_debug_keystore_created": true
+  },
+  "build_exit": 0,
+  "emulator_launches": 0,
+  "adb_commands": 0,
+  "device_leases_acquired": 0,
+  "nonce_readiness": "UNRUN",
+  "posture_exchange": "UNRUN",
+  "activity_geometry": "UNRUN",
+  "physical_actions": 0,
+  "original_result": {
+    "bytes": 3238,
+    "sha256": "42a5c2d5f33ba09e0f4397743ede7e9ed0fad926f039a4d35ab3d8c20d828307"
+  },
+  "safe_archive": {
+    "bytes": 8139,
+    "sha256": "82db435cda8739221b78c09ea08288b1cd752114144ef728bd909945b1a399c6"
+  },
+  "retained_host_apks": [
+    {
+      "path": "failed-preparation-host-apks/app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 172388849,
+      "sha256": "cdd025b82a7b430ecfe53b5c7e66f1ace0035bbc40ccffe69f54fa508ea570bb",
+      "attribution": "build output only; no emulator/device installation or runtime"
+    },
+    {
+      "path": "failed-preparation-host-apks/app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94856825,
+      "sha256": "ff2b152f5fdff58ccb8f1713175dd84d18a8d7987dfe137185ce95647a0ec94c",
+      "attribution": "build output only; no emulator/device installation or runtime"
+    }
+  ],
+  "released_matching_leases": [
+    "build"
+  ],
+  "new_gradle_process_count": 0,
+  "original_failure_retained": true,
+  "automatic_retry": false,
+  "at_unix": 1791056952.730607
+}

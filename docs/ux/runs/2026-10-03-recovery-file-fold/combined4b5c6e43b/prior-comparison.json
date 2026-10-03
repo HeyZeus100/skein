@@ -1,0 +1,415 @@
+{
+  "prior_application_source": "534161291b5b392994a73eb098affc6d43893086",
+  "prior_archive_sha256": "223c3fca8f416bb0645da9c4fe98eacde0de7a1d3670f15f584bc98b306bdad5",
+  "actual_archive_sha256": "594c202a4218f23df54c5a8e81d4eba87a61624e684d0ad2068d6e564ef28cca",
+  "prior_xml_files": 569,
+  "actual_xml_files": 573,
+  "actual_outcomes": {
+    "passed": 5686,
+    "skipped": 86
+  },
+  "removed": [],
+  "changed_prior_outcomes_or_skip_details": [],
+  "added": [
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "active recovery lease refuses unlock before any cipher or authentication request"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "cancelled or failed factor authentication cannot publish a key"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "changed active record during authentication is refused without overwriting external bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "coroutine cancellation while authenticating preserves all evidence and releases admission"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "corrupted or removed active envelope during authentication cannot publish a key"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "existing v2 setup remains initialised and never replaces aliases or envelope"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "factor AAD is mandatory even when alias and ciphertext decrypt correctly without it"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "invalidated v2 alias and device lock keep their distinct nonmutating results"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "legacy row array mutation cannot change frozen v2 metadata or wraps during authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "lock during v2 authentication rejects late success and queued authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "missing v2 factor never falls back to the surviving original v1 alias"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "prepared receipt leaves original active v1 reader and aliases in force"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "production provider reads prepared v2 bytes through both factors without mutation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "recomputed checksum cannot bless changed generation time or StrongBox metadata"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "substituted Cipher cannot stand in for the authenticated CryptoObject"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "v2 legacy rewrap refuses both factors before authentication or alias mutation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "wrap authenticated for opposite factor is rejected by provider"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "both codec and bounded file reader reject oversized envelopes unchanged"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "existing v2 blocks initial setup storage without replacing it"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "legacy storage rewrap refuses v2 before changing any file"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "record equality distinguishes metadata and ciphertext changes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "recovery record owns its bytes independently of every exposed array"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "unsupported formats corrupt checksums and malformed v2 metadata fail closed"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "v2 reader retains exact canonical metadata and factor wraps"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "v2 row cannot be encoded or written as an initial legacy envelope"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "active recovery lease refuses unlock before any cipher or authentication request"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "cancelled or failed factor authentication cannot publish a key"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "changed active record during authentication is refused without overwriting external bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "coroutine cancellation while authenticating preserves all evidence and releases admission"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "corrupted or removed active envelope during authentication cannot publish a key"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "existing v2 setup remains initialised and never replaces aliases or envelope"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "factor AAD is mandatory even when alias and ciphertext decrypt correctly without it"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "invalidated v2 alias and device lock keep their distinct nonmutating results"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "legacy row array mutation cannot change frozen v2 metadata or wraps during authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "lock during v2 authentication rejects late success and queued authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "missing v2 factor never falls back to the surviving original v1 alias"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "prepared receipt leaves original active v1 reader and aliases in force"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "production provider reads prepared v2 bytes through both factors without mutation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "recomputed checksum cannot bless changed generation time or StrongBox metadata"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "substituted Cipher cannot stand in for the authenticated CryptoObject"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "v2 legacy rewrap refuses both factors before authentication or alias mutation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeProviderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+        "wrap authenticated for opposite factor is rejected by provider"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "both codec and bounded file reader reject oversized envelopes unchanged"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "existing v2 blocks initial setup storage without replacing it"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "legacy storage rewrap refuses v2 before changing any file"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "record equality distinguishes metadata and ciphertext changes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "recovery record owns its bytes independently of every exposed array"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "unsupported formats corrupt checksums and malformed v2 metadata fail closed"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "v2 reader retains exact canonical metadata and factor wraps"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryEnvelopeReaderTest.xml",
+        "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+        "v2 row cannot be encoded or written as an initial legacy envelope"
+      ],
+      "outcome": "passed"
+    }
+  ]
+}

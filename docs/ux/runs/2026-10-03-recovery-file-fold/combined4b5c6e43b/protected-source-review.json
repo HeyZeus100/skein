@@ -1,0 +1,15 @@
+{
+  "baseline": "705dc39fea5cec99519853b1592766f4a82fa409",
+  "evaluator_files_hash_equal": 13,
+  "evaluation_fixtures_byte_equal": 11,
+  "no_changes_under": [
+    "testing/src/main/resources/eval",
+    "core/rag",
+    "feature/chat",
+    "tools/eval",
+    "third_party",
+    ".github/workflows"
+  ],
+  "fresh40": "consumed regression; failures, labels and thresholds retained; not rerun or relabeled",
+  "source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a"
+}
