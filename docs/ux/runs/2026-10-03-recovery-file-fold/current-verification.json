@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "application_source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "fold_adapter_source": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "live_origin_at_resume": "705dc39fea5cec99519853b1592766f4a82fa409",
+  "host": {
+    "xml": 573,
+    "passed": 5686,
+    "skipped": 86,
+    "failed": 0,
+    "errors": 0,
+    "previous_outcomes_unchanged": true,
+    "new_recovery_occurrences": 50,
+    "ci_tooling_at_application_source": 81,
+    "ci_tooling_at_repaired_adapter": 84,
+    "foss_apk_sha256": "ddf069ad8e9443bc01ee3ae5b33132bed880e5c9fecd8ce27433799255505c38",
+    "manifest_and_seven_native_payloads_equal_prior_local534": true
+  },
+  "ordinary_runtime": {
+    "source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+    "platform": "owned local Google APIs API35 ARM64 revision9 extension13",
+    "actual_xml": 3,
+    "passed": 310,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "prior303_preserved": true,
+    "new_aiout_cases": 7,
+    "module_counts": {
+      "app": 48,
+      "core/vault": 223,
+      "inference-service": 39
+    },
+    "new_case_auth_scope": "Synthetic key provider; actual encrypted SQLCipher and production services; not per-use Android v2 auth",
+    "installed_apk_readback": "NOT_MEASURED",
+    "foss_runtime": "NOT_RUN",
+    "emulator_cleanup": "Stopped, ports empty and matching build/device leases released"
+  },
+  "fold_runtime": {
+    "state": "PASS_LOCAL_PIXEL_FOLD_COMPATIBILITY",
+    "source": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+    "actual_cases_passed": 2,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "consumed_nonce0_readiness": true,
+    "matched_posture_exchanges": 6,
+    "actual_activity_observations": 5,
+    "closed_flat_closed_dp": [
+      [
+        411,
+        797
+      ],
+      [
+        841,
+        701
+      ],
+      [
+        411,
+        797
+      ]
+    ],
+    "outer_portrait_landscape_dp": [
+      [
+        411,
+        797
+      ],
+      [
+        797,
+        411
+      ]
+    ],
+    "activity_identity_preserved_per_journey": true,
+    "raw_window_and_configuration_agree": true,
+    "scope": "Pre-unlock MainActivity setup/security gate only",
+    "installed_apk_readback": "NOT_MEASURED",
+    "exact_pixel9_linux_physical": "NOT_RUN",
+    "original_attempt01": "PREBOOT_FAILURE retained",
+    "original_attempt02": "1pass1failure,3postures,2geometry rows retained",
+    "independent_review_sha256": "cc51f8a256e1389723d3826d4d10d41bf13b573eb8b46a0b5993172a8d94e717"
+  },
+  "physical": {
+    "actions_this_continuation": 0,
+    "last_verified_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "last_verified_apk_sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+    "current_connection_and_normal_owner_unlock": "NOT_ASSUMED; must be rechecked by sole runner before hardware work"
+  },
+  "ci_policy": {
+    "all11_workflows": "manual-only; unchanged",
+    "hosted_dispatches_this_continuation": 0,
+    "new_linux_hosted_reproducibility": "NOT_RUN",
+    "historical_screenshots": "1397pass80skip552unchanged, not rerun"
+  },
+  "quality": {
+    "fresh40": "Consumed regression, not rerun or relabeled blind; original labels/failures/thresholds retained",
+    "fresh40_strict_per_policy": "20/40",
+    "fresh40_false_absence_per_policy": 12,
+    "fresh40_contextual_unexecuted": 6,
+    "full_hybrid": "INELIGIBLE",
+    "answer80": "Frozen80cases/93documents/70spans/3seeds240 denominator; unexecuted/ungraded",
+    "exact_owner_E4B": "UNOBSERVED; no weights downloaded or production inference runtime/default switch"
+  },
+  "beads_remote_sync": {
+    "status": "UNAVAILABLE_NO_DOLT_REMOTE",
+    "actual_attempt_receipt": "beads-sync.json",
+    "local_database": "Preserved; no invented remote"
+  },
+  "open_gates": [
+    "Recovery fresh-proof activation/crash reconciliation29.2.2",
+    "Legacy v1 rewrap/API migration29.2.4",
+    "Recovery app/per-use Android authentication29.2.3",
+    "Recovery physical29.3",
+    "CHAT/ATTACHMENT surviving writer qualificationxtov.27.2.2.3",
+    "File lifecycle physicalxtov.27.2.3",
+    "Exact Pixel9ProFold/Linux/physical fold geometry12pt",
+    "Context physical32.4 and separate relevance/abstention calibration",
+    "Independent embedding reference/decisionlbw\u2192079\u2192hwsa and5hr",
+    "Exact E4B native execution/generated stopping30.2 andblind answer80quality30.3",
+    "Temporary Chats4v3c.2/.3/.4",
+    "Active retained composer focusxtov.24.10.5",
+    "Multimodal implementation/runtime m6v/rni/0xat"
+  ],
+  "python_tooling_checked_source": "3f7b0d4d66a42da122c406a0b731ed92a865f276",
+  "publication_peer": "Core and runtime evidence independently reviewed; publication copy review recorded separately"
+}

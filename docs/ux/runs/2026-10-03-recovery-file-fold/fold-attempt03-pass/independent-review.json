@@ -1,0 +1,362 @@
+{
+  "schema_version": 1,
+  "review": "independent-terminal-artifact-audit",
+  "status": "PASS_BOUNDED_LOCAL_PIXEL_FOLD_COMPATIBILITY",
+  "source_sha": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "production_application_source_checkpoint": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "python_tooling_checkpoint": "3f7b0d4d66a42da122c406a0b731ed92a865f276",
+  "attribution": "Headful macOS ARM/API35 google_apis arm64 revision9 extension13; Pixel Fold compatibility only",
+  "reviewer_build_or_device_actions": false,
+  "source": {
+    "six_actual_file_receipts_match_frozen_commit": true,
+    "production_source_unchanged_from_application_checkpoint": true,
+    "python_tooling_unchanged_from_tooling_checkpoint": true,
+    "sole_fold_test_delta": "First journey closes the display before requesting portrait; acceptance assertions and thresholds unchanged."
+  },
+  "actual_xml": {
+    "files": 1,
+    "cases": 2,
+    "pass": 2,
+    "failure": 0,
+    "error": 0,
+    "skip": 0,
+    "identities": [
+      {
+        "class": "app.skein.foldable.MainActivityFoldableGateTest",
+        "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+        "outcome": "pass"
+      },
+      {
+        "class": "app.skein.foldable.MainActivityFoldableGateTest",
+        "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+        "outcome": "pass"
+      }
+    ],
+    "artifact": {
+      "bytes": 770,
+      "sha256": "8dca899a06a33d3862195dcb95774b4b312e60542515436cbe4b91cb3e0d87db"
+    }
+  },
+  "transport": {
+    "status": "PASS",
+    "consumed_readiness": {
+      "action": "ready",
+      "nonce": "13024198b48546e39a32284f88996c4d",
+      "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+      "sequence": 0,
+      "status": "ok"
+    },
+    "readiness_order": "Instrumentation consumes exact nonce0 ACK before Activity launch; chronological host request read/ACK write precedes all posture commands.",
+    "posture_exchanges": [
+      {
+        "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+        "sequence": 1,
+        "nonce": "1e8b3002ae554eabbf62588e46a4c0ac",
+        "action": "fold"
+      },
+      {
+        "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+        "sequence": 2,
+        "nonce": "d24258dfba844f829f1b2c68bea69ae1",
+        "action": "unfold"
+      },
+      {
+        "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+        "sequence": 3,
+        "nonce": "5ac26e99e5e0449c8ac650857f21291b",
+        "action": "fold"
+      },
+      {
+        "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+        "sequence": 4,
+        "nonce": "9c138402b9a04d1d987010f1b8f3f6ef",
+        "action": "unfold"
+      },
+      {
+        "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+        "sequence": 5,
+        "nonce": "ca647ddf159743aeb41ffb6545bfa207",
+        "action": "fold"
+      },
+      {
+        "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+        "sequence": 6,
+        "nonce": "50fc80b61b6d4f5fa83d271fbc382a02",
+        "action": "unfold"
+      }
+    ],
+    "required_postures": 6,
+    "unique_nonces_including_ready": 7,
+    "matching_request_console_ok_ack_exchanges": 6,
+    "command_pairs": 274,
+    "all_command_pairs_bound_chronological_allowlisted_and_bounded": true,
+    "permitted_missing_request_poll_count": 111,
+    "display_diagnostic_samples": 6,
+    "all_display_samples_bound_after_console_before_ack": true,
+    "diagnostic_samples_do_not_replace_activity_geometry": true
+  },
+  "activity_geometry": {
+    "status": "PASS",
+    "required_observations": 5,
+    "observations": [
+      {
+        "step": "closed_before",
+        "width_dp": 411,
+        "height_dp": 797,
+        "density_dpi": 420,
+        "orientation": 1,
+        "activity_identity": 172789736,
+        "geometry_observer": "activity",
+        "window_bounds_px": [
+          0,
+          0,
+          1080,
+          2092
+        ],
+        "recomputed_window_dp": [
+          411.42857142857144,
+          796.952380952381
+        ]
+      },
+      {
+        "step": "flat",
+        "width_dp": 841,
+        "height_dp": 701,
+        "density_dpi": 420,
+        "orientation": 2,
+        "activity_identity": 172789736,
+        "geometry_observer": "activity",
+        "window_bounds_px": [
+          0,
+          0,
+          2208,
+          1840
+        ],
+        "recomputed_window_dp": [
+          841.1428571428571,
+          700.952380952381
+        ]
+      },
+      {
+        "step": "closed_after",
+        "width_dp": 411,
+        "height_dp": 797,
+        "density_dpi": 420,
+        "orientation": 1,
+        "activity_identity": 172789736,
+        "geometry_observer": "activity",
+        "window_bounds_px": [
+          0,
+          0,
+          1080,
+          2092
+        ],
+        "recomputed_window_dp": [
+          411.42857142857144,
+          796.952380952381
+        ]
+      },
+      {
+        "step": "outer_portrait",
+        "width_dp": 411,
+        "height_dp": 797,
+        "density_dpi": 420,
+        "orientation": 1,
+        "activity_identity": 81212175,
+        "geometry_observer": "activity",
+        "window_bounds_px": [
+          0,
+          0,
+          1080,
+          2092
+        ],
+        "recomputed_window_dp": [
+          411.42857142857144,
+          796.952380952381
+        ]
+      },
+      {
+        "step": "outer_landscape",
+        "width_dp": 797,
+        "height_dp": 411,
+        "density_dpi": 420,
+        "orientation": 2,
+        "activity_identity": 81212175,
+        "geometry_observer": "activity",
+        "window_bounds_px": [
+          0,
+          0,
+          2092,
+          1080
+        ],
+        "recomputed_window_dp": [
+          796.952380952381,
+          411.42857142857144
+        ]
+      }
+    ],
+    "same_activity_per_journey": true,
+    "configuration_and_recomputed_window_thresholds_pass": true,
+    "setup_gate_secure_window_and_absent_nav_assertions": "Both actual tests passed unchanged assertions"
+  },
+  "artifacts": {
+    "safe_archive": {
+      "bytes": 93137,
+      "sha256": "6bc774a497e7a8e23debe5c718d07c0c2b012d19afea8e82b41017bd8d15196a"
+    },
+    "archive_entries_all_equal_sealed_files": 75,
+    "execution": {
+      "bytes": 4866,
+      "sha256": "64ac3d663c7f8d7d21a01c7f418047002f8bcf643c2f598e75c7cbed3ae6170a"
+    },
+    "review": {
+      "bytes": 10561,
+      "sha256": "74dac43ca2d1e45d09b448548f9ee7146fb0b3ec225031091f38940a6f462de0"
+    },
+    "console_events": {
+      "bytes": 3253,
+      "sha256": "6e68359c2e72c7edb3fc1ec7b24d73f95676222e9172a0bc299bf2bc9d927e64"
+    },
+    "console_commands": {
+      "bytes": 231278,
+      "sha256": "901ec5583f99266f061f6c7f6b9fcc4862055f03b36ceac67926da14ce030899"
+    },
+    "geometry": {
+      "bytes": 921,
+      "sha256": "b95084a4f68e30e45608e1a4a5eff9f4c2126c27a5a304497033251b5e166aab"
+    },
+    "sdk_receipt": {
+      "bytes": 7828,
+      "sha256": "07474fd3519e867c2758cbea200db52771676198899728f683db55efe64254b2"
+    },
+    "host_apks": [
+      {
+        "kind": "test",
+        "bytes": 94856825,
+        "sha256": "138102cfb1d04b997e22d202a094dc56f04a4740d255ad74cf6277f6953b118f",
+        "manifest": {
+          "bytes": 4336,
+          "sha256": "30d931fb0bc4d7c0bdababf82aa9a55fcc536c63ea8f68be938c6865307db39e"
+        },
+        "manifest_text_sha256": "acea4f05fd9cf07fc533efc6dea9a3b0c35368a0863cf43d5bb5b07ac7e70989",
+        "native_payloads": {},
+        "dex_changed_vs_attempt02": [
+          "classes5.dex"
+        ],
+        "installed_package_readback": false
+      },
+      {
+        "kind": "app",
+        "bytes": 172388849,
+        "sha256": "c666883b3fb4f1c1ed02f07cb7d71c92eb2191879724b1cff6e4fb5d714b4e83",
+        "manifest": {
+          "bytes": 10088,
+          "sha256": "5cbe490d4a4ba6d007096486094511ab2baef4c573c0b1d093242562ac41aacb"
+        },
+        "manifest_text_sha256": "9967d1f0bddc1f613bf479bc861f102a0bdaee5fd0d88a730161b0f216212c16",
+        "native_payloads": {
+          "lib/arm64-v8a/libandroidx.graphics.path.so": {
+            "bytes": 10096,
+            "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+          },
+          "lib/arm64-v8a/libdatastore_shared_counter.so": {
+            "bytes": 7784,
+            "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+          },
+          "lib/arm64-v8a/libonnxruntime.so": {
+            "bytes": 27985944,
+            "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+          },
+          "lib/arm64-v8a/libonnxruntime4j_jni.so": {
+            "bytes": 83208,
+            "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+          },
+          "lib/arm64-v8a/libskein_llama.so": {
+            "bytes": 33413256,
+            "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+          },
+          "lib/arm64-v8a/libskein_sqlite.so": {
+            "bytes": 6269000,
+            "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+          },
+          "lib/arm64-v8a/libskein_sqlite_jni.so": {
+            "bytes": 22320,
+            "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+          },
+          "lib/x86_64/libandroidx.graphics.path.so": {
+            "bytes": 10760,
+            "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+          },
+          "lib/x86_64/libdatastore_shared_counter.so": {
+            "bytes": 7336,
+            "sha256": "ccd1862ef8f854d2322f3ee07adebd107890ded3b7c96b8f3528ac99aab4a4f6"
+          },
+          "lib/x86_64/libonnxruntime.so": {
+            "bytes": 33975544,
+            "sha256": "12aee04e178cde314725526b1a8e0b06ca20bd717ea252dd65d0b752f0088bd1"
+          },
+          "lib/x86_64/libonnxruntime4j_jni.so": {
+            "bytes": 80272,
+            "sha256": "9283970dbce849057eaf29fe3dfa3db1f7324d1dfcecc952e56eed61f6482c2d"
+          },
+          "lib/x86_64/libskein_llama.so": {
+            "bytes": 5489624,
+            "sha256": "68e8d2334cb4a001749317a9a141a9fd2eb7edf6bcfb2b292d5bd59abb80592e"
+          },
+          "lib/x86_64/libskein_sqlite.so": {
+            "bytes": 6700000,
+            "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54"
+          },
+          "lib/x86_64/libskein_sqlite_jni.so": {
+            "bytes": 22080,
+            "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68"
+          }
+        },
+        "dex_changed_vs_attempt02": [],
+        "installed_package_readback": false
+      }
+    ]
+  },
+  "sdk": {
+    "published_pin": {
+      "bytes": 8111,
+      "sha256": "028719046165d3a5771447c224cb9b8eac97f52892be945676ab872f4f1663c2"
+    },
+    "actual_30_image_files_and_4_runtime_files_rehashed": true,
+    "avd_profile": "pixel_fold",
+    "exact_pixel_9_pro_fold": "UNRUN",
+    "sdk_receipts_are_host_files_not_emulator_process_attestation": true
+  },
+  "execution": {
+    "gradle_exits": [
+      0,
+      0
+    ],
+    "runner_command_receipts_and_all_output_hashes_verified": 57,
+    "exclusive_owned_emulator_admission": true,
+    "model_unchanged": true,
+    "emulator_exit": 0,
+    "ports_clear": true,
+    "both_matching_leases_released": true,
+    "post_terminal_new_gradle_process_count": 0,
+    "private_cleanup_inventory_hash_verified": true,
+    "physical_actions": 0
+  },
+  "prior_failures_preserved": [
+    "Attempt01 preboot directory ordering failure",
+    "Attempt02 actual1pass1failure/3postures/2geometry; original execution and safe archive hash unchanged"
+  ],
+  "remaining_gates": [
+    "Exact Pixel 9 Pro Fold profile",
+    "Hinge-angle/sensor assertions",
+    "Unlocked A-G",
+    "Real IME/focus",
+    "System_server heap privacy",
+    "Physical Fold acceptance"
+  ],
+  "limitations": [
+    "Host APK bytes, native payloads, DEX and manifests verified; no installed-package readback.",
+    "This local compatibility result is distinct from Linux x86_64 CI and physical hardware.",
+    "Owner vault/content and production runtime/model defaults were not changed by this lane."
+  ]
+}

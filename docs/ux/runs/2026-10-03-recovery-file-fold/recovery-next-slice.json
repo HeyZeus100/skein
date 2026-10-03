@@ -1,0 +1,233 @@
+{
+  "status": "PROPOSAL_ONLY_NO_ACTIVATION_IMPLEMENTED_OR_EXECUTED",
+  "author": "/root/recovery",
+  "source_sha": "3f7b0d4d66a42da122c406a0b731ed92a865f276",
+  "source_inventory": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "bytes": 31579,
+      "sha256": "b0268381046c047c6e239f0fad783649c76e435558b80faf6aa682ef74159325"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProvider.kt",
+      "bytes": 13455,
+      "sha256": "916f033c85fa7ca662c5cf042a33c3cca61f5bdcc27d16655bc596d63eb8f40f"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/RecoveryKeyAdmission.kt",
+      "bytes": 2477,
+      "sha256": "53a6dfceee3f45eb9e8a0637dc545b93efc123162a2af36a2f85842c7a04f46c"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/FileMasterKeyStorage.kt",
+      "bytes": 21058,
+      "sha256": "c4e9ea26bb9578623ad20d0956900ee002b5d7ef6bbb53f3700eb7f4e3079265"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticator.kt",
+      "bytes": 9167,
+      "sha256": "72bd1effd4da673cbec11e0f909631524fd6b9680a48b0584ab9a7c021f01a3c"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt",
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+      "bytes": 5924,
+      "sha256": "1d4077420e31ffc096cfc2064639417e70f7201ef542318198dc28f9b11076e3"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt",
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusion.kt",
+      "bytes": 3456,
+      "sha256": "17c7901e474dd927f4a7472e4cd10e81986a1b391d13e09eee55e88432619e89"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockManager.kt",
+      "bytes": 42175,
+      "sha256": "8de9b355de6aa6062d08aa254f184c8a8823a554e6289bf150f5328247c2cbfb"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt",
+      "bytes": 7771,
+      "sha256": "4118610bdfa3ceded7b4d469a971ab4790acf12da2540ba232c2b89a834225cd"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2Test.kt",
+      "bytes": 3110,
+      "sha256": "d4feeda738d44a51f8b50f7c62afecfd7fb5e45e03613d63700ab1086c672656"
+    }
+  ],
+  "tracking": "Root owns Beads; this private design receipt is not a parallel issue tracker.",
+  "recommendation": "Dispatch a bounded internal staged-envelope activation coordinator under29.2.2 next; keep public app/provider/session routing and legacy v1 replacement migration separate. Do not expose activate(Prepared) or auto-resume based on files.",
+  "closed_work_preserved": [
+    "29.1 preparation remains stage-only and v1-source-only; the Prepared UUID is evidence, not a capability.",
+    "29.2.1 decodeActive supports v2 while legacy decode and original refusal regression remain unchanged.",
+    "Read-only proof, WAL handling, admission poison, retained evidence, immutable v2 reader and all existing test identities remain intact."
+  ],
+  "current_v1_risks": [
+    {
+      "source": "VaultKeyProviderImpl.kt:rewrapAdmitted",
+      "finding": "Deletes the fixed dead-factor alias and recreates it before authenticating the new wrap or persisting it. Cancellation/storage failure can leave original envelope bytes pointing at a replaced alias. The surviving factor is retained but the old generation is not fully preserved."
+    },
+    {
+      "source": "RecoveryKeyAdmission.kt:guarded + VaultKeyProviderImpl.kt:rewrapAdmitted",
+      "finding": "Admission compares generation only after the action returns. Lock can invalidate the operation while auth is suspended; a late success can still delete/create aliases and write the envelope before guarded returns UserCancelled and clears the key. Mutex serialization is per provider instance, not all providers sharing the directory."
+    },
+    {
+      "source": "FileMasterKeyStorage.kt:rewrap",
+      "finding": "Storage mutex is per instance; a second provider can observe the same generation and overwrite shared fixed aliases before stale-version failure. The file write uses legacy best-effort parent-directory sync and no retained generations."
+    },
+    {
+      "source": "VaultKeyProvider.kt:rewrapAfterInvalidation KDoc",
+      "finding": "Public contract says the dead alias is deleted only after atomic version bump, but implementation deletes it first. Correct this documentation with the eventual implementation, not by claiming existing safety."
+    },
+    {
+      "source": "UnlockManager.kt:recoverAndRewrapWith",
+      "finding": "RewrapResult.Success currently requires currentKey nonnull and moves straight to Unlocked. A metadata-only activation result cannot be returned as this success or it would silently grant a session."
+    },
+    {
+      "source": "AndroidBiometricAuthenticator.kt",
+      "finding": "Production already narrows prompts per factor and enforces exact CryptoObject Cipher. Keep those rules; this is not permission to broaden authenticators or reduce per-use authentication."
+    }
+  ],
+  "next_slice_29_2_2": {
+    "deliverable": "Internal activation from a selected staged v1-to-v2 transaction, using a freshly supplied candidate, a fresh exclusive closed-vault lease, fresh native proof and fresh authenticated decrypt readbacks of both staged wraps. The outcome never carries key bytes, a token or session authority.",
+    "exact_production_files": [
+      {
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt",
+        "change": "NEW coordinator; consumes/zeros candidate, resolves strict stage paths, proves exact ciphertext snapshot, authenticates both factors and invokes the file primitive only in the same live operation."
+      },
+      {
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+        "change": "Add bounded retained-file/install readback before rename, and explicit observable post-rename/unknown/durability outcomes. Preserve single-use transaction directories and atomic lease check plus active-byte compare/rename."
+      },
+      {
+        "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+        "change": "If required for post-commit checking, add a narrow ciphertext-only assertion; leave assertSourceUnchanged envelope pin intact for every pre-commit authorization check. Do not let the new method substitute for pre-commit validation."
+      }
+    ],
+    "exact_test_files": [
+      {
+        "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationTest.kt",
+        "change": "NEW host orchestration, preservation, race and negative-control suite."
+      },
+      {
+        "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt",
+        "change": "Extend readback corruption, failure/lease revocation, post-rename uncertainty and reinspection tests without weakening existing boundary expectations."
+      },
+      {
+        "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+        "change": "Only if the ciphertext-only post-commit check is added; prove old envelope pin still refuses substitution before commit."
+      }
+    ],
+    "excluded_files_and_behavior": [
+      "No MainActivity, public factory, VaultKeyProvider/UnlockManager or UI changes in this child",
+      "No changes to existing preparation or legacy decoder inputs",
+      "No DB migration/open/reset; no alias deletion/regeneration during activation",
+      "No public activation capability from Prepared, transaction UUID, phase marker or checksum"
+    ],
+    "algorithm": [
+      "Consume caller candidate immediately into a private copy and zero caller buffer. Acquire production exclusive closed-vault lease; poisoned/uncertain native closure, live key/pool, reset marker, journal or path aliasing refuses before proof or auth.",
+      "Strictly read bounded staged old/new bytes through canonical non-symlink paths; directory UUID must equal decoded v2 transaction UUID. Read active exact bytes. First slice accepts only active==staged old and old decodes under the unchanged v1-only decoder. Require generation old+1 without overflow and the same StrongBox policy.",
+      "Capture the closed ciphertext DB/WAL/SHM plus active-envelope snapshot and run existing native candidate proof against its private ciphertext copy. A passphrase valid for another export/vault is insufficient.",
+      "For each staged v2 factor, obtain its strict UUID alias decrypt Cipher, authenticate exactly that Cipher with factor-specific prompt, then apply that exact record\u2019s AAD and decrypt. Constant-time compare each readback to the freshly proved candidate and zero it. Missing key, invalidation, wrong factor, user cancel, substituted Cipher or wrong readback refuses with all old/new evidence intact.",
+      "Immediately before persistence, reassert the original snapshot and lease. Reread stage old/new bytes and compare with frozen validated copies. No async gap may convert Prepared into authority; candidate proof, fresh auth and commit belong to one live invocation.",
+      "Durably retain exact old/new copies and install bytes in a new single-use recovery-envelopes UUID directory, with bounded readback of each. Full ciphertext hashes and all fsync calls remain outside the revocation monitor. The final critical section contains only lease validity, bounded active-byte equality and atomic rename.",
+      "Treat rename as the activation linearization point, not session unlock. Attempt parent-directory sync and report its durability separately. After any possible rename, never return a result that asserts nothing changed unless exact active bytes prove that under a fresh valid observation. Zero candidate/readbacks on every exit.",
+      "Close the lease without populating currentKey or minting AuthorizationToken. A later normal v2 unlock must obtain its own authentication and admission."
+    ],
+    "crash_state_machine": [
+      {
+        "state": "STAGED_EVIDENCE_ONLY",
+        "observation": "Prepared files/UUID may exist; no active replacement established",
+        "allowed": "Only new candidate proof plus fresh factor auth can authorize a new commit attempt."
+      },
+      {
+        "state": "OLD_ACTIVE_NOT_COMMITTED",
+        "observation": "Active bytes exactly equal retained old; copies may be partial",
+        "allowed": "Preserve originals. Do not overwrite a used transaction directory; partial attempts remain diagnostic evidence. A separately prepared fresh UUID may be retried with fresh proof/auth."
+      },
+      {
+        "state": "NEW_ACTIVE_DURABILITY_UNCERTAIN",
+        "observation": "Atomic rename occurred or exact active bytes equal retained new, but directory sync/clean completion is not established",
+        "allowed": "Remain locked, retain all evidence/aliases, report explicit uncertainty. Never automatically roll back or delete either generation."
+      },
+      {
+        "state": "NEW_ACTIVE_DURABLE",
+        "observation": "Exact new bytes active and required parent sync completed in the live authorized transaction",
+        "allowed": "Report envelope activation only. Current key/token/session remain absent; normal unlock is separate."
+      },
+      {
+        "state": "UNKNOWN",
+        "observation": "Active matches neither retained old/new, evidence missing/corrupt, path mismatch, or cancellation/revocation prevents trusted post-rename inspection",
+        "allowed": "Fail closed; preserve every file/alias, no automatic activation/rollback/reset. Later fresh exclusive observation may classify bytes but cannot confer authentication/session authority."
+      }
+    ],
+    "logical_test_requirements": [
+      "Prepared-only UUID/phase/checksum cannot call a successful commit; no candidate or wrong candidate produces no auth/rename.",
+      "Altered old envelope, DB/WAL/SHM, staged new bytes, generation, UUID/aliases, StrongBox bit, factor AAD and substituted Cipher each fail without active overwrite.",
+      "Both-factor fresh auth is required even after earlier preparation authenticated four operations; cancellation/error at either fresh readback never commits.",
+      "Source, alias or staged-byte changes between each suspend boundary and final rename invalidate authority; returned readbacks and candidate buffers are zeroed.",
+      "Lock/reset/open/other recovery races across separate production instances: late auth cannot publish; no ordinary admission while exclusive work runs; poison refuses before proof/alias activity.",
+      "Latch-block full hashing and directory fsync; lock revocation returns without waiting for bulk IO. After revocation the attempt cannot cross the final commit check.",
+      "Inject IOException at every durable boundary including install readback, before/after rename and final parent sync. Preserve exact originals and distinguish old/new/unknown; no automatic rollback.",
+      "Fresh coordinator instance reinspection of every retained boundary reproduces observation only. Existing tx directory is never reused/erased.",
+      "Successful host activation is readable by existing production v2 provider in a separate normally authenticated unlock, while currentKey stays null immediately after activation."
+    ],
+    "retained_negative_controls": [
+      "Temporarily substitute a Prepared/UUID-only authorization path: wrong-candidate/no-fresh-auth test must fail; retain exact mutant source and raw failing XML before restoration.",
+      "Remove final active-byte/lease check: deterministic changed-active or revoked-lease case must fail without editing assertions.",
+      "Remove staged readback/AAD binding: corruption or opposite-factor fixture must fail.",
+      "Restore all final source hashes and rerun complete affected dev/foss host suites plus both AndroidTest compilation and lint under root queue. Host failure injection is not power-loss proof."
+    ]
+  },
+  "follow_on_29_2_4": {
+    "recommended_direction": "Replace fixed-alias v1 mutation with the staged v1-to-v2 recovery engine after the activation child is reviewed. A surviving-factor unwrap supplies only a candidate, which still needs closed-vault proof; it never grants mutation permission by itself. Retain both original fixed aliases permanently for this bounded recovery flow.",
+    "proposed_exact_worker_files": [
+      "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "core/vault/src/main/kotlin/app/skein/core/vault/key/RecoveryKeyAdmission.kt",
+      "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviders.kt",
+      "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt",
+      "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt",
+      "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryKeyAdmissionTest.kt",
+      "core/vault/src/test/kotlin/app/skein/core/vault/key/LegacyRewrapSafetyTest.kt"
+    ],
+    "root_owned_api_integration_files": [
+      "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProvider.kt",
+      "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockManager.kt",
+      "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockOutcome.kt",
+      "their focused contract tests; app/feature exhaustive UI handling selected by coordinator"
+    ],
+    "dispatch_constraint": "Do not hold normal RecoveryKeyAdmission while trying to acquire an exclusive recovery lease, and do not bypass exclusion with an isOpen sample. Build a distinct closed recovery operation. Any shared leased preparation engine must retain stage-only public semantics and never make Prepared a commit capability.",
+    "contract_decision_before_implementation": "Preferred result is ActivatedNeedsNormalUnlock, rather than the old RewrapResult.Success contract that requires an already-live master. Coordinator must choose/update app/session handling explicitly. If preserving automatic unlocked success is required, it needs a separate authenticated admission handoff design and tests; do not infer that permission from activation.",
+    "required_tests": [
+      "Lock during each old/new factor authentication: no fixed-alias deletion, no active-file write after revoked authority",
+      "Two provider instances recover concurrently: one exclusive owner, no shared fixed-alias race",
+      "Failure/cancel/crash boundaries preserve both old aliases and original envelope/ciphertext",
+      "Surviving-factor candidate for wrong ciphertext fails proof",
+      "Post-rename interruption reports activation uncertainty without publishing a key/session",
+      "Unchanged ordinary v1 unlock/setup and credential fallback regressions remain passed"
+    ],
+    "not_a_complete_fix": "Adding ensureActive or a late epoch check alone only narrows cancellation races; it cannot make destructive fixed-alias replacement crash-safe and must not close29.2.4."
+  },
+  "separate_acceptance": {
+    "host_implementation": "Typed state transitions, ownership, byte preservation, authenticated binding using fakes, native-proof orchestration, negative/race controls and compilation.",
+    "android_runtime": "Actual per-use AndroidKeyStore CryptoObject operations for both factors, StrongBox policy behavior, native encrypted proof, app-process termination/restart and filesystem error behavior with disposable synthetic vaults. No owner reset or owner-vault fixture.",
+    "app_integration": "Explicit locked recovery entry, passphrase/credential candidate routing, cancellation and uncertain-commit wording, activity recreation and normal post-activation unlock. Root owns shared integration.",
+    "physical": "Exactly one appointed Fold runner, current connection and normal owner unlock, separately authorized synthetic fixtures. No implication from host/emulator success.",
+    "power_loss": "Host injected IO exceptions and process restarts are not proof of storage durability under actual power loss; retain this distinction in acceptance."
+  },
+  "authorization_boundary": "The owner already authorized autonomous development. This proposal does not request renewed owner permission; it awaits coordinator source dispatch/design sequencing and does not itself authorize runtime or owner-vault actions."
+}

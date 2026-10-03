@@ -1,5 +1,7 @@
 # Six-priority execution, 30 September 2026
 
+**Current continuation:** [3 October 2026](skein-continuation-20261003.md). The sections below preserve the September checkpoint; use the newer handoff and live coordination record for current source, ownership and acceptance.
+
 This continues the [earlier continuation](skein-orchestrator-continuation-20260930.md) under the owner's instruction to orchestrate all six priority groups. Root verified `origin/main` at `0e56b433ff9db9323123c8afd9c33dc58fab5e8e` and terminal success of its three publication workflows before resuming ownership. The active record is `six_priorities_20260930` in `/Users/andrewherrera/skein-session-coordination/20260929/coordinator.json`; older owner and queue fields are historical.
 
 ## Resumed recovery, context and transport work

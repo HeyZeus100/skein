@@ -1,0 +1,11 @@
+{
+  "measured_application": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "current_runtime_source": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "production_application_sources_identical": true,
+  "non_documentation_delta": [
+    "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+    "tools/ci/run-foldable-local.py",
+    "tools/ci/test_foldable_local.py"
+  ],
+  "scope": "Only local test runner preparation and opt-in fold test setup changed; original current application host and ordinary310 evidence remains attributed to4b5"
+}

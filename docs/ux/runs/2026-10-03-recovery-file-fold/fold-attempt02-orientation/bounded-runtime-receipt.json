@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "source_sha": "3f7b0d4d66a42da122c406a0b731ed92a865f276",
+  "run_id": "490ffd58177c487cbccc1e063d4b138a",
+  "profile": "pixel_fold compatibility; not exact Pixel9ProFold",
+  "cases": [
+    {
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+      "outcome": "failure",
+      "failures": [
+        "java.lang.IllegalStateException: Timed out waiting for orientation 1; activityWindow=ActivityWindowGeometry(configuration={1.0 310mcc260mnc [en_US] ldltr sw701dp w841dp h701dp 420dpi lrg land finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 2208, 1840) mAppBounds=Rect(0, 0 - 2208, 1840) mMaxBounds=Rect(0, 0 - 2208, 1840) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.4 fontWeightAdjustment=0}, bounds=Rect(0, 0 - 2208, 1840), activityIdentity=3226173); nonUiTargetConfiguration={1.0 310mcc260mnc [en_US] ldltr sw701dp w841dp h701dp 420dpi lrg land finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 2208, 1840) mAppBounds=Rect(0, 0 - 2208, 1840) mMaxBounds=Rect(0, 0 - 2208, 1840) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.69 fontWeightAdjustment=0}\n\tat app.skein.foldable.FoldableDeviceControl.await(FoldableDeviceControl.kt:221)\n\tat app.skein.foldable.FoldableDeviceControl.await$default(FoldableDeviceControl.kt:208)\n\tat app.skein.foldable.FoldableDeviceControl.rotate(FoldableDeviceControl.kt:178)\n\tat app.skein.foldable.FoldableDeviceControl.portrait(FoldableDeviceControl.kt:64)\n\tat app.skein.foldable.MainActivityFoldableGateTest.gateSurvivesClosedFlatClosedWithoutActivityReplacement(MainActivityFoldableGateTest.kt:69)\n"
+      ],
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+      "outcome": "pass",
+      "failures": [],
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "actual_counts": {
+    "pass": 1,
+    "failure": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "nonce_readiness_consumed": {
+    "action": "ready",
+    "nonce": "8bf795c558f84d64872e0072f8ac2621",
+    "run_id": "490ffd58177c487cbccc1e063d4b138a",
+    "sequence": 0,
+    "status": "ok"
+  },
+  "posture_exchanges": [
+    {
+      "sequence": 1,
+      "action": "unfold",
+      "nonce": "2b95706c3ba94799b9ed0f121aaa7240",
+      "matching_ack": true
+    },
+    {
+      "sequence": 2,
+      "action": "fold",
+      "nonce": "d64ca6f7526b476dbc63759685cb17b6",
+      "matching_ack": true
+    },
+    {
+      "sequence": 3,
+      "action": "unfold",
+      "nonce": "bcf166e196c34cf1a69428a5b0b4d3f1",
+      "matching_ack": true
+    }
+  ],
+  "required_postures": 6,
+  "activity_geometry": [
+    {
+      "step": "outer_portrait",
+      "width_dp": 411,
+      "height_dp": 797,
+      "density_dpi": 420,
+      "orientation": 1,
+      "activity_identity": 224180490,
+      "geometry_observer": "activity",
+      "window_bounds_px": [
+        0,
+        0,
+        1080,
+        2092
+      ]
+    },
+    {
+      "step": "outer_landscape",
+      "width_dp": 797,
+      "height_dp": 411,
+      "density_dpi": 420,
+      "orientation": 2,
+      "activity_identity": 224180490,
+      "geometry_observer": "activity",
+      "window_bounds_px": [
+        0,
+        0,
+        2092,
+        1080
+      ]
+    }
+  ],
+  "required_geometry_observations": 5,
+  "gate": "FAIL; original counts/thresholds retained",
+  "failure_scope": "initial requested portrait on naturally landscape open inner display; observedActivity841x701dp/2208x1840px atROTATION_0",
+  "raw_xml": [
+    {
+      "path": "snapshot/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_local_490ffd58177c487cbccc1e063d4b138a(AVD) - 15.xml",
+      "bytes": 2223,
+      "sha256": "caa2c30df60f178a76625e2273ddacf06dd501c457b0c0a735a3db69edcca97a",
+      "cases": 2
+    }
+  ],
+  "host_apks": [
+    {
+      "path": "snapshot/app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94856825,
+      "sha256": "146c26061e21f62e764b82d42f5d4b15f2e404697fb3ec3240b6da23f8375222",
+      "attribution": "host build output; not installed readback"
+    },
+    {
+      "path": "snapshot/app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 172388849,
+      "sha256": "11fd644546825f50ade6675583e537b747c2deb01fa62903ee48a89c0974c10b",
+      "attribution": "host build output; not installed readback"
+    }
+  ],
+  "result_sha256": "1aa62f22596d8c534492a0c17597ad2c2c44b1d5931da827a7484273be8880ef",
+  "safe_archive": {
+    "bytes": 74612,
+    "sha256": "6b1b45c89df2255b76a1dee155255f7d7e35b9b496520e4dc50b7f699d3abc2d"
+  },
+  "source_clean_final": true,
+  "test_model_unchanged": true,
+  "cleanup": {
+    "source": "read-only process inventory after terminal; no process signalled",
+    "preexisting_gradle_process_count": 1,
+    "new_gradle_process_count": 0,
+    "private_inventory_sha256": "c6f68a043bd0f957b781bf90973a2f8c0bc3b2b0763963d229f00fd94180af6b",
+    "emulator_exit": 0,
+    "owned_ports_clear": true,
+    "device_lease_released": true,
+    "build_lease": "retained for coordinator review",
+    "run_token": "490ffd58177c487cbccc1e063d4b138a"
+  },
+  "physical_actions": 0,
+  "automatic_retry": false,
+  "exact_pixel9_or_physical_acceptance": "UNRUN/open",
+  "at_unix": 1791057824.97177
+}

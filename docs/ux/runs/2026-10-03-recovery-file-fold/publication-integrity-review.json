@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "reviewer": "recovery worker independent publication-integrity review",
+  "status": "PASS_MATERIALIZED_PUBLICATION_PENDING_COMMIT_AND_FINAL_SEAL",
+  "scope": "Read-only publication integrity, scope/links and owner preservation. No tests, builds, source edits, device actions or fresh model/artifact acquisition. Final Fold runtime audit from application_context is separately completed and linked; this audit checks its publication identity and boundaries.",
+  "source_at_review": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "measured_application_source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "prior_partial_receipt": {
+    "sha256": "173f480991b1c765e651bbb72115ba3ec9abde4a5b6ac3ca8813a998efe1f087",
+    "retained_unchanged": true,
+    "tracked_public_files": 66,
+    "declared_hash_size_checks": 106,
+    "zip_members_rehashed": 1170,
+    "all_prior_evidence_bytes_still_match": true,
+    "README_updated_for_new_terminal_evidence_and_links_reviewed": true
+  },
+  "staged_terminal_review": {
+    "files": 8,
+    "zip_members_rehashed": 150,
+    "safe_archive_sizes_and_hashes_match": true,
+    "actual_xml_and_result_bytes_match_embedded_receipts": true,
+    "attempt02_copies_exactly_match_retained_original_failure": true,
+    "attempt03_counts_and_geometry_match_root_and_runner_receipts": true,
+    "raw_private_process_device_dumps_included": false,
+    "apk_model_key_database_bytes_included": false,
+    "artifacts": [
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/actual-fold-attempt02-safe-evidence.zip",
+        "bytes": 74612,
+        "sha256": "6b1b45c89df2255b76a1dee155255f7d7e35b9b496520e4dc50b7f699d3abc2d"
+      },
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/bounded-runtime-receipt.json",
+        "bytes": 5543,
+        "sha256": "4c3a5df03dd67ff25364780d4c36152a95cc28e22692b8c0bda6a0dab288ef6f"
+      },
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/independent-review.json",
+        "bytes": 10267,
+        "sha256": "4297ee6f0453829f125d85581054576a47835c14cac71f24d78f5c424ba9524b"
+      },
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/matching-build-lease-release-after-proof.json",
+        "bytes": 476,
+        "sha256": "95beb236e1cf5aecf8a7cea2d7338f7d44b95b5d26b2b0ef3b9abea479cfe25b"
+      },
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/root-cleanup-review.json",
+        "bytes": 273,
+        "sha256": "1c3be6ab68c294036bb27371f8d841c96c6f3816cc94558c5fec2c82467a2c49"
+      },
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/actual-fold-attempt03-safe-evidence.zip",
+        "bytes": 93137,
+        "sha256": "6bc774a497e7a8e23debe5c718d07c0c2b012d19afea8e82b41017bd8d15196a"
+      },
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/bounded-runtime-receipt.json",
+        "bytes": 5827,
+        "sha256": "4a17c2308cf759833fcff7bdd2d4a8a091456d84ad7429da31c8154d15bcc072"
+      },
+      {
+        "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/root-review.json",
+        "bytes": 1904,
+        "sha256": "ef1042da3d45fecd286aa2e5c3d65b65e87c943e79597aef04004779ad7c236b"
+      }
+    ]
+  },
+  "additional_references": [
+    {
+      "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/recovery-next-slice.json",
+      "bytes": 19261,
+      "sha256": "22e77fcee1028cd68194e64bf14f6085cc3f85178a9dacb2d8cdd3fee17694d4"
+    },
+    {
+      "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/application-source-equivalence.json",
+      "bytes": 564,
+      "sha256": "f81b9bd47a5ff9deb4e6cef80194db47c496abe119f1a942cb9dc012efac0178"
+    },
+    {
+      "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/repair-python84/root-review.json",
+      "bytes": 1132,
+      "sha256": "c712f765c85401439bef7bace02e254abb3ff60aca79d5225e4adf9c719449ae"
+    },
+    {
+      "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/repair-python84/python-ci.log",
+      "bytes": 15243,
+      "sha256": "fe63c26e8fe94a7c647b2a074ff9158f4b077088ecd7b6ee7e767fb468dff155"
+    },
+    {
+      "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/beads-sync.json",
+      "bytes": 750,
+      "sha256": "7cdeb3e346e60fb213b3bcddbac8be2a713dc590ff8b9a6e10e67817c24f76a4"
+    },
+    {
+      "destination": "docs/ux/runs/2026-10-03-recovery-file-fold/current-verification.json",
+      "bytes": 4707,
+      "sha256": "9744d40cb43ba243f8f52d6c52f3a754902c8f389964ba4e147aec199e6e8a42"
+    }
+  ],
+  "scope_consistency": {
+    "host_and_ordinary_source_remains_4b5": true,
+    "fold_source_is_f136": true,
+    "production_source_equivalence_independently_matches_git_diff": true,
+    "python84_at_3f7_not_relabelled_final_kotlin_runtime_source": true,
+    "fold_acceptance": "Local Pixel Fold compatibility, pre-unlock MainActivity setup/security only;2 actual cases/6nonce-bound posture exchanges/5named Activity observations",
+    "not_accepted": [
+      "exact Pixel9ProFold profile",
+      "new Linux/hosted/reproducibility",
+      "unlocked workspace/IME/inference/system heap privacy journeys",
+      "physical installation or acceptance",
+      "installed APK byte readback",
+      "recovery activation/legacy API safety/per-use authentication",
+      "Fresh40 or Answer80 blind-quality acceptance",
+      "actual owner E4B runtime/vision acceptance"
+    ],
+    "all_original_failures_retained": true,
+    "recovery_next_slice_exactly_matches_previously_reviewed_proposal": true,
+    "beads_sync_failure_honestly_retained": true
+  },
+  "owner_preservation": {
+    "files": 21,
+    "all_lengths_and_sha256_equal_original": true,
+    "head_and_compact_full_status_and_stash_exact_equal": true,
+    "full_inventory": "private"
+  },
+  "draft_links": {
+    "checked": 12,
+    "all_exist_or_have_checked_forthcoming_source": true,
+    "destination_copy_pending": 0
+  },
+  "draft_hashes": {
+    "handoff_sha256": "2d9f46812c6f9d4c39ca55acec98ca2a852e6852089b0775e88479f442ae9888",
+    "current_verification_sha256": "9744d40cb43ba243f8f52d6c52f3a754902c8f389964ba4e147aec199e6e8a42"
+  },
+  "wording_correction": {
+    "required_if_draft_unchanged": false,
+    "replace": "Production application bytes remain those measured at4b5",
+    "with": "Production application source files remain byte-identical to those measured at 4b5",
+    "reason": "Source equality is proved; host APK hashes differ and binary equality is not claimed."
+  },
+  "final_copy_qualification": [
+    "All reviewed staging/reference bytes are now materialized exactly at their public destinations. Root must copy this stable final review, preserve the partial receipt, then seal the complete publication manifest.",
+    "Final independent runtime review from application_context is present and SHA-bound to cc51f8a256e1389723d3826d4d10d41bf13b573eb8b46a0b5993172a8d94e717.",
+    "Final tracked copy, immutable publication commit and remote push are coordinator responsibilities and not asserted here."
+  ],
+  "materialized_publication": {
+    "capsule_files": 86,
+    "manifest_entries_rehashed": 46,
+    "all_expected_staging_copies_equal": true,
+    "handoff_links_exist": 12,
+    "README_links_exist": 10,
+    "independent_runtime_peer_sha256": "cc51f8a256e1389723d3826d4d10d41bf13b573eb8b46a0b5993172a8d94e717",
+    "publication_peer_metadata_updated": "Core and runtime evidence independently reviewed; publication copy review recorded separately"
+  },
+  "errors": []
+}

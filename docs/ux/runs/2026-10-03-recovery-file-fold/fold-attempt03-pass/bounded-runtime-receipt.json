@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "source_sha": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "application_source_checkpoint": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a; later deltas limited to test/tool/evidence; root owns equality proof",
+  "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+  "profile": "pixel_fold compatibility; not exact Pixel9ProFold",
+  "platform": "headful macOS ARM/API35 google_apis arm64-v8a revision9 extension13",
+  "cases": [
+    {
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+      "outcome": "pass"
+    },
+    {
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+      "outcome": "pass"
+    }
+  ],
+  "actual_counts": {
+    "pass": 2,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "nonce_readiness_consumed": {
+    "action": "ready",
+    "nonce": "13024198b48546e39a32284f88996c4d",
+    "run_id": "8524d3793f754e2db3cea8b8c51b155f",
+    "sequence": 0,
+    "status": "ok"
+  },
+  "posture_exchanges": [
+    {
+      "sequence": 1,
+      "action": "fold",
+      "nonce": "1e8b3002ae554eabbf62588e46a4c0ac",
+      "matching_ack": true
+    },
+    {
+      "sequence": 2,
+      "action": "unfold",
+      "nonce": "d24258dfba844f829f1b2c68bea69ae1",
+      "matching_ack": true
+    },
+    {
+      "sequence": 3,
+      "action": "fold",
+      "nonce": "5ac26e99e5e0449c8ac650857f21291b",
+      "matching_ack": true
+    },
+    {
+      "sequence": 4,
+      "action": "unfold",
+      "nonce": "9c138402b9a04d1d987010f1b8f3f6ef",
+      "matching_ack": true
+    },
+    {
+      "sequence": 5,
+      "action": "fold",
+      "nonce": "ca647ddf159743aeb41ffb6545bfa207",
+      "matching_ack": true
+    },
+    {
+      "sequence": 6,
+      "action": "unfold",
+      "nonce": "50fc80b61b6d4f5fa83d271fbc382a02",
+      "matching_ack": true
+    }
+  ],
+  "required_postures": 6,
+  "activity_geometry": [
+    {
+      "activity_identity": 172789736,
+      "density_dpi": 420,
+      "geometry_observer": "activity",
+      "height_dp": 797,
+      "orientation": 1,
+      "step": "closed_before",
+      "width_dp": 411,
+      "window_bounds_px": [
+        0,
+        0,
+        1080,
+        2092
+      ]
+    },
+    {
+      "activity_identity": 172789736,
+      "density_dpi": 420,
+      "geometry_observer": "activity",
+      "height_dp": 701,
+      "orientation": 2,
+      "step": "flat",
+      "width_dp": 841,
+      "window_bounds_px": [
+        0,
+        0,
+        2208,
+        1840
+      ]
+    },
+    {
+      "activity_identity": 172789736,
+      "density_dpi": 420,
+      "geometry_observer": "activity",
+      "height_dp": 797,
+      "orientation": 1,
+      "step": "closed_after",
+      "width_dp": 411,
+      "window_bounds_px": [
+        0,
+        0,
+        1080,
+        2092
+      ]
+    },
+    {
+      "activity_identity": 81212175,
+      "density_dpi": 420,
+      "geometry_observer": "activity",
+      "height_dp": 797,
+      "orientation": 1,
+      "step": "outer_portrait",
+      "width_dp": 411,
+      "window_bounds_px": [
+        0,
+        0,
+        1080,
+        2092
+      ]
+    },
+    {
+      "activity_identity": 81212175,
+      "density_dpi": 420,
+      "geometry_observer": "activity",
+      "height_dp": 411,
+      "orientation": 2,
+      "step": "outer_landscape",
+      "width_dp": 797,
+      "window_bounds_px": [
+        0,
+        0,
+        2092,
+        1080
+      ]
+    }
+  ],
+  "required_geometry_observations": 5,
+  "gate": "PASS for this bounded local compatibility lane",
+  "raw_xml": [
+    {
+      "path": "snapshot/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_local_8524d3793f754e2db3cea8b8c51b155f(AVD) - 15.xml",
+      "bytes": 770,
+      "sha256": "8dca899a06a33d3862195dcb95774b4b312e60542515436cbe4b91cb3e0d87db",
+      "cases": 2
+    }
+  ],
+  "host_apks": [
+    {
+      "path": "snapshot/app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94856825,
+      "sha256": "138102cfb1d04b997e22d202a094dc56f04a4740d255ad74cf6277f6953b118f",
+      "attribution": "host build output; not installed-package readback"
+    },
+    {
+      "path": "snapshot/app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 172388849,
+      "sha256": "c666883b3fb4f1c1ed02f07cb7d71c92eb2191879724b1cff6e4fb5d714b4e83",
+      "attribution": "host build output; not installed-package readback"
+    }
+  ],
+  "result_sha256": "64ac3d663c7f8d7d21a01c7f418047002f8bcf643c2f598e75c7cbed3ae6170a",
+  "review_sha256": "74dac43ca2d1e45d09b448548f9ee7146fb0b3ec225031091f38940a6f462de0",
+  "safe_archive": {
+    "bytes": 93137,
+    "sha256": "6bc774a497e7a8e23debe5c718d07c0c2b012d19afea8e82b41017bd8d15196a"
+  },
+  "source_clean_final": true,
+  "test_model_unchanged": true,
+  "cleanup": {
+    "source": "read-only post-terminal inventory; no process signalled",
+    "preexisting_gradle_process_count": 1,
+    "new_gradle_process_count": 0,
+    "private_inventory_sha256": "144fc1fd43f68937a08ddb54189f09819480149a7e12b519cf2aa42dd8481c5a",
+    "emulator_exit": 0,
+    "owned_ports_clear": true,
+    "released_matching_leases": [
+      "device",
+      "build"
+    ],
+    "both_leases_absent": true
+  },
+  "physical_actions": 0,
+  "hosted_actions": 0,
+  "earlier_attempts": "01 preboot preparation failure and02 measured1pass1failure retained unchanged; attempt03 separately authorized after reviewed fixes",
+  "exact_pixel9_or_physical_acceptance": "UNRUN/open",
+  "remaining_gates": [
+    "Pixel 9 Pro Fold profile acceptance",
+    "hinge-angle/sensor assertions",
+    "unlocked A-G",
+    "real IME and focus",
+    "system_server heap privacy",
+    "physical Fold A-G acceptance outside this lane"
+  ],
+  "at_unix": 1791058726.337901
+}

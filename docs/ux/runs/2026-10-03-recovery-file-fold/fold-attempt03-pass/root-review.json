@@ -1,0 +1,89 @@
+{
+  "source": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "xml_files": 1,
+  "actual_pass": 2,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "consumed_ready_matches_nonce0": true,
+  "unique_nonce_bound_postures": 6,
+  "activity_geometry": [
+    {
+      "step": "closed_before",
+      "width_dp": 411,
+      "height_dp": 797,
+      "density_dpi": 420,
+      "orientation": 1,
+      "activity_identity": 172789736,
+      "geometry_observer": "activity",
+      "window_bounds_px": [
+        0,
+        0,
+        1080,
+        2092
+      ]
+    },
+    {
+      "step": "flat",
+      "width_dp": 841,
+      "height_dp": 701,
+      "density_dpi": 420,
+      "orientation": 2,
+      "activity_identity": 172789736,
+      "geometry_observer": "activity",
+      "window_bounds_px": [
+        0,
+        0,
+        2208,
+        1840
+      ]
+    },
+    {
+      "step": "closed_after",
+      "width_dp": 411,
+      "height_dp": 797,
+      "density_dpi": 420,
+      "orientation": 1,
+      "activity_identity": 172789736,
+      "geometry_observer": "activity",
+      "window_bounds_px": [
+        0,
+        0,
+        1080,
+        2092
+      ]
+    },
+    {
+      "step": "outer_portrait",
+      "width_dp": 411,
+      "height_dp": 797,
+      "density_dpi": 420,
+      "orientation": 1,
+      "activity_identity": 81212175,
+      "geometry_observer": "activity",
+      "window_bounds_px": [
+        0,
+        0,
+        1080,
+        2092
+      ]
+    },
+    {
+      "step": "outer_landscape",
+      "width_dp": 797,
+      "height_dp": 411,
+      "density_dpi": 420,
+      "orientation": 2,
+      "activity_identity": 81212175,
+      "geometry_observer": "activity",
+      "window_bounds_px": [
+        0,
+        0,
+        2092,
+        1080
+      ]
+    }
+  ],
+  "verifier_passed": true,
+  "scope": "Local Pixel Fold compatibility, pre-unlock MainActivity only; no exact Pixel9, Linux or physical acceptance"
+}

@@ -1,0 +1,7 @@
+{
+  "source": "3f7b0d4d66a42da122c406a0b731ed92a865f276",
+  "new_gradle_processes": 0,
+  "remaining_preexisting": 1,
+  "matching_token": "490ffd58177c487cbccc1e063d4b138a",
+  "result": "Safe for sole runner to release matching retained build lease; no process signalled"
+}

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "reviewer": "recovery worker independent publication review",
+  "status": "PARTIAL_PASS_PENDING_FINAL_FOLD_AND_PUBLICATION_SOURCE",
+  "review_scope": "Publication integrity and owner preservation only; no tests, builds, device actions, or source edits. Previously independently audited test/runtime results are not rerun.",
+  "source_head": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "capsules": [
+    "2026-10-03-recovery-file-fold",
+    "2026-10-03-recovery-reader",
+    "2026-10-03-local-fold-adapter"
+  ],
+  "public_files": 66,
+  "top_level_zip_files": 11,
+  "zip_archives_including_nested": 18,
+  "zip_members_rehashed_including_nested": 1170,
+  "manifest_entries_rehashed": 106,
+  "all_manifest_hashes_and_sizes_match": true,
+  "all_current_capsule_files_tracked": true,
+  "content_scope": {
+    "apk_model_database_key_bytes_found": false,
+    "raw_private_device_process_dumps_found": false,
+    "device_inventory_command_metadata": "Only command arguments, output byte counts and hashes; stdout/stderr dumps excluded. Owned synthetic emulator identifier and launcher PID are intentional runtime metadata.",
+    "raw_member_crc_and_sha256_read": true
+  },
+  "owner_preservation": {
+    "snapshot_files": 21,
+    "all_original_bytes_and_sha256_equal": true,
+    "head_equal": true,
+    "porcelain_compact_equal": true,
+    "porcelain_all_untracked_equal": true,
+    "stash_exact_equal": true,
+    "full_inventory": "private"
+  },
+  "original_failures_retained": [
+    "recovery attempts01-03 lint layout failures",
+    "recovery attempt04 obsolete dispatch expectation failures, corrected by explicit decodeActive preserving closed v1-only guard",
+    "local adapter original shell wrapper reserved-variable failure",
+    "fold attempt01 preboot directory ordering failure",
+    "fold attempt02 actual orientation failure with 3/6 matched posture exchanges and 2/5 named Activity rows"
+  ],
+  "attribution_preserved": [
+    "4b5c6e43 host 5686 pass and86 unchanged skips; prior screenshot and evaluator evidence explicitly historical",
+    "4b5c6e43 ordinary310 preserves303 plus7 actual encrypted AIOUT service cases with synthetic key provider, no per-use auth",
+    "host APK/model/SDK hashes are receipts, no installed-byte attestation",
+    "recovery reader only; activation, unsafe v1 migration, app/per-use and physical remain separate open gates",
+    "Fresh40 consumed regression evidence; no fresh blind quality or actual owner E4B qualification",
+    "local Fold profile evidence does not imply exact Pixel9 or physical acceptance"
+  ],
+  "drafts_reviewed": [
+    {
+      "path": "current-verification-draft.json",
+      "bytes": 3456,
+      "sha256": "b1c71ccf925d56995cc805cde1b96a96c474d6efd010017903c521ae8a3c7bdc"
+    },
+    {
+      "path": "handoff-draft.md",
+      "bytes": 8337,
+      "sha256": "125a00385eec8e178cee5512ffc088f64daaf6fdfe8e0b6962d862c80b6c975a"
+    }
+  ],
+  "pending": [
+    "final attempt03 Fold capsule and independent runtime attribution",
+    "final source pins/current-verification/handoff placeholders and links",
+    "final immutable publication commit"
+  ],
+  "errors": [],
+  "source_delta_since_measured_application": {
+    "application_source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+    "current_fold_test_source": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+    "source_files": [
+      "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "tools/ci/run-foldable-local.py",
+      "tools/ci/test_foldable_local.py"
+    ],
+    "production_app_vault_inference_sources_unchanged": true,
+    "full_application_host_and_ordinary_gates_not_attributed_to_later_controller_test_changes": true
+  },
+  "reviewer_scan_note": "Initial filename/content scanner matched a device-inventory header literal inside retained Python source; manual inspection confirmed parser code, no inventory output. Original scan retained privately; code-source literals excluded from this raw-dump check."
+}

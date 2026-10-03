@@ -1,0 +1,20 @@
+{
+  "source": "3f7b0d4d66a42da122c406a0b731ed92a865f276",
+  "exit": 0,
+  "passes": 84,
+  "previous81_preserved": true,
+  "new_tests": 3,
+  "log_sha256": "fe63c26e8fe94a7c647b2a074ff9158f4b077088ecd7b6ee7e767fb468dff155",
+  "non_documentation_delta_from_measured4b5": [
+    "tools/ci/run-foldable-local.py",
+    "tools/ci/test_foldable_local.py"
+  ],
+  "application_source_unchanged": true,
+  "leases": "Matching root build lease released after synchronous Python suite; no Gradle or device work",
+  "added_test_identities": [
+    "test_existing_run_and_private_home_are_never_reused_or_deleted (test_foldable_local.LocalPreparationOrderingTest.test_existing_run_and_private_home_are_never_reused_or_deleted)",
+    "test_gradle_created_user_home_and_debug_key_do_not_break_preparation (test_foldable_local.LocalPreparationOrderingTest.test_gradle_created_user_home_and_debug_key_do_not_break_preparation)",
+    "test_private_homes_exist_before_first_sdk_or_gradle_call (test_foldable_local.LocalPreparationOrderingTest.test_private_homes_exist_before_first_sdk_or_gradle_call)"
+  ],
+  "exact_prior_test_identities_preserved": true
+}

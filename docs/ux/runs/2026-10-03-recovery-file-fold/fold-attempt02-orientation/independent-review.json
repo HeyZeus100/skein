@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "review": "independent-terminal-artifact-audit",
+  "audit_status": "PASS_EVIDENCE_REVIEW_OF_FAILED_RUNTIME",
+  "runtime_gate": "FAIL",
+  "source_sha": "3f7b0d4d66a42da122c406a0b731ed92a865f276",
+  "application_source_equal_to": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "scope": "Local macOS ARM, API35 google_apis arm64 revision9 extension13, Pixel Fold compatibility profile",
+  "reviewer_build_or_device_actions": false,
+  "source_six_receipts_match_frozen_commit": true,
+  "actual_xml": {
+    "files": 1,
+    "cases": 2,
+    "pass": 1,
+    "failure": 1,
+    "error": 0,
+    "skip": 0,
+    "identities": [
+      {
+        "class": "app.skein.foldable.MainActivityFoldableGateTest",
+        "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+        "outcome": "failure"
+      },
+      {
+        "class": "app.skein.foldable.MainActivityFoldableGateTest",
+        "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+        "outcome": "pass"
+      }
+    ],
+    "artifact": {
+      "bytes": 2223,
+      "sha256": "caa2c30df60f178a76625e2273ddacf06dd501c457b0c0a735a3db69edcca97a"
+    },
+    "failure_summary": "First journey called portrait before closed; Activity remained landscape841x701dp at ROTATION_0,2208x1840px and timed out at the portrait call. Original failure retained."
+  },
+  "transport": {
+    "nonce_readiness": "PASS_CONSUMED",
+    "readiness": {
+      "action": "ready",
+      "nonce": "8bf795c558f84d64872e0072f8ac2621",
+      "run_id": "490ffd58177c487cbccc1e063d4b138a",
+      "sequence": 0,
+      "status": "ok"
+    },
+    "before_activity_geometry": "Exact frozen source calls and consumes readiness before Activity launch; readiness read/write complete before any posture command in chronological transcript.",
+    "posture_gate": "INCOMPLETE_FAIL",
+    "observed": [
+      {
+        "run_id": "490ffd58177c487cbccc1e063d4b138a",
+        "sequence": 1,
+        "nonce": "2b95706c3ba94799b9ed0f121aaa7240",
+        "action": "unfold"
+      },
+      {
+        "run_id": "490ffd58177c487cbccc1e063d4b138a",
+        "sequence": 2,
+        "nonce": "d64ca6f7526b476dbc63759685cb17b6",
+        "action": "fold"
+      },
+      {
+        "run_id": "490ffd58177c487cbccc1e063d4b138a",
+        "sequence": 3,
+        "nonce": "bcf166e196c34cf1a69428a5b0b4d3f1",
+        "action": "unfold"
+      }
+    ],
+    "required_postures": 6,
+    "all_three_observed_request_console_ack_bindings_valid": true,
+    "command_pairs": 234,
+    "command_identity_chronology_bounds_verified": true,
+    "missing_request_poll_count": 102,
+    "display_diagnostic_samples": 3,
+    "diagnostic_samples_are_not_activity_geometry": true
+  },
+  "geometry": {
+    "gate": "INCOMPLETE_FAIL",
+    "actual_observations": [
+      {
+        "step": "outer_portrait",
+        "width_dp": 411,
+        "height_dp": 797,
+        "density_dpi": 420,
+        "orientation": 1,
+        "activity_identity": 224180490,
+        "geometry_observer": "activity",
+        "window_bounds_px": [
+          0,
+          0,
+          1080,
+          2092
+        ],
+        "recomputed_window_dp": [
+          411.42857142857144,
+          796.952380952381
+        ]
+      },
+      {
+        "step": "outer_landscape",
+        "width_dp": 797,
+        "height_dp": 411,
+        "density_dpi": 420,
+        "orientation": 2,
+        "activity_identity": 224180490,
+        "geometry_observer": "activity",
+        "window_bounds_px": [
+          0,
+          0,
+          2092,
+          1080
+        ],
+        "recomputed_window_dp": [
+          796.952380952381,
+          411.42857142857144
+        ]
+      }
+    ],
+    "required_observations": 5,
+    "missing_steps": [
+      "closed_before",
+      "flat",
+      "closed_after"
+    ],
+    "outer_journey": "PASS: same Activity, correct portrait/landscape raw-window and configuration thresholds"
+  },
+  "artifacts": {
+    "safe_archive": {
+      "bytes": 74612,
+      "sha256": "6b1b45c89df2255b76a1dee155255f7d7e35b9b496520e4dc50b7f699d3abc2d"
+    },
+    "all_75_archive_entries_equal_live_sealed_artifacts": true,
+    "execution": {
+      "bytes": 5014,
+      "sha256": "1aa62f22596d8c534492a0c17597ad2c2c44b1d5931da827a7484273be8880ef"
+    },
+    "console_events": {
+      "bytes": 1894,
+      "sha256": "88ac7ced1188a6ce00b0fdd5445c17103463115630573f2c94c131ba6f6a0173"
+    },
+    "console_commands": {
+      "bytes": 200320,
+      "sha256": "2fbc1467c585f96f4444ad3a1494f3321797270faa34b89a5848301cc8658218"
+    },
+    "geometry": {
+      "bytes": 375,
+      "sha256": "22c138660cb59541c34b1d7852c840687be7c98e0939477894f3f8d1bb505617"
+    },
+    "sdk_receipt": {
+      "bytes": 7828,
+      "sha256": "07474fd3519e867c2758cbea200db52771676198899728f683db55efe64254b2"
+    },
+    "host_apks": [
+      {
+        "kind": "test",
+        "bytes": 94856825,
+        "sha256": "146c26061e21f62e764b82d42f5d4b15f2e404697fb3ec3240b6da23f8375222",
+        "manifest": {
+          "bytes": 4336,
+          "sha256": "30d931fb0bc4d7c0bdababf82aa9a55fcc536c63ea8f68be938c6865307db39e"
+        },
+        "actual_manifest_text_sha256": "acea4f05fd9cf07fc533efc6dea9a3b0c35368a0863cf43d5bb5b07ac7e70989",
+        "dex_native_manifest_bytes_equal_attempt01_app4b5": true,
+        "native_payload_count": 0,
+        "native_payloads": {}
+      },
+      {
+        "kind": "app",
+        "bytes": 172388849,
+        "sha256": "11fd644546825f50ade6675583e537b747c2deb01fa62903ee48a89c0974c10b",
+        "manifest": {
+          "bytes": 10088,
+          "sha256": "5cbe490d4a4ba6d007096486094511ab2baef4c573c0b1d093242562ac41aacb"
+        },
+        "actual_manifest_text_sha256": "9967d1f0bddc1f613bf479bc861f102a0bdaee5fd0d88a730161b0f216212c16",
+        "dex_native_manifest_bytes_equal_attempt01_app4b5": true,
+        "native_payload_count": 14,
+        "native_payloads": {
+          "lib/arm64-v8a/libandroidx.graphics.path.so": {
+            "bytes": 10096,
+            "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+          },
+          "lib/arm64-v8a/libdatastore_shared_counter.so": {
+            "bytes": 7784,
+            "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+          },
+          "lib/arm64-v8a/libonnxruntime.so": {
+            "bytes": 27985944,
+            "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+          },
+          "lib/arm64-v8a/libonnxruntime4j_jni.so": {
+            "bytes": 83208,
+            "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+          },
+          "lib/arm64-v8a/libskein_llama.so": {
+            "bytes": 33413256,
+            "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+          },
+          "lib/arm64-v8a/libskein_sqlite.so": {
+            "bytes": 6269000,
+            "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+          },
+          "lib/arm64-v8a/libskein_sqlite_jni.so": {
+            "bytes": 22320,
+            "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+          },
+          "lib/x86_64/libandroidx.graphics.path.so": {
+            "bytes": 10760,
+            "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+          },
+          "lib/x86_64/libdatastore_shared_counter.so": {
+            "bytes": 7336,
+            "sha256": "ccd1862ef8f854d2322f3ee07adebd107890ded3b7c96b8f3528ac99aab4a4f6"
+          },
+          "lib/x86_64/libonnxruntime.so": {
+            "bytes": 33975544,
+            "sha256": "12aee04e178cde314725526b1a8e0b06ca20bd717ea252dd65d0b752f0088bd1"
+          },
+          "lib/x86_64/libonnxruntime4j_jni.so": {
+            "bytes": 80272,
+            "sha256": "9283970dbce849057eaf29fe3dfa3db1f7324d1dfcecc952e56eed61f6482c2d"
+          },
+          "lib/x86_64/libskein_llama.so": {
+            "bytes": 5489624,
+            "sha256": "68e8d2334cb4a001749317a9a141a9fd2eb7edf6bcfb2b292d5bd59abb80592e"
+          },
+          "lib/x86_64/libskein_sqlite.so": {
+            "bytes": 6700000,
+            "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54"
+          },
+          "lib/x86_64/libskein_sqlite_jni.so": {
+            "bytes": 22080,
+            "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68"
+          }
+        }
+      }
+    ]
+  },
+  "sdk": {
+    "published_pin": {
+      "bytes": 8111,
+      "sha256": "028719046165d3a5771447c224cb9b8eac97f52892be945676ab872f4f1663c2"
+    },
+    "actual_30_image_files_and_4_runtime_files_rehashed": true,
+    "avd_profile": "pixel_fold",
+    "exact_pixel_9_pro_fold": "UNRUN",
+    "process_and_installed_package_attestation": false
+  },
+  "execution": {
+    "two_gradle_exits": [
+      0,
+      1
+    ],
+    "all_host_command_output_hashes_verified": true,
+    "exclusive_owned_emulator_admission": true,
+    "test_model_unchanged": true,
+    "headful_owned_emulator_exit": 0,
+    "ports_clear": true,
+    "device_lease_released": true,
+    "build_lease_at_original_seal": "Retained because instrumentation exit1; zero new Gradle processes independently bound to post-terminal inventory. Later authorized release requires separate receipt.",
+    "physical_actions": 0,
+    "supplemental_matching_build_lease_release": {
+      "artifact": {
+        "bytes": 476,
+        "sha256": "95beb236e1cf5aecf8a7cea2d7338f7d44b95b5d26b2b0ef3b9abea479cfe25b"
+      },
+      "authorized_release_after_zero_new_gradle": true,
+      "private_inventory_hash_verified": true,
+      "both_leases_absent_at_release": true,
+      "original_execution_retained_unchanged": true
+    }
+  },
+  "remaining_gates": [
+    "Complete two-test/six-posture/five-geometry Pixel Fold compatibility run",
+    "Exact Pixel 9 Pro Fold profile",
+    "Hinge-angle/sensor assertions",
+    "Unlocked A-G",
+    "Real IME/focus",
+    "System_server heap privacy",
+    "Physical Fold acceptance"
+  ],
+  "attribution": [
+    "Host APK bytes and manifest/native/DEX identity verified; no installed-package readback.",
+    "Partial successful exchanges do not close the full fold geometry gate.",
+    "Original failed preparation attempt01 and failed runtime attempt02 remain evidence."
+  ]
+}

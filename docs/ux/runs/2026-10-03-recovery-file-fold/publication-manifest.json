@@ -1,0 +1,458 @@
+{
+  "schema_version": 1,
+  "measured_application_source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "measured_fold_runtime_source": "f1364bd2ba02e3f916953d10c775cafb61f03b78",
+  "scope": "Publication copy integrity; original failures and platform/physical boundaries retained. Manifest excludes itself.",
+  "files": [
+    {
+      "path": "docs/Handoffs/skein-continuation-20261003.md",
+      "bytes": 11604,
+      "sha256": "2d9f46812c6f9d4c39ca55acec98ca2a852e6852089b0775e88479f442ae9888"
+    },
+    {
+      "path": "docs/Handoffs/skein-six-priorities-20260930.md",
+      "bytes": 43737,
+      "sha256": "284bdfc7faddb99772cb985aea3fd00dc71360d94a19ec1e38afe9802a82b7e3"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/bounded-host-receipt.json",
+      "bytes": 809,
+      "sha256": "80483bb9c7d87d4ab52aa4917a2c73ab5e389ba3954d4a21be2e243a57e5482f"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/actual-fold-attempt02-safe-evidence.zip",
+      "bytes": 74612,
+      "sha256": "6b1b45c89df2255b76a1dee155255f7d7e35b9b496520e4dc50b7f699d3abc2d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/bounded-runtime-receipt.json",
+      "bytes": 5543,
+      "sha256": "4c3a5df03dd67ff25364780d4c36152a95cc28e22692b8c0bda6a0dab288ef6f"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/cover-order-compile-evidence.zip",
+      "bytes": 4207,
+      "sha256": "0390d0a78b3f870ce3d26b61892271206e27bee6589e2c7bc545c703de1c8595"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/independent-attempt02-runtime-review.json",
+      "bytes": 10267,
+      "sha256": "4297ee6f0453829f125d85581054576a47835c14cac71f24d78f5c424ba9524b"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/independent-cover-setup-source-review.json",
+      "bytes": 2165,
+      "sha256": "83b85805d166a2f6c6cc696c3c3475da1b856f66854311d316c383ee315912e4"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/matching-build-lease-release-after-proof.json",
+      "bytes": 476,
+      "sha256": "95beb236e1cf5aecf8a7cea2d7338f7d44b95b5d26b2b0ef3b9abea479cfe25b"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/receipt.json",
+      "bytes": 2669,
+      "sha256": "ecf565c467e178dc0062a890e6d988f5b355590805c9d67e1adb27374c233116"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/cover-setup-order-repair/source.json",
+      "bytes": 388,
+      "sha256": "5482678a74af423188a240759357a63cf09e7c3d0e24ec15ab109bf5fcf046b9"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/host-attempt-04-source.json",
+      "bytes": 1197,
+      "sha256": "aa91ebd1a5a56dd7f8397ecff31c88eefcf84c7205a0b4dbfa4b849a74d1a442"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/host-compile-evidence.zip",
+      "bytes": 9591,
+      "sha256": "53efdb13f1184f8214cf3707661eb1dcb72c18c35840a05d95d288d615627d68"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/independent-source-review.json",
+      "bytes": 12856,
+      "sha256": "fb3071f288d6932819f0dc718a74aa242951ac392110bb96bcb8b730e185be32"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/preparation-order-repair/bounded-failed-preparation-receipt.json",
+      "bytes": 1984,
+      "sha256": "7a1a5fa597a7c318704d960fb6ddd65f491b8fbadd89610a51a30cf207cae6b6"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/preparation-order-repair/failed-preparation-safe-evidence.zip",
+      "bytes": 8139,
+      "sha256": "82db435cda8739221b78c09ea08288b1cd752114144ef728bd909945b1a399c6"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/preparation-order-repair/fixed-source.json",
+      "bytes": 292,
+      "sha256": "a6d03cc0d3a129a744a552ebb997ae194358f0074a66dc338e8fff63e670f5b8"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/preparation-order-repair/independent-source-review.json",
+      "bytes": 2970,
+      "sha256": "4390b09d6137e071edd9a474136f1161d65b5e368c6b29ce305a80764e4f3d4c"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/preparation-order-repair/ordering-host-evidence.zip",
+      "bytes": 2519,
+      "sha256": "9a1b4dab13e9a7a938d660ec548e1586b7baa66bbfd808a95a3ec537fbc485c3"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/preparation-order-repair/receipt.json",
+      "bytes": 2098,
+      "sha256": "b1edd25302381756c9390c3719f2b1702aa3ee94a60689eec7dc990620d46c23"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-local-fold-adapter/receipt.json",
+      "bytes": 2032,
+      "sha256": "34607f0b282037356c924a2ef1a1bf5544432867cd55e865e76868ead332075a"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/README.md",
+      "bytes": 4179,
+      "sha256": "eed677c0df5d5ea1fb85e20a289aba7039d9837601b271524a52678f126fd4a7"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/capsule-manifest.json",
+      "bytes": 1525,
+      "sha256": "17e5a9892418af1f5c9c92994700c38c8f1f51a0d239518f5beee878c173584e"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/format.log",
+      "bytes": 4190,
+      "sha256": "bc6434408a5f2efa9c627340882d7e8f7a4f506127ebb931a2c2a373388c33b4"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/result.json",
+      "bytes": 3964,
+      "sha256": "933cd0fe168fd9d82cbf77b6f65d9e4aae5c021d0c7afcf013a457b476cf51cc"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/root-review.json",
+      "bytes": 1895,
+      "sha256": "a99631cac98821e49b01a3b5fa2891915b973207b8dd4daf03c84845e58a17b1"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/source.json",
+      "bytes": 398,
+      "sha256": "e1e2e4ef0c6b73b0168a46e92ea3eb2c87d23f7d2a1f7d4196fc50b9e72dd0cf"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/source.zip",
+      "bytes": 7775,
+      "sha256": "95b31c8066332c6d7f4690013c131979df484eda80027bd84700fba79d951c28"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/unit-actual.zip",
+      "bytes": 100348,
+      "sha256": "25542fa010858abeece8a4b8954ec49c83fe060ea311192fcc4dc5b2d40d49b1"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/unit-review.json",
+      "bytes": 395741,
+      "sha256": "a367ce2f8325ee7c1a547345350d67fabbafae72980d61f39204f272bdf93ea8"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/aiout-harness/verify.log",
+      "bytes": 45811,
+      "sha256": "cf91fc15cc00430b54bb34d5db4c7efd89cdd57aa74e133b91a0f2a26a08c55b"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/application-source-equivalence.json",
+      "bytes": 564,
+      "sha256": "f81b9bd47a5ff9deb4e6cef80194db47c496abe119f1a942cb9dc012efac0178"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/beads-status-at-publication.json",
+      "bytes": 3327,
+      "sha256": "2efeae1b063e78e7227317d1a4180a8f5ea77dc7fcfb0b3ffbb964134d98c254"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/beads-sync.json",
+      "bytes": 750,
+      "sha256": "7cdeb3e346e60fb213b3bcddbac8be2a713dc590ff8b9a6e10e67817c24f76a4"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/apk-delta.json",
+      "bytes": 390,
+      "sha256": "5f75ada4e08a22a987ed2353231b03634c085905f0e29a422d10c0947df2381c"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/apk-manifest-xmltree.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/apk-manifest-xmltree.log",
+      "bytes": 14080,
+      "sha256": "d87a5f5646c526c27f71b08683cd188af60c20b06e633f49c6526bdc20a1fc89"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/apk-review.json",
+      "bytes": 1432,
+      "sha256": "7bfa784b395f77757d83337ecf4219986065797ac01cbe3385606427dcb5714f"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/before.json",
+      "bytes": 212,
+      "sha256": "345a50f92cecd89c468aa9349f8a4be88cd749f95015d1b76362b2fe92b636b1"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/bounded-host-receipt.json",
+      "bytes": 844,
+      "sha256": "fb649d235bba9d5459005125a51cc676e3485a888530f3e2e2d75b4710e17075"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/capsule-manifest.json",
+      "bytes": 2614,
+      "sha256": "e0bc9f78226d9f40eddae7ca2d591b64885e8ef497a3a4a3035a737ac75549f5"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/combined.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/combined.log",
+      "bytes": 147385,
+      "sha256": "19be54f61faa3e88d981e096c6131c910bcae9faade896f1291fe108da98ab8e"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/independent-review.json",
+      "bytes": 5263,
+      "sha256": "78035670b568b9d9e8a5d399af64c75419797d3b0c49ae40d2108f9d80a1d1a1"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/manifest-audit.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/manifest-audit.log",
+      "bytes": 393,
+      "sha256": "00ecaa0e2c627a3abcaa7de8e1a602187d258dfa8cc63549b71bc183bd01b6fd"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/prior-comparison.json",
+      "bytes": 17520,
+      "sha256": "bc915681cf6cd44ca7d519e177cbf5cee188c68068f1ad930e34c45a819c61d2"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/protected-source-review.json",
+      "bytes": 460,
+      "sha256": "79d86f2b56ce5a1e11fd8e97a731ab091c9288f285382535673bb2fffb0ac198"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/python-ci.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/python-ci.log",
+      "bytes": 14838,
+      "sha256": "b2c85bc65844733b17d85b08b7c4c5357536a6c8537d634492a34bcaac28cd74"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/unit-actual.zip",
+      "bytes": 558273,
+      "sha256": "594c202a4218f23df54c5a8e81d4eba87a61624e684d0ad2068d6e564ef28cca"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/combined4b5c6e43b/unit-review.json",
+      "bytes": 1770794,
+      "sha256": "ef99c00f89bf920cc208ba4a32bc655891b359f4b53769fa3b8983b2f7285464"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/current-verification.json",
+      "bytes": 4707,
+      "sha256": "9744d40cb43ba243f8f52d6c52f3a754902c8f389964ba4e147aec199e6e8a42"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt01-preboot/bounded-failed-preparation-receipt.json",
+      "bytes": 1984,
+      "sha256": "7a1a5fa597a7c318704d960fb6ddd65f491b8fbadd89610a51a30cf207cae6b6"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt01-preboot/capsule-manifest.json",
+      "bytes": 365,
+      "sha256": "b670376d5f65114c37d2014580d4db809385fb66804eb4677173ef6e16303193"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt01-preboot/failed-preparation-safe-evidence.zip",
+      "bytes": 8139,
+      "sha256": "82db435cda8739221b78c09ea08288b1cd752114144ef728bd909945b1a399c6"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/actual-fold-attempt02-safe-evidence.zip",
+      "bytes": 74612,
+      "sha256": "6b1b45c89df2255b76a1dee155255f7d7e35b9b496520e4dc50b7f699d3abc2d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/bounded-runtime-receipt.json",
+      "bytes": 5543,
+      "sha256": "4c3a5df03dd67ff25364780d4c36152a95cc28e22692b8c0bda6a0dab288ef6f"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/capsule-manifest.json",
+      "bytes": 854,
+      "sha256": "2a80bf0b9e4e513be5bd4ae94dfe9befca4d2bb39a54ce3a8f184f5697a6e648"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/independent-review.json",
+      "bytes": 10267,
+      "sha256": "4297ee6f0453829f125d85581054576a47835c14cac71f24d78f5c424ba9524b"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/matching-build-lease-release-after-proof.json",
+      "bytes": 476,
+      "sha256": "95beb236e1cf5aecf8a7cea2d7338f7d44b95b5d26b2b0ef3b9abea479cfe25b"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt02-orientation/root-cleanup-review.json",
+      "bytes": 273,
+      "sha256": "1c3be6ab68c294036bb27371f8d841c96c6f3816cc94558c5fec2c82467a2c49"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/actual-fold-attempt03-safe-evidence.zip",
+      "bytes": 93137,
+      "sha256": "6bc774a497e7a8e23debe5c718d07c0c2b012d19afea8e82b41017bd8d15196a"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/bounded-runtime-receipt.json",
+      "bytes": 5827,
+      "sha256": "4a17c2308cf759833fcff7bdd2d4a8a091456d84ad7429da31c8154d15bcc072"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/capsule-manifest.json",
+      "bytes": 668,
+      "sha256": "8092346d325cc437209a3c8368fd443200db43fd99f2cff4a0af697524df20f2"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/independent-review.json",
+      "bytes": 12059,
+      "sha256": "cc51f8a256e1389723d3826d4d10d41bf13b573eb8b46a0b5993172a8d94e717"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/fold-attempt03-pass/root-review.json",
+      "bytes": 1904,
+      "sha256": "ef1042da3d45fecd286aa2e5c3d65b65e87c943e79597aef04004779ad7c236b"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/actual-xml.zip",
+      "bytes": 11385,
+      "sha256": "4d9d07170df7a6fbf63619682ab13fe78f0f3d7ac46aef4648dba02356a48b32"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/bounded-runtime-receipt.json",
+      "bytes": 4727,
+      "sha256": "8b13c4a7658bede98a900eac72fb1a516522e397c03cb5dad850ff0248e7e554"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/capsule-manifest.json",
+      "bytes": 1272,
+      "sha256": "1d22858d4d49de539879efdc08cb134ba755ef584ed391e8505cfd3ef07184bc"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/gradle.log",
+      "bytes": 33626,
+      "sha256": "e1454822bb4b427bfc0f3aee62ce8a8e041d675ab96d8c58db2a0f3e37650759"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/independent-review.json",
+      "bytes": 4448,
+      "sha256": "4fdb6e001a186749e7edea6a1ba8490bda40f6049771b2d61f3a3d25d298644d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/instrumentation-review.json",
+      "bytes": 1067,
+      "sha256": "6b865f6283ea770a964b1640a72888f145eebbc94652c1b3531533c47f35f80d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/instrumentation-verification.json",
+      "bytes": 2420,
+      "sha256": "2b55abc7dc726e016c3df4cce53074df5e08f1097cce21a98faaa837a6a46694"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/retained-runner.py",
+      "bytes": 25127,
+      "sha256": "f33323d34b63613afcdc1247ad1b3edee4afcb04474c16ab38733138194cfd1c"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/ordinary310/root-review.json",
+      "bytes": 2822,
+      "sha256": "3aa8c39abeddacf96f8beed05fc57ffdd67d14312cafa1ccd5c021c419451490"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/owner-prepublication-review.json",
+      "bytes": 418,
+      "sha256": "49832e604e4afa872c899e5266604b81beaea16217e41026fc682ad25380eeb8"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/publication-integrity-earlier-review.json",
+      "bytes": 3999,
+      "sha256": "173f480991b1c765e651bbb72115ba3ec9abde4a5b6ac3ca8813a998efe1f087"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/publication-integrity-review.json",
+      "bytes": 7726,
+      "sha256": "5aa57a48ce3d395578e437aae239a6d4fc73750262c89f1c83079f3077574e09"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/recovery-next-slice.json",
+      "bytes": 19261,
+      "sha256": "22e77fcee1028cd68194e64bf14f6085cc3f85178a9dacb2d8cdd3fee17694d4"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/recovery-root-review.json",
+      "bytes": 409,
+      "sha256": "6c44a62cad2ac46ade36166d25300f7f1b74a66865915518b8be9cbcd171f447"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/repair-python84/capsule-manifest.json",
+      "bytes": 320,
+      "sha256": "1397c50e3f08b096186390ec6a98dff6b7cfb39b61092039656d534874628220"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/repair-python84/python-ci.log",
+      "bytes": 15243,
+      "sha256": "fe63c26e8fe94a7c647b2a074ff9158f4b077088ecd7b6ee7e767fb468dff155"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/repair-python84/root-review.json",
+      "bytes": 1132,
+      "sha256": "c712f765c85401439bef7bace02e254abb3ff60aca79d5225e4adf9c719449ae"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-file-fold/resume-verification.json",
+      "bytes": 2595,
+      "sha256": "88d5536972ecf71591cbae6e4c432e6f074e2b5b11305eff2864ed93889bd52a"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-reader/README.md",
+      "bytes": 1699,
+      "sha256": "c650a877067e70efdeb354df37422329374f8fc7339e27776de4664c39696bf4"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-reader/actual-xml-review.json",
+      "bytes": 21558,
+      "sha256": "300bbe8383b1cb423ed36dde2fd85fef6840cd10e659854795220e24686b6cf4"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-reader/peer-review.json",
+      "bytes": 3714,
+      "sha256": "79627b32c2bf04663d5f40bf09c7830cba2f68d5391f6defb3f24d7b4f63a687"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-reader/raw-evidence.zip",
+      "bytes": 413361,
+      "sha256": "392474ed6e7742ba203217297505c73e112506d11b4e52b520fae8c986dc8756"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-03-recovery-reader/worker-receipt.json",
+      "bytes": 8491,
+      "sha256": "b67b7390df9ac9ff420d2f71e97f88084cda2819a75c05da3f460c3b7fee9f1f"
+    }
+  ]
+}

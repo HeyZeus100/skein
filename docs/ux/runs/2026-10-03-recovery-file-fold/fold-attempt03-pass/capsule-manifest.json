@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "path": "actual-fold-attempt03-safe-evidence.zip",
+      "bytes": 93137,
+      "sha256": "6bc774a497e7a8e23debe5c718d07c0c2b012d19afea8e82b41017bd8d15196a"
+    },
+    {
+      "path": "bounded-runtime-receipt.json",
+      "bytes": 5827,
+      "sha256": "4a17c2308cf759833fcff7bdd2d4a8a091456d84ad7429da31c8154d15bcc072"
+    },
+    {
+      "path": "independent-review.json",
+      "bytes": 12059,
+      "sha256": "cc51f8a256e1389723d3826d4d10d41bf13b573eb8b46a0b5993172a8d94e717"
+    },
+    {
+      "path": "root-review.json",
+      "bytes": 1904,
+      "sha256": "ef1042da3d45fecd286aa2e5c3d65b65e87c943e79597aef04004779ad7c236b"
+    }
+  ]
+}
