@@ -1,0 +1,12 @@
+{
+  "reviewer": "/root",
+  "actual_counts": {
+    "passed": 1522,
+    "skipped": 2
+  },
+  "archive_sha256": "cd00f01a4b8215756f963b7774dfb3474ba7687c77cacdd1017d4fb170711069",
+  "all_prior_1474_cases_and_skips_preserved": true,
+  "added_passes": 50,
+  "legacy_decoder_test_unmodified": true,
+  "acceptance": "Host reader/provider scope only; activation and Android per-use/physical acceptance remain open."
+}
