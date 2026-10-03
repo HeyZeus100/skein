@@ -1,0 +1,743 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :app:ktlintCheck :app:testDevDebugUnitTest :app:testFossDebugUnitTest :feature:editor:testDebugUnitTest :app:compileDevDebugAndroidTestKotlin :app:compileFossDebugAndroidTestKotlin
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin UP-TO-DATE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors UP-TO-DATE
+> Task :build-logic:guards:processResources UP-TO-DATE
+> Task :build-logic:guards:classes UP-TO-DATE
+> Task :build-logic:guards:jar UP-TO-DATE
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:loadKtlintReporters UP-TO-DATE
+> Task :app:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:model:compileKotlin FROM-CACHE
+> Task :app:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :app:ktlintDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :app:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :app:ktlintDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :app:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :app:ktlintFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverKotlinScripts FROM-CACHE
+> Task :app:ktlintKotlinScriptCheck FROM-CACHE
+> Task :app:runKtlintCheckOverAndroidTestSourceSet
+> Task :app:ktlintAndroidTestSourceSetCheck
+> Task :app:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :app:ktlintReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :app:ktlintTestDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFossSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :app:runKtlintCheckOverTestSourceSet FROM-CACHE
+> Task :app:ktlintTestSourceSetCheck FROM-CACHE
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources
+> Task :core:model:classes
+> Task :core:model:jar
+> Task :testing-fakes:compileKotlin FROM-CACHE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar
+> Task :app:runKtlintCheckOverMainSourceSet
+> Task :testing:compileKotlin FROM-CACHE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:processResources
+> Task :testing:classes
+> Task :app:ktlintMainSourceSetCheck
+> Task :app:ktlintCheck
+> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:verify:compileKotlin FROM-CACHE
+> Task :core:verify:compileJava NO-SOURCE
+> Task :core:verify:processResources NO-SOURCE
+> Task :core:verify:classes UP-TO-DATE
+> Task :testing:jar
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:verify:jar
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:navigation:compileKotlin FROM-CACHE
+> Task :core:navigation:compileJava NO-SOURCE
+> Task :core:navigation:processResources NO-SOURCE
+> Task :core:navigation:classes UP-TO-DATE
+> Task :core:navigation:jar
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:generateDevDebugBuildConfig FROM-CACHE
+> Task :core:markdown:compileKotlin FROM-CACHE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :app:generateDevDebugResources FROM-CACHE
+> Task :app:packageDevDebugResources FROM-CACHE
+> Task :embedder-service:preBuild UP-TO-DATE
+> Task :embedder-service:preDebugBuild UP-TO-DATE
+> Task :core:markdown:jar
+> Task :embedder-service:processDebugNavigationResources FROM-CACHE
+> Task :inference-service:preBuild UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :inference-service:preDevDebugBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :inference-service:processDevDebugNavigationResources FROM-CACHE
+> Task :core:export:preBuild UP-TO-DATE
+> Task :core:export:preDebugBuild UP-TO-DATE
+> Task :core:export:processDebugNavigationResources FROM-CACHE
+> Task :core:inference:preBuild UP-TO-DATE
+> Task :core:inference:preDebugBuild UP-TO-DATE
+> Task :core:inference:processDebugNavigationResources FROM-CACHE
+> Task :core:ipc:preBuild UP-TO-DATE
+> Task :core:ipc:preDebugBuild UP-TO-DATE
+> Task :core:ipc:processDebugNavigationResources FROM-CACHE
+> Task :core:rag:preBuild UP-TO-DATE
+> Task :core:rag:preDebugBuild UP-TO-DATE
+> Task :core:rag:processDebugNavigationResources FROM-CACHE
+> Task :core:security:preBuild UP-TO-DATE
+> Task :core:security:preDebugBuild UP-TO-DATE
+> Task :core:security:processDebugNavigationResources FROM-CACHE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:vault:processDevDebugNavigationResources FROM-CACHE
+> Task :feature:chat:preBuild UP-TO-DATE
+> Task :feature:chat:preDebugBuild UP-TO-DATE
+> Task :feature:editor:preBuild UP-TO-DATE
+> Task :feature:editor:preDebugBuild UP-TO-DATE
+> Task :feature:editor:processDebugNavigationResources FROM-CACHE
+> Task :feature:chat:processDebugNavigationResources FROM-CACHE
+> Task :feature:models:preBuild UP-TO-DATE
+> Task :feature:graph:preBuild UP-TO-DATE
+> Task :feature:graph:preDebugBuild UP-TO-DATE
+> Task :feature:models:preDebugBuild UP-TO-DATE
+> Task :feature:models:processDebugNavigationResources FROM-CACHE
+> Task :feature:settings:preBuild UP-TO-DATE
+> Task :feature:graph:processDebugNavigationResources FROM-CACHE
+> Task :feature:settings:preDebugBuild UP-TO-DATE
+> Task :feature:shell:preBuild UP-TO-DATE
+> Task :feature:shell:preDebugBuild UP-TO-DATE
+> Task :feature:settings:processDebugNavigationResources FROM-CACHE
+> Task :feature:shell:processDebugNavigationResources FROM-CACHE
+> Task :feature:timeline:preBuild UP-TO-DATE
+> Task :feature:timeline:preDebugBuild UP-TO-DATE
+> Task :feature:timeline:processDebugNavigationResources FROM-CACHE
+> Task :embedder-service:generateDebugResources FROM-CACHE
+> Task :embedder-service:packageDebugResources FROM-CACHE
+> Task :app:processDevDebugNavigationResources FROM-CACHE
+> Task :embedder-service:parseDebugLocalResources FROM-CACHE
+> Task :embedder-service:generateDebugRFile FROM-CACHE
+> Task :core:ipc:compileDebugAidl FROM-CACHE
+> Task :core:ipc:generateDebugResources FROM-CACHE
+> Task :core:ipc:packageDebugResources FROM-CACHE
+> Task :core:ipc:parseDebugLocalResources FROM-CACHE
+> Task :core:ipc:generateDebugRFile FROM-CACHE
+> Task :core:ipc:compileDebugKotlin FROM-CACHE
+> Task :core:ipc:javaPreCompileDebug FROM-CACHE
+> Task :app:parseDevDebugLocalResources FROM-CACHE
+> Task :app:generateDevDebugRFile FROM-CACHE
+> Task :embedder-service:javaPreCompileDebug FROM-CACHE
+> Task :inference-service:generateDevDebugBuildConfig FROM-CACHE
+> Task :inference-service:generateDevDebugResources FROM-CACHE
+> Task :inference-service:packageDevDebugResources FROM-CACHE
+> Task :inference-service:parseDevDebugLocalResources FROM-CACHE
+> Task :inference-service:generateDevDebugRFile FROM-CACHE
+> Task :inference-service:javaPreCompileDevDebug FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:export:generateDebugResources FROM-CACHE
+> Task :core:export:packageDebugResources FROM-CACHE
+> Task :core:export:parseDebugLocalResources FROM-CACHE
+> Task :core:export:generateDebugRFile FROM-CACHE
+> Task :core:vault:preFossDebugBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugResources FROM-CACHE
+> Task :core:vault:packageFossDebugResources FROM-CACHE
+> Task :core:vault:processFossDebugNavigationResources FROM-CACHE
+> Task :core:vault:parseFossDebugLocalResources FROM-CACHE
+> Task :core:vault:generateFossDebugRFile FROM-CACHE
+> Task :core:ipc:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:ipc:bundleLibCompileToJarDebug
+> Task :embedder-service:compileDebugKotlin FROM-CACHE
+> Task :embedder-service:compileDebugJavaWithJavac NO-SOURCE
+> Task :embedder-service:bundleLibCompileToJarDebug
+> Task :inference-service:compileDevDebugKotlin FROM-CACHE
+> Task :inference-service:compileDevDebugJavaWithJavac FROM-CACHE
+> Task :inference-service:bundleLibCompileToJarDevDebug
+> Task :core:vault:javaPreCompileFossDebug FROM-CACHE
+> Task :core:export:javaPreCompileDebug FROM-CACHE
+> Task :core:inference:generateDebugResources FROM-CACHE
+> Task :core:inference:packageDebugResources FROM-CACHE
+> Task :core:inference:parseDebugLocalResources FROM-CACHE
+> Task :core:inference:generateDebugRFile FROM-CACHE
+> Task :core:vault:compileFossDebugKotlin FROM-CACHE
+> Task :core:vault:compileFossDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibCompileToJarFossDebug
+> Task :core:inference:compileDebugKotlin FROM-CACHE
+> Task :core:inference:javaPreCompileDebug FROM-CACHE
+> Task :core:inference:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:export:compileDebugKotlin FROM-CACHE
+> Task :core:export:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:export:bundleLibCompileToJarDebug
+> Task :core:rag:generateDebugResources FROM-CACHE
+> Task :core:inference:bundleLibCompileToJarDebug
+> Task :core:security:generateDebugResources FROM-CACHE
+> Task :core:rag:packageDebugResources FROM-CACHE
+> Task :core:rag:parseDebugLocalResources FROM-CACHE
+> Task :core:security:packageDebugResources FROM-CACHE
+> Task :core:security:parseDebugLocalResources FROM-CACHE
+> Task :core:rag:generateDebugRFile FROM-CACHE
+> Task :core:security:javaPreCompileDebug FROM-CACHE
+> Task :core:rag:javaPreCompileDebug FROM-CACHE
+> Task :core:security:generateDebugRFile FROM-CACHE
+> Task :core:vault:generateDevDebugResources FROM-CACHE
+> Task :core:vault:packageDevDebugResources FROM-CACHE
+> Task :core:vault:parseDevDebugLocalResources FROM-CACHE
+> Task :core:vault:generateDevDebugRFile FROM-CACHE
+> Task :core:security:compileDebugKotlin FROM-CACHE
+> Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:security:bundleLibCompileToJarDebug
+> Task :core:rag:compileDebugKotlin FROM-CACHE
+> Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:rag:bundleLibCompileToJarDebug
+> Task :core:vault:compileDevDebugKotlin FROM-CACHE
+> Task :core:vault:javaPreCompileDevDebug FROM-CACHE
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :feature:chat:generateDebugResources FROM-CACHE
+> Task :feature:chat:packageDebugResources FROM-CACHE
+> Task :feature:chat:parseDebugLocalResources FROM-CACHE
+> Task :feature:chat:generateDebugRFile FROM-CACHE
+> Task :feature:editor:generateDebugResources FROM-CACHE
+> Task :feature:editor:packageDebugResources FROM-CACHE
+> Task :feature:editor:parseDebugLocalResources FROM-CACHE
+> Task :feature:editor:generateDebugRFile FROM-CACHE
+> Task :feature:shell:generateDebugResources FROM-CACHE
+> Task :feature:shell:packageDebugResources FROM-CACHE
+> Task :feature:shell:parseDebugLocalResources FROM-CACHE
+> Task :feature:shell:generateDebugRFile FROM-CACHE
+> Task :core:vault:bundleLibCompileToJarDevDebug
+> Task :feature:shell:javaPreCompileDebug FROM-CACHE
+> Task :feature:timeline:generateDebugResources FROM-CACHE
+> Task :feature:timeline:packageDebugResources FROM-CACHE
+> Task :feature:timeline:parseDebugLocalResources FROM-CACHE
+> Task :feature:timeline:generateDebugRFile FROM-CACHE
+> Task :feature:timeline:compileDebugKotlin FROM-CACHE
+> Task :feature:timeline:javaPreCompileDebug FROM-CACHE
+> Task :feature:timeline:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:timeline:bundleLibCompileToJarDebug
+> Task :feature:editor:javaPreCompileDebug FROM-CACHE
+> Task :feature:chat:javaPreCompileDebug FROM-CACHE
+> Task :feature:graph:generateDebugResources FROM-CACHE
+> Task :feature:graph:packageDebugResources FROM-CACHE
+> Task :feature:graph:parseDebugLocalResources FROM-CACHE
+> Task :feature:graph:generateDebugRFile FROM-CACHE
+> Task :feature:graph:javaPreCompileDebug FROM-CACHE
+> Task :feature:models:generateDebugResources FROM-CACHE
+> Task :feature:models:packageDebugResources FROM-CACHE
+> Task :feature:models:parseDebugLocalResources FROM-CACHE
+> Task :feature:models:generateDebugRFile FROM-CACHE
+> Task :feature:models:javaPreCompileDebug FROM-CACHE
+> Task :feature:settings:generateDebugResources FROM-CACHE
+> Task :feature:settings:packageDebugResources FROM-CACHE
+> Task :feature:settings:parseDebugLocalResources FROM-CACHE
+> Task :feature:shell:compileDebugKotlin FROM-CACHE
+> Task :feature:shell:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:settings:generateDebugRFile FROM-CACHE
+> Task :feature:settings:javaPreCompileDebug FROM-CACHE
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :embedder-service:writeDebugAarMetadata
+> Task :inference-service:writeDevDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:export:writeDebugAarMetadata
+> Task :core:inference:writeDebugAarMetadata
+> Task :core:ipc:writeDebugAarMetadata
+> Task :core:rag:writeDebugAarMetadata
+> Task :feature:shell:bundleLibCompileToJarDebug
+> Task :core:security:writeDebugAarMetadata
+> Task :feature:graph:compileDebugKotlin FROM-CACHE
+> Task :feature:graph:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:graph:bundleLibCompileToJarDebug
+> Task :feature:editor:compileDebugKotlin FROM-CACHE
+> Task :feature:editor:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:models:compileDebugKotlin FROM-CACHE
+> Task :feature:models:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:models:bundleLibCompileToJarDebug
+> Task :feature:editor:bundleLibCompileToJarDebug
+> Task :feature:settings:compileDebugKotlin FROM-CACHE
+> Task :feature:settings:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:settings:bundleLibCompileToJarDebug
+> Task :core:vault:writeDevDebugAarMetadata
+> Task :feature:chat:writeDebugAarMetadata
+> Task :feature:editor:writeDebugAarMetadata
+> Task :feature:graph:writeDebugAarMetadata
+> Task :feature:models:writeDebugAarMetadata
+> Task :feature:settings:writeDebugAarMetadata
+> Task :feature:shell:writeDebugAarMetadata
+> Task :feature:timeline:writeDebugAarMetadata
+> Task :feature:chat:compileDebugKotlin FROM-CACHE
+> Task :feature:chat:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:chat:bundleLibCompileToJarDebug
+> Task :app:checkDevDebugAarMetadata
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :app:mergeDevDebugResources FROM-CACHE
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug FROM-CACHE
+> Task :embedder-service:extractDeepLinksDebug FROM-CACHE
+> Task :embedder-service:processDebugManifest FROM-CACHE
+> Task :inference-service:extractDeepLinksDevDebug FROM-CACHE
+> Task :inference-service:processDevDebugManifest FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:export:extractDeepLinksDebug FROM-CACHE
+> Task :core:export:processDebugManifest FROM-CACHE
+> Task :core:inference:extractDeepLinksDebug FROM-CACHE
+> Task :core:inference:processDebugManifest FROM-CACHE
+> Task :core:ipc:extractDeepLinksDebug FROM-CACHE
+> Task :core:ipc:processDebugManifest FROM-CACHE
+> Task :core:rag:extractDeepLinksDebug FROM-CACHE
+> Task :core:rag:processDebugManifest FROM-CACHE
+> Task :core:security:extractDeepLinksDebug FROM-CACHE
+> Task :core:security:processDebugManifest FROM-CACHE
+> Task :core:vault:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:vault:processDevDebugManifest FROM-CACHE
+> Task :feature:chat:extractDeepLinksDebug FROM-CACHE
+> Task :feature:chat:processDebugManifest FROM-CACHE
+> Task :feature:editor:extractDeepLinksDebug FROM-CACHE
+> Task :feature:editor:processDebugManifest FROM-CACHE
+> Task :feature:graph:extractDeepLinksDebug FROM-CACHE
+> Task :feature:graph:processDebugManifest FROM-CACHE
+> Task :feature:models:extractDeepLinksDebug FROM-CACHE
+> Task :feature:models:processDebugManifest FROM-CACHE
+> Task :feature:settings:extractDeepLinksDebug FROM-CACHE
+> Task :feature:settings:processDebugManifest FROM-CACHE
+> Task :feature:shell:extractDeepLinksDebug FROM-CACHE
+> Task :feature:shell:processDebugManifest FROM-CACHE
+> Task :feature:timeline:extractDeepLinksDebug FROM-CACHE
+> Task :feature:timeline:processDebugManifest FROM-CACHE
+> Task :app:processDevDebugMainManifest FROM-CACHE
+> Task :app:processDevDebugManifest FROM-CACHE
+> Task :app:processDevDebugManifestForPackage FROM-CACHE
+> Task :embedder-service:mapDebugSourceSetPaths
+> Task :embedder-service:compileDebugLibraryResources FROM-CACHE
+> Task :inference-service:mapDevDebugSourceSetPaths
+> Task :inference-service:compileDevDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:export:mapDebugSourceSetPaths
+> Task :core:export:compileDebugLibraryResources FROM-CACHE
+> Task :core:inference:mapDebugSourceSetPaths
+> Task :core:inference:compileDebugLibraryResources FROM-CACHE
+> Task :core:ipc:mapDebugSourceSetPaths
+> Task :core:ipc:compileDebugLibraryResources FROM-CACHE
+> Task :core:rag:mapDebugSourceSetPaths
+> Task :core:rag:compileDebugLibraryResources FROM-CACHE
+> Task :core:security:mapDebugSourceSetPaths
+> Task :core:security:compileDebugLibraryResources FROM-CACHE
+> Task :core:vault:mapDevDebugSourceSetPaths
+> Task :core:vault:compileDevDebugLibraryResources FROM-CACHE
+> Task :feature:chat:mapDebugSourceSetPaths
+> Task :feature:chat:compileDebugLibraryResources FROM-CACHE
+> Task :feature:editor:mapDebugSourceSetPaths
+> Task :feature:editor:compileDebugLibraryResources FROM-CACHE
+> Task :feature:graph:mapDebugSourceSetPaths
+> Task :feature:graph:compileDebugLibraryResources FROM-CACHE
+> Task :feature:models:mapDebugSourceSetPaths
+> Task :feature:models:compileDebugLibraryResources FROM-CACHE
+> Task :feature:settings:mapDebugSourceSetPaths
+> Task :feature:settings:compileDebugLibraryResources FROM-CACHE
+> Task :feature:shell:mapDebugSourceSetPaths
+> Task :feature:shell:compileDebugLibraryResources FROM-CACHE
+> Task :feature:timeline:mapDebugSourceSetPaths
+> Task :feature:timeline:compileDebugLibraryResources FROM-CACHE
+> Task :app:processDevDebugResources FROM-CACHE
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDevDebugUnitTest FROM-CACHE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :embedder-service:generateDebugAssets UP-TO-DATE
+> Task :embedder-service:mergeDebugAssets
+> Task :inference-service:generateDevDebugAssets UP-TO-DATE
+> Task :inference-service:mergeDevDebugAssets
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:export:generateDebugAssets UP-TO-DATE
+> Task :core:export:mergeDebugAssets
+> Task :core:inference:generateDebugAssets UP-TO-DATE
+> Task :core:inference:mergeDebugAssets
+> Task :core:ipc:generateDebugAssets UP-TO-DATE
+> Task :core:ipc:mergeDebugAssets
+> Task :core:rag:generateDebugAssets UP-TO-DATE
+> Task :core:rag:mergeDebugAssets
+> Task :core:security:generateDebugAssets UP-TO-DATE
+> Task :core:security:mergeDebugAssets
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets
+> Task :feature:chat:generateDebugAssets UP-TO-DATE
+> Task :feature:chat:mergeDebugAssets
+> Task :feature:editor:generateDebugAssets UP-TO-DATE
+> Task :feature:editor:mergeDebugAssets
+> Task :feature:graph:generateDebugAssets UP-TO-DATE
+> Task :feature:graph:mergeDebugAssets
+> Task :feature:models:generateDebugAssets UP-TO-DATE
+> Task :feature:models:mergeDebugAssets
+> Task :feature:settings:generateDebugAssets UP-TO-DATE
+> Task :feature:settings:mergeDebugAssets
+> Task :feature:shell:generateDebugAssets UP-TO-DATE
+> Task :feature:shell:mergeDebugAssets
+> Task :feature:timeline:generateDebugAssets UP-TO-DATE
+> Task :feature:timeline:mergeDebugAssets
+> Task :app:mergeDevDebugAssets
+> Task :app:packageDevDebugUnitTestForUnitTest
+
+> Task :app:mergeDevDebugUnitTestManifest
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:52:5-54:31 Warning:
+	uses-permission#android.permission.ACCESS_NETWORK_STATE was tagged at AndroidManifest.xml:52 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:58:5-60:31 Warning:
+	uses-permission#android.permission.WAKE_LOCK was tagged at AndroidManifest.xml:58 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:210:9-213:35 Warning:
+	receiver#androidx.profileinstaller.ProfileInstallReceiver was tagged at AndroidManifest.xml:210 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:226:9-228:35 Warning:
+	receiver#androidx.work.impl.diagnostics.DiagnosticsReceiver was tagged at AndroidManifest.xml:226 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:244:13-247:39 Warning:
+	meta-data#androidx.work.WorkManagerInitializer was tagged at AndroidManifest.xml:244 to remove other declarations but no other declaration present
+
+> Task :app:processDevDebugUnitTestManifest
+> Task :app:generateDevDebugUnitTestConfig
+> Task :embedder-service:bundleLibRuntimeToJarDebug
+> Task :embedder-service:processDebugJavaRes
+> Task :inference-service:bundleLibRuntimeToJarDevDebug
+> Task :inference-service:processDevDebugJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:export:bundleLibRuntimeToJarDebug
+> Task :core:export:processDebugJavaRes
+> Task :core:inference:bundleLibRuntimeToJarDebug
+> Task :core:inference:processDebugJavaRes
+> Task :core:ipc:bundleLibRuntimeToJarDebug
+> Task :core:ipc:processDebugJavaRes
+> Task :core:rag:bundleLibRuntimeToJarDebug
+> Task :core:rag:processDebugJavaRes
+> Task :core:security:bundleLibRuntimeToJarDebug
+> Task :core:security:processDebugJavaRes
+> Task :core:vault:bundleLibRuntimeToJarDevDebug
+> Task :core:vault:processDevDebugJavaRes
+> Task :feature:chat:bundleLibRuntimeToJarDebug
+> Task :feature:chat:processDebugJavaRes
+> Task :feature:editor:bundleLibRuntimeToJarDebug
+> Task :feature:editor:processDebugJavaRes
+> Task :feature:graph:bundleLibRuntimeToJarDebug
+> Task :feature:graph:processDebugJavaRes
+> Task :feature:models:bundleLibRuntimeToJarDebug
+> Task :feature:models:processDebugJavaRes
+> Task :feature:settings:bundleLibRuntimeToJarDebug
+> Task :feature:settings:processDebugJavaRes
+> Task :feature:shell:bundleLibRuntimeToJarDebug
+> Task :feature:shell:processDebugJavaRes
+> Task :feature:timeline:bundleLibRuntimeToJarDebug
+> Task :feature:timeline:processDebugJavaRes
+> Task :app:preFossDebugBuild UP-TO-DATE
+> Task :app:generateFossDebugBuildConfig FROM-CACHE
+> Task :app:generateFossDebugResources FROM-CACHE
+> Task :app:packageFossDebugResources FROM-CACHE
+> Task :inference-service:preFossDebugBuild UP-TO-DATE
+> Task :inference-service:processFossDebugNavigationResources FROM-CACHE
+> Task :app:processFossDebugNavigationResources FROM-CACHE
+> Task :app:parseFossDebugLocalResources FROM-CACHE
+> Task :app:generateFossDebugRFile FROM-CACHE
+> Task :inference-service:generateFossDebugBuildConfig FROM-CACHE
+> Task :inference-service:generateFossDebugResources FROM-CACHE
+> Task :inference-service:packageFossDebugResources FROM-CACHE
+> Task :inference-service:parseFossDebugLocalResources FROM-CACHE
+> Task :inference-service:generateFossDebugRFile FROM-CACHE
+> Task :inference-service:compileFossDebugKotlin FROM-CACHE
+> Task :inference-service:javaPreCompileFossDebug FROM-CACHE
+> Task :inference-service:compileFossDebugJavaWithJavac FROM-CACHE
+> Task :inference-service:bundleLibCompileToJarFossDebug
+
+> Task :app:compileDevDebugKotlin
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/kotlin/app/skein/MainActivity.kt:237:48 'constructor(p0: String!): ActivityManager.TaskDescription' is deprecated. Deprecated in Java.
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/kotlin/app/skein/models/ModelServices.kt:173:60 Unnecessary safe call on a non-null receiver of type 'ModelImportCoordinator'.
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/kotlin/app/skein/shell/NavShell.kt:216:13 'when' is exhaustive so 'else' is redundant here.
+
+> Task :app:compileFossDebugKotlin
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/kotlin/app/skein/MainActivity.kt:237:48 'constructor(p0: String!): ActivityManager.TaskDescription' is deprecated. Deprecated in Java.
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/kotlin/app/skein/models/ModelServices.kt:173:60 Unnecessary safe call on a non-null receiver of type 'ModelImportCoordinator'.
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/kotlin/app/skein/shell/NavShell.kt:216:13 'when' is exhaustive so 'else' is redundant here.
+
+> Task :app:processDevDebugJavaRes
+> Task :app:javaPreCompileFossDebug FROM-CACHE
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:compileFossDebugJavaWithJavac
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :app:bundleDevDebugClassesToRuntimeJar
+> Task :inference-service:writeFossDebugAarMetadata
+> Task :core:vault:writeFossDebugAarMetadata
+> Task :app:checkFossDebugAarMetadata
+> Task :app:mapFossDebugSourceSetPaths
+> Task :app:compileFossDebugNavigationResources FROM-CACHE
+> Task :app:mergeFossDebugResources FROM-CACHE
+> Task :app:createFossDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksFossDebug FROM-CACHE
+> Task :inference-service:extractDeepLinksFossDebug FROM-CACHE
+> Task :inference-service:processFossDebugManifest FROM-CACHE
+> Task :core:vault:extractDeepLinksFossDebug FROM-CACHE
+> Task :core:vault:processFossDebugManifest FROM-CACHE
+> Task :app:processFossDebugMainManifest FROM-CACHE
+> Task :app:processFossDebugManifest FROM-CACHE
+> Task :app:processFossDebugManifestForPackage FROM-CACHE
+> Task :inference-service:mapFossDebugSourceSetPaths
+> Task :inference-service:compileFossDebugLibraryResources FROM-CACHE
+> Task :core:vault:mapFossDebugSourceSetPaths
+> Task :core:vault:compileFossDebugLibraryResources FROM-CACHE
+> Task :app:processFossDebugResources FROM-CACHE
+> Task :app:bundleFossDebugClassesToRuntimeJar
+> Task :app:bundleFossDebugClassesToCompileJar
+> Task :app:preFossDebugUnitTestBuild UP-TO-DATE
+
+> Task :app:compileDevDebugUnitTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/test/kotlin/app/skein/MainActivityDebugTestTagsTest.kt:34:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :app:compileFossDebugUnitTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/test/kotlin/app/skein/MainActivityDebugTestTagsTest.kt:34:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:javaPreCompileFossDebugUnitTest FROM-CACHE
+> Task :app:compileFossDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:generateFossDebugAssets UP-TO-DATE
+> Task :app:processDevDebugUnitTestJavaRes
+> Task :app:licenseAuditFossDebugRuntimeClasspath
+> Task :inference-service:generateFossDebugAssets UP-TO-DATE
+> Task :inference-service:mergeFossDebugAssets
+> Task :core:vault:generateFossDebugAssets UP-TO-DATE
+> Task :core:vault:mergeFossDebugAssets
+> Task :app:mergeFossDebugAssets
+> Task :app:packageFossDebugUnitTestForUnitTest
+
+> Task :app:mergeFossDebugUnitTestManifest
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:52:5-54:31 Warning:
+	uses-permission#android.permission.ACCESS_NETWORK_STATE was tagged at AndroidManifest.xml:52 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:58:5-60:31 Warning:
+	uses-permission#android.permission.WAKE_LOCK was tagged at AndroidManifest.xml:58 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:210:9-213:35 Warning:
+	receiver#androidx.profileinstaller.ProfileInstallReceiver was tagged at AndroidManifest.xml:210 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:226:9-228:35 Warning:
+	receiver#androidx.work.impl.diagnostics.DiagnosticsReceiver was tagged at AndroidManifest.xml:226 to remove other declarations but no other declaration present
+/Users/andrewherrera/skein-worktrees/file-runtime-20261003/app/src/main/AndroidManifest.xml:244:13-247:39 Warning:
+	meta-data#androidx.work.WorkManagerInitializer was tagged at AndroidManifest.xml:244 to remove other declarations but no other declaration present
+
+> Task :app:processFossDebugUnitTestManifest
+> Task :app:generateFossDebugUnitTestConfig
+> Task :app:processFossDebugJavaRes
+> Task :app:processFossDebugUnitTestJavaRes
+> Task :inference-service:bundleLibRuntimeToJarFossDebug
+> Task :inference-service:processFossDebugJavaRes
+> Task :core:vault:bundleLibRuntimeToJarFossDebug
+> Task :core:vault:processFossDebugJavaRes
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_late_rescued_name_after_recreation_cannot_replace_or_dismiss_newer_import_refusal8431533550333906166/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_copy_survives_recreation_and_completion_makes_visible_Chat_ready_without_navigation1983952238422483890/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-AskPathComposeTest_importing_a_model_shows_progress_then_the_default_marker_in_models11997130464628473741/app.skein-dataDir/files/test-models/test-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-AskPathComposeTest_importing_a_model_shows_progress_then_the_default_marker_in_models15268571969325144586/app.skein-dataDir/files/test-models/test-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_copy_survives_recreation_and_completion_makes_visible_Chat_ready_without_navigation12336024968684541928/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+ERROR: Failed to destroy temp directory
+java.nio.file.AccessDeniedException: /var/folders/6h/bnd7xc4j67v5fw9kt562y27h0000gn/T/robolectric-MainActivityModelImportTest_late_rescued_name_after_recreation_cannot_replace_or_dismiss_newer_import_refusal8896880981140969003/app.skein-dataDir/files/shell-import-models/shell-fixture-a4e5e156ddec/model.gguf
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:248)
+	at java.base/sun.nio.fs.AbstractFileSystemProvider.delete(AbstractFileSystemProvider.java:105)
+	at java.base/java.nio.file.Files.delete(Files.java:1152)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:168)
+	at org.robolectric.util.TempDirectory$1.visitFile(TempDirectory.java:160)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2811)
+	at java.base/java.nio.file.Files.walkFileTree(Files.java:2882)
+	at org.robolectric.util.TempDirectory.clearDirectory(TempDirectory.java:158)
+	at org.robolectric.util.TempDirectory.destroy(TempDirectory.java:141)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+> Task :app:testFossDebugUnitTest
+> Task :app:testDevDebugUnitTest
+> Task :testing-ui:preBuild UP-TO-DATE
+> Task :testing-ui:preDebugBuild UP-TO-DATE
+> Task :feature:editor:preDebugUnitTestBuild UP-TO-DATE
+> Task :testing-ui:processDebugNavigationResources FROM-CACHE
+> Task :testing-ui:generateDebugResources FROM-CACHE
+> Task :testing-ui:javaPreCompileDebug FROM-CACHE
+> Task :testing-ui:mapDebugSourceSetPaths
+> Task :testing-ui:packageDebugResources FROM-CACHE
+> Task :testing-ui:writeDebugAarMetadata
+> Task :testing-ui:parseDebugLocalResources FROM-CACHE
+> Task :testing-ui:compileDebugLibraryResources FROM-CACHE
+> Task :testing-ui:generateDebugRFile FROM-CACHE
+> Task :testing-ui:compileDebugKotlin FROM-CACHE
+> Task :testing-ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :testing-ui:bundleLibRuntimeToJarDebug
+> Task :feature:editor:checkDebugUnitTestAarMetadata
+> Task :testing-ui:processDebugJavaRes
+> Task :testing-ui:bundleLibCompileToJarDebug
+> Task :feature:editor:mapDebugUnitTestSourceSetPaths
+> Task :feature:editor:generateDebugUnitTestResources FROM-CACHE
+> Task :testing-ui:extractDeepLinksDebug FROM-CACHE
+> Task :testing-ui:processDebugManifest FROM-CACHE
+> Task :feature:editor:mergeDebugUnitTestManifest
+> Task :feature:editor:processDebugUnitTestManifest
+> Task :feature:editor:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :testing-ui:generateDebugAssets UP-TO-DATE
+> Task :testing-ui:mergeDebugAssets
+> Task :feature:editor:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:editor:mergeDebugUnitTestResources FROM-CACHE
+> Task :feature:editor:mergeDebugUnitTestAssets
+> Task :app:preDevDebugAndroidTestBuild SKIPPED
+> Task :feature:editor:processDebugUnitTestResources FROM-CACHE
+> Task :app:mergeDevDebugAndroidTestManifest
+> Task :feature:editor:packageDebugUnitTestForUnitTest
+> Task :feature:editor:generateDebugUnitTestConfig
+> Task :app:processDevDebugAndroidTestManifest
+> Task :app:generateDevDebugAndroidTestBuildConfig FROM-CACHE
+> Task :app:generateDevDebugAndroidTestResources FROM-CACHE
+> Task :app:packageDevDebugAndroidTestResources FROM-CACHE
+> Task :app:processDevDebugAndroidTestNavigationResources FROM-CACHE
+> Task :app:parseDevDebugAndroidTestLocalResources FROM-CACHE
+> Task :app:generateDevDebugAndroidTestRFile FROM-CACHE
+> Task :feature:editor:compileDebugUnitTestKotlin FROM-CACHE
+> Task :feature:editor:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:editor:processDebugUnitTestJavaRes
+> Task :feature:editor:testDebugUnitTest FROM-CACHE
+> Task :feature:editor:finalizeTestRoborazziDebug SKIPPED
+> Task :app:preFossDebugAndroidTestBuild SKIPPED
+> Task :app:mergeFossDebugAndroidTestManifest
+> Task :app:processFossDebugAndroidTestManifest
+> Task :app:generateFossDebugAndroidTestBuildConfig FROM-CACHE
+> Task :app:generateFossDebugAndroidTestResources FROM-CACHE
+> Task :app:packageFossDebugAndroidTestResources FROM-CACHE
+> Task :app:processFossDebugAndroidTestNavigationResources FROM-CACHE
+> Task :app:parseFossDebugAndroidTestLocalResources FROM-CACHE
+> Task :app:generateFossDebugAndroidTestRFile FROM-CACHE
+> Task :app:compileFossDebugAndroidTestKotlin
+> Task :app:compileDevDebugAndroidTestKotlin
+
+[Incubating] Problems report is available at: file:///Users/andrewherrera/skein-worktrees/file-runtime-20261003/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 55s
+432 actionable tasks: 173 executed, 254 from cache, 5 up-to-date
+Configuration cache entry stored.

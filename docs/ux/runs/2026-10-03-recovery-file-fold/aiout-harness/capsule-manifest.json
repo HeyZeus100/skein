@@ -1,0 +1,47 @@
+{
+  "worker_source_commit": "0c05b05401869027d083905cc6e0ceb7d014f663",
+  "integrated_source_commit": "280ac3cb2",
+  "attribution": "Host commands ran at705dc39 plus the two frozen source files; their bytes equal the subsequent worker and integration commits. AndroidTest compiled but has not executed at this checkpoint.",
+  "files": [
+    {
+      "path": "format.log",
+      "bytes": 4190,
+      "sha256": "bc6434408a5f2efa9c627340882d7e8f7a4f506127ebb931a2c2a373388c33b4"
+    },
+    {
+      "path": "result.json",
+      "bytes": 3964,
+      "sha256": "933cd0fe168fd9d82cbf77b6f65d9e4aae5c021d0c7afcf013a457b476cf51cc"
+    },
+    {
+      "path": "root-review.json",
+      "bytes": 1895,
+      "sha256": "a99631cac98821e49b01a3b5fa2891915b973207b8dd4daf03c84845e58a17b1"
+    },
+    {
+      "path": "source.json",
+      "bytes": 398,
+      "sha256": "e1e2e4ef0c6b73b0168a46e92ea3eb2c87d23f7d2a1f7d4196fc50b9e72dd0cf"
+    },
+    {
+      "path": "source.zip",
+      "bytes": 7775,
+      "sha256": "95b31c8066332c6d7f4690013c131979df484eda80027bd84700fba79d951c28"
+    },
+    {
+      "path": "unit-actual.zip",
+      "bytes": 100348,
+      "sha256": "25542fa010858abeece8a4b8954ec49c83fe060ea311192fcc4dc5b2d40d49b1"
+    },
+    {
+      "path": "unit-review.json",
+      "bytes": 395741,
+      "sha256": "a367ce2f8325ee7c1a547345350d67fabbafae72980d61f39204f272bdf93ea8"
+    },
+    {
+      "path": "verify.log",
+      "bytes": 45811,
+      "sha256": "cf91fc15cc00430b54bb34d5db4c7efd89cdd57aa74e133b91a0f2a26a08c55b"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "reviewer": "/root",
+  "at": "2026-10-03T19:10:21.953311+00:00",
+  "files": [
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+      "bytes": 4243,
+      "sha256": "fc68296fb57a469987d0b9075dd5db3bbbd4a34f32fe3b0c9219fd35bd0ff16d"
+    },
+    {
+      "path": "app/src/androidTest/kotlin/app/skein/shell/FileSourceDetachmentInstrumentedTest.kt",
+      "bytes": 30164,
+      "sha256": "396772b986fd1aaacd99a66b5363b62086b19769d79e77a353565ab887a3bfc7"
+    }
+  ],
+  "source_review": "PASS bounded testability extraction and seven encrypted service integration cases",
+  "findings": [],
+  "observations": [
+    "Compose retains the same session-scoped factory inputs and all production writer reservations.",
+    "Real DeviceVaultOpener and encrypted repository/FileLifecycle execute SQL and attachment operations; test decorators only observe or inject named faults.",
+    "Assertions cover durable dirty body/title/frontmatter, actual session close and old-key zero, fresh reopen, blocked old editor, selection/current metadata and unrelated draft/citation preservation.",
+    "Changed source/extracted membership and unsupported writers remain refused; no FileLifecycle safety guard changes."
+  ],
+  "limitations": [
+    "Host compilation is not Android execution; actual runtime gate remains open.",
+    "Synthetic key provider does not prove Android Keystore authentication, physical screen locking or Fold acceptance.",
+    "Seven cases do not qualify unsupported CHAT/ATTACHMENT survivor writers or broad file lifecycle."
+  ],
+  "host_review": {
+    "actual_xml": 127,
+    "passed": 896,
+    "skipped": 18,
+    "failed": 0,
+    "errors": 0,
+    "all_914_prior_outcomes_and_skip_details_preserved": true,
+    "archive_sha256": "25542fa010858abeece8a4b8954ec49c83fe060ea311192fcc4dc5b2d40d49b1",
+    "both_instrumentation_variants_compiled": true
+  }
+}

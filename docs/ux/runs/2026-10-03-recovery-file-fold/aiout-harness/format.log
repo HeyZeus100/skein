@@ -1,0 +1,74 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :app:ktlintFormat
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin FROM-CACHE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors
+> Task :build-logic:guards:processResources
+> Task :build-logic:guards:classes
+> Task :build-logic:guards:jar
+> Task :app:loadKtlintReporters FROM-CACHE
+> Task :app:runKtlintFormatOverKotlinScripts FROM-CACHE
+> Task :app:runKtlintFormatOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :app:runKtlintFormatOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestDevDebugSourceSetFormat SKIPPED
+> Task :app:ktlintAndroidTestDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :app:runKtlintFormatOverAndroidTestDevSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossDebugSourceSetFormat SKIPPED
+> Task :app:ktlintAndroidTestDevSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverAndroidTestFossSourceSet NO-SOURCE
+> Task :app:runKtlintFormatOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintAndroidTestFossSourceSetFormat SKIPPED
+> Task :app:ktlintAndroidTestReleaseSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverDebugSourceSet NO-SOURCE
+> Task :app:ktlintDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintDevDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverDevReleaseSourceSet NO-SOURCE
+> Task :app:ktlintDevReleaseSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverDevSourceSet NO-SOURCE
+> Task :app:ktlintDevSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintFossDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverFossReleaseSourceSet NO-SOURCE
+> Task :app:ktlintFossReleaseSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverFossSourceSet NO-SOURCE
+> Task :app:ktlintFossSourceSetFormat SKIPPED
+> Task :app:ktlintKotlinScriptFormat FROM-CACHE
+> Task :app:runKtlintFormatOverMainSourceSet
+> Task :app:ktlintMainSourceSetFormat
+> Task :app:runKtlintFormatOverReleaseSourceSet NO-SOURCE
+> Task :app:ktlintReleaseSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestDevDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestDevDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestDevSourceSet NO-SOURCE
+> Task :app:ktlintTestDevSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestFixturesDevSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesDevSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestFixturesFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesFossSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesReleaseSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestFixturesSourceSet NO-SOURCE
+> Task :app:ktlintTestFixturesSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestFossDebugSourceSet NO-SOURCE
+> Task :app:ktlintTestFossDebugSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestFossSourceSet NO-SOURCE
+> Task :app:ktlintTestFossSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestReleaseSourceSet NO-SOURCE
+> Task :app:ktlintTestReleaseSourceSetFormat SKIPPED
+> Task :app:runKtlintFormatOverTestSourceSet FROM-CACHE
+> Task :app:ktlintTestSourceSetFormat FROM-CACHE
+> Task :app:runKtlintFormatOverAndroidTestSourceSet
+> Task :app:ktlintAndroidTestSourceSetFormat
+> Task :app:ktlintFormat
+
+BUILD SUCCESSFUL in 11s
+13 actionable tasks: 7 executed, 6 from cache
+Configuration cache entry stored.

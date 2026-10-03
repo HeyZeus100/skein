@@ -1,0 +1,135 @@
+{
+  "owner": {
+    "owner": "/root/application_context",
+    "pid": 27459,
+    "token": "faf59a58-f66b-42ad-a403-871b9f711143",
+    "worktree": "/Users/andrewherrera/skein-worktrees/file-runtime-20261003",
+    "started": "2026-10-03T19:09:09.081388+00:00"
+  },
+  "commands": [
+    {
+      "name": "submodule-llama.cpp",
+      "argv": [
+        "git",
+        "-c",
+        "protocol.file.allow=always",
+        "submodule",
+        "update",
+        "--init",
+        "--reference",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/third_party/llama.cpp",
+        "third_party/llama.cpp"
+      ],
+      "exit": 0,
+      "seconds": 3.154,
+      "sha256": "bfd32e595d8b3a06ffaf0d5ac07eeb240b646e6670e984451ec9e8466851e5ba"
+    },
+    {
+      "name": "submodule-Vulkan-Headers",
+      "argv": [
+        "git",
+        "-c",
+        "protocol.file.allow=always",
+        "submodule",
+        "update",
+        "--init",
+        "--reference",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/third_party/Vulkan-Headers",
+        "third_party/Vulkan-Headers"
+      ],
+      "exit": 0,
+      "seconds": 2.115,
+      "sha256": "6b7fab8b557e857f14aa3c763809a790d3e48173fe900cf282007c60f2a86ce9"
+    },
+    {
+      "name": "submodule-SPIRV-Headers",
+      "argv": [
+        "git",
+        "-c",
+        "protocol.file.allow=always",
+        "submodule",
+        "update",
+        "--init",
+        "--reference",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/third_party/SPIRV-Headers",
+        "third_party/SPIRV-Headers"
+      ],
+      "exit": 0,
+      "seconds": 1.067,
+      "sha256": "7004628ea296bb5a5e86c80b6506fe26d3e5e4306d2ecfc4d6b32330f88a03af"
+    },
+    {
+      "name": "java",
+      "argv": [
+        "/opt/homebrew/Cellar/openjdk@17/17.0.20.1/libexec/openjdk.jdk/Contents/Home/bin/java",
+        "-version"
+      ],
+      "exit": 0,
+      "seconds": 1.063,
+      "sha256": "2fe83b0053132e4e834defa82250462f4c62733d29bf76b19ee1bb3c14b06b39"
+    },
+    {
+      "name": "format",
+      "argv": [
+        "./gradlew",
+        "--offline",
+        "--no-daemon",
+        "--max-workers=2",
+        "--console=plain",
+        "--stacktrace",
+        ":app:ktlintFormat"
+      ],
+      "exit": 0,
+      "seconds": 13.687,
+      "sha256": "bc6434408a5f2efa9c627340882d7e8f7a4f506127ebb931a2c2a373388c33b4"
+    },
+    {
+      "name": "verify",
+      "argv": [
+        "./gradlew",
+        "--offline",
+        "--no-daemon",
+        "--max-workers=2",
+        "--console=plain",
+        "--stacktrace",
+        ":app:ktlintCheck",
+        ":app:testDevDebugUnitTest",
+        ":app:testFossDebugUnitTest",
+        ":feature:editor:testDebugUnitTest",
+        ":app:compileDevDebugAndroidTestKotlin",
+        ":app:compileFossDebugAndroidTestKotlin"
+      ],
+      "exit": 0,
+      "seconds": 55.839,
+      "sha256": "cf91fc15cc00430b54bb34d5db4c7efd89cdd57aa74e133b91a0f2a26a08c55b"
+    }
+  ],
+  "source": [
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+      "bytes": 4243,
+      "sha256": "fc68296fb57a469987d0b9075dd5db3bbbd4a34f32fe3b0c9219fd35bd0ff16d"
+    },
+    {
+      "path": "app/src/androidTest/kotlin/app/skein/shell/FileSourceDetachmentInstrumentedTest.kt",
+      "bytes": 30164,
+      "sha256": "396772b986fd1aaacd99a66b5363b62086b19769d79e77a353565ab887a3bfc7"
+    }
+  ],
+  "passed": true,
+  "remaining_owned_gradle_processes": [],
+  "source_final": [
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+      "bytes": 4243,
+      "sha256": "fc68296fb57a469987d0b9075dd5db3bbbd4a34f32fe3b0c9219fd35bd0ff16d"
+    },
+    {
+      "path": "app/src/androidTest/kotlin/app/skein/shell/FileSourceDetachmentInstrumentedTest.kt",
+      "bytes": 30164,
+      "sha256": "396772b986fd1aaacd99a66b5363b62086b19769d79e77a353565ab887a3bfc7"
+    }
+  ],
+  "lease_released": true,
+  "ended": "2026-10-03T19:10:28.241924+00:00"
+}

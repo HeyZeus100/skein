@@ -1,0 +1,12 @@
+[
+  {
+    "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+    "bytes": 4243,
+    "sha256": "fc68296fb57a469987d0b9075dd5db3bbbd4a34f32fe3b0c9219fd35bd0ff16d"
+  },
+  {
+    "path": "app/src/androidTest/kotlin/app/skein/shell/FileSourceDetachmentInstrumentedTest.kt",
+    "bytes": 30164,
+    "sha256": "396772b986fd1aaacd99a66b5363b62086b19769d79e77a353565ab887a3bfc7"
+  }
+]
