@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "review": "independent-bounded-test-setup-repair",
+  "status": "PASS_SOURCE_AND_COMPILE_ONLY",
+  "reviewer_build_or_device_actions": false,
+  "source_file": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+  "before": {
+    "bytes": 6783,
+    "sha256": "b76848b13b525c9bb3f76479db843ed531a77c9e797ae47631bfb4410cf16e45"
+  },
+  "after": {
+    "bytes": 6783,
+    "sha256": "75361d93f3d8697cf64eee209244dfc986d749b2d442d50cd70751f0e53a71a0"
+  },
+  "exact_diff": "Swap only device.closed and device.portrait in the first journey so compact cover posture is established before orientation is requested.",
+  "reason": "Attempt02 actual XML fails before first fold because open inner display remains naturally landscape at rotation0; actual outer journey closes before portrait and passes.",
+  "unchanged_acceptance": [
+    "two expected test identities",
+    "six nonce-bound posture exchanges",
+    "five named Activity geometry observations",
+    "same Activity identity within each journey",
+    "compact/medium/short-window thresholds",
+    "actual Activity window and configuration agreement",
+    "secure window and setup gate checks",
+    "existing ACK and geometry deadlines",
+    "strict original verifier"
+  ],
+  "host_validation": {
+    "ktlint": "PASS",
+    "dev_android_test_kotlin": "EXECUTED_PASS",
+    "foss_android_test_kotlin": "EXECUTED_PASS",
+    "log": {
+      "bytes": 25003,
+      "sha256": "0c6571da11a609389953baf100218ee9c89b74887bcc6ac8a8633e17497e9bce"
+    },
+    "compile_result": {
+      "bytes": 616,
+      "sha256": "ebbe891529114d02916b800158b8779326a12f528b611883189ed799734d1428"
+    },
+    "safe_archive": {
+      "bytes": 4207,
+      "sha256": "0390d0a78b3f870ce3d26b61892271206e27bee6589e2c7bc545c703de1c8595"
+    }
+  },
+  "original_actual_runtime": "FAIL retained: 1pass/1failure/0skip, consumed readiness and 3of6 posture exchanges,2of5 Activity rows",
+  "new_runtime": "UNRUN",
+  "remaining_gates": [
+    "Integrated frozen source and separately authorized fresh runtime",
+    "Complete Pixel Fold compatibility",
+    "Exact Pixel 9 Pro Fold",
+    "Physical Fold"
+  ]
+}

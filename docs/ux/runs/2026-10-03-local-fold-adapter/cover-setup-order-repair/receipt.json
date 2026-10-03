@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "bead": "skein-12pt.2.1.3",
+  "source_change": "Only first test journey setup: close device, then request portrait on compact cover; second journey already uses this order",
+  "original_attempt02": "1pass/1failure at3f7b0d4d66a42da122c406a0b731ed92a865f276; original failure, source, SDK/APK/XML/protocol/geometry bytes retained",
+  "transport_observed": "nonce-bound seq0 request/OK ACK consumed by instrumentation; three matched posture exchanges, not six",
+  "geometry_observed": "outer portrait/landscape two named actualActivity rows passed; full five-observation gate failed",
+  "negative_failure": "initial inner display remains naturally landscape841x701dp atROTATION_0; original 15s portrait wait timed out",
+  "acceptance_preserved": "same2testidentities,6absolute postures,5namedgeometryobservations,600dp thresholds,Activity identity/privacy assertions,ACK/state/geometrytimeouts",
+  "ktlint": "PASS",
+  "compileDevDebugAndroidTestKotlin": "PASS executed",
+  "compileFossDebugAndroidTestKotlin": "PASS executed",
+  "runtime_after_change": "NOT_RUN; root integration/newfreeze/separategrant required",
+  "physical_and_exactPixel9": "UNRUN/open",
+  "leases": "attempt02 held build lease released only after root authorized terminal process proof; current compilation matching lease also released",
+  "artifacts": {
+    "matching-build-lease-release-after-proof.json": {
+      "bytes": 476,
+      "sha256": "95beb236e1cf5aecf8a7cea2d7338f7d44b95b5d26b2b0ef3b9abea479cfe25b"
+    },
+    "actual-fold-attempt02-safe-evidence.zip": {
+      "bytes": 74612,
+      "sha256": "6b1b45c89df2255b76a1dee155255f7d7e35b9b496520e4dc50b7f699d3abc2d"
+    },
+    "source.json": {
+      "bytes": 388,
+      "sha256": "5482678a74af423188a240759357a63cf09e7c3d0e24ec15ab109bf5fcf046b9"
+    },
+    "cover-order-compile-evidence.zip": {
+      "bytes": 4207,
+      "sha256": "0390d0a78b3f870ce3d26b61892271206e27bee6589e2c7bc545c703de1c8595"
+    },
+    "bounded-runtime-receipt.json": {
+      "bytes": 5543,
+      "sha256": "4c3a5df03dd67ff25364780d4c36152a95cc28e22692b8c0bda6a0dab288ef6f"
+    },
+    "independent-attempt02-runtime-review.json": {
+      "bytes": 10267,
+      "sha256": "4297ee6f0453829f125d85581054576a47835c14cac71f24d78f5c424ba9524b"
+    },
+    "independent-cover-setup-source-review.json": {
+      "bytes": 2165,
+      "sha256": "83b85805d166a2f6c6cc696c3c3475da1b856f66854311d316c383ee315912e4"
+    }
+  },
+  "independent_runtime_review": "PASS as an audit of failed/partial attempt02; runtime gate FAIL preserved",
+  "independent_source_review": "PASS for exact call-order swap and compile/lint evidence; no repaired runtime claim"
+}

@@ -1,0 +1,12 @@
+{
+  "matching_build_lease_released": true,
+  "root_authorized_after_readonly_process_proof": true,
+  "run_token": "490ffd58177c487cbccc1e063d4b138a",
+  "new_gradle_process_count": 0,
+  "preexisting_gradle_process_count": 1,
+  "private_inventory_sha256": "253d489ed1effa79bc3bd2a528b3d20d60554aa84904c1c746457f5bf90d9039",
+  "device_lease_already_absent": true,
+  "both_leases_absent": true,
+  "original_execution_json_unchanged": true,
+  "released_unix": 1791057913.3736792
+}

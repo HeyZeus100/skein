@@ -1,0 +1,12 @@
+{
+  "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+  "before": {
+    "bytes": 6783,
+    "sha256": "b76848b13b525c9bb3f76479db843ed531a77c9e797ae47631bfb4410cf16e45"
+  },
+  "after": {
+    "bytes": 6783,
+    "sha256": "75361d93f3d8697cf64eee209244dfc986d749b2d442d50cd70751f0e53a71a0"
+  },
+  "delta": "Only first journey closed before portrait"
+}

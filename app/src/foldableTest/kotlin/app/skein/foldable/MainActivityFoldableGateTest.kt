@@ -66,8 +66,8 @@ class MainActivityFoldableGateTest {
     @Test
     fun gateSurvivesClosedFlatClosedWithoutActivityReplacement() {
         val scenario = launchActivity()
-        device.portrait()
         device.closed()
+        device.portrait()
         assertGate(scenario)
         var closedWidth = 0
         scenario.onActivity {
