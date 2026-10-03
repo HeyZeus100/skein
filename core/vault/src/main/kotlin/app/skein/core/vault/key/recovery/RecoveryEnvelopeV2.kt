@@ -8,7 +8,10 @@ import java.io.IOException
 import java.security.MessageDigest
 import java.util.UUID
 
-/** Unwired format: no existing vault reader or writer calls this codec. */
+/**
+ * Read by the production key provider. Preparation remains stage-only; this codec and a prepared
+ * receipt do not authorize replacing the active envelope or opening a vault session.
+ */
 internal data class RecoveryEnvelopeV2(
     val generation: Int,
     val createdAt: Long,

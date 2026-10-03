@@ -22,7 +22,7 @@
 // under `keys/` is the smallest thing that satisfies the requirement and
 // the existing backup posture.
 //
-// Integrity. The two wrapped blobs are AES-GCM outputs (auth tag
+// v1 integrity. The two wrapped blobs are AES-GCM outputs (auth tag
 // appended), so any change to wrapped bytes or IV is detected at unwrap by
 // the Keystore cipher itself. The header fields (`key_version`, flags,
 // aliases) are NOT covered by GCM — the wrap uses no AAD — so a SHA-256
@@ -62,7 +62,7 @@
 // factor, trailing bytes, a bad magic or format, unknown flag bits or a
 // digest mismatch all decode as `CORRUPT`.
 //
-// Writes: serialise → write `key-envelope.v1.tmp` in the same directory →
+// Legacy v1 writes: serialise → write `key-envelope.v1.tmp` in the same directory →
 // fsync the file → atomic rename over the target → best-effort fsync of
 // `keys/`. A kill at any point leaves either the previous envelope or the
 // new one on disk, never a torn file; a stale `.tmp` is never read and is
@@ -72,10 +72,18 @@
 // No superseded generation is retained — `VaultKeyProviderImpl.rewrapWith`
 // reuses the dead factor's alias (delete + create), so the old wrapped
 // bytes are unrecoverable the moment a rewrap begins and keeping them
-// would be dead weight.
+// would be dead weight. These legacy writes are refused for a v2 record.
+//
+// v2 reading: the same active path can contain a strictly decoded RecoveryEnvelopeV2.
+// Its UUID aliases and both wraps are retained together in a frozen record, and the
+// provider authenticates factor/header metadata as GCM AAD. Reading does not activate
+// staged recovery bytes. New recovery aliases and retained generations are preserved;
+// no v2 writer or activation entry point is exposed by this backend.
 
 package app.skein.core.vault.key
 
+import app.skein.core.vault.key.recovery.RecoveryEnvelopeFormatException
+import app.skein.core.vault.key.recovery.RecoveryEnvelopeV2
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
@@ -133,6 +141,7 @@ internal class FileMasterKeyStorage(
     ): Int =
         synchronized(lock) {
             val prev = readActive() ?: error("no active master key envelope")
+            refuseRecoveryWrite(prev)
             check(prev.keyVersion == currentVersion) {
                 "stale currentVersion=$currentVersion (active=${prev.keyVersion})"
             }
@@ -173,7 +182,17 @@ internal class FileMasterKeyStorage(
         if (!file.exists()) return Envelope.Absent
         val bytes =
             try {
-                file.readBytes()
+                file.inputStream().use { input ->
+                    val buffer = ByteArray(MAX_ENVELOPE_BYTES + 1)
+                    var count = 0
+                    while (count < buffer.size) {
+                        val read = input.read(buffer, count, buffer.size - count)
+                        if (read < 0) break
+                        count += read
+                    }
+                    if (count > MAX_ENVELOPE_BYTES) corrupt("too long")
+                    buffer.copyOf(count)
+                }
             } catch (e: IOException) {
                 throw MasterKeyStorageException(
                     MasterKeyStorageException.Kind.IO,
@@ -257,6 +276,7 @@ internal class FileMasterKeyStorage(
         const val FACTOR_ID_CREDENTIAL: Int = 0x02
         const val FLAG_STRONGBOX: Int = 0x01
         const val FLAGS_KNOWN: Int = FLAG_STRONGBOX
+        const val MAX_ENVELOPE_BYTES: Int = HEADER_LEN + FACTOR_COUNT * (1 + 4 * (2 + MAX_FIELD_LEN)) + DIGEST_LEN
 
         /** `<vaultDir>/keys/key-envelope.v1` — the `keys/` prefix is what the backup exclusion rules name. */
         fun envelopeFileIn(vaultDir: File): File = File(File(vaultDir, KEYS_DIR_NAME), ENVELOPE_FILE_NAME)
@@ -264,6 +284,7 @@ internal class FileMasterKeyStorage(
         fun digestOf(body: ByteArray): ByteArray = MessageDigest.getInstance(DIGEST_ALGORITHM).digest(body)
 
         fun encode(row: MasterKeyRow): ByteArray {
+            refuseRecoveryWrite(row)
             val body = ByteArrayOutputStream(HEADER_LEN + 2 * 128)
             DataOutputStream(body).use { out ->
                 out.write(MAGIC)
@@ -320,7 +341,10 @@ internal class FileMasterKeyStorage(
         }
 
         fun decode(bytes: ByteArray): MasterKeyRow {
+            if (bytes.size > MAX_ENVELOPE_BYTES) corrupt("too long")
             if (bytes.size < HEADER_LEN + DIGEST_LEN) corrupt("too short")
+            // Dispatch on the format only; each decoder still validates magic, bounds and checksum.
+            if (bytes[8] == 0.toByte() && bytes[9] == 2.toByte()) return decodeRecovery(bytes)
             val bodyLen = bytes.size - DIGEST_LEN
             val expected = digestOf(bytes.copyOf(bodyLen))
             val actual = bytes.copyOfRange(bodyLen, bytes.size)
@@ -379,6 +403,36 @@ internal class FileMasterKeyStorage(
                 )
             } catch (_: EOFException) {
                 corrupt("truncated")
+            }
+        }
+
+        private fun decodeRecovery(bytes: ByteArray): MasterKeyRow {
+            val envelope =
+                try {
+                    RecoveryEnvelopeV2.decode(bytes)
+                } catch (_: RecoveryEnvelopeFormatException) {
+                    corrupt("invalid recovery format")
+                }
+            return MasterKeyRow(
+                keyVersion = envelope.generation,
+                wrappedBytesBiometric = envelope.biometric.ciphertext.copyOf(),
+                wrapIvBiometric = envelope.biometric.iv.copyOf(),
+                wrapTagBiometric = null,
+                wrappedBytesCredential = envelope.credential.ciphertext.copyOf(),
+                wrapIvCredential = envelope.credential.iv.copyOf(),
+                wrapTagCredential = null,
+                createdAt = envelope.createdAt,
+                strongBoxBacked = envelope.strongBoxBacked,
+                recoveryRecord = RecoveryMasterKeyRecord(envelope),
+            )
+        }
+
+        private fun refuseRecoveryWrite(row: MasterKeyRow) {
+            if (row.recoveryRecord != null) {
+                throw MasterKeyStorageException(
+                    MasterKeyStorageException.Kind.IO,
+                    "legacy writer cannot replace a recovery envelope",
+                )
             }
         }
 

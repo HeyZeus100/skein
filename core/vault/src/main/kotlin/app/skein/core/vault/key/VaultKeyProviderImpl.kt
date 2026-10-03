@@ -38,6 +38,8 @@ import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.lifecycle.VaultRecoveryExclusion
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import java.security.SecureRandom
 import java.util.concurrent.atomic.AtomicLong
 import javax.crypto.Cipher
@@ -129,8 +131,12 @@ public class VaultKeyProviderImpl internal constructor(
     internal suspend fun setupNoUi(existingMaster: ByteArray? = null): SetupResult =
         setupWith(existingMaster) { _, cipher -> AuthResult.Success(cipher) }
 
-    internal suspend fun unlockNoUi(factor: VaultKeyProvider.Factor): UnlockResult =
-        unlockWith(factor) { _, cipher -> AuthResult.Success(cipher) }
+    internal suspend fun unlockNoUi(
+        factor: VaultKeyProvider.Factor,
+        authenticate: suspend (VaultKeyProvider.Factor, Cipher) -> AuthResult = { _, cipher ->
+            AuthResult.Success(cipher)
+        },
+    ): UnlockResult = unlockWith(factor, authenticate)
 
     internal suspend fun rewrapNoUi(survivingFactor: VaultKeyProvider.Factor): RewrapResult =
         rewrapWith(survivingFactor) { _, cipher -> AuthResult.Success(cipher) }
@@ -292,6 +298,7 @@ public class VaultKeyProviderImpl internal constructor(
                     return UnlockResult.Failed(e.kind.reason)
                 }
             ) ?: return UnlockResult.NotInitialised
+        row.recoveryRecord?.let { return unlockRecovery(it, factor, auth) }
         val alias = aliasFor(factor)
         val iv =
             ivFor(row, factor)
@@ -330,6 +337,65 @@ public class VaultKeyProviderImpl internal constructor(
         return UnlockResult.Success(AuthorizationToken(epoch.incrementAndGet()))
     }
 
+    /** Reads v2 only. It cannot activate staged bytes, create aliases, rewrap, or bypass authentication. */
+    private suspend fun unlockRecovery(
+        record: RecoveryMasterKeyRecord,
+        factor: VaultKeyProvider.Factor,
+        auth: AuthenticateFn,
+    ): UnlockResult {
+        val envelope = record.decode()
+        val isBiometric = factor == VaultKeyProvider.Factor.BIOMETRIC
+        val wrap = if (isBiometric) envelope.biometric else envelope.credential
+        val cipher =
+            try {
+                keystore.decryptCipher(envelope.alias(isBiometric), wrap.iv)
+            } catch (_: KeyMaterialMissingException) {
+                return UnlockResult.KeyMaterialGone(factor)
+            } catch (_: KeyPermanentlyInvalidatedException) {
+                return UnlockResult.KeyPermanentlyInvalidated(factor)
+            } catch (t: Throwable) {
+                if (isDeviceLockedFailure(t)) return UnlockResult.DeviceLocked
+                return UnlockResult.Failed("cipher init failed: ${t.javaClass.simpleName}")
+            }
+        val authorized =
+            when (val result = auth(factor, cipher)) {
+                is AuthResult.Success -> result.cipher
+                AuthResult.UserCancelled -> return UnlockResult.UserCancelled
+                is AuthResult.Error -> return UnlockResult.Failed("biometric error code=${result.code}")
+            }
+        currentCoroutineContext().ensureActive()
+        if (authorized !== cipher) return UnlockResult.Failed("authenticated cipher mismatch")
+        val active =
+            try {
+                storage.readActive()?.recoveryRecord
+            } catch (failure: MasterKeyStorageException) {
+                return UnlockResult.Failed(failure.kind.reason)
+            }
+        if (active != record) return UnlockResult.Failed("key envelope changed during authentication")
+        val bytes =
+            try {
+                // Bind the factor, UUID aliases and hardware/generation metadata from this exact
+                // decoded record. A valid checksum alone is never authentication of that header.
+                cipher.updateAAD(envelope.authenticationData(isBiometric))
+                cipher.doFinal(wrap.ciphertext)
+            } catch (_: KeyPermanentlyInvalidatedException) {
+                return UnlockResult.KeyPermanentlyInvalidated(factor)
+            } catch (t: Throwable) {
+                return UnlockResult.Failed("unwrap failed: ${t.javaClass.simpleName}")
+            }
+        var transferred = false
+        try {
+            currentCoroutineContext().ensureActive()
+            if (bytes.size != MASTER_KEY_LEN) return UnlockResult.Failed("unwrapped master key has the wrong length")
+            zero(master)
+            master = bytes
+            transferred = true
+            return UnlockResult.Success(AuthorizationToken(epoch.incrementAndGet()))
+        } finally {
+            if (!transferred) zero(bytes)
+        }
+    }
+
     private suspend fun rewrapAdmitted(
         survivingFactor: VaultKeyProvider.Factor,
         auth: AuthenticateFn,
@@ -342,6 +408,9 @@ public class VaultKeyProviderImpl internal constructor(
                     return RewrapResult.Failed(e.kind.reason)
                 }
             ) ?: return RewrapResult.Failed("no active master row")
+        // The legacy path deletes/recreates fixed v1 aliases before persisting. It must never
+        // consume a v2 record or downgrade its authenticated metadata, even with a surviving factor.
+        if (row.recoveryRecord != null) return RewrapResult.Failed("recovery envelope requires staged recovery")
         val survivingIv =
             ivFor(row, survivingFactor)
                 ?: return RewrapResult.Failed("no wrapped bytes for surviving factor")

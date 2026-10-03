@@ -14,6 +14,8 @@
 
 package app.skein.core.vault.key
 
+import app.skein.core.vault.key.recovery.RecoveryEnvelopeV2
+
 /**
  * One wrapped-master generation. Each of the two wrapped-bytes fields MAY
  * be null while its Layer-0 factor is being provisioned or has just been
@@ -35,6 +37,8 @@ internal data class MasterKeyRow(
     val wrapTagCredential: ByteArray?,
     val createdAt: Long,
     val strongBoxBacked: Boolean,
+    /** A frozen complete v2 record; its aliases, AAD and wraps must always be consumed together. */
+    val recoveryRecord: RecoveryMasterKeyRecord? = null,
 ) {
     // Value-class semantics with byte arrays require explicit equals/hashCode
     // for structural comparison in tests. Not used from production code — a
@@ -50,10 +54,28 @@ internal data class MasterKeyRow(
             wrapIvCredential contentEquals other.wrapIvCredential &&
             wrapTagCredential contentEquals other.wrapTagCredential &&
             createdAt == other.createdAt &&
-            strongBoxBacked == other.strongBoxBacked
+            strongBoxBacked == other.strongBoxBacked &&
+            recoveryRecord == other.recoveryRecord
     }
 
     override fun hashCode(): Int = keyVersion
+}
+
+/**
+ * Owns a canonical encoding, never a caller's mutable wrap arrays. Decoding gives each operation
+ * fresh arrays. The legacy row fields above remain for v1 consumers; v2 unlock uses this whole record.
+ */
+internal class RecoveryMasterKeyRecord(
+    envelope: RecoveryEnvelopeV2,
+) {
+    private val encoded = envelope.encode()
+
+    fun decode(): RecoveryEnvelopeV2 = RecoveryEnvelopeV2.decode(encoded)
+
+    override fun equals(other: Any?): Boolean =
+        other is RecoveryMasterKeyRecord && encoded.contentEquals(other.encoded)
+
+    override fun hashCode(): Int = encoded.contentHashCode()
 }
 
 /**
