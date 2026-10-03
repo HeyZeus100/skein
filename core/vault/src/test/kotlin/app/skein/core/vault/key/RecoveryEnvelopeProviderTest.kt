@@ -67,7 +67,10 @@ class RecoveryEnvelopeProviderTest {
         return Fixture(
             old,
             RecoveryEnvelopeV2.decode(staged),
-            temp.root.walkTopDown().filter(File::isFile).associateWith(File::readBytes),
+            temp.root
+                .walkTopDown()
+                .filter(File::isFile)
+                .associateWith(File::readBytes),
             keystore.mutations.toList(),
         )
     }
@@ -79,7 +82,12 @@ class RecoveryEnvelopeProviderTest {
         fixture.files.forEach { (file, bytes) ->
             assertThat(file.readBytes()).isEqualTo(if (file == active()) activeBytes else bytes)
         }
-        assertThat(temp.root.walkTopDown().filter(File::isFile).toList()).containsExactlyElementsIn(fixture.files.keys)
+        assertThat(
+            temp.root
+                .walkTopDown()
+                .filter(File::isFile)
+                .toList(),
+        ).containsExactlyElementsIn(fixture.files.keys)
         assertThat(keystore.mutations).containsExactlyElementsIn(fixture.mutations).inOrder()
         for (factor in VaultKeyProvider.Factor.entries) {
             val biometric = factor == VaultKeyProvider.Factor.BIOMETRIC
@@ -293,15 +301,19 @@ class RecoveryEnvelopeProviderTest {
         runTest {
             val fixture = fixture()
             val row = storage().readActive()!!.copy(keyVersion = 99, createdAt = 999, strongBoxBacked = false)
-            val frozenStorage = object : MasterKeyStorage by storage() {
-                override fun readActive() = row
-            }
+            val frozenStorage =
+                object : MasterKeyStorage by storage() {
+                    override fun readActive() = row
+                }
             val provider = provider(frozenStorage)
             assertThat(
                 provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC) { _, cipher ->
                     row.wrappedBytesBiometric!!.fill(0)
                     row.wrapIvBiometric!!.fill(0)
-                    row.recoveryRecord!!.decode().biometric.ciphertext.fill(0)
+                    row.recoveryRecord!!
+                        .decode()
+                        .biometric.ciphertext
+                        .fill(0)
                     AuthResult.Success(cipher)
                 },
             ).isInstanceOf(UnlockResult.Success::class.java)
@@ -320,8 +332,7 @@ class RecoveryEnvelopeProviderTest {
             assertThat(provider.currentKey()).isNull()
             assertThat(
                 provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC) { _, _ -> AuthResult.Error(7, "synthetic") },
-            )
-                .isInstanceOf(UnlockResult.Failed::class.java)
+            ).isInstanceOf(UnlockResult.Failed::class.java)
             assertThat(provider.currentKey()).isNull()
             gate().acquireRecovery()!!.close()
             assertPreserved(fixture)
@@ -341,9 +352,12 @@ class RecoveryEnvelopeProviderTest {
                     }
                 }
             runCurrent()
-            val queued = async {
-                provider.unlockNoUi(VaultKeyProvider.Factor.DEVICE_CREDENTIAL) { _, _ -> error("stale queued prompt") }
-            }
+            val queued =
+                async {
+                    provider.unlockNoUi(VaultKeyProvider.Factor.DEVICE_CREDENTIAL) { _, _ ->
+                        error("stale queued prompt")
+                    }
+                }
             runCurrent()
             provider.lock()
             assertThat(gate().acquireRecovery()).isNull()
@@ -361,11 +375,12 @@ class RecoveryEnvelopeProviderTest {
         runTest {
             val fixture = fixture()
             val provider = provider()
-            val pending = async {
-                provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC) { _, _ ->
-                    CompletableDeferred<AuthResult>().await()
+            val pending =
+                async {
+                    provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC) { _, _ ->
+                        CompletableDeferred<AuthResult>().await()
+                    }
                 }
-            }
             runCurrent()
             pending.cancel()
             pending.join()
@@ -381,8 +396,7 @@ class RecoveryEnvelopeProviderTest {
             gate().acquireRecovery()!!.use {
                 assertThat(
                     provider().unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC) { _, _ -> error("must not prompt") },
-                )
-                    .isInstanceOf(UnlockResult.Failed::class.java)
+                ).isInstanceOf(UnlockResult.Failed::class.java)
             }
             assertThat(keystore.decryptAliases).isEmpty()
             assertPreserved(fixture)

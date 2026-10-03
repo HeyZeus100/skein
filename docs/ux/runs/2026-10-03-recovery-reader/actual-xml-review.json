@@ -1,0 +1,297 @@
+{
+  "counts": {
+    "cases": 1524,
+    "pass": 1522,
+    "failures": 0,
+    "errors": 0,
+    "skips": 2,
+    "xml": 140
+  },
+  "baseline_zip": "/Users/andrewherrera/skein-worktrees/recovery-integration-20261003/docs/ux/runs/2026-09-30-context-recovery-transport/combined534161291/unit-actual.zip",
+  "baseline_sha256": "223c3fca8f416bb0645da9c4fe98eacde0de7a1d3670f15f584bc98b306bdad5",
+  "current_zip_sha256": "cd00f01a4b8215756f963b7774dfb3474ba7687c77cacdd1017d4fb170711069",
+  "baseline_cases": 1474,
+  "added": [
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "active recovery lease refuses unlock before any cipher or authentication request"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "cancelled or failed factor authentication cannot publish a key"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "changed active record during authentication is refused without overwriting external bytes"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "coroutine cancellation while authenticating preserves all evidence and releases admission"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "corrupted or removed active envelope during authentication cannot publish a key"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "existing v2 setup remains initialised and never replaces aliases or envelope"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "factor AAD is mandatory even when alias and ciphertext decrypt correctly without it"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "invalidated v2 alias and device lock keep their distinct nonmutating results"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "legacy row array mutation cannot change frozen v2 metadata or wraps during authentication"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "lock during v2 authentication rejects late success and queued authentication"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "missing v2 factor never falls back to the surviving original v1 alias"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "prepared receipt leaves original active v1 reader and aliases in force"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "production provider reads prepared v2 bytes through both factors without mutation"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "recomputed checksum cannot bless changed generation time or StrongBox metadata"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "substituted Cipher cannot stand in for the authenticated CryptoObject"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "v2 legacy rewrap refuses both factors before authentication or alias mutation"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "wrap authenticated for opposite factor is rejected by provider"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "both codec and bounded file reader reject oversized envelopes unchanged"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "existing v2 blocks initial setup storage without replacing it"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "legacy storage rewrap refuses v2 before changing any file"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "record equality distinguishes metadata and ciphertext changes"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "recovery record owns its bytes independently of every exposed array"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "unsupported formats corrupt checksums and malformed v2 metadata fail closed"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "v2 reader retains exact canonical metadata and factor wraps"
+    ],
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "v2 row cannot be encoded or written as an initial legacy envelope"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "active recovery lease refuses unlock before any cipher or authentication request"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "cancelled or failed factor authentication cannot publish a key"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "changed active record during authentication is refused without overwriting external bytes"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "coroutine cancellation while authenticating preserves all evidence and releases admission"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "corrupted or removed active envelope during authentication cannot publish a key"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "existing v2 setup remains initialised and never replaces aliases or envelope"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "factor AAD is mandatory even when alias and ciphertext decrypt correctly without it"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "invalidated v2 alias and device lock keep their distinct nonmutating results"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "legacy row array mutation cannot change frozen v2 metadata or wraps during authentication"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "lock during v2 authentication rejects late success and queued authentication"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "missing v2 factor never falls back to the surviving original v1 alias"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "prepared receipt leaves original active v1 reader and aliases in force"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "production provider reads prepared v2 bytes through both factors without mutation"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "recomputed checksum cannot bless changed generation time or StrongBox metadata"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "substituted Cipher cannot stand in for the authenticated CryptoObject"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "v2 legacy rewrap refuses both factors before authentication or alias mutation"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeProviderTest",
+      "wrap authenticated for opposite factor is rejected by provider"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "both codec and bounded file reader reject oversized envelopes unchanged"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "existing v2 blocks initial setup storage without replacing it"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "legacy storage rewrap refuses v2 before changing any file"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "record equality distinguishes metadata and ciphertext changes"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "recovery record owns its bytes independently of every exposed array"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "unsupported formats corrupt checksums and malformed v2 metadata fail closed"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "v2 reader retains exact canonical metadata and factor wraps"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest",
+      "app.skein.core.vault.key.RecoveryEnvelopeReaderTest",
+      "v2 row cannot be encoded or written as an initial legacy envelope"
+    ]
+  ],
+  "removed": [],
+  "changed_existing_outcomes": [],
+  "prior_attempt04_failures": [
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+        "legacy decoder refuses v2 rather than dropping dynamic alias names"
+      ],
+      "outcome": [
+        [
+          "failure",
+          "<failure message=\"java.lang.AssertionError: expected app.skein.core.vault.key.MasterKeyStorageException to be thrown, but nothing was thrown\" type=\"java.lang.AssertionError\">java.lang.AssertionError: expected app.skein.core.vault.key.MasterKeyStorageException to be thrown, but nothing was thrown\n\tat org.junit.Assert.assertThrows(Assert.java:1028)\n\tat org.junit.Assert.assertThrows(Assert.java:981)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.legacy decoder refuses v2 rather than dropping dynamic alias names(RecoveryEnvelopeV2Test.kt:22)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:569)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.runRequest(JUnitTestExecutor.java:174)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:84)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:47)\n\tat org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestDefinitionProcessor.processTestDefinition(AbstractJUnitTestDefinitionProcessor.java:65)\n\tat org.gradle.api.internal.tasks.testing.SuiteTestDefinitionProcessor.processTestDefinition(SuiteTestDefinitionProcessor.java:53)\n\tat jdk.internal.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:569)\n\tat org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)\n\tat org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)\n\tat org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)\n\tat jdk.proxy1/jdk.proxy1.$Proxy4.processTestDefinition(Unknown Source)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker$2.run(TestWorker.java:178)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)\n\tat org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)\n</failure>\n  "
+        ]
+      ]
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+        "legacy decoder refuses v2 rather than dropping dynamic alias names"
+      ],
+      "outcome": [
+        [
+          "failure",
+          "<failure message=\"java.lang.AssertionError: expected app.skein.core.vault.key.MasterKeyStorageException to be thrown, but nothing was thrown\" type=\"java.lang.AssertionError\">java.lang.AssertionError: expected app.skein.core.vault.key.MasterKeyStorageException to be thrown, but nothing was thrown\n\tat org.junit.Assert.assertThrows(Assert.java:1028)\n\tat org.junit.Assert.assertThrows(Assert.java:981)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.legacy decoder refuses v2 rather than dropping dynamic alias names(RecoveryEnvelopeV2Test.kt:22)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:569)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.runRequest(JUnitTestExecutor.java:174)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:84)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:47)\n\tat org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestDefinitionProcessor.processTestDefinition(AbstractJUnitTestDefinitionProcessor.java:65)\n\tat org.gradle.api.internal.tasks.testing.SuiteTestDefinitionProcessor.processTestDefinition(SuiteTestDefinitionProcessor.java:53)\n\tat jdk.internal.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:569)\n\tat org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)\n\tat org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)\n\tat org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)\n\tat jdk.proxy1/jdk.proxy1.$Proxy4.processTestDefinition(Unknown Source)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker$2.run(TestWorker.java:178)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)\n\tat org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)\n</failure>\n  "
+        ]
+      ]
+    }
+  ],
+  "all_xml_hashes_match_worker_inventory": true
+}

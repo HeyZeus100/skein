@@ -57,10 +57,13 @@ class RecoveryEnvelopeReaderTest {
         val expected = source.encode()
         source.biometric.ciphertext.fill(99)
         source.credential.iv.fill(88)
-        record.decode().biometric.ciphertext.fill(77)
+        record
+            .decode()
+            .biometric.ciphertext
+            .fill(77)
         assertThat(record.decode().encode()).isEqualTo(expected)
         val input = expected.copyOf()
-        val row = FileMasterKeyStorage.decode(input)
+        val row = FileMasterKeyStorage.decodeActive(input)
         input.fill(0)
         row.wrappedBytesBiometric!!.fill(66)
         row.wrapIvCredential!!.fill(55)
@@ -82,7 +85,7 @@ class RecoveryEnvelopeReaderTest {
 
     @Test
     fun `v2 row cannot be encoded or written as an initial legacy envelope`() {
-        val row = FileMasterKeyStorage.decode(envelope().encode())
+        val row = FileMasterKeyStorage.decodeActive(envelope().encode())
         assertThrows(MasterKeyStorageException::class.java) { FileMasterKeyStorage.encode(row) }
         assertThrows(MasterKeyStorageException::class.java) { FileMasterKeyStorage(active()).writeInitial(row) }
         assertThat(active().parentFile!!.exists()).isFalse()
@@ -124,7 +127,7 @@ class RecoveryEnvelopeReaderTest {
     @Test
     fun `both codec and bounded file reader reject oversized envelopes unchanged`() {
         val bytes = ByteArray(FileMasterKeyStorage.MAX_ENVELOPE_BYTES + 1)
-        assertThrows(MasterKeyStorageException::class.java) { FileMasterKeyStorage.decode(bytes) }
+        assertThrows(MasterKeyStorageException::class.java) { FileMasterKeyStorage.decodeActive(bytes) }
         val storage = install(bytes)
         assertThrows(MasterKeyStorageException::class.java) { storage.readActive() }
         assertThat(active().readBytes()).isEqualTo(bytes)

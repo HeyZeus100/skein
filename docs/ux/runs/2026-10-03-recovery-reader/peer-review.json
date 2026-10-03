@@ -1,0 +1,89 @@
+{
+  "reviewer": "/root/application_context",
+  "result": "PASS_BOUNDED_SOURCE_AND_HOST_EVIDENCE",
+  "source_base_commit": "10aa022322703e618c958391f3432a9dc74cdd2a",
+  "final_source_files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/FileMasterKeyStorage.kt",
+      "bytes": 21058,
+      "sha256": "c4e9ea26bb9578623ad20d0956900ee002b5d7ef6bbb53f3700eb7f4e3079265"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/MasterKeyStorage.kt",
+      "bytes": 7303,
+      "sha256": "0acef355b76121fcc4c8451257aa850efaa95ec10d0e2a43591dd15337460a0e"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "bytes": 31579,
+      "sha256": "b0268381046c047c6e239f0fad783649c76e435558b80faf6aa682ef74159325"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt",
+      "bytes": 6000,
+      "sha256": "191524caa5f2b48245b1057ccfa90247f21ab3c26f758bc6992925404f815f76"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryEnvelopeProviderTest.kt",
+      "bytes": 18745,
+      "sha256": "236c96ae2d8d0da5506362939842f13eb420a022d90ca74a1e57d51eae9408fc"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryEnvelopeReaderTest.kt",
+      "bytes": 6192,
+      "sha256": "3747b1adf2d49f3605129aded4d32c5514a46751adbc34f206f6a0b07108ff76"
+    }
+  ],
+  "all_final_live_bytes_match_frozen_archive": true,
+  "scope": "Read-only source/XML/hash/task audit; no reviewer builds, device actions or worker-tree edits",
+  "dispatch_correction": "readEnvelope alone dispatches through decodeActive; original decode still rejects v2. The unchanged closed-guard test and preparation v1-only input contract remain intact. This final receipt supersedes initial source-only review.",
+  "old_guard_preparation_lc09_byte_unchanged_from_705dc39": [
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2Test.kt",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt",
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt"
+  ],
+  "actual_xml_review": {
+    "file": "actual-xml-review.json",
+    "sha256": "300bbe8383b1cb423ed36dde2fd85fef6840cd10e659854795220e24686b6cf4"
+  },
+  "actual_counts": {
+    "xml": 140,
+    "cases": 1524,
+    "pass": 1522,
+    "skip": 2,
+    "failure": 0,
+    "error": 0
+  },
+  "baseline": {
+    "cases": 1474,
+    "prior_pass": 1472,
+    "prior_skip": 2,
+    "added": 50,
+    "removed": 0,
+    "changed_outcomes_or_skip_xml": 0
+  },
+  "executed_tasks": [
+    "> Task :core:vault:ktlintCheck",
+    "> Task :core:vault:testDevDebugUnitTest",
+    "> Task :core:vault:testFossDebugUnitTest",
+    "> Task :core:vault:compileDevDebugAndroidTestKotlin",
+    "> Task :core:vault:compileFossDebugAndroidTestKotlin"
+  ],
+  "original_failures": "attempt01-03 formatter errors retained; attempt04 retains2 actual legacy decoder guard failures. Final production dispatch fix preserves original test assertions, no gold/threshold or old test relaxation.",
+  "source_zip": {
+    "bytes": 25536,
+    "sha256": "8d843c89317f06de80a81cf6168ddbebb8c8905cc72065fe181b4d3ba02a3014"
+  },
+  "xml_zip": {
+    "bytes": 136982,
+    "sha256": "cd00f01a4b8215756f963b7774dfb3474ba7687c77cacdd1017d4fb170711069"
+  },
+  "blocking_findings": [],
+  "open_gates": [
+    "Prepared-to-active integration",
+    "Actual AndroidKeystore/per-use authentication runtime",
+    "Remaining v1 rewrap hardening",
+    "Physical recovery acceptance"
+  ],
+  "current_build_lease_absent": true
+}

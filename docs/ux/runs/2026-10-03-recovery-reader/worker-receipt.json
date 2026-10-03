@@ -1,0 +1,221 @@
+{
+  "issue": "skein-gg11.29.2.1",
+  "baseline": "705dc39fea5cec99519853b1592766f4a82fa409",
+  "initial_source_commit": "10aa022322703e618c958391f3432a9dc74cdd2a",
+  "source_files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/FileMasterKeyStorage.kt",
+      "bytes": 21058,
+      "sha256": "c4e9ea26bb9578623ad20d0956900ee002b5d7ef6bbb53f3700eb7f4e3079265"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/MasterKeyStorage.kt",
+      "bytes": 7303,
+      "sha256": "0acef355b76121fcc4c8451257aa850efaa95ec10d0e2a43591dd15337460a0e"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "bytes": 31579,
+      "sha256": "b0268381046c047c6e239f0fad783649c76e435558b80faf6aa682ef74159325"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt",
+      "bytes": 6000,
+      "sha256": "191524caa5f2b48245b1057ccfa90247f21ab3c26f758bc6992925404f815f76"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryEnvelopeProviderTest.kt",
+      "bytes": 18745,
+      "sha256": "236c96ae2d8d0da5506362939842f13eb420a022d90ca74a1e57d51eae9408fc"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryEnvelopeReaderTest.kt",
+      "bytes": 6192,
+      "sha256": "3747b1adf2d49f3605129aded4d32c5514a46751adbc34f206f6a0b07108ff76"
+    }
+  ],
+  "scope": "Production v2 active-envelope reader and authenticated provider; no activation route",
+  "implementation": [
+    "Explicit decodeActive dispatch preserves v1-only decode and the prior refusal regression unchanged.",
+    "Complete frozen v2 record owns aliases, both wraps and authenticated generation/time/StrongBox/factor metadata; each decode returns fresh arrays.",
+    "Provider authenticates exact Cipher identity, rereads the active record, binds factor-specific AAD, checks the master length, and uses existing production admission against late lock/queued authentication.",
+    "V2 setup and legacy rewrap/downgrade writes refuse before alias or envelope mutation.",
+    "Prepared receipts remain evidence only; tests explicitly copy staged synthetic bytes to the active path for reader fixtures."
+  ],
+  "final_host": {
+    "xml_files": 140,
+    "pass": 1522,
+    "skip": 2,
+    "failure": 0,
+    "error": 0,
+    "xml_archive_sha256": "cd00f01a4b8215756f963b7774dfb3474ba7687c77cacdd1017d4fb170711069",
+    "source_unchanged_during_gate": true,
+    "tasks": [
+      "> Task :core:vault:ktlintMainSourceSetCheck",
+      "> Task :core:vault:ktlintTestSourceSetCheck",
+      "> Task :core:vault:testDevDebugUnitTest",
+      "> Task :core:vault:testFossDebugUnitTest",
+      "> Task :core:vault:compileFossDebugAndroidTestKotlin",
+      "> Task :core:vault:compileDevDebugAndroidTestKotlin"
+    ],
+    "full_task_mix": {
+      "executed": 18,
+      "from_cache": 24,
+      "up_to_date": 65
+    }
+  },
+  "baseline_comparison": {
+    "archive_sha256": "223c3fca8f416bb0645da9c4fe98eacde0de7a1d3670f15f584bc98b306bdad5",
+    "prior_passes": 1472,
+    "prior_skips": 2,
+    "added_occurrences": 50,
+    "removed": 0,
+    "changed_prior_outcomes": 0,
+    "skip_identity_and_reason_xml_unchanged": true
+  },
+  "retained_failures": [
+    "Attempts01-03: formatting-only ktlint failures, zero executed test XML, exact source snapshots/logs retained.",
+    "Attempt04:1520 passes,2 skips,2 original legacy-decoder-refusal failures; fixed with explicit active dispatch, not removal or weakening of the closed test."
+  ],
+  "runtime": "Not executed. AndroidTest Kotlin compilation is not authenticated Android runtime, crash/restart or encrypted-vault acceptance.",
+  "physical": "No device actions, installation or physical acceptance.",
+  "open_gates": [
+    "Proof plus fresh-auth activation and restart reconciliation",
+    "Application flow and Android per-use authentication/crash tests",
+    "Legacy v1 rewrap mutation safety",
+    "Physical owner acceptance"
+  ],
+  "evidence": {
+    "file": "raw-evidence.zip",
+    "bytes": 413361,
+    "sha256": "392474ed6e7742ba203217297505c73e112506d11b4e52b520fae8c986dc8756",
+    "members": [
+      {
+        "name": "attempt-01.log",
+        "bytes": 7293,
+        "sha256": "98373340215abf9e9683e42ee7e47d25c5a4bb114c6da81a9c2120cc6f9721cd"
+      },
+      {
+        "name": "attempt-01-receipt.json",
+        "bytes": 545,
+        "sha256": "6cde37c0fa126d2ac26fe2853dff44620e99e864c0771055e8d30ccc4fa0346d"
+      },
+      {
+        "name": "attempt-01-source.json",
+        "bytes": 1354,
+        "sha256": "bf966d55d545f4d507a70e8db258900b31ccd6d49712f3bdd5ebac292bdbe2be"
+      },
+      {
+        "name": "attempt-01-source.zip",
+        "bytes": 25464,
+        "sha256": "f9b97a2b077cfe688ed422fcabc95f7f8b0efc53e90b6ba9e2671d6dc2a2c5bc"
+      },
+      {
+        "name": "attempt-02.log",
+        "bytes": 9743,
+        "sha256": "9a9fef04567f46f1d43674cc49df791b21152be9bc58638d3d35dafee52d74e7"
+      },
+      {
+        "name": "attempt-02-receipt.json",
+        "bytes": 545,
+        "sha256": "6cde37c0fa126d2ac26fe2853dff44620e99e864c0771055e8d30ccc4fa0346d"
+      },
+      {
+        "name": "attempt-02-source.json",
+        "bytes": 1354,
+        "sha256": "1e8bd682ef45e37a1605c92789ddb8a85ab4ecfa1178e51cf39af94cfe1790a8"
+      },
+      {
+        "name": "attempt-02-source.zip",
+        "bytes": 25463,
+        "sha256": "e480db53ee6e6054e984a33f676b36f6cb99b6e3732e1e7e8d8691bc8e321464"
+      },
+      {
+        "name": "attempt-03.log",
+        "bytes": 11099,
+        "sha256": "bf31f7da9a91ef4da159b0e32b21392f5e6af6ed67dd3568bee734d2cf2174bf"
+      },
+      {
+        "name": "attempt-03-receipt.json",
+        "bytes": 545,
+        "sha256": "6cde37c0fa126d2ac26fe2853dff44620e99e864c0771055e8d30ccc4fa0346d"
+      },
+      {
+        "name": "attempt-03-source.json",
+        "bytes": 1354,
+        "sha256": "e43c51f76c9586be220d81b989aa74644a76376c36018d9de11f8f816277418b"
+      },
+      {
+        "name": "attempt-03-source.zip",
+        "bytes": 25470,
+        "sha256": "011a457ce00983b07d5c2ede04587c879d09dae3a86f55198965cfa51a76bd4e"
+      },
+      {
+        "name": "attempt-04.log",
+        "bytes": 27246,
+        "sha256": "abad056f84c017f6e65c6a32b34aa3c94aa427cb281fd452e307b352086ce4a6"
+      },
+      {
+        "name": "attempt-04-receipt.json",
+        "bytes": 34989,
+        "sha256": "28e357cc0f8260dd0e6bc907b9da0340593f9132b59398635d15fe678ed2d247"
+      },
+      {
+        "name": "attempt-04-source.json",
+        "bytes": 1354,
+        "sha256": "98c4ef889dee63dfff23d81038600c7ac03f7e39d1e2db766ddd33b3ad2ec603"
+      },
+      {
+        "name": "attempt-04-source.zip",
+        "bytes": 25474,
+        "sha256": "f065a92e9fc33efed552cd408ff8bd618de5aa36954ae872d110aed2d4116794"
+      },
+      {
+        "name": "attempt-04-xml.zip",
+        "bytes": 136926,
+        "sha256": "4447fe0ee50f36ee3f6b9d0dd4aa7dab71515603a2433f12e3193463ef836f89"
+      },
+      {
+        "name": "attempt-05.log",
+        "bytes": 27730,
+        "sha256": "d712b72f123c0aabe1c79fe53274e7979cd42a81644b6117a74aa2e6a9167ddf"
+      },
+      {
+        "name": "attempt-05-receipt.json",
+        "bytes": 34990,
+        "sha256": "4e74212c8ddea445f996385a08058e3cd38ce33e5a98b78a4f92d8ecfaf99669"
+      },
+      {
+        "name": "attempt-05-source.json",
+        "bytes": 1354,
+        "sha256": "47cdd409d35b8aa62f5cde40098ee90fba9ceb4b2392e72ef0334f8e6022b6f9"
+      },
+      {
+        "name": "attempt-05-source.zip",
+        "bytes": 25536,
+        "sha256": "8d843c89317f06de80a81cf6168ddbebb8c8905cc72065fe181b4d3ba02a3014"
+      },
+      {
+        "name": "attempt-05-xml.zip",
+        "bytes": 136982,
+        "sha256": "cd00f01a4b8215756f963b7774dfb3474ba7687c77cacdd1017d4fb170711069"
+      },
+      {
+        "name": "baseline-comparison.json",
+        "bytes": 13634,
+        "sha256": "783a7c1a69f7ae69ab7be09888e0fb09cdaea74b6b08781bca67a1b61af219dc"
+      },
+      {
+        "name": "final-xml-review.json",
+        "bytes": 469162,
+        "sha256": "9814bb3371f3661d5c30e15bb4853a3154afe14a3bd8022a534b45379b3d4e54"
+      }
+    ]
+  },
+  "peer_review": {
+    "file": "peer-review.json",
+    "sha256": "79627b32c2bf04663d5f40bf09c7830cba2f68d5391f6defb3f24d7b4f63a687",
+    "result": "PASS_BOUNDED_SOURCE_AND_HOST_EVIDENCE",
+    "actual_xml_review_sha256": "300bbe8383b1cb423ed36dde2fd85fef6840cd10e659854795220e24686b6cf4"
+  }
+}

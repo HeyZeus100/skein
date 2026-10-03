@@ -200,7 +200,7 @@ internal class FileMasterKeyStorage(
                     e,
                 )
             }
-        return Envelope.Present(decode(bytes))
+        return Envelope.Present(decodeActive(bytes))
     }
 
     // ---- write -----------------------------------------------------------
@@ -340,11 +340,18 @@ internal class FileMasterKeyStorage(
             out.write(bytes)
         }
 
-        fun decode(bytes: ByteArray): MasterKeyRow {
+        /** Active-file reader only. Legacy decode below still rejects v2 rather than discarding aliases. */
+        fun decodeActive(bytes: ByteArray): MasterKeyRow {
             if (bytes.size > MAX_ENVELOPE_BYTES) corrupt("too long")
             if (bytes.size < HEADER_LEN + DIGEST_LEN) corrupt("too short")
             // Dispatch on the format only; each decoder still validates magic, bounds and checksum.
             if (bytes[8] == 0.toByte() && bytes[9] == 2.toByte()) return decodeRecovery(bytes)
+            return decode(bytes)
+        }
+
+        fun decode(bytes: ByteArray): MasterKeyRow {
+            if (bytes.size > MAX_ENVELOPE_BYTES) corrupt("too long")
+            if (bytes.size < HEADER_LEN + DIGEST_LEN) corrupt("too short")
             val bodyLen = bytes.size - DIGEST_LEN
             val expected = digestOf(bytes.copyOf(bodyLen))
             val actual = bytes.copyOfRange(bodyLen, bytes.size)

@@ -72,8 +72,7 @@ internal class RecoveryMasterKeyRecord(
 
     fun decode(): RecoveryEnvelopeV2 = RecoveryEnvelopeV2.decode(encoded)
 
-    override fun equals(other: Any?): Boolean =
-        other is RecoveryMasterKeyRecord && encoded.contentEquals(other.encoded)
+    override fun equals(other: Any?): Boolean = other is RecoveryMasterKeyRecord && encoded.contentEquals(other.encoded)
 
     override fun hashCode(): Int = encoded.contentHashCode()
 }
