@@ -1,0 +1,10 @@
+{
+  "tools/ci/run-foldable-local.py": {
+    "bytes": 20996,
+    "sha256": "745eb395c472ab6096513dbe3cc5a60f4ad4880fcdcb8e3a6de75e95b3962b96"
+  },
+  "tools/ci/test_foldable_local.py": {
+    "bytes": 17032,
+    "sha256": "95529bf519f4a69d89600a626424e9e8771f650f37852e711f46169670738aeb"
+  }
+}

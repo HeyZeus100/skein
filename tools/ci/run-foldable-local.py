@@ -165,6 +165,10 @@ class Runner:
         self.state["executed_adapter_sources"] = local.execution_origin(self.repo, __file__)
         self.evidence.mkdir(parents=True, exist_ok=False)
         (self.evidence / "commands").mkdir()
+        # SDK tools and Gradle may create files here (including the debug keystore).
+        # Own both homes first, within the fresh run; never reuse another run's home.
+        for name in ("avd-home", "android-user"):
+            (self.evidence / name).mkdir()
         self.save()
         self.leases.acquire("build")
         self.source_check()
@@ -178,8 +182,6 @@ class Runner:
                 raise RuntimeError("requested emulator port is already occupied")
         self.command([self.sdk / "cmdline-tools/latest/bin/avdmanager", "list", "device", "--compact"], "device-catalog", 60)
         self.gradle([":app:assembleDevDebug", ":app:assembleDevDebugAndroidTest"], "build", 1800)
-        for name in ("avd-home", "android-user"):
-            (self.evidence / name).mkdir()
         avd = self.evidence / "avd-home" / (self.name + ".avd")
         self.command([self.sdk / "cmdline-tools/latest/bin/avdmanager", "create", "avd", "--name", self.name,
                       "--package", local.PACKAGE, "--device", self.args.profile, "--path", avd],

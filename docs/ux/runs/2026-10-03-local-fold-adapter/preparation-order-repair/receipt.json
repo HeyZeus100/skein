@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "bead": "skein-12pt.2.1.2",
+  "original_runtime_attempt": "01eb00fbb795410c8c59494174c27c31 at4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "original_failure_retained": "FileExistsError after Gradle created private android-user/debug.keystore before late mkdir",
+  "negative_host_reproduction": {
+    "actual_methods": 3,
+    "passed": 1,
+    "failed": 1,
+    "error_FileExistsError": 1
+  },
+  "fixed_host_regressions": {
+    "actual_methods": 70,
+    "passed": 70,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "implementation": "Create both strict private homes immediately within fresh unique run before all SDK/Gradle calls; no exist_ok relaxation",
+  "source_delta": "runner preparation order plus three meaningful host tests only",
+  "unchanged": "Kotlin, geometry, identity checks, ACK/state deadlines, original cases and thresholds",
+  "no_further_compile_reason": "No Kotlin or Gradle source changed; source repair/test-only authorization",
+  "runtime_after_fix": "NOT_RUN; new coordinator integration/freeze/grant required",
+  "nonce_posture_geometry": "UNRUN in original preboot failure; no acceptance claim",
+  "physical_actions": 0,
+  "leases": "Matching host-only build lease released; no device lease acquired",
+  "artifacts": {
+    "failed-preparation-safe-evidence.zip": {
+      "bytes": 8139,
+      "sha256": "82db435cda8739221b78c09ea08288b1cd752114144ef728bd909945b1a399c6"
+    },
+    "fixed-source.json": {
+      "bytes": 292,
+      "sha256": "a6d03cc0d3a129a744a552ebb997ae194358f0074a66dc338e8fff63e670f5b8"
+    },
+    "ordering-host-evidence.zip": {
+      "bytes": 2519,
+      "sha256": "9a1b4dab13e9a7a938d660ec548e1586b7baa66bbfd808a95a3ec537fbc485c3"
+    },
+    "bounded-failed-preparation-receipt.json": {
+      "bytes": 1984,
+      "sha256": "7a1a5fa597a7c318704d960fb6ddd65f491b8fbadd89610a51a30cf207cae6b6"
+    },
+    "independent-source-review.json": {
+      "bytes": 2970,
+      "sha256": "4390b09d6137e071edd9a474136f1161d65b5e368c6b29ce305a80764e4f3d4c"
+    }
+  },
+  "independent_review": "PASS; no further source finding"
+}

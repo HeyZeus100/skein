@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "review": "independent-source-and-retained-preparation-evidence",
+  "status": "PASS_BOUNDED_REPAIR",
+  "reviewer_performed_build_or_device_actions": false,
+  "original_attempt": {
+    "source_sha": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+    "receipt": {
+      "bytes": 1984,
+      "sha256": "7a1a5fa597a7c318704d960fb6ddd65f491b8fbadd89610a51a30cf207cae6b6"
+    },
+    "safe_archive": {
+      "bytes": 8139,
+      "sha256": "82db435cda8739221b78c09ea08288b1cd752114144ef728bd909945b1a399c6"
+    },
+    "six_command_receipts_and_output_hashes_verified": true,
+    "apk_build_exit": 0,
+    "retained_host_apk_hashes_verified": true,
+    "failure": "FileExistsError at late android-user mkdir after Gradle created private debug.keystore",
+    "emulator_launches": 0,
+    "adb_commands": 0,
+    "device_lease_acquisitions": 0,
+    "physical_device_actions": 0,
+    "actual_xml_cases": 0,
+    "transport": "UNRUN",
+    "activity_geometry": "UNRUN"
+  },
+  "repair": {
+    "source_files": {
+      "tools/ci/run-foldable-local.py": {
+        "bytes": 20996,
+        "sha256": "745eb395c472ab6096513dbe3cc5a60f4ad4880fcdcb8e3a6de75e95b3962b96"
+      },
+      "tools/ci/test_foldable_local.py": {
+        "bytes": 17032,
+        "sha256": "95529bf519f4a69d89600a626424e9e8771f650f37852e711f46169670738aeb"
+      }
+    },
+    "scope": "Create avd-home and android-user with strict mkdir immediately after the fresh unique run and command directories, before SDK/Gradle calls. Remove the later duplicate mkdir. No exist_ok weakening; no existing-run reuse or deletion.",
+    "old_source_exactly_matches_frozen_attempt": true,
+    "negative_control": {
+      "cases": 3,
+      "passes": 1,
+      "failures": 1,
+      "errors": 1,
+      "expected": true,
+      "attribution": "Synthetic filesystem reproduction against exact old runner: SDK ordering assertion and Gradle-created-home failure; no-reuse already passes.",
+      "log": {
+        "bytes": 3195,
+        "sha256": "64c08974e827e44658617475584e08956dd6e136631abff492b94022d4ab5d50"
+      }
+    },
+    "positive_host_gate": {
+      "cases": 70,
+      "passes": 70,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "prior_67_preserved_by_additive_test_diff": true,
+      "log": {
+        "bytes": 169,
+        "sha256": "f3533b5cc113747558292a24d32d62458555f0974515c21f42123cb6fb4bf5fe"
+      },
+      "result": {
+        "bytes": 334,
+        "sha256": "10c241f5e555e12db7fe8f73850f96cc6116a3976378fa2094162c421d8f5b85"
+      }
+    }
+  },
+  "remaining_gates": [
+    "New source integration and full Python CI suite",
+    "Separate runtime grant and actual nonce readiness/posture/Activity geometry",
+    "Exact Pixel 9 Pro Fold profile",
+    "Physical Fold acceptance"
+  ],
+  "limitations": [
+    "Host-only repair evidence does not demonstrate emulator transport or Activity geometry.",
+    "Attempt01 APKs are retained build outputs only; no installation or readback."
+  ]
+}

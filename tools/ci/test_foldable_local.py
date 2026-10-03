@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import subprocess
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
@@ -200,6 +201,74 @@ class LocalCleanupTest(unittest.TestCase):
                     subject.gradle([":app:assembleDevDebug"], "build", 1800)
             self.assertTrue(subject.gradle_unproven)
             self.assertEqual({"789": "789 exact new daemon identity"}, subject.state["build_live_gradle_candidates"])
+
+
+class LocalPreparationOrderingTest(unittest.TestCase):
+    class ReachedAvdCreation(Exception):
+        pass
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        coordination = root / "coordination"
+        coordination.mkdir()
+        self.subject = runner.Runner(SimpleNamespace(repository=root, sdk=root / "sdk", java_home=root / "java",
+                                    console_port=5580, coordination=coordination, expected_sha="a" * 40,
+                                    profile="pixel_fold"))
+        self.subject.source_check = Mock()
+        for name, value in (("host_guard", None), ("execution_origin", {}), ("verify_test_model", {}),
+                            ("verify_image", []), ("receipt", dict(bytes=1, sha256="1" * 64)), ("listeners", set())):
+            patcher = patch.object(local, name, return_value=value)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def fake_sdk(self, argv, label, *args, **kwargs):
+        if label == "create-owned-avd":
+            raise self.ReachedAvdCreation()
+        self.assertEqual("device-catalog", label)
+        return subprocess.CompletedProcess(argv, 0, b"synthetic catalog", b"")
+
+    def test_private_homes_exist_before_first_sdk_or_gradle_call(self):
+        def catalog(argv, label, *args, **kwargs):
+            for name in ("avd-home", "android-user"):
+                self.assertTrue((self.subject.evidence / name).is_dir(), name + " must precede SDK invocation")
+            return self.fake_sdk(argv, label, *args, **kwargs)
+        def build(*args, **kwargs):
+            for name in ("avd-home", "android-user"):
+                self.assertTrue((self.subject.evidence / name).is_dir(), name + " must precede Gradle invocation")
+        self.subject.command = Mock(side_effect=catalog)
+        self.subject.gradle = Mock(side_effect=build)
+        with self.assertRaises(self.ReachedAvdCreation):
+            self.subject.execute()
+        self.subject.gradle.assert_called_once()
+
+    def test_gradle_created_user_home_and_debug_key_do_not_break_preparation(self):
+        # Reproduce the actual SDK behavior using real temporary directories, no Gradle process.
+        def build(*args, **kwargs):
+            home = self.subject.evidence / "android-user"
+            home.mkdir(parents=True, exist_ok=True)
+            (home / "debug.keystore").write_bytes(b"synthetic fixture, not a signing key")
+        self.subject.command = Mock(side_effect=self.fake_sdk)
+        self.subject.gradle = Mock(side_effect=build)
+        with self.assertRaises(self.ReachedAvdCreation):
+            self.subject.execute()
+        self.assertEqual(b"synthetic fixture, not a signing key",
+                         (self.subject.evidence / "android-user/debug.keystore").read_bytes())
+
+    def test_existing_run_and_private_home_are_never_reused_or_deleted(self):
+        home = self.subject.evidence / "android-user"
+        home.mkdir(parents=True)
+        original = home / "debug.keystore"
+        original.write_bytes(b"original preserved fixture")
+        self.subject.command = Mock()
+        self.subject.gradle = Mock()
+        with self.assertRaises(FileExistsError):
+            self.subject.execute()
+        self.subject.command.assert_not_called()
+        self.subject.gradle.assert_not_called()
+        self.assertEqual(b"original preserved fixture", original.read_bytes())
+        self.assertFalse((self.subject.args.coordination / "build.lock").exists())
 
 
 class LocalProtocolTest(unittest.TestCase):
