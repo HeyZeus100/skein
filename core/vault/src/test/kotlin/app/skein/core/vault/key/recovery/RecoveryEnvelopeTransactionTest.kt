@@ -323,9 +323,9 @@ class RecoveryEnvelopeTransactionTest {
                 }
             }
         assertThat(transaction.replace(old, next).state).isEqualTo(RecoveryEnvelopeTransaction.State.NOT_COMMITTED)
+        val directory = checkNotNull(retained(next, "old.envelope").parentFile)
         val before =
-            retained(next, "old.envelope")
-                .parentFile
+            directory
                 .walkTopDown()
                 .filter(File::isFile)
                 .associate { it.name to it.readBytes().toList() }
@@ -333,8 +333,7 @@ class RecoveryEnvelopeTransactionTest {
             RecoveryEnvelopeTransaction(lease).replace(old, next).state,
         ).isEqualTo(RecoveryEnvelopeTransaction.State.UNKNOWN)
         assertThat(
-            retained(next, "old.envelope")
-                .parentFile
+            directory
                 .walkTopDown()
                 .filter(File::isFile)
                 .associate { it.name to it.readBytes().toList() },
