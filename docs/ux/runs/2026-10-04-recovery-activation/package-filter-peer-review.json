@@ -1,0 +1,82 @@
+{
+  "result": "SUPPORTED bounded package-filter repair; actual next 16-case gate still required",
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "proposed_single_argument": "-Pandroid.testInstrumentationRunnerArguments.package=app.skein.core.vault.key.recovery",
+  "remove_argument": "android.testInstrumentationRunnerArguments.class",
+  "required_exact_count": 16,
+  "required_classes": [
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt",
+      "sha256": "f88bb9bd236775743ac951a44e22e40776b45985988afe8e7fa52b3cafa31aab",
+      "package": "app.skein.core.vault.key.recovery",
+      "test_methods": [
+        "nativeProofAndBothFreshReadbacksActivateMetadataOnlyThenBothNormalFactorsRead",
+        "wrongCandidateFailsFreshNativeProofBeforeAuthenticationOrTransaction",
+        "substitutingEitherAuthenticatedCipherRefusesWithoutChangingEncryptedSources",
+        "recomputedChecksumCannotAuthenticateChangedStagedHeader",
+        "liveStageTamperDuringSecondAuthenticationCannotReachRename",
+        "eitherAuthenticatedWrapOfAnotherKeyCannotBorrowTheProvedDatabaseCandidate",
+        "cancellationDuringSecondAuthenticationZerosInputAndReleasesClosedVaultLease",
+        "revocationDuringSecondAuthenticationRefusesAndPreservesBothOriginalWraps",
+        "injectedBeforeRenameIoRetainsExactEvidenceAndFreshInspectionObservesOldOnly",
+        "injectedPostRenameDirectorySyncIoReportsVisibleNewWithUncertainDurability",
+        "postRenameRevocationIsUnknownUntilFreshLeaseObservationWithoutUnlockAuthority"
+      ]
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2",
+      "package": "app.skein.core.vault.key.recovery",
+      "test_methods": [
+        "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources",
+        "directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources",
+        "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate",
+        "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint",
+        "proofNeverMigratesOlderSupportedSchema"
+      ]
+    }
+  ],
+  "source_inventory_scope": "All tracked core/vault/src/androidTest Java/Kotlin package declarations at measured commit, including nested packages; exactly two matching source files. Opt-in retrievalEvaluation source not enabled.",
+  "pinned_artifacts": [
+    {
+      "name": "gradle-9.4.1.jar",
+      "bytes": 12136935,
+      "sha256": "4021fa6ea76b6fac076dd0bdacbb3e1b76c31f33b6c392e1a49a2e42072196bf"
+    },
+    {
+      "name": "runner-1.7.0.aar",
+      "bytes": 288955,
+      "sha256": "970311c47119928a2e406a88892a3d270387cc5a49a181a1c44511105b41b818"
+    }
+  ],
+  "read_only_bytecode_evidence": [
+    {
+      "path": "ProjectOptions.javap",
+      "sha256": "a4e48db08b0cc5fa70a9e17b13c9d511c457e7f04af7d2fa4d8723c1bed62a74",
+      "finding": "readTestRunnerArgs reads gradlePropertiesPrefixedBy android.testInstrumentationRunnerArguments. and maps prefix to argument name"
+    },
+    {
+      "path": "TestRunnerArguments.javap",
+      "sha256": "5f34828537b988c5eb4e56ecb3e0b76bf3bc9fd3f0defe55b393c32e30f870de",
+      "finding": "PACKAGE enum short key package, CLASS short key class"
+    },
+    {
+      "path": "RunnerArgs-Builder.javap",
+      "sha256": "12ba1b3b3f2a97584282c066ef7f822bb20af37d1363f2a538f61a98eaafbdb1",
+      "finding": "fromBundle reads package into testPackages via parseTestPackages"
+    },
+    {
+      "path": "TestRequestBuilder.javap",
+      "sha256": "2d3d32ac5a401947810196ceb77cbd5b61edc594dcd3bc692a92f1be112a49a2",
+      "finding": "addFromRunnerArgs forwards testPackages into addTestPackage and applies InclusivePackageNamesFilter during classpath scan"
+    },
+    {
+      "path": "ClassPathScanner-InclusivePackageNamesFilter.javap",
+      "sha256": "96144b5ed7a9c44086e639814e234f80450eeefe4b86e4d8876c2f60ef5bb2f2",
+      "finding": "appends dot to each package and accepts matching class-name prefixes; includes nested packages"
+    }
+  ],
+  "original_observation": "Measured comma-joined class property contained both FQCNs and APK retained both class descriptors, but runner completed only the eleven activation cases; all failed fixture setup. Underlying omission cause remains UNEXPLAINED.",
+  "acceptance": "No test omission is accepted; require exactly the original eleven activation plus five native-proof method identities, no duplicates, failures, errors or skips. Package support from pinned bytecode is not runtime acceptance.",
+  "reviewer_actions": "Read-only local JAR/AAR bytecode inspection via javap and immutable source inspection; no Gradle, tests, device operations or source edits."
+}

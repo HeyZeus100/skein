@@ -1,0 +1,13 @@
+diff --git a/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt b/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt
+index e29284ac6..9ca94dee2 100644
+--- a/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt
++++ b/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt
+@@ -78,7 +78,7 @@ internal class AuthenticatedRecoveryActivation(
+                 val evidence = Evidence.read(lease, transactionId, keystore)
+                 ClosedVaultRecoverySnapshot.capture(lease).use { snapshot ->
+                     evidence.assertUnchanged(lease, keystore)
+-                    val proof = verifier.verify(snapshot, candidate.copyOf())
++                    val proof = ExistingVaultKeyProofResult.VERIFIED // intentional host-only mutant
+                     if (proof != ExistingVaultKeyProofResult.VERIFIED) return Result.ProofRejected(proof)
+                     for (isBiometric in listOf(true, false)) {
+                         currentCoroutineContext().ensureActive()

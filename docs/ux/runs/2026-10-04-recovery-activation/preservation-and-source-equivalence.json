@@ -1,0 +1,16 @@
+{
+  "application_source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "runtime_source": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "delta": [
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt"
+  ],
+  "production_application_sources_byte_identical": true,
+  "protected_files_verified": 193,
+  "owner_file_bytes_verified": 21,
+  "owner_status_and_stash_unchanged": true,
+  "hosted_dispatches": 0,
+  "workflow_files_unchanged": true,
+  "fresh40": "Consumed regression; labels/failures/thresholds unchanged, no execution/relabeling",
+  "frozen_answer80": "No execution or grading; protected bytes unchanged",
+  "all_original_worktrees_and_stashes_retained": true
+}

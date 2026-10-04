@@ -1,0 +1,2 @@
+manifest-audit: auditing build/agent-logs/resume-20261004/full-local-09/app-foss-debug.apk (variant: debug)
+manifest-audit: PASS

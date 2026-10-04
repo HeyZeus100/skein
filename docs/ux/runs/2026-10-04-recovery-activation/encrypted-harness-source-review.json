@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "PASS_BOUNDED_SOURCE_REVIEW_ONLY",
+  "source_commit": "7535c43102272ba1dff015d95f61afebb3f44779",
+  "source": {
+    "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt",
+    "bytes": 23943,
+    "sha256": "d2d2abde2ce0eae0523018f0dd457339ca1bc5436d45c10c6ab4f215eb85e342"
+  },
+  "test_methods": [
+    "nativeProofAndBothFreshReadbacksActivateMetadataOnlyThenBothNormalFactorsRead",
+    "wrongCandidateFailsFreshNativeProofBeforeAuthenticationOrTransaction",
+    "substitutingEitherAuthenticatedCipherRefusesWithoutChangingEncryptedSources",
+    "recomputedChecksumCannotAuthenticateChangedStagedHeader",
+    "liveStageTamperDuringSecondAuthenticationCannotReachRename",
+    "eitherAuthenticatedWrapOfAnotherKeyCannotBorrowTheProvedDatabaseCandidate",
+    "cancellationDuringSecondAuthenticationZerosInputAndReleasesClosedVaultLease",
+    "revocationDuringSecondAuthenticationRefusesAndPreservesBothOriginalWraps",
+    "injectedBeforeRenameIoRetainsExactEvidenceAndFreshInspectionObservesOldOnly",
+    "injectedPostRenameDirectorySyncIoReportsVisibleNewWithUncertainDurability",
+    "postRenameRevocationIsUnknownUntilFreshLeaseObservationWithoutUnlockAuthority"
+  ],
+  "reviewed_behavior": [
+    "Actual SkeinSQLiteDriver/SQLCipher database and default ExistingVaultKeyProof, not a success-only proof fake.",
+    "Fresh UUID directories only inside instrumentation cache; no owner vault/model/device operations.",
+    "Production exclusion and unchanged preparation establish staged v1-to-v2 envelopes; activation then uses separate fresh factor callbacks.",
+    "Checks exact DB/WAL/SHM bytes and absent-file states, old/staged/active envelopes, alias mutation history and null currentKey.",
+    "Meaningful wrong key, exact Cipher substitution, AAD/header tamper, stage change, authenticated wrap of wrong key, cancellation and revocation controls.",
+    "Injected pre/post-rename IO explicitly separates NOT_COMMITTED, COMMITTED without directory durability, and UNKNOWN; fresh-lease reconciliation checks all fixture files unchanged and grants no key.",
+    "Later normal provider authentication for both factors reads a separate closed ciphertext copy, then locks and checks key zeroing."
+  ],
+  "finding": "No blocking harness-source finding. Separate activation alias-loss finding has been sent to its owner for correction.",
+  "unrun": [
+    "Kotlin compile",
+    "ktlint check",
+    "Android encrypted runtime execution"
+  ],
+  "excluded_acceptance": [
+    "Actual per-use AndroidKeyStore CryptoObject authentication",
+    "StrongBox hardware behavior",
+    "Public recovery/app integration",
+    "Physical Fold acceptance",
+    "Power-loss durability"
+  ],
+  "reviewer_build_or_device_actions": false
+}

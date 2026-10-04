@@ -1,0 +1,29 @@
+{
+  "source": "ab6ca25a644403418555e7d1788d96a4ea4fa1fe",
+  "argv": [
+    "./gradlew",
+    "--offline",
+    "--no-daemon",
+    "--max-workers=2",
+    ":core:vault:ktlintCheck",
+    ":core:vault:testDevDebugUnitTest",
+    "--tests",
+    "app.skein.core.vault.key.recovery.*",
+    ":core:vault:compileDevDebugAndroidTestKotlin",
+    ":core:vault:compileFossDebugAndroidTestKotlin",
+    "--continue",
+    "--stacktrace"
+  ],
+  "exit": 0,
+  "source_static": true,
+  "head_static": true,
+  "status_static": true,
+  "owned_processes_stopped": true,
+  "counts": {
+    "passed": 88
+  },
+  "xml_files": 6,
+  "actual_archive_sha256": "0a0c95ba746a8ecbf14f21999780540b756f80658aa6f7da513b4ac236259d05",
+  "host_only": true,
+  "hosted_dispatches": 0
+}

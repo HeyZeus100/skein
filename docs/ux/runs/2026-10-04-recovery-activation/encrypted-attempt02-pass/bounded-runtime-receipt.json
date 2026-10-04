@@ -1,0 +1,332 @@
+{
+  "source_sha": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "controller_sha256": "55318250ee542b0b09d57f42d5362c13fc0a2b72bb03e1c7d4628a962bc5c36d",
+  "platform": "macOS/API35/google_apis/arm64-v8a",
+  "acceptance_scope": "Real native SQLCipher proof and filesystem activation; synthetic in-memory AES/auth callbacks; no Android per-use authentication, StrongBox, public wiring, process-death/restart, power-loss or physical acceptance",
+  "physical_device_actions": 0,
+  "installed_apk_readback": "NOT_MEASURED",
+  "source_files": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt": {
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt": {
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": {
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt": {
+      "bytes": 6000,
+      "sha256": "191524caa5f2b48245b1057ccfa90247f21ab3c26f758bc6992925404f815f76"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt": {
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt": {
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt": {
+      "bytes": 25368,
+      "sha256": "ca6e84ed11d4b26dc1a05b6d893c851f1c8e594e44864f8fc308942e94df2e2f"
+    },
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt": {
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  },
+  "image_payloads": [
+    {
+      "path": "NOTICE.txt",
+      "bytes": 20106158,
+      "sha256": "cd037fbc74785480bdef48894b9245b3f157db65327f05ace0e8f68abd1b37f4"
+    },
+    {
+      "path": "VerifiedBootParams.textproto",
+      "bytes": 356,
+      "sha256": "47bec2cf2e3f822c1ee9a299f5a723674ce3f67565661123940be0605360e02b"
+    },
+    {
+      "path": "advancedFeatures.ini",
+      "bytes": 758,
+      "sha256": "b293a499caf9a3a2b0ba8e95fbc3d9113c8d3c33da27af59c6284e5f81119e5e"
+    },
+    {
+      "path": "build.prop",
+      "bytes": 4758,
+      "sha256": "0e90e5c253335e4fc7ba24502a077bfecbf93d524db19ad75798e27fa50135f4"
+    },
+    {
+      "path": "data/empty_data_disk",
+      "bytes": 107,
+      "sha256": "e4dc7c33a83013f3d9eb9b5a5693c912e83a9c7f978933b5c7600039dbfde903"
+    },
+    {
+      "path": "data/local.prop",
+      "bytes": 46,
+      "sha256": "49b05d093a46d35d85df01fb99133f077fcc725cc49efe1a1bedae884d24e20b"
+    },
+    {
+      "path": "data/misc/GoldfishSkinConfig",
+      "bytes": 783,
+      "sha256": "763b66cad27dc57354f456bb763e27acf8859059890e6515daba90e77c906b75"
+    },
+    {
+      "path": "data/misc/apns/apns-conf.xml",
+      "bytes": 6575,
+      "sha256": "c35b899f2b6296aee4a9742302651cce9eb64622669d4d8fe8d276ca11060eb6"
+    },
+    {
+      "path": "data/misc/emulator/config/radioconfig.xml",
+      "bytes": 1433,
+      "sha256": "534a81b662ad62fc70ec0ea22715670524a05a066afc9fdac8e7c0f5a7789cd7"
+    },
+    {
+      "path": "data/misc/emulator/version.txt",
+      "bytes": 112,
+      "sha256": "2f4ecb211f6b497d6011a75390fb0469ceaec4b816c10209198e43bafa57c695"
+    },
+    {
+      "path": "data/misc/modem_simulator/etc/modem_simulator/files/numeric_operator.xml",
+      "bytes": 297,
+      "sha256": "c2557e604beea20b67642cdbb14ae7b792f804e4476b3f6cf47035690234f436"
+    },
+    {
+      "path": "data/misc/modem_simulator/iccprofile_for_carrierapitests.xml",
+      "bytes": 16537,
+      "sha256": "dc4b5f5344f084fc44f89250bbcf2b12e452eb98c104e4ef3ec115366eb6ce32"
+    },
+    {
+      "path": "data/misc/modem_simulator/iccprofile_for_sim0.xml",
+      "bytes": 14647,
+      "sha256": "a2744726a306b18d7547251026201aa5c6a9e120aa1555992eeb8b0a3b4aa6d9"
+    },
+    {
+      "path": "data/misc/modem_simulator/iccprofile_for_sim_tel_alaska.xml",
+      "bytes": 14474,
+      "sha256": "462cc26ddaa9d6c470a2d9415771c80e323b526b1863f099accb298955b14db3"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/devicestate/device_state_configuration.xml",
+      "bytes": 1644,
+      "sha256": "8bebf4943ed3fc50973ac428ab8c8c0d71700af81419f44fc95a59f52f873838"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/display_settings.xml",
+      "bytes": 303,
+      "sha256": "2adca8f98a2c8ee0f780e10ca16587ac92641df5e93ab4437c3c47ad41b0041d"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/displayconfig/display_layout_configuration.xml",
+      "bytes": 1311,
+      "sha256": "a64e2eca65bc2f9196215fb72a88c9035a584319f8b3da3606fff161be642be8"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/extra_feature.xml",
+      "bytes": 829,
+      "sha256": "ba27b7a61457027e2a77917f8b07d716d3e918097901a14833749252b15aa38f"
+    },
+    {
+      "path": "data/misc/pixel_fold/devicestate/device_state_configuration.xml",
+      "bytes": 1644,
+      "sha256": "8bebf4943ed3fc50973ac428ab8c8c0d71700af81419f44fc95a59f52f873838"
+    },
+    {
+      "path": "data/misc/pixel_fold/display_settings.xml",
+      "bytes": 303,
+      "sha256": "2adca8f98a2c8ee0f780e10ca16587ac92641df5e93ab4437c3c47ad41b0041d"
+    },
+    {
+      "path": "data/misc/pixel_fold/displayconfig/display_layout_configuration.xml",
+      "bytes": 1311,
+      "sha256": "a64e2eca65bc2f9196215fb72a88c9035a584319f8b3da3606fff161be642be8"
+    },
+    {
+      "path": "data/misc/pixel_fold/extra_feature.xml",
+      "bytes": 829,
+      "sha256": "ba27b7a61457027e2a77917f8b07d716d3e918097901a14833749252b15aa38f"
+    },
+    {
+      "path": "encryptionkey.img",
+      "bytes": 18874368,
+      "sha256": "522bd0b6a2c92e37de465059bb9487bb9597a9aae032b469a8ebe0b38146d8c3"
+    },
+    {
+      "path": "kernel-ranchu",
+      "bytes": 14474326,
+      "sha256": "a9dda2ae115395ea352bca2201294b4df0020a7f425cbfae879ee66a03a8f19f"
+    },
+    {
+      "path": "kernel_cmdline.txt",
+      "bytes": 16,
+      "sha256": "5bd6571f46a3e593053a7c6c37f4eed840c0da2278506fa53d1ff021e9d4d8e4"
+    },
+    {
+      "path": "package.xml",
+      "bytes": 19129,
+      "sha256": "638e3aba0ed172a921f6215bb773f27143978ff7dc70a0b1196a7e536b381b2d"
+    },
+    {
+      "path": "ramdisk.img",
+      "bytes": 2080115,
+      "sha256": "46ff502d0e0a1d8f844d29c084a8b797107513d26199825f0d827836a87e84d7"
+    },
+    {
+      "path": "source.properties",
+      "bytes": 363,
+      "sha256": "bd5cb4bc86ef478b0f37a034aa2b460165b391e8cb6504cb13b8ca1c462c4848"
+    },
+    {
+      "path": "system.img",
+      "bytes": 3891265536,
+      "sha256": "5d9c9213a36f9034e85719baffba88d0a4b6ab992bbf80fdc7c4dfd21d070597"
+    },
+    {
+      "path": "vendor.img",
+      "bytes": 111149056,
+      "sha256": "af71ded6307254f8bfa4711c87cbc82f60fe1f31b424ccff20db540639ab460b"
+    }
+  ],
+  "gradle_exit": 0,
+  "gradle_terminal_proven": true,
+  "counts": {
+    "tests": 16,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "expected_methods": {
+    "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest": [
+      "cancellationDuringSecondAuthenticationZerosInputAndReleasesClosedVaultLease",
+      "eitherAuthenticatedWrapOfAnotherKeyCannotBorrowTheProvedDatabaseCandidate",
+      "injectedBeforeRenameIoRetainsExactEvidenceAndFreshInspectionObservesOldOnly",
+      "injectedPostRenameDirectorySyncIoReportsVisibleNewWithUncertainDurability",
+      "liveStageTamperDuringSecondAuthenticationCannotReachRename",
+      "nativeProofAndBothFreshReadbacksActivateMetadataOnlyThenBothNormalFactorsRead",
+      "postRenameRevocationIsUnknownUntilFreshLeaseObservationWithoutUnlockAuthority",
+      "recomputedChecksumCannotAuthenticateChangedStagedHeader",
+      "revocationDuringSecondAuthenticationRefusesAndPreservesBothOriginalWraps",
+      "substitutingEitherAuthenticatedCipherRefusesWithoutChangingEncryptedSources",
+      "wrongCandidateFailsFreshNativeProofBeforeAuthenticationOrTransaction"
+    ],
+    "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest": [
+      "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint",
+      "directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources",
+      "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate",
+      "proofNeverMigratesOlderSupportedSchema",
+      "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources"
+    ]
+  },
+  "missing_identities": [],
+  "unexpected_identities": [],
+  "exact_scoped_identity_gate": true,
+  "final_source_sha": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "final_tracked_status": "",
+  "final_source_files": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt": {
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt": {
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": {
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt": {
+      "bytes": 6000,
+      "sha256": "191524caa5f2b48245b1057ccfa90247f21ab3c26f758bc6992925404f815f76"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt": {
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt": {
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt": {
+      "bytes": 25368,
+      "sha256": "ca6e84ed11d4b26dc1a05b6d893c851f1c8e594e44864f8fc308942e94df2e2f"
+    },
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt": {
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  },
+  "raw_archive_sha256": "c5e2155035a20f7d45c230b65161f998ff04d57907bb1b942f0c61d3ce99828a",
+  "retained_apks": [
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "bytes": 53800503,
+      "sha256": "df3c0f6a1900c4e3c69ed951db3394c62fc0c3583d636a39410c076172a101a4",
+      "attribution": "host DEV vault instrumentation APK output; no installed APK readback"
+    }
+  ],
+  "native_entries": [
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+      "bytes": 10096,
+      "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "bytes": 6269000,
+      "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+      "bytes": 22320,
+      "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libandroidx.graphics.path.so",
+      "bytes": 10760,
+      "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite.so",
+      "bytes": 6700000,
+      "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite_jni.so",
+      "bytes": 22080,
+      "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68"
+    }
+  ],
+  "passed": true,
+  "emulator_terminal_exit": 0,
+  "emulator_listeners_after_cleanup": {
+    "5580": [],
+    "5581": []
+  },
+  "released_matching_leases": [
+    "device.lock",
+    "build.lock"
+  ],
+  "retained_leases": null,
+  "normal_synthetic_unlock_verified": true,
+  "exclusive_inventory": {
+    "target_count": 1,
+    "owned_online_count": 1,
+    "unexpected_count": 0
+  },
+  "actual_xml_archive_sha256": "2232f65e53800f1917e5d77a7f57340904c7529485fdae66d133a065497c3617",
+  "same_process_observation_only": true,
+  "actual_process_death_restart_accepted": false,
+  "real_android_per_use_authentication_accepted": false,
+  "physical_accepted": false
+}

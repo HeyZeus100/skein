@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "status": "PASS_FOCUSED_HOST_EVIDENCE",
+  "source_sha": "ab6ca25a644403418555e7d1788d96a4ea4fa1fe",
+  "actual_xml": {
+    "files": 6,
+    "pass": 88,
+    "failure": 0,
+    "error": 0,
+    "skip": 0,
+    "prior_passes_preserved": 43,
+    "new_passes": 45,
+    "additions_by_class": {
+      "AuthenticatedRecoveryActivationTest": 24,
+      "RecoveryEnvelopeTransactionTest": 21
+    },
+    "removed_or_changed_prior_outcomes": 0,
+    "source_archive": {
+      "bytes": 7624,
+      "sha256": "0a0c95ba746a8ecbf14f21999780540b756f80658aa6f7da513b4ac236259d05"
+    },
+    "baseline_archive": {
+      "bytes": 558273,
+      "sha256": "594c202a4218f23df54c5a8e81d4eba87a61624e684d0ad2068d6e564ef28cca"
+    },
+    "files_sha256": {
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml": {
+        "bytes": 5036,
+        "sha256": "3156c6c723d5f1d49148359ce91a077c09c113f1111fcc9761e30d3c5b82464b"
+      },
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest.xml": {
+        "bytes": 3243,
+        "sha256": "98e6a7eaadc2cbeb3c719c51b79be90a0a378ee4ddd8907eb5d9ba48a1a7518c"
+      },
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml": {
+        "bytes": 1817,
+        "sha256": "42c5335844ad7468c8d33b930bd080b302d08778e584193f948dfc6053db0f8f"
+      },
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml": {
+        "bytes": 1805,
+        "sha256": "adc70f207f6adaa8ae0583125a34a8b396fc0730025cb522bf9c0348f4c7a85b"
+      },
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml": {
+        "bytes": 5657,
+        "sha256": "3c9a9e4f5f97a8061ee838256c222b055140d265c6e24ce1472e0dd85b00b5d8"
+      },
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml": {
+        "bytes": 1180,
+        "sha256": "33c86ad8f92c8964dde3a39a52f3552dfdaf6fcf9ce20ce21882d5d2cc6a71a1"
+      }
+    }
+  },
+  "source_sha256": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationTest.kt": "7f07fa948592b3be4ba128a582a1b727bd6eb4ae68958ea779f1e457aad98335",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt": "a1a2a5124466a4c1c5a55b91c06b65ff083e408bea2dc027ff34059985a78548",
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt": "f88bb9bd236775743ac951a44e22e40776b45985988afe8e7fa52b3cafa31aab"
+  },
+  "tasks": {
+    "host_test": "EXECUTED in focused05",
+    "ktlint": "PASS",
+    "dev_android_test_compile": "EXECUTED in focused04; same instrumentation/production source UP-TO-DATE in focused05",
+    "foss_android_test_compile": "EXECUTED in focused04; same instrumentation/production source UP-TO-DATE in focused05"
+  },
+  "retained_original_failure": {
+    "attempt": "activation-focused-04",
+    "kind": "Host test compile failed on Java Provider version String constructor unsupported by Android stubs",
+    "new_host_xml": 0,
+    "stale_archived_xml": "The sole28-case XML is byte-identical to transaction-host-02, not attributed to focused04",
+    "log": {
+      "bytes": 33538,
+      "sha256": "eb036d0715a049044208366ef04033e34af84d968a2280cf470a1df436b77d63"
+    },
+    "repair": "Test-only String version argument changed to Double1.0; no production change."
+  },
+  "positive_log": {
+    "bytes": 11620,
+    "sha256": "c8ab12f1be517b4bf12b041b64b87f6d8bdab4c8aeebdff641138b85d32ce90b"
+  },
+  "execution_cleanup": "Retained terminal process record exit0, unchanged source/head/status, owned process termination established. Reviewer did not run builds or devices.",
+  "remaining": [
+    "Final full affected dev/foss gate at restored current source",
+    "Retained negative mutant controls",
+    "Encrypted runtime execution and actual per-use/hardware/public integration/physical gates"
+  ],
+  "quality_model_or_gold_fixture_reads": false
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "reviewer": "recovery worker publication peer",
+  "status": "PASS_REVIEWED_STAGING_PENDING_EXACT_COPY_AND_PUBLICATION_SEAL",
+  "scope": "Read-only publication integrity, attribution, acceptance gates, links and hash-only preservation. No tests/builds/device/hosted/Beads actions; no protected gold content inspection. Host/runtime technical audits are separate peer receipts.",
+  "application_source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "encrypted_runtime_source": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "production_source_files_unchanged_between_checkpoints": true,
+  "runtime_only_delta": [
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt"
+  ],
+  "staging": {
+    "files": 75,
+    "zip_archives": 7,
+    "actual_xml_members_rehashed": 589,
+    "declared_source_xml_hash_size_checks": 601,
+    "all_match": true,
+    "unchanged_during_review": true,
+    "apk_model_database_key_bytes_included": false,
+    "raw_private_process_or_device_dumps_included": false
+  },
+  "actual_archive_counts": {
+    "activation-focused-05/unit-actual.zip": {
+      "xml_files": 6,
+      "counts": {
+        "passed": 88
+      },
+      "sha256": "0a0c95ba746a8ecbf14f21999780540b756f80658aa6f7da513b4ac236259d05",
+      "source": "ab6ca25a644403418555e7d1788d96a4ea4fa1fe"
+    },
+    "encrypted-attempt01-fixture-failure/actual-xml.zip": {
+      "xml_files": 1,
+      "counts": {
+        "failure": 11
+      },
+      "sha256": "ef57e358d4c32f0f6ebd36fb0f004d153b8b084889e7a56ecb05065cfd66e0b5",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e"
+    },
+    "encrypted-attempt02-pass/actual-xml.zip": {
+      "xml_files": 1,
+      "counts": {
+        "passed": 16
+      },
+      "sha256": "2232f65e53800f1917e5d77a7f57340904c7529485fdae66d133a065497c3617",
+      "source": "5591995bbad94ce7fa184a452767055bb3f7649e"
+    },
+    "full-local-09/unit-actual.zip": {
+      "xml_files": 575,
+      "counts": {
+        "passed": 5776,
+        "skipped": 86
+      },
+      "sha256": "160e27e71d674a907d6e81e8a8f5b80bc5dd2c664112487cbce5555f92e1d697",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e"
+    },
+    "negative-06-fresh-proof/unit-actual.zip": {
+      "xml_files": 2,
+      "counts": {
+        "passed": 49,
+        "failure": 3
+      },
+      "sha256": "fdc55db2831f56da086e7e041572ccb0a9baa2f5dd900c84a097e03fa6229a4a",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e"
+    },
+    "negative-07-wrap-binding/unit-actual.zip": {
+      "xml_files": 2,
+      "counts": {
+        "passed": 50,
+        "failure": 2
+      },
+      "sha256": "f4b1841fad8a4e1cf3b481f7908f895203867cf6143f05ffa22c23f3e2fbd95a",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e"
+    },
+    "negative-08-final-publication/unit-actual.zip": {
+      "xml_files": 2,
+      "counts": {
+        "passed": 40,
+        "failure": 12
+      },
+      "sha256": "1f76152dd09ef3fb04fcd9dd371052dbeb0da9b76671f803da78b8a3e09618e0",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e"
+    }
+  },
+  "peer_receipts": {
+    "host_sha256": "f8b453a42ba80dde07826c60b65480af0c414a039deb5cea645d5697d1623749",
+    "runtime_sha256": "7dc5fc72bea840cc514bcce7af956cefde725b05f0741d046c0e42aad27425dd"
+  },
+  "historical_failures": {
+    "original_format_compile_failures_retained": true,
+    "negative52_case_sets_equal": true,
+    "negative_failures": [
+      3,
+      2,
+      12
+    ],
+    "mutant_sources_and_restoration_hashes_verified": true,
+    "proof_mutant_limit": "Invocation/refusal semantics; not a demonstrated wrong-key commit.",
+    "final_publication_mutant_limit": "Multiple controls removed together; no individual guard attribution inferred.",
+    "runtime_attempt01": "11 fixture failures; five methods not selected. Failure occurred before native proof. Underlying comma-selector failure remains unproven.",
+    "skip_trace_limit": "All prior outcomes/skip identities/reason attributes preserved; one generated reflection accessor8->10 difference disclosed, original strict and resolved comparisons retained."
+  },
+  "accepted_only": [
+    "skein-gg11.29.2.2.1",
+    "skein-gg11.29.2.2.2",
+    "skein-gg11.29.2.2.3.1"
+  ],
+  "open_parent_and_runtime_gates": [
+    "skein-gg11.29.2.2",
+    "skein-gg11.29.2.2.3",
+    "skein-gg11.29.2.2.3.2",
+    "skein-gg11.29.2.4",
+    "skein-gg11.29.2.3",
+    "skein-gg11.29.3"
+  ],
+  "scope_limits": [
+    "Internal-only activation; public provider/session/app and legacy fixed-alias path unchanged.",
+    "Native encrypted16/16 execution uses synthetic in-memory AES keys/auth callbacks and same-process fresh leases.",
+    "No process-death/restart, power-loss, actual Android per-use/StrongBox, physical installation/acceptance, or installed APK readback claimed.",
+    "No hosted dispatch, model fetch, default/runtime switch or new blind quality claim.",
+    "Old host/screenshot/Python/ordinary310/Fold results remain attributed to original checkpoints."
+  ],
+  "preservation": {
+    "owner_files_hash_length_verified": 21,
+    "owner_head_compact_full_status_stash_unchanged": true,
+    "protected_files_hash_length_verified": 193,
+    "gold_content_parsed_printed_or_copied": false,
+    "full_inventories": "private"
+  },
+  "links": {
+    "checked": 12,
+    "all_resolve_to_existing_or_reviewed_staged_destination": true
+  },
+  "beads_sync": "Exact failed no-Dolt-remote receipt retained; no remote invented.",
+  "next_legacy_plan": {
+    "sha256": "be1ab21a6a6f2141fab25278c34dbecc5cf28a01c8e1acf00548a4b1374a0105",
+    "status": "proposal only; no next-slice implementation inferred"
+  },
+  "draft_handoff": {
+    "bytes": 11573,
+    "sha256": "2d81d207869a59a11d4a0637c92f5842cfc535309379de9415053ea5f7b66112",
+    "source_vs_binary_wording_corrected": true
+  },
+  "current_verification_sha256": "dca4f1c825be94cc2224c5699c9fc8baf70e797f4f7ea41008e879e7ca401ae0",
+  "staging_inventory_sha256": "e794b4bfdae54f17923f789cc23abdfafb389ed4fed886ecd974efbc0935180f",
+  "final_copy_qualification": [
+    "Coordinator must copy the reviewed staging bytes and corrected draft to their declared public destinations, add this stable review, and seal the final manifest.",
+    "This review does not assert the later materialized copy, final commit, remote push or final publication hash."
+  ],
+  "blocking_findings": []
+}

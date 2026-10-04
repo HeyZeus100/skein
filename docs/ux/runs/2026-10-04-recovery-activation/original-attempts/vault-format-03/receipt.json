@@ -1,0 +1,7 @@
+{
+  "source": "0669376cb2ee2cab57f8e69cb6104d96c7e41091",
+  "exit": 1,
+  "scope": "formatter changed only three new activation files, two uncorrected long-line diagnostics; no tests requested",
+  "owned_processes_stopped": true,
+  "fresh_unit_result_claim": false
+}

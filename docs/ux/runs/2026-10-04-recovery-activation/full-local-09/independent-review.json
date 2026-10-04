@@ -1,0 +1,1067 @@
+{
+  "result": "PASS: independently checked full host evidence",
+  "reviewer": "application_context",
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "source_files": [
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt",
+      "bytes": 25194,
+      "sha256": "f88bb9bd236775743ac951a44e22e40776b45985988afe8e7fa52b3cafa31aab"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt",
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationTest.kt",
+      "bytes": 40169,
+      "sha256": "aaaf80cd768f572deb7963efc4723c4e258d54091725a67c50b8c25a74e5a789"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt",
+      "bytes": 30098,
+      "sha256": "a1a2a5124466a4c1c5a55b91c06b65ff083e408bea2dc027ff34059985a78548"
+    }
+  ],
+  "unit_evidence": {
+    "current_archive_sha256": "160e27e71d674a907d6e81e8a8f5b80bc5dd2c664112487cbce5555f92e1d697",
+    "prior_archive_sha256": "594c202a4218f23df54c5a8e81d4eba87a61624e684d0ad2068d6e564ef28cca",
+    "current_xml_files": 575,
+    "current_counts": {
+      "passed": 5776,
+      "skipped": 86
+    },
+    "prior_counts": {
+      "passed": 5686,
+      "skipped": 86
+    },
+    "added_pass_occurrences": 90,
+    "added_by_variant_class": [
+      {
+        "variant": "testDevDebugUnitTest",
+        "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "count": 24
+      },
+      {
+        "variant": "testDevDebugUnitTest",
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "count": 21
+      },
+      {
+        "variant": "testFossDebugUnitTest",
+        "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "count": 24
+      },
+      {
+        "variant": "testFossDebugUnitTest",
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "count": 21
+      }
+    ],
+    "removed_prior_identities": 0,
+    "changed_prior_outcomes": 0,
+    "skipped_identities": 86,
+    "skipped_attributes_and_reasons_unchanged": true,
+    "raw_skip_detail_changes": [
+      {
+        "identity": [
+          "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+          "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "importImage_without_a_vision_model_creates_only_the_attachment"
+        ],
+        "prior_text_sha256": "b86cb1bbccdc426efe10dd9a20cb04b4c3dee282da51f889cd63e1baf80953d9",
+        "current_text_sha256": "388b534464a6255c1d4b87d73110dc5ebcf265bc795646750c906275f6ad58e9",
+        "same_attributes": true,
+        "diff": "--- prior\n+++ current\n@@ -19,7 +19,7 @@\n \tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:47)\n \tat org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestDefinitionProcessor.processTestDefinition(AbstractJUnitTestDefinitionProcessor.java:65)\n \tat org.gradle.api.internal.tasks.testing.SuiteTestDefinitionProcessor.processTestDefinition(SuiteTestDefinitionProcessor.java:53)\n-\tat jdk.internal.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)\n+\tat jdk.internal.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)\n \tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n \tat java.base/java.lang.reflect.Method.invoke(Method.java:569)\n \tat org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)\n"
+      }
+    ],
+    "new_identities": [
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "UUID generation StrongBox and legacy source guards reject before fresh proof"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "caller mutation during authentication cannot substitute the proved candidate"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "cancellation and authentication error at either fresh factor preserve every original"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "coroutine cancellation during auth preserves evidence and releases closed lease"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "distinct coordinator and provider cannot enter during fresh authentication"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "failed transaction attempt is retained and cannot be reused by fresh proof"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "final transaction validation rejects changed source and staged bytes after durable writes"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "fresh proof and both exact authenticated readbacks activate metadata without unlocking"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "invalid candidate length is consumed before proof or authentication"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing earlier factor alias during later auth or final validation cannot commit"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing or invalidated staged alias cannot fall back or regenerate material"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "old generation overflow cannot authorize a v2 replacement"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "oversized and symbolic linked evidence is refused without fresh proof"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "poison reset marker journal and admitted ordinary owner refuse before proof"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename IO or cancellation reports committed uncertain durability without unlocking"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename lock reports unknown instead of generic cancellation and never rolls back"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "prepared UUID and wrong candidate cannot reuse preparation proof or authentication"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "production provider lock during either factor revokes late success and retains exclusion"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "proof callback cannot replace private ciphertext and still claim verification"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "recomputed checksum cannot bless header or either factor ciphertext tampering"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "revocation does not wait for blocked transaction IO and prevents rename"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "source or staged mutation during either suspended factor cannot reach commit"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "substituted Cipher is rejected for either factor even with identical alias and IV"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "valid wraps without factor AAD or with wrong candidate cannot authorize activation"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "active readback after successful move must equal intended bytes"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback IO runtime and cancellation failures cannot rename and preserve all evidence"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback follows durable readbacks outside guard and cheap cancellation precedes guarded move"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "caller buffer and mutable proposed wraps cannot change frozen installation bytes"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "cheap cancellation check inside final guard prevents rename after callback"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each corrupted retained or install readback refuses active replacement"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each directory sync failure distinguishes old active from visible new uncertain generation"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "final callback tampering is caught by repeated retained and install readbacks"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "install symlink is refused without altering its target or old active bytes"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "known completed rename followed by old byte restoration is unknown not no mutation"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained new bytes matching active"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained old bytes matching active"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions after changing active bytes report new active durability uncertain"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions before changing active bytes report old active not durable"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "oversized install readback is refused and retained without truncation"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "partial attempt is never reused or erased after install failure"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename IO runtime and cancellation failures retain truthful new active state"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename revocation returns unknown and fresh observation finds new active without durability authority"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt during postrename sync and returns unknown with new bytes preserved"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while durable directory IO is blocked outside production guard"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while final validation is blocked outside production guard"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "UUID generation StrongBox and legacy source guards reject before fresh proof"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "caller mutation during authentication cannot substitute the proved candidate"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "cancellation and authentication error at either fresh factor preserve every original"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "coroutine cancellation during auth preserves evidence and releases closed lease"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "distinct coordinator and provider cannot enter during fresh authentication"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "failed transaction attempt is retained and cannot be reused by fresh proof"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "final transaction validation rejects changed source and staged bytes after durable writes"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "fresh proof and both exact authenticated readbacks activate metadata without unlocking"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "invalid candidate length is consumed before proof or authentication"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing earlier factor alias during later auth or final validation cannot commit"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing or invalidated staged alias cannot fall back or regenerate material"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "old generation overflow cannot authorize a v2 replacement"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "oversized and symbolic linked evidence is refused without fresh proof"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "poison reset marker journal and admitted ordinary owner refuse before proof"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename IO or cancellation reports committed uncertain durability without unlocking"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename lock reports unknown instead of generic cancellation and never rolls back"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "prepared UUID and wrong candidate cannot reuse preparation proof or authentication"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "production provider lock during either factor revokes late success and retains exclusion"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "proof callback cannot replace private ciphertext and still claim verification"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "recomputed checksum cannot bless header or either factor ciphertext tampering"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "revocation does not wait for blocked transaction IO and prevents rename"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "source or staged mutation during either suspended factor cannot reach commit"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "substituted Cipher is rejected for either factor even with identical alias and IV"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "valid wraps without factor AAD or with wrong candidate cannot authorize activation"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "active readback after successful move must equal intended bytes"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback IO runtime and cancellation failures cannot rename and preserve all evidence"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback follows durable readbacks outside guard and cheap cancellation precedes guarded move"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "caller buffer and mutable proposed wraps cannot change frozen installation bytes"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "cheap cancellation check inside final guard prevents rename after callback"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each corrupted retained or install readback refuses active replacement"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each directory sync failure distinguishes old active from visible new uncertain generation"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "final callback tampering is caught by repeated retained and install readbacks"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "install symlink is refused without altering its target or old active bytes"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "known completed rename followed by old byte restoration is unknown not no mutation"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained new bytes matching active"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained old bytes matching active"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions after changing active bytes report new active durability uncertain"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions before changing active bytes report old active not durable"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "oversized install readback is refused and retained without truncation"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "partial attempt is never reused or erased after install failure"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename IO runtime and cancellation failures retain truthful new active state"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename revocation returns unknown and fresh observation finds new active without durability authority"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt during postrename sync and returns unknown with new bytes preserved"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while durable directory IO is blocked outside production guard"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while final validation is blocked outside production guard"
+      ]
+    ],
+    "retained_skip_identities": [
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "embed_documents_returns_256_bytes_each"
+      ],
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "embed_documents_same_text_returns_same_vector"
+      ],
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "embed_query_differs_from_embed_documents_for_same_text"
+      ],
+      [
+        "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "rerank_throws_when_unsupported"
+      ],
+      [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+        "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+        "importImage_without_a_vision_model_creates_only_the_attachment"
+      ],
+      [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+        "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+        "importImage_without_a_vision_model_creates_only_the_attachment"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-443__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-443__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-524__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatEmpty[fold-outer-524__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-443__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-443__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-524__dark__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "chatStreaming[fold-outer-524__light__fs150]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007__dark__fs100]"
+      ],
+      [
+        "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "drawerOpen[fold-inner-1007__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "file[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "list[phone__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[phone__dark__fs100]"
+      ],
+      [
+        "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "note[phone__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[phone__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "centred[phone__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[phone__dark__fs100]"
+      ],
+      [
+        "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "empty[phone__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[phone__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "details[phone__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[phone__dark__fs100]"
+      ],
+      [
+        "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "list[phone__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[phone__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "categories[phone__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[phone__dark__fs100]"
+      ],
+      [
+        "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "category[phone__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[fold-inner-1007__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[phone__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "drawerOpen[phone__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-inner-1007-land__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-inner-1007-land__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-443__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-443__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-524__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[fold-outer-524__light__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[phone__dark__fs100]"
+      ],
+      [
+        "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "rail[phone__light__fs100]"
+      ]
+    ]
+  },
+  "apk": {
+    "bytes": 128112723,
+    "sha256": "0c97db51f44ab280e75e8561d54466d4e6f58796140f00da6e45c318778112b1",
+    "prior_sha256": "ddf069ad8e9443bc01ee3ae5b33132bed880e5c9fecd8ce27433799255505c38",
+    "manifest_bytes_equal_prior": true,
+    "decoded_manifest_equal_prior": true,
+    "decoded_manifest_sha256": "9967d1f0bddc1f613bf479bc861f102a0bdaee5fd0d88a730161b0f216212c16",
+    "native_payloads_all_7_byte_equal_prior": [
+      {
+        "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+        "bytes": 10096,
+        "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+      },
+      {
+        "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+        "bytes": 7784,
+        "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime.so",
+        "bytes": 27985944,
+        "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+        "bytes": 83208,
+        "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_llama.so",
+        "bytes": 33413256,
+        "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite.so",
+        "bytes": 6269000,
+        "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+        "bytes": 22320,
+        "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+      }
+    ],
+    "changed_dex_entries": [
+      {
+        "path": "classes13.dex",
+        "prior_bytes": 262232,
+        "current_bytes": 287984,
+        "prior_sha256": "c0e6e762d03a3d6faa1177ffa3d9e6e42cb55a17372af5f1f61dfafb2d1b5e9e",
+        "current_sha256": "32ab46ff6cd4b725e5435579b543707efe238035228ff85753dc49613ab7c70d"
+      }
+    ],
+    "activation_class_present_in": [
+      "classes13.dex"
+    ],
+    "installed_apk_attestation": false
+  },
+  "host_gate": {
+    "exit": 0,
+    "gradle_log_sha256": "6ac83df9c626c0136ab2e03292dcd2c2522dc35b820bee48e66d94e6d9299fae",
+    "tasks": {
+      "total": 1503,
+      "executed": 233,
+      "from_cache": 3,
+      "up_to_date": 1267
+    },
+    "selected_task_attribution": {
+      ":core:vault:runKtlintCheckOverTestSourceSet": "EXECUTED",
+      ":app:lint": "EXECUTED",
+      ":core:vault:lint": "EXECUTED",
+      ":core:vault:testDevDebugUnitTest": "EXECUTED",
+      ":core:vault:testFossDebugUnitTest": "EXECUTED",
+      ":app:assembleFossDebug": "EXECUTED",
+      ":app:compileDevDebugAndroidTestKotlin": "EXECUTED",
+      ":app:compileFossDebugAndroidTestKotlin": "EXECUTED",
+      ":core:vault:compileDevDebugAndroidTestKotlin": "UP-TO-DATE",
+      ":core:vault:compileFossDebugAndroidTestKotlin": "UP-TO-DATE",
+      ":feature:shell:compileDebugAndroidTestKotlin": "EXECUTED",
+      ":feature:editor:compileDebugAndroidTestKotlin": "EXECUTED"
+    },
+    "all_unit_task_status_counts": {
+      "EXECUTED": 13,
+      "UP-TO-DATE": 8,
+      "NO-SOURCE": 2
+    },
+    "source_head_status_static": true,
+    "owned_processes_stopped_per_retained_inventory": true,
+    "newer_runtime_lease_not_assessed": true
+  },
+  "boundaries": [
+    "Host output XML includes incremental task outputs; do not describe all 5862 cases as newly executed. Both changed core:vault Dev/FOSS unit tasks executed.",
+    "One skipped stack trace differs only by generated reflection accessor numbering; 86 skip identities, attributes and reasons are unchanged.",
+    "The unchanged 84 Python CI-tool tests are historical, not rerun in this gate.",
+    "No screenshot rerun or new UI/quality/model evaluation acceptance. Quality/model/gold evidence remained unopened.",
+    "FOSS artifact is host-built only; no installed-byte, Android runtime, hardware Keystore, public recovery flow, owner data or physical acceptance is established here.",
+    "Reviewer ran no build/tests/device actions or source edits. Read-only aapt2 manifest decoding only."
+  ]
+}

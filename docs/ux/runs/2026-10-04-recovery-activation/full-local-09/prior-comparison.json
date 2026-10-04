@@ -1,0 +1,741 @@
+{
+  "prior_application_source": "4b5c6e43b5944d0461c27fe1c7283079b9794a9a",
+  "prior_archive_sha256": "594c202a4218f23df54c5a8e81d4eba87a61624e684d0ad2068d6e564ef28cca",
+  "actual_archive_sha256": "160e27e71d674a907d6e81e8a8f5b80bc5dd2c664112487cbce5555f92e1d697",
+  "prior_xml_files": 573,
+  "actual_xml_files": 575,
+  "actual_outcomes": {
+    "passed": 5776,
+    "skipped": 86
+  },
+  "removed": [],
+  "changed_prior_outcomes_or_skip_details": [
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+      "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+      "importImage_without_a_vision_model_creates_only_the_attachment"
+    ]
+  ],
+  "added": [
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "UUID generation StrongBox and legacy source guards reject before fresh proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "caller mutation during authentication cannot substitute the proved candidate"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "cancellation and authentication error at either fresh factor preserve every original"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "coroutine cancellation during auth preserves evidence and releases closed lease"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "distinct coordinator and provider cannot enter during fresh authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "failed transaction attempt is retained and cannot be reused by fresh proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "final transaction validation rejects changed source and staged bytes after durable writes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "fresh proof and both exact authenticated readbacks activate metadata without unlocking"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "invalid candidate length is consumed before proof or authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing earlier factor alias during later auth or final validation cannot commit"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing or invalidated staged alias cannot fall back or regenerate material"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "old generation overflow cannot authorize a v2 replacement"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "oversized and symbolic linked evidence is refused without fresh proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "poison reset marker journal and admitted ordinary owner refuse before proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename IO or cancellation reports committed uncertain durability without unlocking"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename lock reports unknown instead of generic cancellation and never rolls back"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "prepared UUID and wrong candidate cannot reuse preparation proof or authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "production provider lock during either factor revokes late success and retains exclusion"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "proof callback cannot replace private ciphertext and still claim verification"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "recomputed checksum cannot bless header or either factor ciphertext tampering"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "revocation does not wait for blocked transaction IO and prevents rename"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "source or staged mutation during either suspended factor cannot reach commit"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "substituted Cipher is rejected for either factor even with identical alias and IV"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "valid wraps without factor AAD or with wrong candidate cannot authorize activation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "active readback after successful move must equal intended bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback IO runtime and cancellation failures cannot rename and preserve all evidence"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback follows durable readbacks outside guard and cheap cancellation precedes guarded move"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "caller buffer and mutable proposed wraps cannot change frozen installation bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "cheap cancellation check inside final guard prevents rename after callback"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each corrupted retained or install readback refuses active replacement"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each directory sync failure distinguishes old active from visible new uncertain generation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "final callback tampering is caught by repeated retained and install readbacks"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "install symlink is refused without altering its target or old active bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "known completed rename followed by old byte restoration is unknown not no mutation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained new bytes matching active"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained old bytes matching active"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions after changing active bytes report new active durability uncertain"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions before changing active bytes report old active not durable"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "oversized install readback is refused and retained without truncation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "partial attempt is never reused or erased after install failure"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename IO runtime and cancellation failures retain truthful new active state"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename revocation returns unknown and fresh observation finds new active without durability authority"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt during postrename sync and returns unknown with new bytes preserved"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while durable directory IO is blocked outside production guard"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while final validation is blocked outside production guard"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "UUID generation StrongBox and legacy source guards reject before fresh proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "caller mutation during authentication cannot substitute the proved candidate"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "cancellation and authentication error at either fresh factor preserve every original"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "coroutine cancellation during auth preserves evidence and releases closed lease"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "distinct coordinator and provider cannot enter during fresh authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "failed transaction attempt is retained and cannot be reused by fresh proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "final transaction validation rejects changed source and staged bytes after durable writes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "fresh proof and both exact authenticated readbacks activate metadata without unlocking"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "invalid candidate length is consumed before proof or authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing earlier factor alias during later auth or final validation cannot commit"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "missing or invalidated staged alias cannot fall back or regenerate material"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "old generation overflow cannot authorize a v2 replacement"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "oversized and symbolic linked evidence is refused without fresh proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "poison reset marker journal and admitted ordinary owner refuse before proof"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename IO or cancellation reports committed uncertain durability without unlocking"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "postrename lock reports unknown instead of generic cancellation and never rolls back"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "prepared UUID and wrong candidate cannot reuse preparation proof or authentication"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "production provider lock during either factor revokes late success and retains exclusion"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "proof callback cannot replace private ciphertext and still claim verification"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "recomputed checksum cannot bless header or either factor ciphertext tampering"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "revocation does not wait for blocked transaction IO and prevents rename"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "source or staged mutation during either suspended factor cannot reach commit"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "substituted Cipher is rejected for either factor even with identical alias and IV"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+        "valid wraps without factor AAD or with wrong candidate cannot authorize activation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "active readback after successful move must equal intended bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback IO runtime and cancellation failures cannot rename and preserve all evidence"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "callback follows durable readbacks outside guard and cheap cancellation precedes guarded move"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "caller buffer and mutable proposed wraps cannot change frozen installation bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "cheap cancellation check inside final guard prevents rename after callback"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each corrupted retained or install readback refuses active replacement"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "each directory sync failure distinguishes old active from visible new uncertain generation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "final callback tampering is caught by repeated retained and install readbacks"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "install symlink is refused without altering its target or old active bytes"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "known completed rename followed by old byte restoration is unknown not no mutation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained new bytes matching active"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "live observation cannot bless tampered retained old bytes matching active"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions after changing active bytes report new active durability uncertain"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "move exceptions before changing active bytes report old active not durable"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "oversized install readback is refused and retained without truncation"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "partial attempt is never reused or erased after install failure"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename IO runtime and cancellation failures retain truthful new active state"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "postrename revocation returns unknown and fresh observation finds new active without durability authority"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt during postrename sync and returns unknown with new bytes preserved"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while durable directory IO is blocked outside production guard"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "identity": [
+        "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "revocation is prompt while final validation is blocked outside production guard"
+      ],
+      "outcome": "passed"
+    }
+  ]
+}

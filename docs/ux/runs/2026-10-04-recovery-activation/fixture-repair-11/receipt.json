@@ -1,0 +1,18 @@
+{
+  "source": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "argv": [
+    "./gradlew",
+    "--offline",
+    "--no-daemon",
+    "--max-workers=2",
+    ":core:vault:ktlintCheck",
+    ":core:vault:compileDevDebugAndroidTestKotlin",
+    ":core:vault:compileFossDebugAndroidTestKotlin",
+    "--stacktrace"
+  ],
+  "exit": 0,
+  "source_static": true,
+  "owned_processes_stopped": true,
+  "fresh_unit_result_claim": false,
+  "scope": "One instrumentation fixture correction only; full host/application result remains52acc3114."
+}

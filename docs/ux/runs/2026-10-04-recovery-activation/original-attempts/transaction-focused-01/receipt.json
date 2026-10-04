@@ -1,0 +1,7 @@
+{
+  "source": "b9c81d5acb987efea5f7df968b6713043e75cb1c",
+  "exit": 1,
+  "scope": "ktlint failed before tests; prior XML excluded",
+  "owned_processes_stopped": true,
+  "fresh_unit_result_claim": false
+}

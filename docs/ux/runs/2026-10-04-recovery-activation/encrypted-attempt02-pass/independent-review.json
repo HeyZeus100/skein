@@ -1,0 +1,237 @@
+{
+  "result": "PASS bounded same-process encrypted runtime audit",
+  "reviewer": "application_context",
+  "source": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "unchanged_production_source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "only_source_delta_from_host_gate": "Test fixture now requires exact non-StrongBox fallback(1) and persisted strongBoxBacked=false; no production change.",
+  "source_files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt",
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt",
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt",
+      "bytes": 6000,
+      "sha256": "191524caa5f2b48245b1057ccfa90247f21ab3c26f758bc6992925404f815f76"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt",
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt",
+      "bytes": 25368,
+      "sha256": "ca6e84ed11d4b26dc1a05b6d893c851f1c8e594e44864f8fc308942e94df2e2f"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  ],
+  "controller_sha256": "55318250ee542b0b09d57f42d5362c13fc0a2b72bb03e1c7d4628a962bc5c36d",
+  "result_sha256": "548e96f5c5f51ee15c898ed1a5ee0b1f36dd44e78e45b5e3971355ad1b7b8626",
+  "terminal_seal_sha256": "dfbe5645c2c5f9d004ad3eacb52a2ab3c409d78fbc44c39807f5b561743d5814",
+  "actual_archive_sha256": "c5e2155035a20f7d45c230b65161f998ff04d57907bb1b942f0c61d3ce99828a",
+  "actual_xml": [
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_recovery_42c502df4a1f4cc6a51cf41937baf3b0(AVD) - 15.xml",
+      "bytes": 3943,
+      "sha256": "7a0df4b6259cea96dc9397be38c4d697463889899e0fdfa42dfc182ab67581d6",
+      "testcases": 16
+    }
+  ],
+  "actual_counts": {
+    "passed": 16,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0,
+    "duplicates": 0,
+    "missing": 0,
+    "unexpected": 0
+  },
+  "actual_identities": [
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "cancellationDuringSecondAuthenticationZerosInputAndReleasesClosedVaultLease"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "eitherAuthenticatedWrapOfAnotherKeyCannotBorrowTheProvedDatabaseCandidate"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "injectedBeforeRenameIoRetainsExactEvidenceAndFreshInspectionObservesOldOnly"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "injectedPostRenameDirectorySyncIoReportsVisibleNewWithUncertainDurability"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "liveStageTamperDuringSecondAuthenticationCannotReachRename"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "nativeProofAndBothFreshReadbacksActivateMetadataOnlyThenBothNormalFactorsRead"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "postRenameRevocationIsUnknownUntilFreshLeaseObservationWithoutUnlockAuthority"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "recomputedChecksumCannotAuthenticateChangedStagedHeader"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "revocationDuringSecondAuthenticationRefusesAndPreservesBothOriginalWraps"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "substitutingEitherAuthenticatedCipherRefusesWithoutChangingEncryptedSources"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "wrongCandidateFailsFreshNativeProofBeforeAuthenticationOrTransaction"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "proofNeverMigratesOlderSupportedSchema"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources"
+    ]
+  ],
+  "exact_original_11_plus_5_gate_preserved": true,
+  "runtime_scope": "Actual API35 Google APIs ARM64 emulator; native SQLCipher JNI/proof, production exclusion and filesystem replacement; disposable encrypted database and synthetic in-memory AES/auth callbacks.",
+  "supported_behaviors": [
+    "Fresh native candidate proof and both exact authenticated-wrap readbacks before metadata-only activation; later normal provider factor reads in the same process.",
+    "Wrong candidate, either Cipher substitution, wrong wrapped candidate, AAD/header and staged-byte tamper rejection with original encrypted sources preserved.",
+    "Cancellation/revocation during authentication; injected pre-rename IO evidence retained and observed old.",
+    "Injected post-rename sync IO reports visible new with uncertain durability; post-rename revocation reports UNKNOWN followed by fresh-lease observation in the same process.",
+    "Five previously consumed native-proof regression methods all execute and pass."
+  ],
+  "retained_host_apks": [
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "bytes": 53800503,
+      "sha256": "df3c0f6a1900c4e3c69ed951db3394c62fc0c3583d636a39410c076172a101a4",
+      "both_expected_class_descriptors": {
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest": [
+          "classes25.dex"
+        ],
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest": [
+          "classes25.dex"
+        ]
+      },
+      "binary_manifest_sha256": "32cc72ae3c5a3c897685b53b50d87d45564782c242066eb014bcf4d581ad4961",
+      "manifest_bytes_unchanged_from_attempt01": true
+    }
+  ],
+  "native_entries_all_byte_equal_attempt01": [
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+      "bytes": 10096,
+      "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "bytes": 6269000,
+      "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+      "bytes": 22320,
+      "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libandroidx.graphics.path.so",
+      "bytes": 10760,
+      "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite.so",
+      "bytes": 6700000,
+      "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite_jni.so",
+      "bytes": 22080,
+      "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68"
+    }
+  ],
+  "sdk_binding": {
+    "platform": "macOS/API35/google_apis/arm64-v8a",
+    "image_payload_count": 30,
+    "all_recorded_image_payload_hashes_verified": true,
+    "recorded_emulator_qemu_adb_hashes_verified": true,
+    "image_installation_receipt_sha256": "028719046165d3a5771447c224cb9b8eac97f52892be945676ab872f4f1663c2"
+  },
+  "commands_recorded_hashes_verified": 116,
+  "synthetic_unlock_observed": true,
+  "gradle_attribution": {
+    "exit": 0,
+    "task": "core:vault:connectedDevDebugAndroidTest",
+    "executed": true,
+    "task_counts": {
+      "total": 106,
+      "executed": 9,
+      "up_to_date": 97
+    },
+    "package_filter_only": true
+  },
+  "cleanup": {
+    "owned_emulator_exit": 0,
+    "owned_emulator_ports_empty": true,
+    "owner_avd_inventory_unchanged": true,
+    "owned_gradle_terminal_proven": true,
+    "new_gradle_candidates_empty": true,
+    "both_matching_leases_released": true,
+    "no_matching_run_lease_present_at_review": true
+  },
+  "boundaries": [
+    "Original attempt01 remains failed evidence; its multi-class omission remains unexplained. Package filter changes selection plumbing, not the exact sixteen-case acceptance gate.",
+    "Fresh-lease reinspection is same-process. No process death, restart recovery or power-loss durability acceptance.",
+    "Synthetic factor keys/auth callbacks do not establish Android per-use Keystore authentication, hardware alias generation/invalidation or StrongBox acceptance.",
+    "No public recovery wiring, owner data operation, installed APK readback or physical Fold acceptance.",
+    "API35 ARM64 compatibility only; x86_64 payload presence is not an x86_64 runtime claim.",
+    "No quality cases, model payload or gold evidence opened. Reviewer ran no build, tests, device operations or source edits."
+  ]
+}

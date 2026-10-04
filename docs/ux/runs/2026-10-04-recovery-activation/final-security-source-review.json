@@ -1,0 +1,57 @@
+{
+  "created": "2026-10-04T20:32:44.198515+00:00",
+  "status": "SOURCE_REVIEW_PASS_RUNTIME_PENDING",
+  "reviewer": "/root/fold_transport",
+  "source_sha": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "production_source_sha": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "only_delta_from_host_checkpoint": [
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt"
+  ],
+  "clean_status": "",
+  "sources": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt": {
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": {
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt": {
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt": {
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt": {
+      "bytes": 6000,
+      "sha256": "191524caa5f2b48245b1057ccfa90247f21ab3c26f758bc6992925404f815f76"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt": {
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusion.kt": {
+      "bytes": 3456,
+      "sha256": "17c7901e474dd927f4a7472e4cd10e81986a1b391d13e09eee55e88432619e89"
+    }
+  },
+  "resolved_followup": "Both known staged aliases are revalidated at entry, around authentication, and final precommit callback. No alias create/delete or Keystore call occurs under the revocation monitor. Existence is not hardware alias-generation attestation or a guarantee against later invalidation.",
+  "confirmed_boundaries": [
+    "Caller candidate consumed before admission; fresh actual proof is required in each invocation.",
+    "Private canonical old/new stage bytes bind UUID/generation/StrongBox policy and both exact Cipher/AAD/readback comparisons.",
+    "All private candidate/readback arrays have finally-zeroization; publication is metadata only, no provider currentKey/session/token.",
+    "Full hashes/fsync/authentication stay outside the production revocation monitor; final guarded checks are cancellation, bounded active equality and atomic rename.",
+    "Any uncertain post-entry/possible-rename outcome remains an observation/UNKNOWN. Retained evidence is never erased or reused; fresh-lease reconcile reads bytes only and grants no authority."
+  ],
+  "acceptance_limits": [
+    "Current native harness reinspection is same-process fresh-lease only, not process-death/restart or power-loss.",
+    "A cancelled parent Job may not deliver an Observed return; interruption cannot imply unchanged active bytes. Fresh observational reconciliation is required.",
+    "Synthetic in-memory AES/auth is not real per-use AndroidKeyStore, StrongBox, physical Fold, or public/app recovery wiring.",
+    "Legacy v1 destructive rewrap/public integration remains separately open."
+  ],
+  "runtime_attempt01": "Preserved FAIL11fixture failures, missing5; no native activation operation reached.",
+  "runtime_attempt02": "Currently running under separate root grant; no acceptance claim yet."
+}

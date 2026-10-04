@@ -1,0 +1,28 @@
+diff --git a/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt b/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt
+index c4aa15a8f..918284418 100644
+--- a/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt
++++ b/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt
+@@ -80,18 +80,18 @@ internal class RecoveryEnvelopeTransaction(
+             val next = File(transaction, "install.envelope")
+             syncWrite(next, encoded)
+             boundary(Boundary.INSTALL_SYNCED)
+-            assertReadbacks(transaction, next, old, encoded)
++            Unit // intentional host-only mutant: omit retained readback
+             lease.assertExclusiveAndClosed()
+             boundary(Boundary.BEFORE_RENAME)
+-            validateBeforeCommit()
++            Unit // intentional host-only mutant: omit caller validation
+             // Reject any altered install/retained bytes, including changes at the final callback.
+-            assertReadbacks(transaction, next, old, encoded)
++            Unit // intentional host-only mutant: omit retained readback
+             val replaced =
+-                lease.whileExclusiveAndClosed {
++                run { // intentional host-only mutant: unguarded publication
+                     // Only a cheap cancellation assertion belongs under this monitor.
+                     checkCancellation()
+                     lease.assertExclusiveAndClosed()
+-                    if (!read(active).contentEquals(old)) {
++                    if (false) { // intentional host-only mutant: omit active equality
+                         false
+                     } else {
+                         atomicMove(next, active)

@@ -1,0 +1,180 @@
+{
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "apk_bytes": 128112723,
+  "apk_sha256": "0c97db51f44ab280e75e8561d54466d4e6f58796140f00da6e45c318778112b1",
+  "entries": [
+    {
+      "path": "classes.dex",
+      "bytes": 18115732,
+      "sha256": "efee8b809555d8d1e9e637fd54827e3cd6550bf1bde5f7ef90172894f26c66cc"
+    },
+    {
+      "path": "classes12.dex",
+      "bytes": 62756,
+      "sha256": "bd4e2922e98fd7b23ffa97ce8b9d27d7d2cae21c6668b6da5f0bca68e4dbdc73"
+    },
+    {
+      "path": "classes15.dex",
+      "bytes": 192496,
+      "sha256": "5b906aa1494dbdaf40631f5a99735e3a9f8ac10aad0a8cca341082925a085907"
+    },
+    {
+      "path": "classes17.dex",
+      "bytes": 56008,
+      "sha256": "5462160fa48f7714d4461d939e2de04881396036493a6bbdff0fa300c9429c81"
+    },
+    {
+      "path": "classes18.dex",
+      "bytes": 21784,
+      "sha256": "b115c1a86db54fd6d9685afb40ba2dfe2fc3cf8958670094863db01e7517b997"
+    },
+    {
+      "path": "classes20.dex",
+      "bytes": 31448,
+      "sha256": "9c10e65c99ae8657fde0aa5d639cb45973ac7d040e57952f1f96e3b79e8bb6a4"
+    },
+    {
+      "path": "classes22.dex",
+      "bytes": 126548,
+      "sha256": "b1ee10688700125c98105232e5bdcf6e0ea6ebb0af9918dac9a88ca5c35dac79"
+    },
+    {
+      "path": "classes23.dex",
+      "bytes": 78268,
+      "sha256": "0c6277b2be9849255c5fe0a162387462634a9d5bd2440550ac86b13cbf0580a1"
+    },
+    {
+      "path": "classes24.dex",
+      "bytes": 12663748,
+      "sha256": "3670f48c8e54296795b96b605dc482c5694db29966dd681527af0ee65771f9f7"
+    },
+    {
+      "path": "classes25.dex",
+      "bytes": 12065092,
+      "sha256": "d284fe9a6c15ec6789ce6e4eec6296c3bdb8ce48744c753cd5fc0395c89a56e5"
+    },
+    {
+      "path": "classes26.dex",
+      "bytes": 616748,
+      "sha256": "22351011d6c078a3ae02ff719cd30517dca329457370d8fea892240187346fff"
+    },
+    {
+      "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+      "bytes": 10096,
+      "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+    },
+    {
+      "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+      "bytes": 7784,
+      "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+    },
+    {
+      "path": "lib/arm64-v8a/libonnxruntime.so",
+      "bytes": 27985944,
+      "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+    },
+    {
+      "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+      "bytes": 83208,
+      "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+    },
+    {
+      "path": "lib/arm64-v8a/libskein_llama.so",
+      "bytes": 33413256,
+      "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+    },
+    {
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "bytes": 6269000,
+      "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+    },
+    {
+      "path": "AndroidManifest.xml",
+      "bytes": 10088,
+      "sha256": "5cbe490d4a4ba6d007096486094511ab2baef4c573c0b1d093242562ac41aacb"
+    },
+    {
+      "path": "classes16.dex",
+      "bytes": 190748,
+      "sha256": "cce808e0015c1667cbca1c1e18aefd84b5ed1cec4c1c749dedf471e578996110"
+    },
+    {
+      "path": "classes4.dex",
+      "bytes": 215740,
+      "sha256": "3e94a756cd707a7429217dc93f4fd14c228ef002b609f2b40ee40f0087912568"
+    },
+    {
+      "path": "classes14.dex",
+      "bytes": 230684,
+      "sha256": "b9b637afa45ecaa0951467f4cba21b79e5bf3f23eec02033b4a10868e9de7b41"
+    },
+    {
+      "path": "classes19.dex",
+      "bytes": 245476,
+      "sha256": "9e4a61a6e928b1f8962c8f429ed5bfdcc0eeeee13a52e20c85c8756936863683"
+    },
+    {
+      "path": "classes7.dex",
+      "bytes": 726324,
+      "sha256": "ea38024ec7d8242231ea19ebddd170a77d3188371388b888d7a9f2edde4f1cbe"
+    },
+    {
+      "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+      "bytes": 22320,
+      "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+    },
+    {
+      "path": "classes10.dex",
+      "bytes": 538984,
+      "sha256": "f11b972322cf95b73f7862042802e6c75fa49a92d48c47eb4b6c16e7972bb705"
+    },
+    {
+      "path": "classes2.dex",
+      "bytes": 283276,
+      "sha256": "57f7b1bc0048f1ef8f001089bee788374bf0c309fd2c9a45fbe1e9c7e7269317"
+    },
+    {
+      "path": "classes3.dex",
+      "bytes": 385916,
+      "sha256": "b7c21b0d625329af42d5c67c3d64f7934578f6bbc7d3a9b3fab34a124427c0ae"
+    },
+    {
+      "path": "classes6.dex",
+      "bytes": 1012636,
+      "sha256": "191c8af7bfb4eecbcd013ebd6f17c93eb1f528e0d9d8df00b3429d8d19f2dbde"
+    },
+    {
+      "path": "classes8.dex",
+      "bytes": 351788,
+      "sha256": "3a646e55a05a8b7946530cd85ed6df6d9c3d57d2d7863c34e7fbb026601f6fd6"
+    },
+    {
+      "path": "classes11.dex",
+      "bytes": 727760,
+      "sha256": "1b94f9ad3dd6c82522048afdfd3524d2892e8ef543189b7b7fc39e850f6a58a8"
+    },
+    {
+      "path": "classes9.dex",
+      "bytes": 471120,
+      "sha256": "70228c13cc778297bc124b78c8ec34c5f095cd36d34c5584f05571d64626b9ae"
+    },
+    {
+      "path": "classes21.dex",
+      "bytes": 168080,
+      "sha256": "b0a08752d431a8d7952845310bfff7b110f703c6efa148018456eb08558bf39b"
+    },
+    {
+      "path": "classes5.dex",
+      "bytes": 881056,
+      "sha256": "0c60223c439da058a27b4a8eef584dd10809808966a2174d9ee84e2d6d99c6fc"
+    },
+    {
+      "path": "classes13.dex",
+      "bytes": 287984,
+      "sha256": "32ab46ff6cd4b725e5435579b543707efe238035228ff85753dc49613ab7c70d"
+    }
+  ],
+  "prior_apk_sha256": "ddf069ad8e9443bc01ee3ae5b33132bed880e5c9fecd8ce27433799255505c38",
+  "native_and_manifest_equal_prior": true,
+  "installed_apk_attestation": false
+}

@@ -1,0 +1,213 @@
+{
+  "created": "2026-10-04T20:25:50.981747+00:00",
+  "status": "TERMINAL_FAIL_ORIGINAL_RUN_SEALED_NO_RETRY",
+  "source_sha": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "final_source_sha": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "final_status": "",
+  "counts": {
+    "tests": 11,
+    "failure": 11,
+    "error": 0,
+    "skipped": 0
+  },
+  "result": {
+    "bytes": 80706,
+    "sha256": "79043719dfd74964db1849f4b0abcde49a2bd2d8ca56af5c6ebab051d5bb6f6d"
+  },
+  "raw_archive": {
+    "bytes": 32031,
+    "sha256": "9492ca26b84d1c2c32f5e89c9f72886b4ffac90da911ae36f51dc02facd689d7"
+  },
+  "raw_xml": [
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_recovery_6d32ab4f8e9e4a9d874b2b4d0cad0f66(AVD) - 15.xml",
+      "bytes": 22666,
+      "sha256": "b9f76c431a011af49b025059101b81435cfb9533e6e1a412eebd1b45cca0223f",
+      "testcases": 11
+    }
+  ],
+  "apk": [
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "bytes": 53800503,
+      "sha256": "56dc17248915e664f73f075ced8aebe0d5e95716a300b4f8c35a0984c78a84c0",
+      "attribution": "host DEV vault instrumentation APK output; no installed APK readback"
+    }
+  ],
+  "case_failures": [
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "nativeProofAndBothFreshReadbacksActivateMetadataOnlyThenBothNormalFactorsRead",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "wrongCandidateFailsFreshNativeProofBeforeAuthenticationOrTransaction",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "injectedPostRenameDirectorySyncIoReportsVisibleNewWithUncertainDurability",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "injectedBeforeRenameIoRetainsExactEvidenceAndFreshInspectionObservesOldOnly",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "revocationDuringSecondAuthenticationRefusesAndPreservesBothOriginalWraps",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "postRenameRevocationIsUnknownUntilFreshLeaseObservationWithoutUnlockAuthority",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "eitherAuthenticatedWrapOfAnotherKeyCannotBorrowTheProvedDatabaseCandidate",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "substitutingEitherAuthenticatedCipherRefusesWithoutChangingEncryptedSources",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "recomputedChecksumCannotAuthenticateChangedStagedHeader",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "liveStageTamperDuringSecondAuthenticationCannotReachRename",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "cancellationDuringSecondAuthenticationZerosInputAndReleasesClosedVaultLease",
+      "failure_count": 1,
+      "first_failure_lines": [
+        [
+          "expected instance of: app.skein.core.vault.key.SetupResult.Success",
+          "but was instance of : app.skein.core.vault.key.SetupResult.StrongBoxUnavailableFallback",
+          "with value          : StrongBoxUnavailableFallback(masterKeyVersion=1)"
+        ]
+      ]
+    }
+  ],
+  "missing_identities": [
+    [
+      "core/vault",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint"
+    ],
+    [
+      "core/vault",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources"
+    ],
+    [
+      "core/vault",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate"
+    ],
+    [
+      "core/vault",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "proofNeverMigratesOlderSupportedSchema"
+    ],
+    [
+      "core/vault",
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources"
+    ]
+  ],
+  "emulator_exit": 0,
+  "listeners": {
+    "5580": [],
+    "5581": []
+  },
+  "released_leases": [
+    "device.lock"
+  ],
+  "retained_leases": [
+    {
+      "path": "/Users/andrewherrera/skein-session-coordination/20260929/build.lock",
+      "reason": "Gradle successful terminal completion not proven; coordinator must establish daemon termination before release."
+    }
+  ],
+  "attribution": "All11 new methods failed synthetic non-StrongBox setup expectation before native DB creation/proof/activation. Existing5 proof methods missing; no native activation acceptance. No process death/restart/power-loss/per-use Android auth/StrongBox/physical acceptance. Original result remains unchanged; supplemental independent terminal proof may later release retained build lease."
+}

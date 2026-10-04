@@ -1,0 +1,232 @@
+{
+  "result": "PASS: retained negative-control evidence and restoration verified",
+  "reviewer": "application_context",
+  "positive_reference": "activation-focused-05 actual XML; final 52acc3114 test annotation change checked separately",
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "production_hashes": {
+    "AuthenticatedRecoveryActivation.kt": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946",
+    "RecoveryEnvelopeTransaction.kt": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+  },
+  "runs": [
+    {
+      "label": "negative-06-fresh-proof",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+      "xml_files": [
+        {
+          "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+          "sha256": "2d7c436886fc6063452b2ea02c6fd42536e17aa879719f8828cdb68d406d4eac",
+          "cases": 24
+        },
+        {
+          "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+          "sha256": "5b3554acbfbfd845d14d9792c6ac76ce19b09ec98c4dff5dff813665fd2a12c8",
+          "cases": 28
+        }
+      ],
+      "cases": 52,
+      "passed": 49,
+      "failure": 3,
+      "error": 0,
+      "skipped": 0,
+      "same_52_positive_identities": true,
+      "failing_cases": [
+        {
+          "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+          "test": "proof callback cannot replace private ciphertext and still claim verification",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: ProofRejected(result=UNAVAILABLE)\nbut was : Unavailable"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+          "test": "prepared UUID and wrong candidate cannot reuse preparation proof or authentication",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: ProofRejected(result=WRONG_KEY_OR_CORRUPT)\nbut was : Unavailable"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+          "test": "fresh proof and both exact authenticated readbacks activate metadata without unlocking",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: 1\nbut was : 0"
+        }
+      ],
+      "mutant_source_hashes": {
+        "AuthenticatedRecoveryActivation.kt": "530e3438a904b8bfbe9d506a3a700726fe69047fa66f6be6e30385b6b8190386",
+        "RecoveryEnvelopeTransaction.kt": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+      },
+      "patch_sha256": "d552bd761efab6a3d09e42cc44e67a9b116d293c10445a45f8e4baf1efb23d0d",
+      "xml_archive_sha256": "fdc55db2831f56da086e7e041572ccb0a9baa2f5dd900c84a097e03fa6229a4a",
+      "gradle_log_sha256": "c8ff858e4370ea247574423184c4d6a64758506fe1dc8a44154031cc0c07d3f2",
+      "source_static_during_run": true,
+      "unchanged_nonmutated_source_inventory": true,
+      "test_failure_not_compile_failure": true,
+      "exact_production_restoration_verified": true,
+      "owned_processes_stopped_per_retained_inventory": true,
+      "interpretation": "Replaces native-proof invocation with VERIFIED. Two refusal cases become Unavailable when forbidden authentication is attempted; success control observes zero proof calls. This proves invocation/refusal semantics, not a wrong-key commit."
+    },
+    {
+      "label": "negative-07-wrap-binding",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+      "xml_files": [
+        {
+          "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+          "sha256": "fdc56cd7249cb1cf7cd720243c1407fc3e012c7156d6c11180873f737f76bf18",
+          "cases": 24
+        },
+        {
+          "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+          "sha256": "30f34180928d779dea208b4064019003c1f5e5e2e25f95452f70c1d3f101e5b4",
+          "cases": 28
+        }
+      ],
+      "cases": 52,
+      "passed": 50,
+      "failure": 2,
+      "error": 0,
+      "skipped": 0,
+      "same_52_positive_identities": true,
+      "failing_cases": [
+        {
+          "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+          "test": "substituted Cipher is rejected for either factor even with identical alias and IV",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: Unavailable\nbut was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+          "test": "valid wraps without factor AAD or with wrong candidate cannot authorize activation",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: Unavailable\nbut was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))"
+        }
+      ],
+      "mutant_source_hashes": {
+        "AuthenticatedRecoveryActivation.kt": "c1962c0d097b3ea0a698b99a6d1bf317ef6d4f1dfb092d3fb6738ec1e50872ff",
+        "RecoveryEnvelopeTransaction.kt": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+      },
+      "patch_sha256": "1c5d7091c20d6e721cc765ff04488e4194ddde1ad925bf4482f65ace38659c07",
+      "xml_archive_sha256": "f4b1841fad8a4e1cf3b481f7908f895203867cf6143f05ffa22c23f3e2fbd95a",
+      "gradle_log_sha256": "482ba9ffa9491c1ef75eabe55a5ef92831e5c5ee04b35e6262cd8965aad7d3be",
+      "source_static_during_run": true,
+      "unchanged_nonmutated_source_inventory": true,
+      "test_failure_not_compile_failure": true,
+      "exact_production_restoration_verified": true,
+      "owned_processes_stopped_per_retained_inventory": true,
+      "interpretation": "Removes exact Cipher identity and candidate/readback equality together. Substituted Cipher and valid wrong-key wrap cases report COMMITTED. AAD verification remains active. This is a combined binding mutant, not independent factor-by-factor mutation coverage."
+    },
+    {
+      "label": "negative-08-final-publication",
+      "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+      "xml_files": [
+        {
+          "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+          "sha256": "9cdc530bb1009cba95f95586246171091b3d79ddb805157d621be53ce64b4592",
+          "cases": 24
+        },
+        {
+          "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+          "sha256": "039ec5194348cd986b87055f81df73e923482116779d85b9d576841c45fd7d1b",
+          "cases": 28
+        }
+      ],
+      "cases": 52,
+      "passed": 40,
+      "failure": 12,
+      "error": 0,
+      "skipped": 0,
+      "same_52_positive_identities": true,
+      "failing_cases": [
+        {
+          "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+          "test": "final transaction validation rejects changed source and staged bytes after durable writes",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: Observed(replacement=Result(state=NOT_COMMITTED, directorySynced=false))\nbut was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+          "test": "missing earlier factor alias during later auth or final validation cannot commit",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: Observed(replacement=Result(state=NOT_COMMITTED, directorySynced=false))\nbut was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "revocation is prompt while final validation is blocked outside production guard",
+          "outcome": "failure",
+          "message": "com.google.common.truth.AssertionErrorWithFacts: expected to be true"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "each corrupted retained or install readback refuses active replacement",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: 0\nbut was : 1"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "cheap cancellation check inside final guard prevents rename after callback",
+          "outcome": "failure",
+          "message": "com.google.common.truth.AssertionErrorWithFacts: value of: getInGuard()\nexpected to be true"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "callback IO runtime and cancellation failures cannot rename and preserve all evidence",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: NOT_COMMITTED\nbut was : COMMITTED"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "install symlink is refused without altering its target or old active bytes",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: value of: getState()\nexpected: NOT_COMMITTED\nbut was : UNKNOWN"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "final callback tampering is caught by repeated retained and install readbacks",
+          "outcome": "failure",
+          "message": "com.google.common.truth.AssertionErrorWithFacts: expected not to be: COMMITTED"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "stale active generation never gets overwritten and unknown bytes remain retained",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: value of: getState()\nexpected: UNKNOWN\nbut was : COMMITTED"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "callback follows durable readbacks outside guard and cheap cancellation precedes guarded move",
+          "outcome": "failure",
+          "message": "com.google.common.truth.AssertionErrorWithFacts: value of: getInGuard()\nexpected to be true"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "oversized install readback is refused and retained without truncation",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: NOT_COMMITTED\nbut was : COMMITTED"
+        },
+        {
+          "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+          "test": "live observation cannot bless tampered retained old bytes matching active",
+          "outcome": "failure",
+          "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: value of: getState()\nexpected: UNKNOWN\nbut was : COMMITTED"
+        }
+      ],
+      "mutant_source_hashes": {
+        "AuthenticatedRecoveryActivation.kt": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946",
+        "RecoveryEnvelopeTransaction.kt": "00d7e4ee5e8e370eea8fa4fed651997f6173b0909b6ad713049595d490f193ba"
+      },
+      "patch_sha256": "879b5ce66602e21103e0922e876ba1321c79228d8f7fbaa0219cc872ee6e8d39",
+      "xml_archive_sha256": "1f76152dd09ef3fb04fcd9dd371052dbeb0da9b76671f803da78b8a3e09618e0",
+      "gradle_log_sha256": "c688d3b6b226a5651c173d5d6451a50441dd012d1b9c6a8c2973a5953575816d",
+      "source_static_during_run": true,
+      "unchanged_nonmutated_source_inventory": true,
+      "test_failure_not_compile_failure": true,
+      "exact_production_restoration_verified": true,
+      "owned_processes_stopped_per_retained_inventory": true,
+      "interpretation": "Removes both retained/install readbacks, expensive final validation, guarded publication, and active-byte equality together. Twelve failures cover unsafe commit, wrong observation, absent callback, and absent guard. Latch/guard assertion failures are expected structural detections; this is not an isolated race proof for each removed check."
+    }
+  ],
+  "boundaries": [
+    "Host-only synthetic authentication/proof controls; no hardware, real native SQLCipher proof, runtime, physical, or owner-content acceptance implied.",
+    "Bundled mutation effects are attributed collectively. Parameterized branches after a first failed assertion may not execute in a negative run.",
+    "No tests/builds/devices or source changes performed by reviewer.",
+    "No quality cases, model payload, or gold evidence opened for this review.",
+    "Original failed runs preserved. Full restored-source gate and encrypted runtime remain separate gates."
+  ]
+}

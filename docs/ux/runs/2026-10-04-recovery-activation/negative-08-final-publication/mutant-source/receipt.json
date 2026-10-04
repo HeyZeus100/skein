@@ -1,0 +1,104 @@
+{
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "label": "negative-08-final-publication",
+  "exit": 1,
+  "counts": {
+    "passed": 40,
+    "failure": 12
+  },
+  "failing_identities": [
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+      "name": "final transaction validation rejects changed source and staged bytes after durable writes",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: Observed(replacement=Result(state=NOT_COMMITTED, directorySynced=false))&#10;but was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">expected: Observed(replacement=Result(state=NOT_COMMITTED, directorySynced=false))\nbut was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.assertObserved(AuthenticatedRecoveryActivationTest.kt:129)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.assertObserved$default(AuthenticatedRecoveryActivationTest.kt:124)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest$final transaction validation rejects changed source and staged bytes after durable writes$1.invokeSuspend(AuthenticatedRecoveryActivationTest.kt:643)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest$final transaction validation rejects changed source and staged bytes after durable writes$1.invoke(AuthenticatedRecoveryActivationTest.kt)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest$final transaction validation rejects changed source and staged bytes after durable writes$1.invoke(AuthenticatedRecoveryActivationTest.kt)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$1.invokeSuspend(TestBuilders.kt:317)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.test.TestDispatcher.processEvent$kotlinx_coroutines_test(TestDispatcher.kt:24)\n\tat kotlinx.coroutines.test.TestCoroutineScheduler.tryRunNextTaskUnless$kotlinx_coroutines_test(TestCoroutineScheduler.kt:98)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$workRunner$1.invokeSuspend(TestBuilders.kt:326)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\n\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\n\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK$default(Builders.concurrent.kt:157)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK$default(Unknown Source)\n\tat kotlinx.coroutines.test.TestBuildersJvmKt.createTestResult(TestBuildersJvm.kt:10)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:309)\n\tat kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:167)\n\tat kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:159)\n\tat kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:1)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.final transaction validation rejects changed source and staged bytes after durable writes(AuthenticatedRecoveryActivationTest.kt:622)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest",
+      "name": "missing earlier factor alias during later auth or final validation cannot commit",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: Observed(replacement=Result(state=NOT_COMMITTED, directorySynced=false))&#10;but was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">expected: Observed(replacement=Result(state=NOT_COMMITTED, directorySynced=false))\nbut was : Observed(replacement=Result(state=COMMITTED, directorySynced=true))\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.assertObserved(AuthenticatedRecoveryActivationTest.kt:129)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.assertObserved$default(AuthenticatedRecoveryActivationTest.kt:124)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest$missing earlier factor alias during later auth or final validation cannot commit$1.invokeSuspend(AuthenticatedRecoveryActivationTest.kt:792)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest$missing earlier factor alias during later auth or final validation cannot commit$1.invoke(AuthenticatedRecoveryActivationTest.kt)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest$missing earlier factor alias during later auth or final validation cannot commit$1.invoke(AuthenticatedRecoveryActivationTest.kt)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$1.invokeSuspend(TestBuilders.kt:317)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.test.TestDispatcher.processEvent$kotlinx_coroutines_test(TestDispatcher.kt:24)\n\tat kotlinx.coroutines.test.TestCoroutineScheduler.tryRunNextTaskUnless$kotlinx_coroutines_test(TestCoroutineScheduler.kt:98)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$workRunner$1.invokeSuspend(TestBuilders.kt:326)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\n\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\n\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK$default(Builders.concurrent.kt:157)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK$default(Unknown Source)\n\tat kotlinx.coroutines.test.TestBuildersJvmKt.createTestResult(TestBuildersJvm.kt:10)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:309)\n\tat kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:167)\n\tat kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)\n\tat kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:159)\n\tat kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:1)\n\tat app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationTest.missing earlier factor alias during later auth or final validation cannot commit(AuthenticatedRecoveryActivationTest.kt:776)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "revocation is prompt while final validation is blocked outside production guard",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.AssertionErrorWithFacts: expected to be true\" type=\"com.google.common.truth.AssertionErrorWithFacts\">expected to be true\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.assertPromptRevocation(RecoveryEnvelopeTransactionTest.kt:624)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.assertPromptRevocation$default(RecoveryEnvelopeTransactionTest.kt:582)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.revocation is prompt while final validation is blocked outside production guard(RecoveryEnvelopeTransactionTest.kt:569)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "each corrupted retained or install readback refuses active replacement",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: 0&#10;but was : 1\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">expected: 0\nbut was : 1\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.each corrupted retained or install readback refuses active replacement(RecoveryEnvelopeTransactionTest.kt:252)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "cheap cancellation check inside final guard prevents rename after callback",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.AssertionErrorWithFacts: value of: getInGuard()&#10;expected to be true\" type=\"com.google.common.truth.AssertionErrorWithFacts\">value of: getInGuard()\nexpected to be true\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.cheap_cancellation_check_inside_final_guard_prevents_rename_after_callback$lambda$0(RecoveryEnvelopeTransactionTest.kt:377)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransaction.replace(RecoveryEnvelopeTransaction.kt:92)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.cheap cancellation check inside final guard prevents rename after callback(RecoveryEnvelopeTransactionTest.kt:373)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "callback IO runtime and cancellation failures cannot rename and preserve all evidence",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: NOT_COMMITTED&#10;but was : COMMITTED\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">expected: NOT_COMMITTED\nbut was : COMMITTED\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.callback IO runtime and cancellation failures cannot rename and preserve all evidence(RecoveryEnvelopeTransactionTest.kt:357)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "install symlink is refused without altering its target or old active bytes",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: value of: getState()&#10;expected: NOT_COMMITTED&#10;but was : UNKNOWN\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">value of: getState()\nexpected: NOT_COMMITTED\nbut was : UNKNOWN\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.install symlink is refused without altering its target or old active bytes(RecoveryEnvelopeTransactionTest.kt:293)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "final callback tampering is caught by repeated retained and install readbacks",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.AssertionErrorWithFacts: expected not to be: COMMITTED\" type=\"com.google.common.truth.AssertionErrorWithFacts\">expected not to be: COMMITTED\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.final callback tampering is caught by repeated retained and install readbacks(RecoveryEnvelopeTransactionTest.kt:273)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "stale active generation never gets overwritten and unknown bytes remain retained",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: value of: getState()&#10;expected: UNKNOWN&#10;but was : COMMITTED\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">value of: getState()\nexpected: UNKNOWN\nbut was : COMMITTED\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.stale active generation never gets overwritten and unknown bytes remain retained(RecoveryEnvelopeTransactionTest.kt:110)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "callback follows durable readbacks outside guard and cheap cancellation precedes guarded move",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.AssertionErrorWithFacts: value of: getInGuard()&#10;expected to be true\" type=\"com.google.common.truth.AssertionErrorWithFacts\">value of: getInGuard()\nexpected to be true\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.callback_follows_durable_readbacks_outside_guard_and_cheap_cancellation_precedes_guarded_move$lambda$3(RecoveryEnvelopeTransactionTest.kt:187)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransaction.replace(RecoveryEnvelopeTransaction.kt:92)\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.callback follows durable readbacks outside guard and cheap cancellation precedes guarded move(RecoveryEnvelopeTransactionTest.kt:183)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "oversized install readback is refused and retained without truncation",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: NOT_COMMITTED&#10;but was : COMMITTED\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">expected: NOT_COMMITTED\nbut was : COMMITTED\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.oversized install readback is refused and retained without truncation(RecoveryEnvelopeTransactionTest.kt:309)\n</failure>"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "classname": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "live observation cannot bless tampered retained old bytes matching active",
+      "outcome": "failure",
+      "details": "<failure message=\"com.google.common.truth.Platform$ComparisonFailureWithFacts: value of: getState()&#10;expected: UNKNOWN&#10;but was : COMMITTED\" type=\"com.google.common.truth.Platform$ComparisonFailureWithFacts\">value of: getState()\nexpected: UNKNOWN\nbut was : COMMITTED\n\tat app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.live observation cannot bless tampered retained old bytes matching active(RecoveryEnvelopeTransactionTest.kt:546)\n</failure>"
+    }
+  ],
+  "mutant_hashes": {
+    "AuthenticatedRecoveryActivation.kt": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946",
+    "RecoveryEnvelopeTransaction.kt": "00d7e4ee5e8e370eea8fa4fed651997f6173b0909b6ad713049595d490f193ba"
+  },
+  "original_hashes": {
+    "AuthenticatedRecoveryActivation.kt": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946",
+    "RecoveryEnvelopeTransaction.kt": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+  },
+  "actual_archive_sha256": "1f76152dd09ef3fb04fcd9dd371052dbeb0da9b76671f803da78b8a3e09618e0"
+}

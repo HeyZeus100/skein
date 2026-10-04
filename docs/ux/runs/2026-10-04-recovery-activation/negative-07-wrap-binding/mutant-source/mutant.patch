@@ -1,0 +1,19 @@
+diff --git a/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt b/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt
+index e29284ac6..e65ad7f03 100644
+--- a/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt
++++ b/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt
+@@ -100,12 +100,12 @@ internal class AuthenticatedRecoveryActivation(
+                         when (authenticated) {
+                             AuthResult.UserCancelled -> return Result.UserCancelled
+                             is AuthResult.Error -> return Result.Unavailable
+-                            is AuthResult.Success -> if (authenticated.cipher !== cipher) return Result.Unavailable
++                            is AuthResult.Success -> Unit // intentional host-only mutant
+                         }
+                         cipher.updateAAD(record.authenticationData(isBiometric))
+                         val readback = cipher.doFinal(wrap.ciphertext.copyOf())
+                         try {
+-                            if (!MessageDigest.isEqual(candidate, readback)) return Result.Unavailable
++                            Unit // intentional host-only mutant: no candidate/readback equality
+                         } finally {
+                             readback.fill(0)
+                         }

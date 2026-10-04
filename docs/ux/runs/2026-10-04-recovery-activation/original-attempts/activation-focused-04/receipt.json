@@ -1,0 +1,7 @@
+{
+  "source": "ad313545fa236e7c675fb30d2cabef5cb164de5e",
+  "exit": 1,
+  "scope": "host test compilation failed on Provider constructor; both instrumentation compiles and lint passed; prior XML excluded",
+  "owned_processes_stopped": true,
+  "fresh_unit_result_claim": false
+}

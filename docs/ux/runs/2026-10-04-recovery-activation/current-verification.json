@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "application_source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "encrypted_runtime_source": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "live_origin_at_resume": "e0d9be3a1d5fa3b3659f7350924699a86b17e102",
+  "implementation": {
+    "files": 5,
+    "public_recovery_wired": false,
+    "session_authority_returned": false,
+    "bounded_beads": [
+      "skein-gg11.29.2.2.1",
+      "skein-gg11.29.2.2.2"
+    ]
+  },
+  "host": {
+    "xml_files": 575,
+    "passed": 5776,
+    "skipped": 86,
+    "failed": 0,
+    "errors": 0,
+    "prior_outcomes_preserved": true,
+    "new_passing_test_occurrences": 90,
+    "skip_reason_identity_preserved": true,
+    "raw_skip_difference": "One generated Java reflection accessor number8->10; original and resolved comparisons retained.",
+    "apk_bytes": 128112723,
+    "apk_sha256": "0c97db51f44ab280e75e8561d54466d4e6f58796140f00da6e45c318778112b1",
+    "manifest_and_native_equal_prior": true,
+    "changed_dex": [
+      "classes13.dex"
+    ],
+    "installed_attestation": false
+  },
+  "negative_controls": {
+    "same52hostcases_per_attempt": true,
+    "failures": [
+      3,
+      2,
+      12
+    ],
+    "originals_preserved": true,
+    "exact_production_restoration": true,
+    "individual_guard_attribution_limit": "Final-publication mutant removes multiple checks together; proof mutant demonstrates invocation/refusal, not wrong-key commit."
+  },
+  "encrypted_runtime": {
+    "passed": 16,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "new_activation_methods": 11,
+    "prior_proof_methods": 5,
+    "native_sqlcipher": true,
+    "authentication": "synthetic in-memory AES/auth callbacks",
+    "same_process_fresh_lease_only": true,
+    "process_death_restart": false,
+    "power_loss": false,
+    "real_android_per_use_auth": false,
+    "installed_apk_readback": false,
+    "apk_bytes": 53800503,
+    "apk_sha256": "df3c0f6a1900c4e3c69ed951db3394c62fc0c3583d636a39410c076172a101a4",
+    "raw_archive_sha256": "c5e2155035a20f7d45c230b65161f998ff04d57907bb1b942f0c61d3ce99828a",
+    "cleanup": "owned emulator stopped, ports empty, both matching leases released",
+    "bounded_bead": "skein-gg11.29.2.2.3.1",
+    "independent_review_sha256": "7dc5fc72bea840cc514bcce7af956cefde725b05f0741d046c0e42aad27425dd"
+  },
+  "original_runtime_failure": {
+    "attempt": 1,
+    "failed_fixture_cases": 11,
+    "unselected_proof_cases": 5,
+    "before_encrypted_proof": true,
+    "unexplained_multiclass_selection": true,
+    "preserved": true
+  },
+  "physical": {
+    "actions": 0,
+    "new_source_installed": false,
+    "last_verified_source": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "last_verified_apk_sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+    "current_connection_and_unlock": "not assumed"
+  },
+  "ci_policy": {
+    "default": "local",
+    "hosted_dispatches": 0,
+    "manual_only_workflows": 11,
+    "workflow_files_changed": false
+  },
+  "historical_not_rerun": [
+    "84 CI-tooling checks",
+    "screenshots",
+    "ordinary310",
+    "local Fold geometry",
+    "Linux CI",
+    "reproducibility"
+  ],
+  "quality": {
+    "fresh40": "consumed regression; failures labels thresholds unchanged; no rerun or blind relabel",
+    "answer80": "frozen unexecuted/ungraded",
+    "runtime_model_switch": false
+  },
+  "open_gates": [
+    "skein-gg11.29.2.2",
+    "skein-gg11.29.2.2.3",
+    "skein-gg11.29.2.2.3.2",
+    "skein-gg11.29.2.4",
+    "skein-gg11.29.2.3",
+    "skein-gg11.29.3"
+  ],
+  "preservation": {
+    "owner_files_verified": 21,
+    "protected_files_verified": 193,
+    "stashes_and_old_worktrees_retained": true
+  },
+  "beads_remote_sync": "Attempted once; failed because no Dolt remote is configured. Local versioned updates retained; no remote invented."
+}

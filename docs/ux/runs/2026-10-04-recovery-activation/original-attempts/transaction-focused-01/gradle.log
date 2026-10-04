@@ -1,0 +1,499 @@
+{"argv": ["./gradlew", "--offline", "--no-daemon", "--max-workers=2", ":core:vault:ktlintCheck", ":core:vault:testDevDebugUnitTest", "--tests", "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest", "--stacktrace"], "head": "b9c81d5acb987efea5f7df968b6713043e75cb1c"}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :core:vault:ktlintCheck :core:vault:testDevDebugUnitTest --tests app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin UP-TO-DATE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors UP-TO-DATE
+> Task :build-logic:guards:processResources UP-TO-DATE
+> Task :build-logic:guards:classes UP-TO-DATE
+> Task :build-logic:guards:jar UP-TO-DATE
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:vault:loadKtlintReporters UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :core:vault:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:vault:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverMainSourceSet
+> Task :core:vault:ktlintMainSourceSetCheck
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources UP-TO-DATE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar UP-TO-DATE
+> Task :testing-fakes:compileKotlin UP-TO-DATE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar UP-TO-DATE
+> Task :testing:compileKotlin UP-TO-DATE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:processResources UP-TO-DATE
+> Task :testing:classes UP-TO-DATE
+> Task :testing:jar UP-TO-DATE
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:markdown:compileKotlin UP-TO-DATE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar UP-TO-DATE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugResources UP-TO-DATE
+> Task :core:vault:packageDevDebugResources UP-TO-DATE
+> Task :core:vault:processDevDebugNavigationResources UP-TO-DATE
+> Task :core:vault:parseDevDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugRFile UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverTestSourceSet
+
+> Task :core:vault:ktlintTestSourceSetCheck FAILED
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:20 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:26 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:27 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:38 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:65 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:73 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:118 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:122 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:199:123 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:244:28 Line is exceeding max line length. Break line after '==' in binary expression
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:244:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:267:21 Unexpected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:31 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:37 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:51 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:52 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:63 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:77 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:85 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:97 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:98 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:109 Newline expected after opening brace
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:110 Missing newline after "{"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:121 Line is exceeding max line length. Break line after 'to' in binary expression
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:321:146 Newline expected before closing brace
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:20 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:48 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:53 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:63 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:68 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:72 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:79 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:80 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:91 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:322:132 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:20 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:29 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:35 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:49 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:50 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:61 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:75 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:83 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:95 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:96 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:107 Newline expected after opening brace
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:108 Missing newline after "{"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:119 Line is exceeding max line length. Break line after 'to' in binary expression
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:144 Newline expected before closing brace
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:145 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:146 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:157 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:323:163 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:32 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:44 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:56 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:59 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:81 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:93 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:96 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:118 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:130 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:329:131 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:24 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:30 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:31 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:42 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:69 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:77 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:124 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:371:125 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:391:21 Unexpected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:24 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:30 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:31 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:42 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:77 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:120 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:121 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:392:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:30 Missing newline before "RecoveryEnvelopeTransaction(lease) { if (it == RecoveryEnvelopeTransaction.Boundary.AFTER_RENAME) throw failure }"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:59 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:64 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:66 Newline expected after opening brace
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:67 Missing newline after "{"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:77 Line is exceeding max line length. Break line after '==' in binary expression
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:405:143 Newline expected before closing brace
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:24 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:44 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:49 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:53 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:54 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:55 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:66 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:93 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:101 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:144 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:406:145 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:427:21 Unexpected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:428:24 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:428:36 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:428:37 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:428:48 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:428:61 Line is exceeding max line length. Break line after '==' in binary expression
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:428:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:428:161 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:20 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:48 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:53 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:65 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:83 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:84 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:85 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:96 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:123 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:131 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:174 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:451:175 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:467:17 Unexpected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:20 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:48 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:53 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:65 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:83 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:84 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:85 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:96 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:121 Exceeded max line length (120) (cannot be auto-corrected)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:123 Expected newline before '.'
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:131 Argument should be on a separate line (unless all arguments can fit a single line)
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:174 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:492:175 Missing newline before ")"
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:557:9 Expected a blank line for this declaration
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:563:22 A multiline expression should start on a new line
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:585:23 A multiline expression should start on a new line
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:609:22 Newline expected after opening parenthesis
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:609:34 Parameter should start on a newline
+/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt:609:42 Newline expected before closing parenthesis
+
+> Task :core:vault:compileDevDebugKotlin
+w: file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:66:14 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+w: file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:66:37 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+w: file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:74:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:78:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:104:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+
+[Incubating] Problems report is available at: file:///Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:vault:ktlintTestSourceSetCheck' (registered by plugin 'org.jlleitschuh.gradle.ktlint').
+> A failure occurred while executing org.jlleitschuh.gradle.ktlint.worker.ConsoleReportWorkAction
+   > KtLint found code style violations. Please see the following reports:
+     - /Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/build/reports/ktlint/ktlintTestSourceSetCheck/ktlintTestSourceSetCheck.txt
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':core:vault:ktlintTestSourceSetCheck' (registered by plugin 'org.jlleitschuh.gradle.ktlint').
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:135)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:133)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:121)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.DefaultNodeExecutor.executeLocalTaskNode(DefaultNodeExecutor.java:55)
+	at org.gradle.execution.plan.DefaultNodeExecutor.execute(DefaultNodeExecutor.java:34)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:355)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:343)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:84)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:328)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:146)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:131)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$0(DefaultBuildLifecycleController.java:323)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:324)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$0(StateTransitionController.java:235)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:45)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:235)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:314)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$runAndReleaseLocks$0(DefaultWorkerLeaseService.java:302)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAndReleaseLocks(DefaultWorkerLeaseService.java:300)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocksAcquired(DefaultWorkerLeaseService.java:296)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:288)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:182)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:199)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:84)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:199)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:65)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:47)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jlleitschuh.gradle.ktlint.worker.ConsoleReportWorkAction
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:273)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:132)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$withoutLocksBlocking$0(DefaultWorkerLeaseService.java:412)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocksBlocking(DefaultWorkerLeaseService.java:407)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.blocking(DefaultWorkerLeaseService.java:257)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.blocking(DefaultWorkerLeaseService.java:239)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$1(DefaultAsyncWorkTracker.java:128)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.resources.AbstractResourceLockRegistry.whileDisallowingLockChanges(AbstractResourceLockRegistry.java:51)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.whileDisallowingProjectLockChanges(DefaultWorkerLeaseService.java:262)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:127)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:93)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:79)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:67)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:267)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:244)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:227)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:210)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:176)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:167)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:47)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:137)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:134)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:134)
+	at org.gradle.internal.execution.steps.ExecuteStep$Mutable.execute(ExecuteStep.java:80)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:51)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:29)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:39)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:42)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:24)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:28)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeAndStoreInCache(BuildCacheStep.java:145)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$executeWithCache$3(BuildCacheStep.java:104)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$executeWithCache$1(BuildCacheStep.java:104)
+	at org.gradle.internal.Try$Success.map(Try.java:170)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithCache(BuildCacheStep.java:88)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$0(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Left.fold(Either.java:116)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:74)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:49)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:70)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:32)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:69)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:37)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:63)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:34)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:79)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:105)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.execute(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.executeMutable(CaptureMutableStateBeforeExecutionStep.java:86)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:45)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeWithNonEmptySources(SkipEmptyMutableWorkStep.java:210)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:85)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:53)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:77)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:43)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$executeMutable$0(AssignMutableWorkspaceStep.java:34)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:305)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:30)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:21)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:56)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:38)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:68)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:132)
+	... 61 more
+Caused by: org.gradle.api.GradleException: KtLint found code style violations. Please see the following reports:
+- /Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/vault/build/reports/ktlint/ktlintTestSourceSetCheck/ktlintTestSourceSetCheck.txt
+	at org.jlleitschuh.gradle.ktlint.worker.ConsoleReportWorkAction.execute(ConsoleReportWorkAction.kt:57)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:68)
+	at org.gradle.workers.internal.AbstractClassLoaderWorker$1.create(AbstractClassLoaderWorker.java:54)
+	at org.gradle.workers.internal.AbstractClassLoaderWorker$1.create(AbstractClassLoaderWorker.java:48)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:103)
+	at org.gradle.workers.internal.AbstractClassLoaderWorker.executeInClassLoader(AbstractClassLoaderWorker.java:48)
+	at org.gradle.workers.internal.IsolatedClassloaderWorker.run(IsolatedClassloaderWorker.java:49)
+	at org.gradle.workers.internal.IsolatedClassloaderWorker.run(IsolatedClassloaderWorker.java:30)
+	at org.gradle.workers.internal.IsolatedClassloaderWorkerFactory$1.lambda$execute$0(IsolatedClassloaderWorkerFactory.java:60)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.IsolatedClassloaderWorkerFactory$1.execute(IsolatedClassloaderWorkerFactory.java:52)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$1(DefaultWorkerExecutor.java:169)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:191)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$600(DefaultConditionalExecutionQueue.java:112)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:168)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$runAndReleaseLocks$0(DefaultWorkerLeaseService.java:302)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAndReleaseLocks(DefaultWorkerLeaseService.java:300)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocksAcquired(DefaultWorkerLeaseService.java:296)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:288)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:137)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:163)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:125)
+	... 2 more
+
+
+BUILD FAILED in 17s
+29 actionable tasks: 5 executed, 24 up-to-date
+Configuration cache entry stored.

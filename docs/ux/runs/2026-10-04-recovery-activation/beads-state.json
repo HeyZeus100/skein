@@ -1,0 +1,74 @@
+[
+  {
+    "id": "skein-gg11.29.2.2",
+    "title": "Integrate fresh-proof recovery activation and crash reconciliation",
+    "status": "in_progress",
+    "description": "Internal activation now acquires production closed-vault exclusion, repeats native proof, freshly authenticates both exact staged wrap readbacks, pins source/stage and checks detectable alias presence before atomic retained-envelope replacement. It returns old/new durability-uncertain/unknown file observations only, never key/token/session. Host implementation .1 and integration .2 are verified at52acc3114 with three retained negative controls; broad encrypted acceptance .3 remains open: bounded same-process synthetic native execution .3.1, actual process-death/restart .3.2. Cancellation can discard result delivery; absent result never proves unchanged. No public app/provider recovery wiring or legacy mutation migration yet.",
+    "acceptance_criteria": "Negative and boundary tests plus actual encrypted runtime across crash/IO/readback failures. No cached proof, reset bypass or byte loss; reader child must be accepted first.",
+    "close_reason": null
+  },
+  {
+    "id": "skein-gg11.29.2.2.1",
+    "title": "Implement internal fresh-proof activation and retained transaction outcomes",
+    "status": "closed",
+    "description": "Internal-only activation consumes a fresh candidate, acquires production exclusion, re-proves ciphertext and freshly authenticates both staged factor readbacks. Transaction retains old/new/install evidence, revalidates before atomic rename and distinguishes old/new durable/new uncertain/unknown outcomes. No provider, app, session or alias mutation.",
+    "acceptance_criteria": "Source review and meaningful host tamper, lease, cancellation, IO-boundary tests; preserve negative-control failures. Host acceptance only.",
+    "close_reason": "Implemented internal activation and retained transaction outcomes at52acc3114, exactly5 source/test files. Fresh production exclusion/native-proof orchestration/both exact-Cipher factor readbacks, candidate/buffer zeroing, stage/alias checks and explicit possible-rename outcomes; no public recovery/session wiring. Actual focused6XML88pass, independent source+XML review. Three preserved host mutants detect removed guards with3/2/12 failures; original bytes restored. Native/process-restart/per-use/physical acceptance are separate open gates."
+  },
+  {
+    "id": "skein-gg11.29.2.2.2",
+    "title": "Integrate and verify internal activation across local application checks",
+    "status": "closed",
+    "description": "Integrate isolated activation and transaction commits, inspect actual XML and artifact hashes, verify normal v2 reader remains separately authenticated and all prior guards remain intact.",
+    "acceptance_criteria": "Local applicable lint/unit/build checks, source-bound evidence and independent review; no public activation API.",
+    "close_reason": "Integrated at52acc3114720e2ae136a80f4f74cb1bd5ec33c2e: local lint/check/FOSS APK/all requested compiles PASS. Actual575XML5776pass86skip, all prior outcomes/identities retained plus90 passing recovery cases. One skip trace differs only generated reflection accessor8->10; raw and resolved comparisons retained. Independent f8b453a4 verifies actual XML/APK/source/static processes; manifest+7 native payloads equal prior, classes13.dex contains new activation. No hosted/Python/screenshot/runtime/physical rerun inferred."
+  },
+  {
+    "id": "skein-gg11.29.2.2.3",
+    "title": "Accept encrypted activation runtime and crash reconciliation",
+    "status": "in_progress",
+    "description": "Broader encrypted recovery acceptance. Bounded native-proof/activation/IO fault execution is child .1. Actual process-death/restart reconciliation remains unexecuted; a fresh coordinator or lease in one process is observation coverage only. Do not infer power-loss durability, real Android per-use auth (.29.2.3), app wiring or physical acceptance. Parent stays open until independently measured restart outcomes are recorded.",
+    "acceptance_criteria": "Actual source/XML/APK hashes and encrypted runtime, failures retained. Host fakes or simulated restart alone do not close this gate.",
+    "close_reason": null
+  },
+  {
+    "id": "skein-gg11.29.2.2.3.1",
+    "title": "Verify native encrypted activation with bounded IO fault injection",
+    "status": "closed",
+    "description": "Execute the isolated eleven-case activation harness plus five existing native proof cases. Production SQLCipher proof, exclusion and filesystem transaction; synthetic in-memory factor keys/auth. Fresh lease observations occur in the same instrumentation process. No claim of process death, power loss, hardware per-use auth or physical acceptance.",
+    "acceptance_criteria": "Exact16 actual XML identities pass with no skips/failures/errors; APK/native/source/SDK hashes verified, owned emulator cleanup and independent evidence audit. Preserve original failures.",
+    "close_reason": "Accepted bounded native encrypted fixture/IO execution only: attempt02 source5591995bbad94ce7fa184a452767055bb3f7649e, exact1XML16pass0fail/error/skip (11activation+5proof), synthetic AES/auth with production SQLCipher/exclusion/filesystem. Root+independent7dc5fc72 actualXML/APK/native/SDK/source/116command pairs verified; owned emulator0, ports empty, bothmatching leases released. Original01 eleven fixture failures and five unselected cases preserved; exact fallback/falsepolicy fixture repair and pinned packagefilter retain16gate. Same-process fresh-lease observation is NOT process restart; .3/.3.2 and parent .2.2 remainOPEN. No realperuse/StrongBox/publicwire/physical acceptance."
+  },
+  {
+    "id": "skein-gg11.29.2.2.3.2",
+    "title": "Verify interrupted activation across actual process death and restart",
+    "status": "open",
+    "description": "New isolated synthetic encrypted fixture and controlled process termination at retained transaction boundaries. A second process must inspect exact old/new/active evidence with fresh admission; no persisted Prepared/UUID/phase can grant authentication or session authority. Distinguish cancelled result delivery from mutation outcome. Existing same-process fresh-lease observations and injected IO do not close this gate; no owner vault or physical work.",
+    "acceptance_criteria": "Retained process identity/exit and restart evidence, exact ciphertext/envelope hashes, native proof and refusal checks, source/XML/APK pins and independent review. No power-loss or real per-use hardware claim.",
+    "close_reason": null
+  },
+  {
+    "id": "skein-gg11.29.2.4",
+    "title": "Migrate legacy v1 rewrap safely before exposing recovery activation",
+    "status": "open",
+    "description": "Legacy v1 rewrap still deletes/recreates a fixed factor alias before auth/persistence and cannot safely represent metadata-only activation. Source-bound Oct4 next-slice plan proposes explicit ActivatedNeedsNormalUnlock and ActivationNeedsInspection outcomes with no key/token/session; one continuous production reservation across survivor unwrap, staged preparation and fresh activation is needed. Naively chaining current preparation and activation releases exclusion and allows a lock-in-the-gap operation to resume. Preserve all original aliases/envelopes/ciphertext and bounded normal unlock/access-only UI. Root owns shared VaultKeyProvider/UnlockManager contracts. Parent activation restart acceptance, real app/per-use auth and physical gates remain separate; this migration is unimplemented.",
+    "acceptance_criteria": "Bounded implementation and meaningful negative/fault tests with exact old bytes/alias preservation; actual Android acceptance recorded separately.",
+    "close_reason": null
+  },
+  {
+    "id": "skein-gg11.29.2.3",
+    "title": "Integrate application recovery flow and verify Android authentication runtime",
+    "status": "open",
+    "description": "Wire complete reviewed recovery provider/activation through the application with explicit user flow, normal authentication and cancellation/lock epoch revocation. Keep all old recovery paths/content safe.",
+    "acceptance_criteria": "Actual isolated Android per-use auth, successful and refused restoration, lock and restart/readback evidence with source/XML/APK hashes. Host fake authentication and preparation receipt are insufficient. Physical gate remains29.3.",
+    "close_reason": null
+  },
+  {
+    "id": "skein-gg11.29.3",
+    "title": "Accept recovery authentication and ciphertext preservation on device",
+    "status": "open",
+    "description": "Separate owner-operated authentication/device acceptance, byte preservation and failure/power-loss evidence. No reset of owner content; keep open until measured.",
+    "acceptance_criteria": "Separate owner-operated authentication/device acceptance, byte preservation and failure/power-loss evidence. No reset of owner content; keep open until measured.",
+    "close_reason": null
+  }
+]

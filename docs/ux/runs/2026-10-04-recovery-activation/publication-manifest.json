@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "measured_application_source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "measured_runtime_source": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "scope": "Publication copy integrity; original failures, synthetic authentication and restart/physical limits retained. Excludes this manifest.",
+  "files": [
+    {
+      "path": "docs/Handoffs/skein-continuation-20261004.md",
+      "bytes": 11573,
+      "sha256": "2d81d207869a59a11d4a0637c92f5842cfc535309379de9415053ea5f7b66112"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/activation-focused-05/bounded-host-receipt.json",
+      "bytes": 740,
+      "sha256": "f86c05348e9d1c01e69cbf3a78d6feb61ffd5f542d885cd08125a925e2b3fc52"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/activation-focused-05/gradle.log",
+      "bytes": 11620,
+      "sha256": "c8ab12f1be517b4bf12b041b64b87f6d8bdab4c8aeebdff641138b85d32ce90b"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/activation-focused-05/unit-actual.zip",
+      "bytes": 7624,
+      "sha256": "0a0c95ba746a8ecbf14f21999780540b756f80658aa6f7da513b4ac236259d05"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/activation-focused-05/unit-review.json",
+      "bytes": 34275,
+      "sha256": "3c61649e57715a3e10a73446591bde1664e6d3fedc1d4a1d64b2e662d4f39933"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/activation-source-review.json",
+      "bytes": 3987,
+      "sha256": "73720a5809bf14981c5346f8ea751dfa929572e97743901ab05cbc60a391b383"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/beads-state.json",
+      "bytes": 8977,
+      "sha256": "61aa90da6799cf7905bf479f8248295e02f7feff7f2898e2862f2ccb545542ca"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/beads-sync.json",
+      "bytes": 957,
+      "sha256": "c20590a138668cfda2f5a08d9a674205ae4fa1d9544b8506eddc37622a17cec9"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/current-verification.json",
+      "bytes": 3783,
+      "sha256": "dca4f1c825be94cc2224c5699c9fc8baf70e797f4f7ea41008e879e7ca401ae0"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt01-fixture-failure/actual-xml.zip",
+      "bytes": 2201,
+      "sha256": "ef57e358d4c32f0f6ebd36fb0f004d153b8b084889e7a56ecb05065cfd66e0b5"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt01-fixture-failure/bounded-runtime-receipt.json",
+      "bytes": 13495,
+      "sha256": "6b85fb0d99eb090f48a6be6173fc18123e13a00f2cb362c5fdf9d4b12d60711a"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt01-fixture-failure/independent-review.json",
+      "bytes": 10352,
+      "sha256": "7e57439015cac99b5972f0461c07ed8f49387df6eee59a0fdb3053d7a0a00471"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt01-fixture-failure/retained-controller.py",
+      "bytes": 25747,
+      "sha256": "87753a9049918b5a1c811738b0c6b0caaea28a26a6b2f1c413a9705dbb50216e"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt01-fixture-failure/root-terminal-and-release-proof.json",
+      "bytes": 591,
+      "sha256": "d30d66fc032c879dc1c974c945090a5e618e2bce5a8336a9729e1252fbd04f73"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt01-fixture-failure/terminal-seal.json",
+      "bytes": 9055,
+      "sha256": "5f2a4470d540061c50cdefb31013424d649c3f7ec9adfd838d1cfedc0e20217d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt02-pass/actual-xml.zip",
+      "bytes": 1715,
+      "sha256": "2232f65e53800f1917e5d77a7f57340904c7529485fdae66d133a065497c3617"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt02-pass/bounded-runtime-receipt.json",
+      "bytes": 13671,
+      "sha256": "d285080d62b6e342ea3aa2d7863eeca529f09bdc4d1e7097059804570a8b76d7"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt02-pass/independent-review.json",
+      "bytes": 11153,
+      "sha256": "7dc5fc72bea840cc514bcce7af956cefde725b05f0741d046c0e42aad27425dd"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt02-pass/retained-controller.py",
+      "bytes": 25753,
+      "sha256": "55318250ee542b0b09d57f42d5362c13fc0a2b72bb03e1c7d4628a962bc5c36d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-attempt02-pass/terminal-seal.json",
+      "bytes": 10091,
+      "sha256": "dfbe5645c2c5f9d004ad3eacb52a2ab3c409d78fbc44c39807f5b561743d5814"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/encrypted-harness-source-review.json",
+      "bytes": 2825,
+      "sha256": "be256cde48e921fa574fb9a9820bb647c7f085cdbce13ddbfd68ca03d33d2ed1"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/final-security-source-review.json",
+      "bytes": 3757,
+      "sha256": "1a954122dcc007a508c5be199a60c8313b56e1b0b13b5c434ca215b60fb9bf94"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/fixture-repair-10/gradle.log",
+      "bytes": 31343,
+      "sha256": "4b9a9957a940435a384967ba328ae8939cda15543ca082236b51e57c31ca1b80"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/fixture-repair-10/receipt.json",
+      "bytes": 522,
+      "sha256": "a95ab40fc345772f2df004a844647f216373429edf86a84edad67c9ec14b2fd5"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/fixture-repair-11/gradle.log",
+      "bytes": 8798,
+      "sha256": "c76042a8fe4762fa05b3a43059038e54bd610b99ba8c9ae7d3ae95d60a2688c9"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/fixture-repair-11/receipt.json",
+      "bytes": 522,
+      "sha256": "555b3f9b16ce60f6c02a01bff0f43466abfb427b7f146a02e6da4db6cbfe94a3"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/focused-host-review.json",
+      "bytes": 4634,
+      "sha256": "477abd28ce6248d411e62125bfed254deaa8da77a17cf69eb527950342984244"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/apk-manifest-xmltree.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/apk-manifest-xmltree.log",
+      "bytes": 13788,
+      "sha256": "9967d1f0bddc1f613bf479bc861f102a0bdaee5fd0d88a730161b0f216212c16"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/apk-review.json",
+      "bytes": 5618,
+      "sha256": "0afead98e435ed2b87be179b74bf338aa8fc6f54cc0a2cae2aa610ff37214de1"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/bounded-host-receipt.json",
+      "bytes": 886,
+      "sha256": "818c91fdc7e8131f9e7e263695a4f43fa1d5604d917011a120cd8bb29ac144e8"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/gradle.log",
+      "bytes": 146504,
+      "sha256": "6ac83df9c626c0136ab2e03292dcd2c2522dc35b820bee48e66d94e6d9299fae"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/independent-review.json",
+      "bytes": 61305,
+      "sha256": "f8b453a42ba80dde07826c60b65480af0c414a039deb5cea645d5697d1623749"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/manifest-audit.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/manifest-audit.log",
+      "bytes": 129,
+      "sha256": "26d60d306a7c5ff7af7e24ac00ac69add1e5c28f53faf7b2c19ff4bc434d27dc"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/prior-comparison-resolved.json",
+      "bytes": 36486,
+      "sha256": "51ccd40d7555dfeb2d18848193ae9729cf487982501742320099790798706074"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/prior-comparison.json",
+      "bytes": 34594,
+      "sha256": "4044590ee5e67ba4fa0f38d4d01c7ea7f64ec3803a73620aec75d1db4789d3bc"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/unit-actual.zip",
+      "bytes": 561024,
+      "sha256": "160e27e71d674a907d6e81e8a8f5b80bc5dd2c664112487cbce5555f92e1d697"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/full-local-09/unit-review.json",
+      "bytes": 2477498,
+      "sha256": "02419ba2625b7b4c5fa7d09581dce676ceed3bb8aff7af2c5fbbd0c67ac180df"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/legacy-next-slice.json",
+      "bytes": 18935,
+      "sha256": "be1ab21a6a6f2141fab25278c34dbecc5cf28a01c8e1acf00548a4b1374a0105"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/gradle.log",
+      "bytes": 24597,
+      "sha256": "c8ff858e4370ea247574423184c4d6a64758506fe1dc8a44154031cc0c07d3f2"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/mutant-source/AuthenticatedRecoveryActivation.kt",
+      "bytes": 10947,
+      "sha256": "530e3438a904b8bfbe9d506a3a700726fe69047fa66f6be6e30385b6b8190386"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/mutant-source/RecoveryEnvelopeTransaction.kt",
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/mutant-source/mutant.patch",
+      "bytes": 1148,
+      "sha256": "d552bd761efab6a3d09e42cc44e67a9b116d293c10445a45f8e4baf1efb23d0d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/mutant-source/receipt.json",
+      "bytes": 11529,
+      "sha256": "fbc480a8ed08ae73fd3e15562f5bb366a0f758b36c032b162608e33ea39387a1"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/mutant-source/restoration.json",
+      "bytes": 311,
+      "sha256": "fbd5032485bbf4a9115cc10251fa991f873847fc2857fffda909706ef8a0c071"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/unit-actual.zip",
+      "bytes": 4373,
+      "sha256": "fdc55db2831f56da086e7e041572ccb0a9baa2f5dd900c84a097e03fa6229a4a"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-06-fresh-proof/unit-review.json",
+      "bytes": 30214,
+      "sha256": "d4ae68e01f715f0d63535b7f62e53031860516d4f0ccfef9bbb478de2d2ab5dd"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/gradle.log",
+      "bytes": 24107,
+      "sha256": "482ba9ffa9491c1ef75eabe55a5ef92831e5c5ee04b35e6262cd8965aad7d3be"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/mutant-source/AuthenticatedRecoveryActivation.kt",
+      "bytes": 10892,
+      "sha256": "c1962c0d097b3ea0a698b99a6d1bf317ef6d4f1dfb092d3fb6738ec1e50872ff"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/mutant-source/RecoveryEnvelopeTransaction.kt",
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/mutant-source/mutant.patch",
+      "bytes": 1467,
+      "sha256": "1c5d7091c20d6e721cc765ff04488e4194ddde1ad925bf4482f65ace38659c07"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/mutant-source/receipt.json",
+      "bytes": 8123,
+      "sha256": "286e681774e7b9fdf0055d58ed1907a07420c9e891d79755f968221559a91833"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/mutant-source/restoration.json",
+      "bytes": 311,
+      "sha256": "fbd5032485bbf4a9115cc10251fa991f873847fc2857fffda909706ef8a0c071"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/unit-actual.zip",
+      "bytes": 4287,
+      "sha256": "f4b1841fad8a4e1cf3b481f7908f895203867cf6143f05ffa22c23f3e2fbd95a"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-07-wrap-binding/unit-review.json",
+      "bytes": 27206,
+      "sha256": "2e1d79d0e2295870b77520cd85d21fe20acc4e3f68bfb0be5f23d73ffc4e7f38"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/gradle.log",
+      "bytes": 24523,
+      "sha256": "c688d3b6b226a5651c173d5d6451a50441dd012d1b9c6a8c2973a5953575816d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/mutant-source/AuthenticatedRecoveryActivation.kt",
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/mutant-source/RecoveryEnvelopeTransaction.kt",
+      "bytes": 9500,
+      "sha256": "00d7e4ee5e8e370eea8fa4fed651997f6173b0909b6ad713049595d490f193ba"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/mutant-source/mutant.patch",
+      "bytes": 1812,
+      "sha256": "879b5ce66602e21103e0922e876ba1321c79228d8f7fbaa0219cc872ee6e8d39"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/mutant-source/receipt.json",
+      "bytes": 18085,
+      "sha256": "4f313c70cb6533a578202e595f71852b69c129baac43bcf83a6ed31733c3eeb7"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/mutant-source/restoration.json",
+      "bytes": 311,
+      "sha256": "fbd5032485bbf4a9115cc10251fa991f873847fc2857fffda909706ef8a0c071"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/unit-actual.zip",
+      "bytes": 4872,
+      "sha256": "1f76152dd09ef3fb04fcd9dd371052dbeb0da9b76671f803da78b8a3e09618e0"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-08-final-publication/unit-review.json",
+      "bytes": 33293,
+      "sha256": "fb48d3d2d5d3d605cde9185225977de88ba1e8447b09a5c2d0fefbb3c128c847"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/negative-host-review.json",
+      "bytes": 13772,
+      "sha256": "25d3f8b355f49f07a537a603cbbbf5ad38db71ca0dee9220ec6af21cdb72f197"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/original-attempts/activation-focused-04/gradle.log",
+      "bytes": 33538,
+      "sha256": "eb036d0715a049044208366ef04033e34af84d968a2280cf470a1df436b77d63"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/original-attempts/activation-focused-04/receipt.json",
+      "bytes": 277,
+      "sha256": "02c8e697dd7efe63bd9725d784476e0d0794925a1453885c518704e25829a401"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/original-attempts/transaction-focused-01/gradle.log",
+      "bytes": 64235,
+      "sha256": "259ec46a91387de108c76729bd378ff59e27071fe9d52be6d239f3c21306a9e0"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/original-attempts/transaction-focused-01/receipt.json",
+      "bytes": 204,
+      "sha256": "10d668a7e0a7334a13247ff3687dce2b4703275313dce7434cd83daaacf1bd90"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/original-attempts/vault-format-03/gradle.log",
+      "bytes": 26382,
+      "sha256": "638974e74c780df409cbde9452f41953ca051c1a6934052ce2c46d3c6b67c36d"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/original-attempts/vault-format-03/receipt.json",
+      "bytes": 266,
+      "sha256": "00f916beac0c9c79e6104606dc0e74d7c17ee7b206269638d55ac64a42896c1f"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/package-filter-peer-review.json",
+      "bytes": 4844,
+      "sha256": "4bc1c73836e60b60f9731a7cb6c6e8b3ae3a32c20b2028fa1e61c8097d52864c"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/preservation-and-source-equivalence.json",
+      "bytes": 740,
+      "sha256": "29a3800c473c4dabb09564dd1deecb00b3d1fb72d40614e6e6ef2881e5738224"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/publication-peer-review.json",
+      "bytes": 6380,
+      "sha256": "0e7bc93f9f66736016e00f68266561275c9ad568107e1894bbbf711dbe98ca66"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/runtime-source-manifest.json",
+      "bytes": 1322,
+      "sha256": "2e22fa2f3fd24f50a7eb6119896caac625877b0aa3fea1ac8e46e25c8dad0a21"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/source-manifest.json",
+      "bytes": 1353,
+      "sha256": "3c2d34611aacd51d3d8f25cdf8518a14a1d1d172d1a5c9438a89bb8cd3ecfd82"
+    },
+    {
+      "path": "docs/ux/runs/2026-10-04-recovery-activation/transaction-source-review.json",
+      "bytes": 2345,
+      "sha256": "fbfedeec8f7ed7cf46aed4cab502cee5f187883d44150539154633242d39405f"
+    }
+  ]
+}

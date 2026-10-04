@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-04T20:27:14.954835+00:00",
+  "root_verified_failed_gradle_terminal": true,
+  "current_java_gradle_pids": [
+    "50021"
+  ],
+  "only_preexisting_daemon": true,
+  "no_owned_listeners": true,
+  "matching_token": "32fbeb0a-1ac4-4d35-91b9-9c2306f56d77",
+  "failed_run_source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "release": "build.lock only after exact token/terminal proof",
+  "inspection_note": "Initial generic substring inventory matched own shell; comm-column attempt was truncated. Final pid+command executable identity inventory used, with no signals sent."
+}

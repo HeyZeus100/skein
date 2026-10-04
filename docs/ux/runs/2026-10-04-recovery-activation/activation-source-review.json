@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "PASS_BOUNDED_SOURCE_REVIEW_ONLY",
+  "source_commit": "5bee379d2611ac2ec335eb5741d0b9e171c65f9e",
+  "files": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt": {
+      "bytes": 10866,
+      "sha256": "c16e29f3634f248010f559d2a4c18e1cf99e34a2cc177970ab599ce4a3eaf676"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationTest.kt": {
+      "bytes": 36759,
+      "sha256": "d906003d70b4deca14605d3a08c39e80b418888298f62ae4bdb384524357cc9c"
+    }
+  },
+  "actual_builds_or_device_actions_by_reviewer": false,
+  "reviewed_contract": [
+    "Caller candidate is privately copied and input zeroed before admission; private candidate and exact decrypt readbacks are zeroed on exits.",
+    "Fresh production closed-vault exclusion plus native-proof orchestration; no Prepared/UUID/checksum-only activation capability.",
+    "Strict canonical bounded old/new staged reads, v1-only old decoder, matching UUID, exact increment/no overflow, preserved StrongBox policy and exact canonical encoding.",
+    "Both factor-specific operations authenticate exactly the supplied Cipher, bind record/factor AAD, and constant-time compare decrypted wraps to the newly proved candidate.",
+    "Each suspension is followed by cancellation/source/staged-byte/alias-existence revalidation; transaction callback repeats full authority checks outside monitor, cheap context.ensureActive runs at guarded admission.",
+    "Observed transaction outcomes survive post-rename cancellation/cleanup failures; no provider currentKey/session/token publication, alias deletion/create, database write or automatic rollback.",
+    "Actual source/test scope is exactly two new files; legacy preparation/decoder/provider/session remain unchanged."
+  ],
+  "resolved_findings": [
+    {
+      "id": "A1",
+      "finding": "Already-authenticated earlier alias could disappear during later authentication without detection.",
+      "resolution": "Both expected aliases are checked at evidence/auth/final validation checkpoints; deterministic deletion during second auth and BEFORE_RENAME is refused."
+    },
+    {
+      "id": "A2",
+      "finding": "Repeated host fixtures shared fixed UUID aliases and one keystore, causing legitimate collision refusal on later fixture setup.",
+      "resolution": "Each fixture constructs an independent RecordingKeystore; no old aliases are deleted to reset fixtures."
+    }
+  ],
+  "test_review": {
+    "methods": 24,
+    "coverage": [
+      "Fresh proof, both-factor auth/readback and separate normal provider unlock",
+      "Wrong or malformed candidate, caller buffer mutation and zeroing",
+      "UUID/generation/overflow/StrongBox/v1-only guards",
+      "Header/ciphertext/AAD/opposite-factor/wrong-wrapped-key/exact-Cipher negatives",
+      "Source and staged mutations at both auth boundaries and final validation",
+      "Poison/reset/journal/open/other recovery rejection",
+      "Production provider lock, coroutine cancellation and prompt revocation during blocked IO",
+      "Missing aliases including earlier factor disappearance",
+      "Postrename IO/cancellation COMMITTED durability uncertainty and lock UNKNOWN",
+      "Partial attempts retained and never reused"
+    ],
+    "attribution": "Host GCM and production exclusion with synthetic native proof/auth; does not prove AndroidKeyStore behavior."
+  },
+  "remaining_validation": [
+    "ktlint and Kotlin compilation at integrated frozen source",
+    "Actual affected host XML and meaningful retained negative mutation results",
+    "Eleven-case encrypted runtime harness execution",
+    "Real per-use Keystore/StrongBox and public app integration",
+    "Physical acceptance and power-loss durability"
+  ],
+  "limitation": "Alias existence checks detect disappearance, not hardware alias generation replacement or later invalidation. Existing facade cannot attest that stronger claim."
+}

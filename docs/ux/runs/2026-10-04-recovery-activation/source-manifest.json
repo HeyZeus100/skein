@@ -1,0 +1,32 @@
+{
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "baseline": "e0d9be3a1d5fa3b3659f7350924699a86b17e102",
+  "files": [
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt",
+      "bytes": 25194,
+      "sha256": "f88bb9bd236775743ac951a44e22e40776b45985988afe8e7fa52b3cafa31aab"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt",
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationTest.kt",
+      "bytes": 40169,
+      "sha256": "aaaf80cd768f572deb7963efc4723c4e258d54091725a67c50b8c25a74e5a789"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt",
+      "bytes": 30098,
+      "sha256": "a1a2a5124466a4c1c5a55b91c06b65ff083e408bea2dc027ff34059985a78548"
+    }
+  ],
+  "public_provider_or_app_wiring": false
+}

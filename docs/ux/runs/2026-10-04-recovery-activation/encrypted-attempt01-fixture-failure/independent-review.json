@@ -1,0 +1,189 @@
+{
+  "review_result": "PASS: original failed evidence accurately attributed; encrypted runtime acceptance NOT ACHIEVED",
+  "run_result": "FAIL",
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "result_sha256": "79043719dfd74964db1849f4b0abcde49a2bd2d8ca56af5c6ebab051d5bb6f6d",
+  "terminal_seal_sha256": "5f2a4470d540061c50cdefb31013424d649c3f7ec9adfd838d1cfedc0e20217d",
+  "actual_archive_sha256": "9492ca26b84d1c2c32f5e89c9f72886b4ffac90da911ae36f51dc02facd689d7",
+  "actual_xml": [
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_recovery_6d32ab4f8e9e4a9d874b2b4d0cad0f66(AVD) - 15.xml",
+      "bytes": 22666,
+      "sha256": "b9f76c431a011af49b025059101b81435cfb9533e6e1a412eebd1b45cca0223f",
+      "cases": 11
+    }
+  ],
+  "actual_counts": {
+    "passed": 0,
+    "failures": 11,
+    "errors": 0,
+    "skipped": 0,
+    "missing_expected": 5
+  },
+  "case_failures": [
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "nativeProofAndBothFreshReadbacksActivateMetadataOnlyThenBothNormalFactorsRead",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "wrongCandidateFailsFreshNativeProofBeforeAuthenticationOrTransaction",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "injectedPostRenameDirectorySyncIoReportsVisibleNewWithUncertainDurability",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "injectedBeforeRenameIoRetainsExactEvidenceAndFreshInspectionObservesOldOnly",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "revocationDuringSecondAuthenticationRefusesAndPreservesBothOriginalWraps",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "postRenameRevocationIsUnknownUntilFreshLeaseObservationWithoutUnlockAuthority",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "eitherAuthenticatedWrapOfAnotherKeyCannotBorrowTheProvedDatabaseCandidate",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "substitutingEitherAuthenticatedCipherRefusesWithoutChangingEncryptedSources",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "recomputedChecksumCannotAuthenticateChangedStagedHeader",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "liveStageTamperDuringSecondAuthenticationCannotReachRename",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "cancellationDuringSecondAuthenticationZerosInputAndReleasesClosedVaultLease",
+      "failure": "Fixture expected SetupResult.Success; actual StrongBoxUnavailableFallback(masterKeyVersion=1), line438 before encrypted DB creation"
+    }
+  ],
+  "missing_expected_identities": [
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "proofNeverMigratesOlderSupportedSchema"
+    ],
+    [
+      "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources"
+    ]
+  ],
+  "fixture_fault": "Synthetic Keystore reports hasStrongBox=false. Provider correctly returns StrongBoxUnavailableFallback(1); test incorrectly requires Success before provider.lock and before actual encrypted DB creation. No fresh native proof/activation case body reached.",
+  "filter_fault": "Both FQCNs are in the captured comma-joined property and retained APK. Runner log says11 finished/11failed/0ignored. Five proof cases absent. Underlying omission cause UNEXPLAINED; exact16 gate correctly failed.",
+  "source_files_match_measured_commit": true,
+  "retained_host_apks": [
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "bytes": 53800503,
+      "sha256": "56dc17248915e664f73f075ced8aebe0d5e95716a300b4f8c35a0984c78a84c0",
+      "both_expected_class_descriptors": {
+        "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest": [
+          "classes25.dex"
+        ],
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest": [
+          "classes25.dex"
+        ]
+      }
+    }
+  ],
+  "native_payloads_hashes_verified": [
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+      "bytes": 10096,
+      "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "bytes": 6269000,
+      "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+      "bytes": 22320,
+      "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libandroidx.graphics.path.so",
+      "bytes": 10760,
+      "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite.so",
+      "bytes": 6700000,
+      "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite_jni.so",
+      "bytes": 22080,
+      "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68"
+    }
+  ],
+  "sdk_binding": {
+    "platform": "macOS/API35/google_apis/arm64-v8a",
+    "image_payload_count": 30,
+    "all_recorded_image_payload_hashes_verified": true,
+    "recorded_emulator_qemu_adb_hashes_verified": true
+  },
+  "commands_recorded_hashes_verified": 111,
+  "synthetic_unlock_observed": true,
+  "cleanup": {
+    "owned_emulator_exit": 0,
+    "owned_emulator_ports_empty": true,
+    "owner_avd_inventory_unchanged": true,
+    "device_lease_released_original_run": true,
+    "build_lease_retained_original_failure": true,
+    "later_matching_root_release_proof_sha256": "d30d66fc032c879dc1c974c945090a5e618e2bce5a8336a9729e1252fbd04f73",
+    "later_root_proof": "Coordinator separately established no new Gradle process and matching-token release; original result unchanged. Reviewer performed no process/device action."
+  },
+  "fixture_repair_source_review": {
+    "commit": "1ee5de12183ef7f6b9767bce06b834b581a8ac81",
+    "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt",
+    "sha256": "66f7671690101de3e90f6577b021fcdbe26abe23fb0ba34505a1e392635eb614",
+    "diff_sha256": "01f23761f5bab54db0dbbf2638bc0e4273508a8499440754755afaadfb5a2a9c",
+    "result": "PASS bounded test-only correction, exact fallback(1) plus persisted strongBoxBacked=false; unchanged synthetic hasStrongBox=false; compile and new runtime remain separate."
+  },
+  "boundaries": [
+    "Original failure sealed and unchanged; no retry by reviewer.",
+    "No encrypted activation/native-proof acceptance is credited to this run.",
+    "No installed APK readback, public application wiring, process-death/restart/power-loss, Android per-use authentication, StrongBox, owner data, or physical acceptance.",
+    "SDK/API35/ARM64 attribution is emulator-only.",
+    "No quality cases, model payload or gold evidence opened."
+  ]
+}

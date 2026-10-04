@@ -1,0 +1,32 @@
+{
+  "status": "PASS_SOURCE_REVIEW_RUNTIME_AND_TEST_RESULTS_NOT_REVIEWED",
+  "reviewer": "recovery activation worker",
+  "worker_commit": "301572ed347663dd634be05f74465b66f7c60551",
+  "files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt",
+      "bytes": 30098,
+      "sha256": "a1a2a5124466a4c1c5a55b91c06b65ff083e408bea2dc027ff34059985a78548"
+    }
+  ],
+  "observations": [
+    "Frozen input old bytes and canonical encoded proposed record prevent caller array changes from altering commit bytes.",
+    "Exact old/new/install readbacks occur before and after the full validation callback outside the revocation monitor; final monitor contains cheap cancellation, lease assertion, bounded active equality and atomic move.",
+    "All transaction-phase Exception subclasses, including coroutine cancellation, yield exact frozen-byte observation or UNKNOWN rather than escaping as a precommit refusal.",
+    "Known successful rename followed by unexpected old bytes returns UNKNOWN; failed sync after visible new bytes reports COMMITTED with directorySynced=false; revocation prevents trusted classification.",
+    "A transaction directory is never reused/erased. Original and new evidence is retained; no alias/key/ciphertext mutation or automatic rollback.",
+    "Fresh-lease reconcile is observational only and cannot confer authentication or session authority.",
+    "28 host test methods retain existing boundary coverage and add readback/callback/cancellation/possible-move/lease latency controls. Test outcomes remain coordinator-owned and unreviewed here."
+  ],
+  "blocking_findings": [],
+  "limits": [
+    "File observations cannot guarantee result delivery through a cancelled parent or Deferred. Later API integration must treat interrupted activation as unknown until fresh-lease inspection.",
+    "Host injected file errors and process-local exclusion do not establish actual power-loss or cross-process filesystem safety.",
+    "This review creates no app/public activation route or actual Android per-use/physical acceptance."
+  ]
+}

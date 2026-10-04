@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-04T21:33:07.277615+00:00",
+  "command": [
+    "bd",
+    "dolt",
+    "push"
+  ],
+  "exit": 1,
+  "stdout": "Pushing to Dolt remote...\n",
+  "stderr": "Warning: /Users/andrewherrera/skein-worktrees/ux-integration-20260929/.beads has permissions 0755 (recommended: 0700). Run: chmod 700 /Users/andrewherrera/skein-worktrees/ux-integration-20260929/.beads\nError: push to origin/main: Error 1105: fatal: remote 'origin' not found.\nPlease make sure the remote exists.\n\nNo remote is configured for this database.\n\nFor solo use, pushing is optional \u2014 your issues are stored locally\nin .beads/ and versioned by Dolt automatically.\n\nTo set up remote sync (for backup or team sharing):\n  bd dolt remote add origin <url>\n  bd dolt push\n\nSupported remote URLs:\n  \u2022 GitHub (via git):   git+ssh://git@github.com/org/repo.git\n  \u2022 DoltHub:            https://doltremoteapi.dolthub.com/org/repo\n",
+  "remote_created": false
+}

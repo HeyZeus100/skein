@@ -1,0 +1,230 @@
+{
+  "created": "2026-10-04T20:36:57.425988+00:00",
+  "status": "TERMINAL_SCOPED_RUNTIME_PASS_ORIGINAL_RESULT_SEALED",
+  "source_sha": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "production_source_sha": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "final_source_sha": "5591995bbad94ce7fa184a452767055bb3f7649e",
+  "final_status": "",
+  "controller_sha256": "55318250ee542b0b09d57f42d5362c13fc0a2b72bb03e1c7d4628a962bc5c36d",
+  "counts": {
+    "tests": 16,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "nativeProofAndBothFreshReadbacksActivateMetadataOnlyThenBothNormalFactorsRead",
+      "seconds": "0.177",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "wrongCandidateFailsFreshNativeProofBeforeAuthenticationOrTransaction",
+      "seconds": "0.045",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "injectedPostRenameDirectorySyncIoReportsVisibleNewWithUncertainDurability",
+      "seconds": "0.058",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "injectedBeforeRenameIoRetainsExactEvidenceAndFreshInspectionObservesOldOnly",
+      "seconds": "0.050",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "revocationDuringSecondAuthenticationRefusesAndPreservesBothOriginalWraps",
+      "seconds": "0.036",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "postRenameRevocationIsUnknownUntilFreshLeaseObservationWithoutUnlockAuthority",
+      "seconds": "0.045",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "eitherAuthenticatedWrapOfAnotherKeyCannotBorrowTheProvedDatabaseCandidate",
+      "seconds": "0.070",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "substitutingEitherAuthenticatedCipherRefusesWithoutChangingEncryptedSources",
+      "seconds": "0.065",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "recomputedChecksumCannotAuthenticateChangedStagedHeader",
+      "seconds": "0.038",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "liveStageTamperDuringSecondAuthenticationCannotReachRename",
+      "seconds": "0.033",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryActivationInstrumentedTest",
+      "method": "cancellationDuringSecondAuthenticationZerosInputAndReleasesClosedVaultLease",
+      "seconds": "0.034",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "method": "proofNeverMigratesOlderSupportedSchema",
+      "seconds": "0.023",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "method": "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate",
+      "seconds": "0.020",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "method": "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint",
+      "seconds": "0.017",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "method": "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources",
+      "seconds": "0.016",
+      "outcome": "PASS"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "method": "directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources",
+      "seconds": "0.015",
+      "outcome": "PASS"
+    }
+  ],
+  "result": {
+    "bytes": 82319,
+    "sha256": "548e96f5c5f51ee15c898ed1a5ee0b1f36dd44e78e45b5e3971355ad1b7b8626"
+  },
+  "raw_archive": {
+    "bytes": 30697,
+    "sha256": "c5e2155035a20f7d45c230b65161f998ff04d57907bb1b942f0c61d3ce99828a"
+  },
+  "raw_xml": [
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_recovery_42c502df4a1f4cc6a51cf41937baf3b0(AVD) - 15.xml",
+      "bytes": 3943,
+      "sha256": "7a0df4b6259cea96dc9397be38c4d697463889899e0fdfa42dfc182ab67581d6",
+      "testcases": 16
+    }
+  ],
+  "apk": [
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "bytes": 53800503,
+      "sha256": "df3c0f6a1900c4e3c69ed951db3394c62fc0c3583d636a39410c076172a101a4",
+      "attribution": "host DEV vault instrumentation APK output; no installed APK readback"
+    }
+  ],
+  "native_entries": [
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+      "bytes": 10096,
+      "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "bytes": 6269000,
+      "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+      "bytes": 22320,
+      "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libandroidx.graphics.path.so",
+      "bytes": 10760,
+      "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite.so",
+      "bytes": 6700000,
+      "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54"
+    },
+    {
+      "apk": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "path": "lib/x86_64/libskein_sqlite_jni.so",
+      "bytes": 22080,
+      "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68"
+    }
+  ],
+  "command_pairs_rehashed": 116,
+  "sdk_image_files": 30,
+  "source_files": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivation.kt": {
+      "bytes": 10924,
+      "sha256": "98438d70581685d0ce999fa7a141549f2c808a795610e6d271c9ccf1baf5c946"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt": {
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": {
+      "bytes": 9382,
+      "sha256": "4992ae20b826eaf7184ae626c781417c58d0a0067fae21879af45ceef37d6242"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt": {
+      "bytes": 6000,
+      "sha256": "191524caa5f2b48245b1057ccfa90247f21ab3c26f758bc6992925404f815f76"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt": {
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt": {
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryActivationInstrumentedTest.kt": {
+      "bytes": 25368,
+      "sha256": "ca6e84ed11d4b26dc1a05b6d893c851f1c8e594e44864f8fc308942e94df2e2f"
+    },
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt": {
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  },
+  "sdk_runtime_binaries": {
+    "/Users/andrewherrera/android-sdk/emulator/emulator": "b3b8fc0dcedcf6e15b54b41f3e5156319029aa00b88a59fd489f80abdd8fc133",
+    "/Users/andrewherrera/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64": "eaa97a970b81f81640db73ed79e19ee173323653a0a1203217e1199d078011f3",
+    "/Users/andrewherrera/android-sdk/platform-tools/adb": "1811e253b21b12cbfda7201ebaf86c10e7ddcb5c606a7a81f7c82b4c429c2d3b"
+  },
+  "gradle_terminal_proven": true,
+  "new_gradle_candidates": [],
+  "surviving_gradle_candidates": [],
+  "emulator_exit": 0,
+  "listeners": {
+    "5580": [],
+    "5581": []
+  },
+  "released_matching_leases": [
+    "device.lock",
+    "build.lock"
+  ],
+  "leases_absent_after_terminal": true,
+  "attribution": "11 new native encrypted activation cases +5 consumed prior native-proof cases on API35 Google APIs ARM64; actual SQLCipher JNI/proof/exclusion/filesystem, synthetic in-memory AES factor keys and auth callbacks. Reinspection is same-process fresh-lease only. No process death/restart, power loss, real per-use AndroidKeyStore, StrongBox, physical Fold, installed APK readback or public recovery wiring acceptance. Attempt01 remains failed evidence; original multiclass omission remains unexplained."
+}

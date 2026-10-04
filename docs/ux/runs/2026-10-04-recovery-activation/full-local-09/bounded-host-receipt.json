@@ -1,0 +1,33 @@
+{
+  "source": "52acc3114720e2ae136a80f4f74cb1bd5ec33c2e",
+  "argv": [
+    "./gradlew",
+    "--offline",
+    "--no-daemon",
+    "--max-workers=2",
+    "ktlintCheck",
+    "lint",
+    "check",
+    ":app:assembleFossDebug",
+    ":app:compileDevDebugAndroidTestKotlin",
+    ":app:compileFossDebugAndroidTestKotlin",
+    ":core:vault:compileDevDebugAndroidTestKotlin",
+    ":core:vault:compileFossDebugAndroidTestKotlin",
+    ":feature:shell:compileDebugAndroidTestKotlin",
+    ":feature:editor:compileDebugAndroidTestKotlin",
+    "--stacktrace"
+  ],
+  "exit": 0,
+  "source_static": true,
+  "head_static": true,
+  "status_static": true,
+  "owned_processes_stopped": true,
+  "counts": {
+    "passed": 5776,
+    "skipped": 86
+  },
+  "xml_files": 575,
+  "actual_archive_sha256": "160e27e71d674a907d6e81e8a8f5b80bc5dd2c664112487cbce5555f92e1d697",
+  "host_only": true,
+  "hosted_dispatches": 0
+}
