@@ -53,7 +53,12 @@ class AuthenticatedRecoveryActivationTest {
     private fun retained(name: String) = File(vault, "keys/recovery-envelopes/$id/$name")
 
     private fun provider() =
-        VaultKeyProviderImpl(keystore, FakeBiometricAuthenticator(), FileMasterKeyStorage(active()), recoveryExclusion = gate())
+        VaultKeyProviderImpl(
+            keystore,
+            FakeBiometricAuthenticator(),
+            FileMasterKeyStorage(active()),
+            recoveryExclusion = gate(),
+        )
 
     private data class Fixture(
         val files: Map<File, ByteArray>,
@@ -85,12 +90,23 @@ class AuthenticatedRecoveryActivationTest {
         keystore.recordReadbacks = true
         keystore.readbacks.clear()
         keystore.decryptAliases.clear()
-        return Fixture(vault.walkTopDown().filter(File::isFile).associateWith(File::readBytes), keystore.mutations.toList())
+        return Fixture(
+            vault.walkTopDown().filter(File::isFile).associateWith(File::readBytes),
+            keystore.mutations.toList(),
+        )
     }
 
     private fun activation(
-        proof: ExistingVaultKeyProof = ExistingVaultKeyProof { _, candidate -> if (candidate.contentEquals(key)) 0 else 1 },
-        transaction: (ClosedVaultRecoveryLease) -> RecoveryEnvelopeTransaction = { RecoveryEnvelopeTransaction(it) },
+        proof: ExistingVaultKeyProof =
+            ExistingVaultKeyProof {
+                _,
+                candidate,
+                ->
+                if (candidate.contentEquals(key)) 0 else 1
+            },
+        transaction: (
+            ClosedVaultRecoveryLease,
+        ) -> RecoveryEnvelopeTransaction = { RecoveryEnvelopeTransaction(it) },
     ) = AuthenticatedRecoveryActivation(gate(), keystore, proof, transaction)
 
     private fun assertPreserved(
@@ -114,7 +130,9 @@ class AuthenticatedRecoveryActivationTest {
     }
 
     private fun alterNew(change: (RecoveryEnvelopeV2) -> RecoveryEnvelopeV2) {
-        staged("new.envelope").writeBytes(change(RecoveryEnvelopeV2.decode(staged("new.envelope").readBytes())).encode())
+        staged(
+            "new.envelope",
+        ).writeBytes(change(RecoveryEnvelopeV2.decode(staged("new.envelope").readBytes())).encode())
     }
 
     @Test
@@ -149,13 +167,26 @@ class AuthenticatedRecoveryActivationTest {
             assertThat(proofCalls).isEqualTo(1)
             assertThat(proofBytes).isEqualTo(ByteArray(32))
             assertThat(prompts)
-                .containsExactly(VaultKeyProvider.Factor.BIOMETRIC, VaultKeyProvider.Factor.DEVICE_CREDENTIAL).inOrder()
+                .containsExactly(VaultKeyProvider.Factor.BIOMETRIC, VaultKeyProvider.Factor.DEVICE_CREDENTIAL)
+                .inOrder()
             assertThat(keystore.readbacks).hasSize(2)
             keystore.readbacks.forEach { assertThat(it).isEqualTo(ByteArray(32)) }
             assertThat(originalProvider.currentKey()).isNull()
             val legacy = FileMasterKeyStorage.decode(fixture.files.getValue(active()))
-            assertThat(keystore.delegate.decryptCipher(VaultKeyProviderImpl.ALIAS_BIOMETRIC, legacy.wrapIvBiometric!!).doFinal(legacy.wrappedBytesBiometric!!)).isEqualTo(key)
-            assertThat(keystore.delegate.decryptCipher(VaultKeyProviderImpl.ALIAS_CREDENTIAL, legacy.wrapIvCredential!!).doFinal(legacy.wrappedBytesCredential!!)).isEqualTo(key)
+            assertThat(
+                keystore.delegate
+                    .decryptCipher(
+                        VaultKeyProviderImpl.ALIAS_BIOMETRIC,
+                        legacy.wrapIvBiometric!!,
+                    ).doFinal(legacy.wrappedBytesBiometric!!),
+            ).isEqualTo(key)
+            assertThat(
+                keystore.delegate
+                    .decryptCipher(
+                        VaultKeyProviderImpl.ALIAS_CREDENTIAL,
+                        legacy.wrapIvCredential!!,
+                    ).doFinal(legacy.wrappedBytesCredential!!),
+            ).isEqualTo(key)
             assertPreserved(fixture, mapOf(active() to fixture.files.getValue(staged("new.envelope"))))
             assertThat(retained("old.envelope").readBytes()).isEqualTo(fixture.files.getValue(active()))
             assertThat(retained("new.envelope").readBytes()).isEqualTo(staged("new.envelope").readBytes())
@@ -281,8 +312,28 @@ class AuthenticatedRecoveryActivationTest {
             val changes: List<(RecoveryEnvelopeV2) -> RecoveryEnvelopeV2> =
                 listOf(
                     { it.copy(createdAt = it.createdAt + 1) },
-                    { it.copy(biometric = it.biometric.copy(ciphertext = it.biometric.ciphertext.copyOf().apply { this[0]++ })) },
-                    { it.copy(credential = it.credential.copy(ciphertext = it.credential.ciphertext.copyOf().apply { this[0]++ })) },
+                    {
+                        it.copy(
+                            biometric =
+                                it.biometric.copy(
+                                    ciphertext =
+                                        it.biometric.ciphertext
+                                            .copyOf()
+                                            .apply { this[0]++ },
+                                ),
+                        )
+                    },
+                    {
+                        it.copy(
+                            credential =
+                                it.credential.copy(
+                                    ciphertext =
+                                        it.credential.ciphertext
+                                            .copyOf()
+                                            .apply { this[0]++ },
+                                ),
+                        )
+                    },
                     { it.copy(biometric = it.credential, credential = it.biometric) },
                 )
             for (change in changes) {
@@ -304,7 +355,21 @@ class AuthenticatedRecoveryActivationTest {
                     val fixture = fixture()
                     alterNew { record ->
                         val encrypt = keystore.delegate.encryptCipher(record.alias(factor))
-                        if (mode != "no-aad") encrypt.updateAAD(record.authenticationData(if (mode == "opposite-aad") !factor else factor))
+                        if (mode !=
+                            "no-aad"
+                        ) {
+                            encrypt.updateAAD(
+                                record.authenticationData(
+                                    if (mode ==
+                                        "opposite-aad"
+                                    ) {
+                                        !factor
+                                    } else {
+                                        factor
+                                    },
+                                ),
+                            )
+                        }
                         val candidate = if (mode == "wrong-key") ByteArray(32) { 90 } else key
                         val wrap = RecoveryEnvelopeV2.Wrap(encrypt.doFinal(candidate), encrypt.iv)
                         if (factor) record.copy(biometric = wrap) else record.copy(credential = wrap)
@@ -349,9 +414,23 @@ class AuthenticatedRecoveryActivationTest {
                     var count = 0
                     assertThat(
                         activation().activateWith(id, key.copyOf()) { _, cipher ->
-                            if (++count != at) AuthResult.Success(cipher) else if (cancel) AuthResult.UserCancelled else AuthResult.Error(7, "synthetic")
+                            if (++count !=
+                                at
+                            ) {
+                                AuthResult.Success(cipher)
+                            } else if (cancel) {
+                                AuthResult.UserCancelled
+                            } else {
+                                AuthResult.Error(7, "synthetic")
+                            }
                         },
-                    ).isEqualTo(if (cancel) AuthenticatedRecoveryActivation.Result.UserCancelled else AuthenticatedRecoveryActivation.Result.Unavailable)
+                    ).isEqualTo(
+                        if (cancel) {
+                            AuthenticatedRecoveryActivation.Result.UserCancelled
+                        } else {
+                            AuthenticatedRecoveryActivation.Result.Unavailable
+                        },
+                    )
                     assertThat(retained("old.envelope").exists()).isFalse()
                     assertPreserved(fixture)
                 }
@@ -377,7 +456,14 @@ class AuthenticatedRecoveryActivationTest {
     fun `source or staged mutation during either suspended factor cannot reach commit`() =
         runTest {
             for (at in 1..2) {
-                for (relative in listOf("vault.db", "vault.db-wal", "vault.db-shm", "keys/key-envelope.v1", "keys/recovery-prepared/$id/old.envelope", "keys/recovery-prepared/$id/new.envelope")) {
+                for (relative in listOf(
+                    "vault.db",
+                    "vault.db-wal",
+                    "vault.db-shm",
+                    "keys/key-envelope.v1",
+                    "keys/recovery-prepared/$id/old.envelope",
+                    "keys/recovery-prepared/$id/new.envelope",
+                )) {
                     val fixture = fixture()
                     val file = File(vault, relative)
                     val changed = file.readBytes() + 42.toByte()
@@ -503,8 +589,9 @@ class AuthenticatedRecoveryActivationTest {
                     .activateWith(id, input) { _, _ -> error("must not authenticate") },
             ).isEqualTo(AuthenticatedRecoveryActivation.Result.Unavailable)
             assertThat(input).isEqualTo(ByteArray(32))
-            assertThat(provider().unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC) { _, _ -> error("ordinary prompt excluded") })
-                .isInstanceOf(UnlockResult.Failed::class.java)
+            assertThat(
+                provider().unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC) { _, _ -> error("ordinary prompt excluded") },
+            ).isInstanceOf(UnlockResult.Failed::class.java)
             assertThat(gate().acquireReset()).isNull()
             finish.complete(Unit)
             assertObserved(pending.await(), RecoveryEnvelopeTransaction.State.COMMITTED, synced = true)
@@ -531,14 +618,24 @@ class AuthenticatedRecoveryActivationTest {
     @Test
     fun `final transaction validation rejects changed source and staged bytes after durable writes`() =
         runTest {
-            for (relative in listOf("vault.db", "vault.db-wal", "vault.db-shm", "keys/recovery-prepared/$id/old.envelope", "keys/recovery-prepared/$id/new.envelope")) {
+            for (relative in listOf(
+                "vault.db",
+                "vault.db-wal",
+                "vault.db-shm",
+                "keys/recovery-prepared/$id/old.envelope",
+                "keys/recovery-prepared/$id/new.envelope",
+            )) {
                 val fixture = fixture()
                 val changedFile = File(vault, relative)
                 val changed = changedFile.readBytes() + 43.toByte()
                 val recovery =
                     activation(transaction = { lease ->
                         RecoveryEnvelopeTransaction(lease, boundary = {
-                            if (it == RecoveryEnvelopeTransaction.Boundary.BEFORE_RENAME) changedFile.writeBytes(changed)
+                            if (it ==
+                                RecoveryEnvelopeTransaction.Boundary.BEFORE_RENAME
+                            ) {
+                                changedFile.writeBytes(changed)
+                            }
                         })
                     })
                 assertObserved(
@@ -564,11 +661,18 @@ class AuthenticatedRecoveryActivationTest {
                         check(finish.await(15, TimeUnit.SECONDS))
                     })
                 })
-            val pending = async(Dispatchers.Default) { recovery.activateWith(id, key.copyOf()) { _, cipher -> AuthResult.Success(cipher) } }
+            val pending =
+                async(
+                    Dispatchers.Default,
+                ) { recovery.activateWith(id, key.copyOf()) { _, cipher -> AuthResult.Success(cipher) } }
             try {
                 assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
                 val other = provider()
-                val thread = Thread { other.lock(); revoked.countDown() }
+                val thread =
+                    Thread {
+                        other.lock()
+                        revoked.countDown()
+                    }
                 thread.start()
                 try {
                     assertThat(revoked.await(5, TimeUnit.SECONDS)).isTrue()
@@ -594,7 +698,13 @@ class AuthenticatedRecoveryActivationTest {
                     activation(transaction = { lease ->
                         RecoveryEnvelopeTransaction(lease, boundary = {
                             if (it == RecoveryEnvelopeTransaction.Boundary.AFTER_RENAME) {
-                                if (cancel) throw CancellationException("injected after rename") else throw IOException("injected after rename")
+                                if (cancel) {
+                                    throw CancellationException(
+                                        "injected after rename",
+                                    )
+                                } else {
+                                    throw IOException("injected after rename")
+                                }
                             }
                         })
                     })
@@ -628,7 +738,9 @@ class AuthenticatedRecoveryActivationTest {
             assertPreserved(fixture, mapOf(active() to fixture.files.getValue(staged("new.envelope"))))
             assertThat(other.currentKey()).isNull()
             gate().acquireRecovery()!!.use { lease ->
-                assertThat(RecoveryEnvelopeTransaction(lease).reconcile(id).state).isEqualTo(RecoveryEnvelopeTransaction.State.COMMITTED)
+                assertThat(
+                    RecoveryEnvelopeTransaction(lease).reconcile(id).state,
+                ).isEqualTo(RecoveryEnvelopeTransaction.State.COMMITTED)
             }
             assertThat(other.currentKey()).isNull()
         }
@@ -693,7 +805,11 @@ class AuthenticatedRecoveryActivationTest {
 
         override fun hasStrongBox() = delegate.hasStrongBox()
 
-        override fun createKey(alias: String, factor: VaultKeyProvider.Factor, requireStrongBox: Boolean) {
+        override fun createKey(
+            alias: String,
+            factor: VaultKeyProvider.Factor,
+            requireStrongBox: Boolean,
+        ) {
             mutations += "create:$alias:$factor:$requireStrongBox"
             delegate.createKey(alias, factor, requireStrongBox)
         }
@@ -707,7 +823,10 @@ class AuthenticatedRecoveryActivationTest {
 
         override fun encryptCipher(alias: String) = delegate.encryptCipher(alias)
 
-        override fun decryptCipher(alias: String, iv: ByteArray): Cipher {
+        override fun decryptCipher(
+            alias: String,
+            iv: ByteArray,
+        ): Cipher {
             decryptAliases += alias
             val cipher = delegate.decryptCipher(alias, iv)
             return if (recordReadbacks) RecordingCipher(cipher, readbacks) else cipher
@@ -742,23 +861,58 @@ class AuthenticatedRecoveryActivationTest {
 
         override fun engineGetParameters(): AlgorithmParameters? = delegate.parameters
 
-        override fun engineInit(opmode: Int, key: Key, random: SecureRandom?) = Unit
+        override fun engineInit(
+            opmode: Int,
+            key: Key,
+            random: SecureRandom?,
+        ) = Unit
 
-        override fun engineInit(opmode: Int, key: Key, params: AlgorithmParameterSpec?, random: SecureRandom?) = Unit
+        override fun engineInit(
+            opmode: Int,
+            key: Key,
+            params: AlgorithmParameterSpec?,
+            random: SecureRandom?,
+        ) = Unit
 
-        override fun engineInit(opmode: Int, key: Key, params: AlgorithmParameters?, random: SecureRandom?) = Unit
+        override fun engineInit(
+            opmode: Int,
+            key: Key,
+            params: AlgorithmParameters?,
+            random: SecureRandom?,
+        ) = Unit
 
-        override fun engineUpdate(input: ByteArray, inputOffset: Int, inputLen: Int): ByteArray = delegate.update(input, inputOffset, inputLen)
+        override fun engineUpdate(
+            input: ByteArray,
+            inputOffset: Int,
+            inputLen: Int,
+        ): ByteArray = delegate.update(input, inputOffset, inputLen)
 
-        override fun engineUpdate(input: ByteArray, inputOffset: Int, inputLen: Int, output: ByteArray, outputOffset: Int) =
-            delegate.update(input, inputOffset, inputLen, output, outputOffset)
+        override fun engineUpdate(
+            input: ByteArray,
+            inputOffset: Int,
+            inputLen: Int,
+            output: ByteArray,
+            outputOffset: Int,
+        ) = delegate.update(input, inputOffset, inputLen, output, outputOffset)
 
-        override fun engineUpdateAAD(src: ByteArray, offset: Int, len: Int) = delegate.updateAAD(src, offset, len)
+        override fun engineUpdateAAD(
+            src: ByteArray,
+            offset: Int,
+            len: Int,
+        ) = delegate.updateAAD(src, offset, len)
 
-        override fun engineDoFinal(input: ByteArray, inputOffset: Int, inputLen: Int): ByteArray =
-            delegate.doFinal(input, inputOffset, inputLen).also { readbacks += it }
+        override fun engineDoFinal(
+            input: ByteArray,
+            inputOffset: Int,
+            inputLen: Int,
+        ): ByteArray = delegate.doFinal(input, inputOffset, inputLen).also { readbacks += it }
 
-        override fun engineDoFinal(input: ByteArray, inputOffset: Int, inputLen: Int, output: ByteArray, outputOffset: Int) =
-            delegate.doFinal(input, inputOffset, inputLen, output, outputOffset)
+        override fun engineDoFinal(
+            input: ByteArray,
+            inputOffset: Int,
+            inputLen: Int,
+            output: ByteArray,
+            outputOffset: Int,
+        ) = delegate.doFinal(input, inputOffset, inputLen, output, outputOffset)
     }
 }

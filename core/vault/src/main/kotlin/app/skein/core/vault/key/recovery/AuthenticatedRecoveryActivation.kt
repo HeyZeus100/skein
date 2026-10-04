@@ -30,7 +30,9 @@ internal class AuthenticatedRecoveryActivation(
     private val exclusion: VaultRecoveryExclusion,
     private val keystore: KeystoreFacade,
     private val verifier: ExistingVaultKeyProof = ExistingVaultKeyProof(),
-    private val transaction: (ClosedVaultRecoveryLease) -> RecoveryEnvelopeTransaction = { RecoveryEnvelopeTransaction(it) },
+    private val transaction: (
+        ClosedVaultRecoveryLease,
+    ) -> RecoveryEnvelopeTransaction = { RecoveryEnvelopeTransaction(it) },
 ) {
     sealed interface Result {
         /** File observation only, including uncertain durability; never a successful vault unlock. */
@@ -143,7 +145,8 @@ internal class AuthenticatedRecoveryActivation(
         }
     }
 
-    private fun unknown() = Result.Observed(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.UNKNOWN))
+    private fun unknown() =
+        Result.Observed(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.UNKNOWN))
 
     /** Private decoded bytes are never shared with the caller, authenticator or a Prepared receipt. */
     private class Evidence(
@@ -152,7 +155,10 @@ internal class AuthenticatedRecoveryActivation(
         private val proposed: ByteArray,
         val record: RecoveryEnvelopeV2,
     ) {
-        fun assertUnchanged(lease: ClosedVaultRecoveryLease, keystore: KeystoreFacade) {
+        fun assertUnchanged(
+            lease: ClosedVaultRecoveryLease,
+            keystore: KeystoreFacade,
+        ) {
             lease.assertExclusiveAndClosed()
             requireDirectory(directory)
             if (!readEnvelope(File(directory, "old.envelope")).contentEquals(old) ||

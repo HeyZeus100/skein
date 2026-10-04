@@ -76,7 +76,8 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
             assertThat(prompts).containsExactlyElementsIn(VaultKeyProvider.Factor.entries).inOrder()
             assertThat(ciphers[0]).isNotSameInstanceAs(ciphers[1])
             assertThat(fixture.store.decryptAliases)
-                .containsExactly(fixture.record.alias(true), fixture.record.alias(false)).inOrder()
+                .containsExactly(fixture.record.alias(true), fixture.record.alias(false))
+                .inOrder()
             assertThat(input).isEqualTo(ByteArray(32))
             assertPreserved(fixture, activeBytes = fixture.proposed)
             assertRetained(fixture, installExists = false)
@@ -91,7 +92,9 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
             val wrong = ByteArray(32) { 9 }
             assertThat(fixture.activation().activateWith(fixture.id, wrong) { _, _ -> error("must not authenticate") })
                 .isEqualTo(
-                    AuthenticatedRecoveryActivation.Result.ProofRejected(ExistingVaultKeyProofResult.WRONG_KEY_OR_CORRUPT),
+                    AuthenticatedRecoveryActivation.Result.ProofRejected(
+                        ExistingVaultKeyProofResult.WRONG_KEY_OR_CORRUPT,
+                    ),
                 )
             assertThat(wrong).isEqualTo(ByteArray(32))
             assertThat(fixture.store.decryptAliases).isEmpty()
@@ -108,7 +111,15 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
                 val input = key.copyOf()
                 val result =
                     fixture.activation().activateWith(fixture.id, input) { factor, cipher ->
-                        AuthResult.Success(if (factor == replacedFactor) Cipher.getInstance("AES/GCM/NoPadding") else cipher)
+                        AuthResult.Success(
+                            if (factor ==
+                                replacedFactor
+                            ) {
+                                Cipher.getInstance("AES/GCM/NoPadding")
+                            } else {
+                                cipher
+                            },
+                        )
                     }
                 assertThat(result).isEqualTo(AuthenticatedRecoveryActivation.Result.Unavailable)
                 assertThat(input).isEqualTo(ByteArray(32))
@@ -146,7 +157,11 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
             val input = key.copyOf()
             val result =
                 fixture.activation().activateWith(fixture.id, input) { factor, cipher ->
-                    if (factor == VaultKeyProvider.Factor.DEVICE_CREDENTIAL) fixture.staged("new.envelope").writeBytes(changed)
+                    if (factor ==
+                        VaultKeyProvider.Factor.DEVICE_CREDENTIAL
+                    ) {
+                        fixture.staged("new.envelope").writeBytes(changed)
+                    }
                     AuthResult.Success(cipher)
                 }
             assertThat(result).isEqualTo(AuthenticatedRecoveryActivation.Result.Unavailable)
@@ -171,14 +186,24 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
                         otherKey.fill(0)
                     }
                 val changed =
-                    (if (biometric) record.copy(biometric = wrongWrap) else record.copy(credential = wrongWrap)).encode()
+                    (
+                        if (biometric) {
+                            record.copy(
+                                biometric = wrongWrap,
+                            )
+                        } else {
+                            record.copy(credential = wrongWrap)
+                        }
+                    ).encode()
                 fixture.staged("new.envelope").writeBytes(changed)
                 val prompts = mutableListOf<VaultKeyProvider.Factor>()
                 val input = key.copyOf()
-                assertThat(fixture.activation().activateWith(fixture.id, input) { factor, authenticated ->
-                    prompts += factor
-                    AuthResult.Success(authenticated)
-                }).isEqualTo(AuthenticatedRecoveryActivation.Result.Unavailable)
+                assertThat(
+                    fixture.activation().activateWith(fixture.id, input) { factor, authenticated ->
+                        prompts += factor
+                        AuthResult.Success(authenticated)
+                    },
+                ).isEqualTo(AuthenticatedRecoveryActivation.Result.Unavailable)
                 assertThat(prompts.size).isEqualTo(if (biometric) 1 else 2)
                 assertThat(input).isEqualTo(ByteArray(32))
                 assertThat(fixture.transactionDirectory.exists()).isFalse()
@@ -241,7 +266,11 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
             val activation =
                 fixture.activation { lease ->
                     RecoveryEnvelopeTransaction(lease, boundary = { boundary ->
-                        if (boundary == RecoveryEnvelopeTransaction.Boundary.BEFORE_RENAME) throw IOException("injected before rename")
+                        if (boundary ==
+                            RecoveryEnvelopeTransaction.Boundary.BEFORE_RENAME
+                        ) {
+                            throw IOException("injected before rename")
+                        }
                     })
                 }
             assertObserved(activate(fixture, activation), RecoveryEnvelopeTransaction.State.NOT_COMMITTED)
@@ -281,7 +310,11 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
             val activation =
                 fixture.activation { lease ->
                     RecoveryEnvelopeTransaction(lease, boundary = { boundary ->
-                        if (boundary == RecoveryEnvelopeTransaction.Boundary.AFTER_RENAME) fixture.gate.invalidateRecovery()
+                        if (boundary ==
+                            RecoveryEnvelopeTransaction.Boundary.AFTER_RENAME
+                        ) {
+                            fixture.gate.invalidateRecovery()
+                        }
                     })
                 }
             assertObserved(activate(fixture, activation), RecoveryEnvelopeTransaction.State.UNKNOWN)
@@ -315,13 +348,21 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
         fixture: Fixture,
         state: RecoveryEnvelopeTransaction.State,
     ) {
-        val before = fixture.root.walkTopDown().filter(File::isFile).associate { it.relativeTo(fixture.root).path to it.readBytes().toList() }
+        val before =
+            fixture.root.walkTopDown().filter(File::isFile).associate {
+                it.relativeTo(fixture.root).path to
+                    it.readBytes().toList()
+            }
         checkNotNull(fixture.gate.acquireRecovery()).use { freshLease ->
             assertThat(RecoveryEnvelopeTransaction(freshLease).reconcile(fixture.id))
                 .isEqualTo(RecoveryEnvelopeTransaction.Result(state))
         }
-        assertThat(fixture.root.walkTopDown().filter(File::isFile).associate { it.relativeTo(fixture.root).path to it.readBytes().toList() })
-            .containsExactlyEntriesIn(before)
+        assertThat(
+            fixture.root.walkTopDown().filter(File::isFile).associate {
+                it.relativeTo(fixture.root).path to
+                    it.readBytes().toList()
+            },
+        ).containsExactlyEntriesIn(before)
         assertThat(fixture.provider.currentKey()).isNull()
     }
 
@@ -353,10 +394,12 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
     private suspend fun assertBothNormalFactorsRead(fixture: Fixture) {
         for (factor in VaultKeyProvider.Factor.entries) {
             val prompts = mutableListOf<VaultKeyProvider.Factor>()
-            assertThat(fixture.provider.unlockNoUi(factor) { requested, cipher ->
-                prompts += requested
-                AuthResult.Success(cipher)
-            }).isInstanceOf(UnlockResult.Success::class.java)
+            assertThat(
+                fixture.provider.unlockNoUi(factor) { requested, cipher ->
+                    prompts += requested
+                    AuthResult.Success(cipher)
+                },
+            ).isInstanceOf(UnlockResult.Success::class.java)
             assertThat(prompts).containsExactly(factor)
             val held = checkNotNull(fixture.provider.currentKey())
             assertThat(held).isEqualTo(key)
@@ -410,28 +453,39 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
         val preparationInput = key.copyOf()
         val prompts = mutableListOf<VaultKeyProvider.Factor>()
         assertThat(
-            AuthenticatedRecoveryPreparation(gate, store, newId = { id }).prepareWith(preparationInput) { factor, cipher ->
+            AuthenticatedRecoveryPreparation(
+                gate,
+                store,
+                newId = { id },
+            ).prepareWith(preparationInput) { factor, cipher ->
                 prompts += factor
                 AuthResult.Success(cipher)
             },
         ).isEqualTo(AuthenticatedRecoveryPreparation.Result.Prepared(id))
         assertThat(preparationInput).isEqualTo(ByteArray(32))
-        assertThat(prompts).containsExactly(
-            VaultKeyProvider.Factor.BIOMETRIC,
-            VaultKeyProvider.Factor.BIOMETRIC,
-            VaultKeyProvider.Factor.DEVICE_CREDENTIAL,
-            VaultKeyProvider.Factor.DEVICE_CREDENTIAL,
-        ).inOrder()
+        assertThat(prompts)
+            .containsExactly(
+                VaultKeyProvider.Factor.BIOMETRIC,
+                VaultKeyProvider.Factor.BIOMETRIC,
+                VaultKeyProvider.Factor.DEVICE_CREDENTIAL,
+                VaultKeyProvider.Factor.DEVICE_CREDENTIAL,
+            ).inOrder()
         assertThat(ciphertextFiles(root)).containsExactlyEntriesIn(before)
         assertThat(FileMasterKeyStorage.envelopeFileIn(root).readBytes()).isEqualTo(old)
         val proposed = File(root, "keys/recovery-prepared/$id/new.envelope").readBytes()
         store.decryptAliases.clear()
-        return Fixture(root, gate, store, provider, id, old, proposed, before, store.mutations.toList()).also { fixtures += it }
+        return Fixture(root, gate, store, provider, id, old, proposed, before, store.mutations.toList()).also {
+            fixtures +=
+                it
+        }
     }
 
     private fun root(): File {
         val cache = InstrumentationRegistry.getInstrumentation().targetContext.cacheDir
-        return Files.createTempDirectory(cache.toPath(), "recovery-activation-test-").toFile().canonicalFile.also { directories += it }
+        return Files.createTempDirectory(cache.toPath(), "recovery-activation-test-").toFile().canonicalFile.also {
+            directories +=
+                it
+        }
     }
 
     private fun ciphertextFiles(root: File) =
@@ -456,7 +510,9 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
         fun staged(name: String) = File(root, "keys/recovery-prepared/$id/$name")
 
         fun activation(
-            transaction: (ClosedVaultRecoveryLease) -> RecoveryEnvelopeTransaction = { RecoveryEnvelopeTransaction(it) },
+            transaction: (
+                ClosedVaultRecoveryLease,
+            ) -> RecoveryEnvelopeTransaction = { RecoveryEnvelopeTransaction(it) },
         ) = AuthenticatedRecoveryActivation(gate, store, transaction = transaction)
     }
 
