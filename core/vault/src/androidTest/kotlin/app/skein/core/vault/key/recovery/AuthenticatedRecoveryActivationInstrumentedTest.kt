@@ -436,7 +436,8 @@ class AuthenticatedRecoveryActivationInstrumentedTest {
                 recoveryExclusion = gate,
             )
         assertThat(provider.setupNoUi(key.copyOf())).isEqualTo(SetupResult.StrongBoxUnavailableFallback(1))
-        assertThat(FileMasterKeyStorage.decode(FileMasterKeyStorage.envelopeFileIn(root).readBytes()).strongBoxBacked).isFalse()
+        val setupBytes = FileMasterKeyStorage.envelopeFileIn(root).readBytes()
+        assertThat(FileMasterKeyStorage.decode(setupBytes).strongBoxBacked).isFalse()
         provider.lock()
         checkNotNull(gate.admit()).use {
             SkeinSQLiteDriver(key.copyOf()).open(File(root, "vault.db").path).use { raw ->
