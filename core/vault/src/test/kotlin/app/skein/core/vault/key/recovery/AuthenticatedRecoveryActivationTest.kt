@@ -843,7 +843,7 @@ class AuthenticatedRecoveryActivationTest {
         }
     }
 
-    private object TestProvider : Provider("recovery-test", "1.0", "host plaintext buffer observation")
+    private object TestProvider : Provider("recovery-test", 1.0, "host plaintext buffer observation")
 
     private class RecordingSpi(
         private val delegate: Cipher,
