@@ -41,7 +41,7 @@ class AuthenticatedRecoveryActivationTest {
 
     private val key = ByteArray(32) { (it + 11).toByte() }
     private val id = UUID.fromString("0c8f155b-3d5f-4dad-b9d9-328ce55ea3dc")
-    private val keystore = RecordingKeystore()
+    private var keystore = RecordingKeystore()
     private lateinit var vault: File
 
     private fun gate() = VaultRecoveryExclusion.forDirectory(vault)
@@ -62,7 +62,7 @@ class AuthenticatedRecoveryActivationTest {
 
     private suspend fun fixture(): Fixture {
         vault = Files.createTempDirectory(temp.root.toPath(), "vault-").toFile()
-        keystore.recordReadbacks = false
+        keystore = RecordingKeystore()
         val setupProvider = provider()
         assertThat(setupProvider.setupNoUi(key)).isInstanceOf(SetupResult.Success::class.java)
         setupProvider.lock()
