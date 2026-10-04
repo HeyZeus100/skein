@@ -15,6 +15,7 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -36,6 +37,7 @@ import javax.crypto.CipherSpi
 import javax.crypto.spec.SecretKeySpec
 
 /** Real host GCM and production admission; native proof and per-use authentication are synthetic. */
+@OptIn(ExperimentalCoroutinesApi::class)
 class AuthenticatedRecoveryActivationTest {
     @get:Rule val temp = TempDirRule()
 
