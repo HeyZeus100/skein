@@ -196,7 +196,9 @@ class RecoveryEnvelopeTransactionTest {
                     seen += "validated"
                 },
             )
-        assertThat(result).isEqualTo(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED, true))
+        assertThat(result).isEqualTo(
+            RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED, true),
+        )
         assertThat(seen.indexOf("validated")).isLessThan(seen.indexOf("cancellation"))
         assertThat(seen.filter { it.startsWith("sync:") }).hasSize(4)
     }
@@ -241,7 +243,11 @@ class RecoveryEnvelopeTransactionTest {
                 }
             val result = transaction.replace(old, next)
             assertThat(result.state).isEqualTo(
-                if (name == "install.envelope") RecoveryEnvelopeTransaction.State.NOT_COMMITTED else RecoveryEnvelopeTransaction.State.UNKNOWN,
+                if (name == "install.envelope") {
+                    RecoveryEnvelopeTransaction.State.NOT_COMMITTED
+                } else {
+                    RecoveryEnvelopeTransaction.State.UNKNOWN
+                },
             )
             assertThat(moves).isEqualTo(0)
             assertThat(active().readBytes()).isEqualTo(old)
@@ -263,8 +269,7 @@ class RecoveryEnvelopeTransactionTest {
                         moves++
                         move(from, to)
                     },
-                )
-                    .replace(old, next) { retained(next, name).writeText("changed after initial readback") }
+                ).replace(old, next) { retained(next, name).writeText("changed after initial readback") }
             assertThat(result.state).isNotEqualTo(RecoveryEnvelopeTransaction.State.COMMITTED)
             assertThat(moves).isEqualTo(0)
             assertThat(active().readBytes()).isEqualTo(old)
@@ -318,15 +323,34 @@ class RecoveryEnvelopeTransactionTest {
                 }
             }
         assertThat(transaction.replace(old, next).state).isEqualTo(RecoveryEnvelopeTransaction.State.NOT_COMMITTED)
-        val before = retained(next, "old.envelope").parentFile.walkTopDown().filter(File::isFile).associate { it.name to it.readBytes().toList() }
-        assertThat(RecoveryEnvelopeTransaction(lease).replace(old, next).state).isEqualTo(RecoveryEnvelopeTransaction.State.UNKNOWN)
-        assertThat(retained(next, "old.envelope").parentFile.walkTopDown().filter(File::isFile).associate { it.name to it.readBytes().toList() }).isEqualTo(before)
+        val before =
+            retained(next, "old.envelope")
+                .parentFile
+                .walkTopDown()
+                .filter(File::isFile)
+                .associate { it.name to it.readBytes().toList() }
+        assertThat(
+            RecoveryEnvelopeTransaction(lease).replace(old, next).state,
+        ).isEqualTo(RecoveryEnvelopeTransaction.State.UNKNOWN)
+        assertThat(
+            retained(next, "old.envelope")
+                .parentFile
+                .walkTopDown()
+                .filter(File::isFile)
+                .associate { it.name to it.readBytes().toList() },
+        ).isEqualTo(before)
         assertThat(active().readBytes()).isEqualTo(old)
     }
 
     @Test
     fun `callback IO runtime and cancellation failures cannot rename and preserve all evidence`() {
-        for (failure in listOf(IOException("validation"), IllegalStateException("validation"), CancellationException("validation"))) {
+        val failures =
+            listOf(
+                IOException("validation"),
+                IllegalStateException("validation"),
+                CancellationException("validation"),
+            )
+        for (failure in failures) {
             val lease = lease()
             val old = active().readBytes()
             val next = envelope()
@@ -368,7 +392,9 @@ class RecoveryEnvelopeTransactionTest {
             val old = active().readBytes()
             val next = envelope()
             val result = RecoveryEnvelopeTransaction(lease, atomicMove = { _, _ -> throw failure }).replace(old, next)
-            assertThat(result).isEqualTo(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.NOT_COMMITTED))
+            assertThat(result).isEqualTo(
+                RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.NOT_COMMITTED),
+            )
             assertThat(active().readBytes()).isEqualTo(old)
             assertThat(retained(next, "install.envelope").readBytes()).isEqualTo(next.encode())
         }
@@ -387,9 +413,10 @@ class RecoveryEnvelopeTransactionTest {
                         move(from, to)
                         throw failure
                     },
-                )
-                    .replace(old, next)
-            assertThat(result).isEqualTo(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED))
+                ).replace(old, next)
+            assertThat(result).isEqualTo(
+                RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED),
+            )
             assertThat(active().readBytes()).isEqualTo(next.encode())
             assertThat(retained(next, "old.envelope").readBytes()).isEqualTo(old)
             assertThat(retained(next, "new.envelope").readBytes()).isEqualTo(next.encode())
@@ -402,8 +429,13 @@ class RecoveryEnvelopeTransactionTest {
             val lease = lease()
             val old = active().readBytes()
             val next = envelope()
-            val transaction = RecoveryEnvelopeTransaction(lease) { if (it == RecoveryEnvelopeTransaction.Boundary.AFTER_RENAME) throw failure }
-            assertThat(transaction.replace(old, next)).isEqualTo(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED))
+            val transaction =
+                RecoveryEnvelopeTransaction(lease) {
+                    if (it == RecoveryEnvelopeTransaction.Boundary.AFTER_RENAME) throw failure
+                }
+            assertThat(transaction.replace(old, next)).isEqualTo(
+                RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED),
+            )
             assertThat(active().readBytes()).isEqualTo(next.encode())
             assertThat(RecoveryEnvelopeTransaction(lease).reconcile(next.transactionId).directorySynced).isFalse()
         }
@@ -423,9 +455,14 @@ class RecoveryEnvelopeTransactionTest {
                         if (++count == failAt) throw IOException("sync $failAt")
                         sync(it)
                     },
-                )
-                    .replace(old, next)
-            assertThat(result.state).isEqualTo(if (failAt == 4) RecoveryEnvelopeTransaction.State.COMMITTED else RecoveryEnvelopeTransaction.State.NOT_COMMITTED)
+                ).replace(old, next)
+            assertThat(result.state).isEqualTo(
+                if (failAt == 4) {
+                    RecoveryEnvelopeTransaction.State.COMMITTED
+                } else {
+                    RecoveryEnvelopeTransaction.State.NOT_COMMITTED
+                },
+            )
             assertThat(result.directorySynced).isFalse()
             assertThat(active().readBytes()).isEqualTo(if (failAt == 4) next.encode() else old)
             assertThat(retained(next, "old.envelope").readBytes()).isEqualTo(old)
@@ -448,7 +485,9 @@ class RecoveryEnvelopeTransactionTest {
         assertThat(result).isEqualTo(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.UNKNOWN))
         assertThat(active().readBytes()).isEqualTo(next.encode())
         lease.held = true
-        assertThat(RecoveryEnvelopeTransaction(lease).reconcile(next.transactionId)).isEqualTo(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED))
+        assertThat(RecoveryEnvelopeTransaction(lease).reconcile(next.transactionId)).isEqualTo(
+            RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED),
+        )
     }
 
     @Test
@@ -463,8 +502,7 @@ class RecoveryEnvelopeTransactionTest {
                     move(from, to)
                     to.writeText("unexpected active bytes")
                 },
-            )
-                .replace(old, next)
+            ).replace(old, next)
         assertThat(result.state).isEqualTo(RecoveryEnvelopeTransaction.State.UNKNOWN)
         assertThat(result.directorySynced).isFalse()
         assertThat(active().readText()).isEqualTo("unexpected active bytes")
@@ -489,7 +527,9 @@ class RecoveryEnvelopeTransactionTest {
         assertThat(active().readBytes()).isEqualTo(changed)
         assertThat(retained(next, "old.envelope").readBytes()).isEqualTo(old)
         // Restart can only identify which retained bytes are visible; it cannot approve their wraps.
-        assertThat(RecoveryEnvelopeTransaction(lease).reconcile(next.transactionId)).isEqualTo(RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED))
+        assertThat(RecoveryEnvelopeTransaction(lease).reconcile(next.transactionId)).isEqualTo(
+            RecoveryEnvelopeTransaction.Result(RecoveryEnvelopeTransaction.State.COMMITTED),
+        )
     }
 
     @Test
@@ -554,38 +594,41 @@ class RecoveryEnvelopeTransactionTest {
         val revoked = CountDownLatch(1)
         val result = AtomicReference<RecoveryEnvelopeTransaction.Result>()
         val error = AtomicReference<Throwable>()
+
         fun block() {
             entered.countDown()
             check(continueWork.await(5, TimeUnit.SECONDS))
         }
         var syncCount = 0
         val blockAt = if (afterRename) 4 else 1
-        val worker = thread {
-            try {
-                result.set(
-                    RecoveryEnvelopeTransaction(
-                        lease,
-                        syncDirectory = {
-                            syncCount++
-                            if (blockDirectorySync && syncCount == blockAt) {
-                                block()
-                            }
-                            sync(it)
-                        },
-                    ).replace(old, next) { if (!blockDirectorySync) block() },
-                )
-            } catch (failure: Throwable) {
-                error.set(failure)
+        val worker =
+            thread {
+                try {
+                    result.set(
+                        RecoveryEnvelopeTransaction(
+                            lease,
+                            syncDirectory = {
+                                syncCount++
+                                if (blockDirectorySync && syncCount == blockAt) {
+                                    block()
+                                }
+                                sync(it)
+                            },
+                        ).replace(old, next) { if (!blockDirectorySync) block() },
+                    )
+                } catch (failure: Throwable) {
+                    error.set(failure)
+                }
             }
-        }
         var revoker: Thread? = null
         try {
             assertThat(entered.await(2, TimeUnit.SECONDS)).isTrue()
             assertThat(exclusion.admit()).isNull()
-            revoker = thread {
-                exclusion.invalidateRecovery()
-                revoked.countDown()
-            }
+            revoker =
+                thread {
+                    exclusion.invalidateRecovery()
+                    revoked.countDown()
+                }
             assertThat(revoked.await(1, TimeUnit.SECONDS)).isTrue()
             assertThat(exclusion.admit()).isNull()
         } finally {
@@ -606,7 +649,10 @@ class RecoveryEnvelopeTransactionTest {
         FileChannel.open(directory.toPath(), READ).use { it.force(true) }
     }
 
-    private fun move(from: File, to: File) {
+    private fun move(
+        from: File,
+        to: File,
+    ) {
         Files.move(from.toPath(), to.toPath(), ATOMIC_MOVE, REPLACE_EXISTING)
     }
 
