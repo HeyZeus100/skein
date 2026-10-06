@@ -1,12 +1,12 @@
 # Skein Roadmap
 
-**Status:** Living document. v1 is committed; v2 is designed at the surface-and-issue level; v3 is aspirational. Updated 2026-09-19.
+**Status — 5 October 2026:** V1 is under construction and has not shipped. This document describes intended scope; the [current V1 status](V1_STATUS.md) records implementation and acceptance separately. V2 is designed at the surface-and-issue level; V3 is aspirational. See the [latest handoff](Handoffs/skein-continuation-20261005.md) for continuation.
 
 Skein is an offline-first personal knowledge system for Android that runs an on-device LLM as its interface layer. This roadmap describes the intended shape *beyond* the v1 spec — where the product is going and why.
 
-## The five surfaces
+## Current application and future product areas
 
-The eventual UI decomposes into five top-level surfaces. v1 delivers substrate; later versions add feature layers on top.
+The current application has **Chat, Knowledge, Graph, Models and Settings**, with adaptive single and split workspaces. The following diagram describes eventual product areas, not the current navigation or a completed-feature inventory.
 
 ```
 SKEIN
@@ -42,23 +42,30 @@ Security
 └── Vault           v1
 ```
 
-## v1 (this spec — currently under construction)
+## V1 scope and remaining acceptance
 
-Delivers the substrate every later version depends on:
+The intended user journey is **unlock → write/import → index → search/ask → cite → approve edit → export**. Notes, local chat, workspace navigation and much of the storage/inference infrastructure exist. Completing the journey reliably on the target device remains the release requirement.
 
-- Vault (SQLCipher + sqlite-vec + FTS5, DocumentsProvider, StrongBox keys)
-- On-device inference (llama.cpp, Vulkan, isolated process)
+The original V1 scope remains:
+
+- Vault (SQLCipher + sqlite-vec + FTS5, DocumentsProvider, hardware-backed key policy); public existing-vault recovery is unfinished despite accepted internal implementation slices.
+- On-device inference through llama.cpp in an isolated process. Current production execution is CPU-only; Vulkan is not a delivered capability inside the isolated service. Runtime or model changes require their own qualification and must preserve isolation.
 - Wiki-native timeline (chats + notes + AI outputs as one substrate)
 - Live-preview Markdown editor with `[[wikilinks]]`
-- RAG over vault content (hybrid: vector + BM25 + PPR)
-- Multi-persona (system prompt + optional default model)
-- Multimodal input (MD/txt/code, PDF extraction, Gemma-4 vision)
-- Export (MD, PDF, DOCX via minimal writer)
+- Retrieval over vault content, with hybrid vector + BM25 + graph retrieval as the target. Production embeddings and full hybrid retrieval remain unqualified; current retrieval quality gates fail.
+- Multi-persona/Space scope (system prompt + optional default model). Scoped turn handling and a switcher exist; Spaces management remains a placeholder.
+- Multimodal input (MD/txt/code, PDF extraction, image analysis when supported). Gemma E4B vision remains feasibility work; exact artifact/runtime/model quality and image handling are not accepted. No runtime/default-model switch has been made.
+- Export (MD, PDF, DOCX via minimal writer); actions are wired, with remaining staging/integration and device acceptance.
+- Inline AI selection actions with user approval of edits; still open under `skein-2cd`. This is distinct from the V2 structured Artifact Engine.
 - Local 2-hop graph view + backlinks
 - Assistant integration (locked-down, `onHandleAssist` no-op)
 - Share targets (text, image, PDF) + share source
 - Manifest security baseline + build-time guards
-- CI, DCO, reproducible-build workflow, Dependabot
+- Local quality checks, DCO, manual hosted workflows and release reproducibility. The [owner's cost policy](LOCAL_VERIFICATION.md) disables automatic hosted dispatch; unrun checks remain open.
+
+The owner-requested Temporary Chats feature is tracked separately under `skein-4v3c`. Its boundary review is complete; implementation is open. Knowledge off controls retrieval and does not make a chat temporary. This status refresh does not silently add, remove or accept release scope.
+
+The [V1 status](V1_STATUS.md) identifies the open quality, recovery, inline-edit/export, physical and distribution gates. Feature code, a passing host suite and a demonstrated model stream are different kinds of evidence.
 
 **Not in v1:** cloud anything, network anything, image generation, DOCX/PDF *reading* beyond text extraction, LLM-built knowledge graph, model router.
 
@@ -179,8 +186,8 @@ Every roadmap decision is checked against these:
 6. Inference always isolated process
 7. `foss` flavor: only Apache-2.0 / MIT / permissive deps
 8. Every document has a stable UUIDv7 (v2 sync compatibility)
-9. All data app-private, encrypted with StrongBox keys, exposed via DocumentsProvider only
-10. User owns the vault format (Markdown on disk, Obsidian-compatible)
+9. Vault content stays app-private and encrypted; keys follow the documented StrongBox/fallback policy. External access uses the gated DocumentsProvider or explicit export flows
+10. User owns portable Markdown import/exports and wiki conventions; canonical document storage is encrypted SQLCipher, not loose Markdown files
 
 ## How this document evolves
 
