@@ -45,7 +45,7 @@ ktlint-gradle = "14.2.0"
 # visual evidence the UX overhaul can produce, since FLAG_SECURE blacks out
 # device screenshots. 1.75.0 is the latest release (2026-09-21); AGP 9 support
 # landed in 1.x (#782, Jan 2026). See docs/ux/research/ROBORAZZI_SPIKE.md.
-roborazzi = "1.75.0"
+roborazzi = "1.76.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
