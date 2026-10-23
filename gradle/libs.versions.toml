@@ -14,7 +14,7 @@ androidx-biometric = "1.1.0"
 # crashes every ActivityResult launcher hosted by MainActivity. 1.3+ dropped
 # the check and delegates to the ActivityResult APIs; pinned explicitly.
 androidx-fragment = "1.9.1"
-androidx-core-ktx = "1.19.0"
+androidx-core-ktx = "1.19.1"
 androidx-activity-compose = "1.13.0"
 androidx-lifecycle = "2.11.0"
 # skein-xtov.24.4 (AL-05, the D8 gate): Navigation 3, latest stable
